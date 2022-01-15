@@ -1,0 +1,85 @@
+{
+  "project_info": {
+    "project_number": "237115759240",
+    "firebase_url": "https://dietapp-in-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "dietapp-in",
+    "storage_bucket": "dietapp-in.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:237115759240:android:6395659ae301c147fc9d3d",
+        "android_client_info": {
+          "package_name": "com.dietapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "237115759240-ibrn01vn4bprdsh9erk6ln7tnl49mq9n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dietapp",
+            "certificate_hash": "f15663d0988ce1914eb4aa465d140407ee2ba95f"
+          }
+        },
+        {
+          "client_id": "237115759240-hl7idkucv13gfh0uuejd6e831295snve.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJHIlfiEKl_mtlQf0rkmVgA_sJwKJjawg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "237115759240-hl7idkucv13gfh0uuejd6e831295snve.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:237115759240:android:ce50e5e93be0a7e2fc9d3d",
+        "android_client_info": {
+          "package_name": "com.example.dietapp_v002"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "237115759240-r33v1g0mvtn28359j2soi3o617ahfkcf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.dietapp_v002",
+            "certificate_hash": "f15663d0988ce1914eb4aa465d140407ee2ba95f"
+          }
+        },
+        {
+          "client_id": "237115759240-hl7idkucv13gfh0uuejd6e831295snve.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJHIlfiEKl_mtlQf0rkmVgA_sJwKJjawg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "237115759240-hl7idkucv13gfh0uuejd6e831295snve.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
