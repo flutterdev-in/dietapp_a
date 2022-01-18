@@ -1,4 +1,4 @@
-import 'package:dietapp_a/0-homeScreen/0_home_screen.dart';
+import 'package:dietapp_a/z_HomeScreen/screens/a_home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/auth.dart';
