@@ -9,6 +9,8 @@ class WelcomeController extends GetxController {
   @override
   void onInit() async {
     User user = FirebaseAuth.instance.currentUser!;
+    String userID0 = "@${user.email!.replaceAll("@gmail.com", "")}";
+    List<String> userIDs0 = [userID0];
     var userWelcomeMap = UserWelcomeModel(
       firebaseUID: user.uid,
       googleDisplayName: user.displayName,
@@ -21,7 +23,7 @@ class WelcomeController extends GetxController {
       googleLastSignInTime: user.metadata.lastSignInTime,
       photoURL: user.photoURL,
       displayName: user.displayName,
-      userID: user.email,
+      userID: userID0,
     ).toMap();
     await FirebaseFirestore.instance
         .collection('Users')

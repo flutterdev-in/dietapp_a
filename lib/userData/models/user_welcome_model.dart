@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class UserWelcomeModel {
   String? firebaseUID;
   String? userID;
+
   String? googleDisplayName;
   String? googleEmail;
   String? googlePhotoURL;
@@ -28,7 +29,8 @@ class UserWelcomeModel {
     required this.googleLastSignInTime,
     required this.photoURL,
     required this.displayName,
-    required this.userID ,
+    required this.userID,
+
     this.nativeLanguage = "English",
     this.bioData = "",
   });
@@ -37,6 +39,7 @@ class UserWelcomeModel {
     return {
       "firebaseUID": firebaseUID,
       "userID": userID,
+
       "googleData": {
         "googleDisplayName": googleDisplayName,
         "googleEmail": googleEmail,
@@ -48,7 +51,6 @@ class UserWelcomeModel {
         "googleLastSignInTime": googleLastSignInTime,
       },
       "profileData": {
-        "userID": userID,
         "photoURL": photoURL,
         "displayName": displayName,
         "nativeLanguage": nativeLanguage,
@@ -69,6 +71,7 @@ class UserWelcomeModel {
       googleCreationTime: userDocMap["googleData"]["googleCreationTime"],
       googleLastSignInTime: userDocMap["googleData"]["googleLastSignInTime"],
       userID: userDocMap["userID"],
+      
       photoURL: userDocMap["profileData"]["photoURL"],
       displayName: userDocMap["profileData"]["displayName"],
       nativeLanguage: userDocMap["profileData"]["nativeLanguage"],

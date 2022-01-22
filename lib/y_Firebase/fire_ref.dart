@@ -3,13 +3,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class FireRef {
   final Stream<DocumentSnapshot> userDocStrem = FirebaseFirestore.instance
-      .collection('users')
+      .collection('Users')
       .doc(FirebaseAuth.instance.currentUser!.uid)
       .snapshots();
 
   final DocumentReference userDocRef = FirebaseFirestore.instance
-      .collection('users')
+      .collection('Users')
       .doc(FirebaseAuth.instance.currentUser!.uid);
-
-  
 }

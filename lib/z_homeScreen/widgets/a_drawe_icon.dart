@@ -3,6 +3,8 @@ import 'package:dietapp_a/userData/models/user_welcome_model.dart';
 import 'package:dietapp_a/x_customWidgets/stream_builder_functions.dart';
 import 'package:dietapp_a/y_Firebase/fire_ref.dart';
 import 'package:flutter/material.dart';
+import 'package:getwidget/components/avatar/gf_avatar.dart';
+import 'package:getwidget/getwidget.dart';
 
 class DrawerIcon extends StatelessWidget {
   const DrawerIcon({Key? key}) : super(key: key);
@@ -16,9 +18,15 @@ class DrawerIcon extends StatelessWidget {
             var data = SB().docStream(c, d);
             if (data is Map) {
               UserWelcomeModel uwm = UserWelcomeModel.fromMap(data);
-              return IconButton(
-                  icon: Image.network(uwm.photoURL!),
-                  onPressed: () {
+              return GestureDetector(
+                  child: GFAvatar(
+                    backgroundColor: Colors.transparent,
+                    child: GFAvatar(
+                      maxRadius: 15,
+                      backgroundImage: NetworkImage(uwm.photoURL!),
+                    ),
+                  ),
+                  onTap: () {
                     Scaffold.of(context).openDrawer();
                   });
             } else {
