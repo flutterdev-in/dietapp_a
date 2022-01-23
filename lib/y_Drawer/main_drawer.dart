@@ -3,6 +3,8 @@ import 'package:dietapp_a/y_Drawer/widgets/profile_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:getwidget/components/list_tile/gf_list_tile.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class MainDrawer extends StatelessWidget {
   const MainDrawer({Key? key}) : super(key: key);
@@ -14,38 +16,43 @@ class MainDrawer extends StatelessWidget {
       child: ListView(
         children: [
           const DrawerProfileContainer(),
-          const Divider(
-            color: Colors.black,
+          SizedBox(height: 10),
+          _widget(
+            "Trackers",
+            Icons.list,
           ),
-          SizedBox(height: Get.height * 0.6),
-          Container(
-            height: 50,
-            child: SvgPicture.asset(Assets().googleIcon),
+          _widget(
+            "My Foods",
+            MdiIcons.food,
           ),
-          ListTile(
-            tileColor: Colors.black26,
-            trailing: Icon(Icons.settings),
-            title: const Text(
-              "Settings",
-              textScaleFactor: 1.2,
-            ),
-            onTap: () {},
+          _divider(),
+          _widget(
+            "Settings",
+            MdiIcons.cogOutline,
           ),
-          const SizedBox(
-            height: 1.3,
+          _widget(
+            "About",
+            MdiIcons.informationOutline,
           ),
-          ListTile(
-              tileColor: Colors.black26,
-              trailing: Icon(Icons.logout_outlined),
-              title: Text(
-                "Logout",
-                textScaleFactor: 1.2,
-              ),
-              onTap: () {
-                // Get.find<WelcomeController>().logout();
-              }),
         ],
       ),
     );
+  }
+
+  Widget _widget(
+    String titile,
+    IconData icon,
+  ) {
+    return GFListTile(
+      avatar: Icon(
+        icon,
+      ),
+      padding: EdgeInsets.all(0),
+      titleText: titile,
+    );
+  }
+
+  Widget _divider() {
+    return Divider(thickness: 1);
   }
 }

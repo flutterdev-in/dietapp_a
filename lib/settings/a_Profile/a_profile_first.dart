@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dietapp_a/settings/a_Profile/children_screens/a_profile_first/a_profile_edit.dart';
+import 'package:dietapp_a/settings/a_Profile/ax_profile_edit.dart';
 import 'package:dietapp_a/userData/models/user_welcome_model.dart';
 import 'package:dietapp_a/x_customWidgets/stream_builder_functions.dart';
 import 'package:dietapp_a/y_Firebase/fire_ref.dart';
@@ -13,7 +13,7 @@ import 'package:getwidget/types/gf_button_type.dart';
 
 class ProfileFirst extends StatelessWidget {
   const ProfileFirst({Key? key}) : super(key: key);
-  
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
@@ -23,7 +23,7 @@ class ProfileFirst extends StatelessWidget {
           if (data is Map) {
             UserWelcomeModel uwm = UserWelcomeModel.fromMap(data);
             return Container(
-              color: Colors.green,
+              // color: Colors.green,
               padding: EdgeInsets.only(top: 15),
               height: 100,
               child: Row(

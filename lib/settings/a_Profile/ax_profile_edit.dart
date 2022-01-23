@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/assets/assets.dart';
-import 'package:dietapp_a/settings/a_Profile/children_screens/a_profile_first/b_userid_edit_screen.dart';
+import 'package:dietapp_a/settings/a_Profile/axx_userid_edit_screen.dart';
 import 'package:dietapp_a/userData/models/user_welcome_model.dart';
 import 'package:dietapp_a/x_customWidgets/stream_builder_functions.dart';
 import 'package:dietapp_a/y_Firebase/fire_ref.dart';
