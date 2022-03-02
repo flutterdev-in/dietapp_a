@@ -86,7 +86,7 @@ class BasicInfo extends StatelessWidget {
     Rx<int> vd = rxAge.value.obs;
     TextEditingController tc = TextEditingController();
     tc.text = rxAge.value.toString();
-    tc.selection =
+    tc.selection = 
         TextSelection.fromPosition(TextPosition(offset: tc.text.length));
     return Row(
       children: [

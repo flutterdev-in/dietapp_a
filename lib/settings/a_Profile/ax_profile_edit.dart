@@ -11,7 +11,7 @@ import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
 
 class ProfileEdit extends StatelessWidget {
-  ProfileEdit({Key? key}) : super(key: key);
+  const ProfileEdit({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +73,8 @@ class ProfileEdit extends StatelessWidget {
                     child: SvgPicture.asset(Assets().googleIcon),
                     backgroundColor: Colors.transparent,
                     radius: 15),
-                titleText: uwm.googleEmail,
+                title: Text(uwm.googleEmail ?? "", textScaleFactor: 1.2),
+                // titleText: uwm.googleEmail,
               );
             }
 

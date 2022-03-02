@@ -1,4 +1,4 @@
-
+import 'package:dietapp_a/w_bottomBar/_bottom_navigation_bar.dart';
 import 'package:dietapp_a/y_Drawer/main_drawer.dart';
 import 'package:dietapp_a/z_homeScreen/controllers/welcome_controller.dart';
 import 'package:dietapp_a/z_homeScreen/widgets/a_drawe_icon.dart';
@@ -31,10 +31,9 @@ class HomeScreen extends StatelessWidget {
           leading: const DrawerIcon(),
         ),
         body: ListView(
-          children: [
-            
-          ],
+          children: [],
         ),
+        bottomNavigationBar: BottomNavigationBarW(),
       ),
     );
   }

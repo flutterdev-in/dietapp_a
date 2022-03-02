@@ -29,44 +29,47 @@ class ProfileFirst extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    children: [
-                      CircleAvatar(
-                        foregroundImage: NetworkImage(uwm.photoURL!),
-                        minRadius: 60,
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            height: 12,
-                          ),
-                          Text(
-                            uwm.displayName!,
-                            textScaleFactor: 1.8,
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          SizedBox(
-                            height: 4,
-                          ),
-                          Text(
-                            uwm.userID!,
-                            textScaleFactor: 1.2,
-                          ),
-                          // Text(userProfileMap["userID"]),
-                        ],
-                      ),
-                    ],
+                  Expanded(
+                    flex: 5,
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          foregroundImage: NetworkImage(uwm.photoURL!),
+                          minRadius: 60,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              height: 12,
+                            ),
+                            Text(
+                              uwm.displayName!,
+                              textScaleFactor: 1.4,
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(
+                              height: 4,
+                            ),
+                            Text(
+                              uwm.userID!,
+                              textScaleFactor: 1.2,
+                            ),
+                            // Text(userProfileMap["userID"]),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                  GFIconButton(
-                      type: GFButtonType.transparent,
-                      icon: Icon(Icons.edit),
-                      onPressed: () {
-                        Get.to(() => ProfileEdit());
-                      }),
+                  Expanded(
+                    flex: 1,
+                    child: GFIconButton(
+                        type: GFButtonType.transparent,
+                        icon: Icon(Icons.edit),
+                        onPressed: () {
+                          Get.to(() => ProfileEdit());
+                        }),
+                  ),
                 ],
               ),
             );
