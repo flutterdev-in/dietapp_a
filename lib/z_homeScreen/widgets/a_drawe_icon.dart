@@ -15,7 +15,7 @@ class DrawerIcon extends StatelessWidget {
       return StreamBuilder(
           stream: FireRef().userDocStrem,
           builder: (c, AsyncSnapshot<DocumentSnapshot> d) {
-            var data = SB().docStream(c, d);
+            var data = docStreamReturn(c, d);
             if (data is Map) {
               UserWelcomeModel uwm = UserWelcomeModel.fromMap(data);
               return GestureDetector(

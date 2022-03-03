@@ -1,19 +1,21 @@
+import 'package:dietapp_a/w_bottomBar/rx_index_for_bottombar.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
+
+
 class BottomNavigationBarW extends StatelessWidget {
   const BottomNavigationBarW({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
-    Rx<int> index = 0.obs;
+    
     return Obx(
       () => SalomonBottomBar(
-        currentIndex: index.value,
+        currentIndex: bottomBarindex.value,
         onTap: (i) {
-          return index.value = i;
+          return bottomBarindex.value = i;
         },
         items: [
           /// Home

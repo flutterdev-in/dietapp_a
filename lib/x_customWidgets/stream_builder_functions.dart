@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:getwidget/components/shimmer/gf_shimmer.dart';
 
-class SB {
-  docStream(BuildContext c, AsyncSnapshot<DocumentSnapshot> d,
+
+  docStreamReturn(BuildContext c, AsyncSnapshot<DocumentSnapshot> d,
       {Widget errorW = const Text('Error'),
       Widget loadingW = const GFShimmer(child: Text("Loading..")),
       Widget nodataW = const Text('Data not exists'),
@@ -41,4 +41,4 @@ class SB {
       }
     }
   }
-}
+
