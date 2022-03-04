@@ -1,12 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dietapp_a/global%20Strings/global_strings.dart';
-import 'package:dietapp_a/userData/uid.dart';
-import 'package:dietapp_a/v_chat/chat_controller.dart';
-import 'package:dietapp_a/v_chat/messageFiles/message_model.dart';
+import 'package:dietapp_a/app%20Constants/constant_objects.dart';
+import 'package:dietapp_a/v_chat/controllers/chat_controller.dart';
+import 'package:dietapp_a/v_chat/constants/chat_strings.dart';
+import 'package:dietapp_a/v_chat/models/message_model.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
-import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class ChatRoomBottom extends StatelessWidget {
@@ -16,7 +14,6 @@ class ChatRoomBottom extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Rx<String> textFieldData = "".obs;
     TextEditingController tc = TextEditingController();
     return Container(
       color: Colors.teal.shade50,
@@ -33,17 +30,15 @@ class ChatRoomBottom extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(1.0),
                 child: TextField(
-                    maxLines: null,
-                    keyboardType: TextInputType.multiline,
-                    controller: tc,
-                    decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.grey[100],
-                        hintText: 'Message',
-                        border: InputBorder.none),
-                    onChanged: (value) {
-                      textFieldData.value = value.toString();
-                    }),
+                  maxLines: null,
+                  keyboardType: TextInputType.multiline,
+                  controller: tc,
+                  decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.grey[100],
+                      hintText: 'Message...',
+                      border: InputBorder.none),
+                ),
               ),
             ),
           ),
@@ -56,27 +51,27 @@ class ChatRoomBottom extends StatelessWidget {
                 child: IconButton(
                   icon: const Icon(MdiIcons.send),
                   onPressed: () async {
+                    String tcText = tc.text;
                     tc.clear();
-                    if (textFieldData.value.replaceAll(" ", "") != "") {
-                      String textFieldString = textFieldData.value;
-                      textFieldData.value = "";
+                    if (tcText.replaceAll(" ", "") != "") {
                       Map<String, dynamic> msm = MessageModel(
-                        chatSentBy: uid,
+                        chatSentBy: userUID,
                         chatRecdBy: cc.thisChatPersonUID.value,
                         chatTime: Timestamp.fromDate(DateTime.now()),
                         isChatUploaded: false,
-                        chatType: "String",
-                        chatString: textFieldString,
+                        chatType: crs.string,
+                        chatString: tcText,
                       ).toMap();
 
+                      //
                       await FirebaseFirestore.instance
-                          .collection(gs.chatRooms)
+                          .collection(crs.chatRooms)
                           .doc(cc.thisChatDocID.value)
-                          .collection(gs.messages)
+                          .collection(crs.messages)
                           .add(msm)
                           .then((docRf) async {
                         return await docRf.update(
-                            {"isChatUploaded": true, "docID": docRf.id});
+                            {mms.isChatUploaded: true, mms.docID: docRf.id});
                       });
                     }
                   },

@@ -4,13 +4,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
-
-
 class BottomNavigationBarW extends StatelessWidget {
   const BottomNavigationBarW({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    
     return Obx(
       () => SalomonBottomBar(
         currentIndex: bottomBarindex.value,

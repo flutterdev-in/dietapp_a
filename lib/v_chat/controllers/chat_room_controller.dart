@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dietapp_a/userData/uid.dart';
-import 'package:dietapp_a/v_chat/chat_controller.dart';
+import 'package:dietapp_a/app%20Constants/constant_objects.dart';
+import 'package:dietapp_a/v_chat/constants/chat_strings.dart';
+import 'package:dietapp_a/v_chat/controllers/chat_controller.dart';
 import 'package:dietapp_a/y_Firebase/fire_ref.dart';
 import 'package:get/get.dart';
 
@@ -24,21 +25,18 @@ class ChatScreenController extends GetxController {
   Future<void> updateFire({
     required bool isThisChatOpen,
   }) async {
-
     //1
-    if (cc.thisChatPersonUID.value != uid) {
-      Map<String, dynamic> map = {
-        uid: {"isThisChatOpen": isThisChatOpen}
-      };
-      await chatRoomC.doc(cc.thisChatDocID.value).set(map, SetOptions(merge: true));
-    }
+    Map<String, dynamic> map = {
+      userUID: {crs.isThisChatOpen: isThisChatOpen}
+    };
+    await chatRoomC.doc(cc.thisChatDocID.value).update(map);
 
     //2
     WriteBatch batch = FirebaseFirestore.instance.batch();
     await chatRoomC
         .doc(cc.thisChatDocID.value)
-        .collection("Messages")
-        .where("isChatUploaded", isEqualTo: false)
+        .collection(crs.messages)
+        .where(crs.isThisChatOpen, isEqualTo: false)
         .get()
         .then((querySnapshot) {
       querySnapshot.docs.forEach((document) {

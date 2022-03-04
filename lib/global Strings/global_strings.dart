@@ -6,17 +6,17 @@ class GlobalStrings {
 
   //Firestore
   //# Users
-  String users = "Users";
+
   String userID = "userID";
 
-  //# ChatRooms
-  String chatRooms = "ChatRooms";
+  //# chatRooms
+  String chatRooms = "chatRooms";
   String chatDocID = "chatDocID";
 
   String chatMembers = "chatMembers";
   String lastChatTime = "lastChatTime";
   //## messages
-  String messages = "Messages";
+  String messages = "messages";
   String chatTime = "chatTime";
 
   //Chat timings

@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/global%20Strings/global_strings.dart';
-import 'package:dietapp_a/userData/uid.dart';
-import 'package:dietapp_a/v_chat/chat_controller.dart';
-import 'package:dietapp_a/v_chat/messageFiles/message_model.dart';
+import 'package:dietapp_a/app%20Constants/constant_objects.dart';
+import 'package:dietapp_a/v_chat/controllers/chat_controller.dart';
+import 'package:dietapp_a/v_chat/models/message_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/firestore.dart';
 import 'package:intl/intl.dart';

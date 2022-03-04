@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/assets/assets.dart';
 import 'package:dietapp_a/settings/a_Profile/axx_userid_edit_screen.dart';
 import 'package:dietapp_a/userData/models/user_welcome_model.dart';
@@ -73,7 +74,7 @@ class ProfileEdit extends StatelessWidget {
                     child: SvgPicture.asset(Assets().googleIcon),
                     backgroundColor: Colors.transparent,
                     radius: 15),
-                title: Text(uwm.googleEmail ?? "", textScaleFactor: 1.2),
+                title: Text(userGoogleEmail, textScaleFactor: 1.2),
                 // titleText: uwm.googleEmail,
               );
             }
@@ -95,7 +96,7 @@ class ProfileEdit extends StatelessWidget {
                   type: GFButtonType.outline,
                   onPressed: () {
                     Get.to(() => const ProfileIdEdit(),
-                        arguments: [uwm.userID, uwm.googleEmail]);
+                        arguments: [uwm.userID, userGoogleEmail]);
                   },
                 ),
               );
@@ -142,7 +143,6 @@ class ProfileEdit extends StatelessWidget {
                         "displayName": rxName.value,
                         "bioData": rxBio.value,
                         "photoURL": uwm.photoURL,
-                        "nativeLanguage": uwm.nativeLanguage,
                       },
                     }).then((value) {
                       rxButton.value = "updated";
