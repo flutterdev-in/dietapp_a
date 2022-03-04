@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ChatRoomModel {
-  String? docID;
+  String? chatDocID;
   List chatMembers = [];
   String? lastChatSentBy;
   String? lastChatRecdBy;
@@ -13,7 +13,7 @@ class ChatRoomModel {
   List<Map<String, dynamic>>? chatRestrictionMaps;
 
   ChatRoomModel({
-    required this.docID,
+    required this.chatDocID,
     required this.chatMembers,
     required this.lastChatSentBy,
     required this.lastChatRecdBy,
@@ -23,11 +23,12 @@ class ChatRoomModel {
     this.lastChatMap,
     this.isChatRestricted = false,
     this.chatRestrictionMaps,
+    
   });
 
   Map<String, dynamic> toMap() {
     return {
-      "docID": docID,
+      "chatDocID": chatDocID,
       "chatMembers": chatMembers,
       "lastChatSentBy": lastChatSentBy,
       "lastChatRecdBy": lastChatRecdBy,
@@ -42,7 +43,7 @@ class ChatRoomModel {
 
   factory ChatRoomModel.fromMap(Map chatRoomModelMap) {
     return ChatRoomModel(
-      docID: chatRoomModelMap["docID"] ?? "",
+      chatDocID: chatRoomModelMap["chatDocID"] ?? "",
       chatMembers: chatRoomModelMap["chatMembers"] ?? [],
       lastChatSentBy: chatRoomModelMap["lastChatSentBy"] ?? "",
       lastChatRecdBy: chatRoomModelMap["lastChatRecdBy"] ?? "",

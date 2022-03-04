@@ -7,6 +7,7 @@ import 'package:dietapp_a/userData/uid.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/_chat_room_screen.dart';
 import 'package:dietapp_a/v_chat/chat%20Room/chat_room_model.dart';
 import 'package:dietapp_a/v_chat/chat%20Room/chat_room_objects.dart';
+import 'package:dietapp_a/v_chat/chat_controller.dart';
 import 'package:dietapp_a/x_customWidgets/stream_builder_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -39,15 +40,15 @@ class ChatRoomTile extends StatelessWidget {
                   chatBox.get(gs.lastChatTimeWhenOpen) != null) {
                 if (crm.lastChatTime.toString() !=
                     chatBox.get(gs.lastChatTimeWhenOpen)) {
-                  return Icon(MdiIcons.dotsCircle, color: Colors.green);
+                  return const Icon(MdiIcons.dotsCircle, color: Colors.green);
                 }
               } else {
-                return Icon(MdiIcons.circleMedium, color: Colors.yellow);
+                return const Icon(MdiIcons.circleMedium, color: Colors.yellow);
               }
             }
 
             if (chatPersonUID == uid) {
-              return Text("");
+              return const Text("");
             } else {
               return GFListTile(
                 padding: const EdgeInsets.all(10),
@@ -63,9 +64,13 @@ class ChatRoomTile extends StatelessWidget {
                 ),
                 icon: greenDot(),
                 onTap: () {
-                  Get.to(() {
-                    return ChatRoomScreen();
-                  }, arguments: [chatPersonUID, crm.docID]);
+                  cc.thisChatPersonUID.value = chatPersonUID;
+                  cc.thisChatDocID.value = crm.chatDocID ?? uid;
+                  Get.to(
+                    () {
+                      return ChatRoomScreen();
+                    },
+                  );
                 },
               );
             }

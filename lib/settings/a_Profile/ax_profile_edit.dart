@@ -16,7 +16,7 @@ class ProfileEdit extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-        stream: FireRef().userDocStrem,
+        stream: userDS,
         builder: (c, AsyncSnapshot<DocumentSnapshot> d) {
           var data = docStreamReturn(c, d, widType: "");
           if (data is Map) {
@@ -137,7 +137,7 @@ class ProfileEdit extends StatelessWidget {
                   rxButton.value = "connecting";
                   if (rxName.value != uwm.displayName ||
                       rxBio.value != uwm.bioData) {
-                    await FireRef().userDocRef.update({
+                    await userDR.update({
                       "profileData": {
                         "displayName": rxName.value,
                         "bioData": rxBio.value,

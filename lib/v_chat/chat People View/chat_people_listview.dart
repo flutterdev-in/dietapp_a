@@ -4,7 +4,7 @@ import 'package:dietapp_a/userData/uid.dart';
 import 'package:dietapp_a/v_chat/chat%20People%20View/chat_person_tile.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/_chat_room_screen.dart';
 import 'package:dietapp_a/v_chat/chat%20Room/chat_room_model.dart';
-import 'package:dietapp_a/v_chat/chat%20Room/chat_room_objects.dart';
+import 'package:dietapp_a/v_chat/chat_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/firestore.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -32,15 +32,15 @@ Widget myBookMarkChat() {
     titleText: "My Chats",
     onTap: () {
       String docID = uid + "_" + uid;
-      Get.to(() => const ChatRoomScreen(),
-          arguments: [uid, docID],
-          opaque: false,
-          transition: Transition.leftToRightWithFade);
+      cc.thisChatDocID.value = docID;
+      cc.thisChatPersonUID.value = uid;
+      Get.to(() => ChatRoomScreen(),
+          opaque: false, transition: Transition.leftToRightWithFade);
     },
   );
 }
 
-Widget chatBodyStreamWidget({int position = 1}) {
+Widget chatBodyStreamWidget() {
   return FirestoreListView<Map<String, dynamic>>(
     shrinkWrap: true,
     query: FirebaseFirestore.instance
@@ -51,10 +51,7 @@ Widget chatBodyStreamWidget({int position = 1}) {
       Map<String, dynamic> chatRoomMap = snapshot.data();
       ChatRoomModel crm = ChatRoomModel.fromMap(chatRoomMap);
       String chatPersonUID =
-          // crm.chatMembers[0];
           crm.chatMembers[0] == uid ? crm.chatMembers[1] : crm.chatMembers[0];
-      // return Text(chatPersonUID.toString());
-
       return ChatRoomTile(
         chatPersonUID: chatPersonUID,
         chatRoomMap: chatRoomMap,

@@ -6,6 +6,7 @@ import 'package:dietapp_a/x_customWidgets/stream_builder_functions.dart';
 import 'package:dietapp_a/y_Firebase/fire_ref.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import 'package:getwidget/getwidget.dart';
 
 class DrawerProfileContainer extends StatelessWidget {
@@ -14,7 +15,7 @@ class DrawerProfileContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-        stream: FireRef().userDocStrem,
+        stream: userDS,
         builder: (c, AsyncSnapshot<DocumentSnapshot> d) {
           var data = docStreamReturn(c, d, widType: "tile");
           if (data is Map) {

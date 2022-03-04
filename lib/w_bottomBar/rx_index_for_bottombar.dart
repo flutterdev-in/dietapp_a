@@ -9,7 +9,7 @@ List<Widget> listMainContainers = [
   Container(
     child: Text("Home"),
   ),
-  const ChatPeopleListview(),
+  ChatPeopleListview(),
   Container(
     child: Text("Search"),
   ),

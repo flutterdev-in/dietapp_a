@@ -17,7 +17,7 @@ class ProfileFirst extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-        stream: FireRef().userDocStrem,
+        stream: userDS,
         builder: (c, AsyncSnapshot<DocumentSnapshot> d) {
           var data = docStreamReturn(c, d, widType: "");
           if (data is Map) {

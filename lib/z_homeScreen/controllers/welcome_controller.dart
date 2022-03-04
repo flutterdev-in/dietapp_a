@@ -19,11 +19,16 @@ class WelcomeController extends GetxController {
       googleIsEmailVerified: user.emailVerified,
       googleIsAnonymous: user.isAnonymous,
       googlePhoneNumber: user.phoneNumber ?? "",
-      googleCreationTime: user.metadata.creationTime,
-      googleLastSignInTime: user.metadata.lastSignInTime,
+      googleCreationTime:
+          Timestamp.fromDate(user.metadata.creationTime ?? DateTime.now()),
+      googleLastSignInTime:
+          Timestamp.fromDate(user.metadata.lastSignInTime ?? DateTime.now()),
       photoURL: user.photoURL,
       displayName: user.displayName,
       userID: userID0,
+      activeFrom: Timestamp.fromDate(DateTime.now()),
+      pausedFrom: Timestamp.fromDate(DateTime.now()),
+      inactiveFrom: Timestamp.fromDate(DateTime.now()),
     ).toMap();
     await FirebaseFirestore.instance
         .collection('Users')
@@ -45,3 +50,5 @@ class WelcomeController extends GetxController {
     await FirebaseAuth.instance.signOut();
   }
 }
+
+

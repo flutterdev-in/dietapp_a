@@ -240,7 +240,7 @@ class ProfileIdEdit extends StatelessWidget {
             stopwatch3.stop();
             if (stopwatch3.elapsed < const Duration(seconds: 2) &&
                 qs.docs.isEmpty) {
-              await FireRef().userDocRef.update({"userID": rxID.value});
+              await userDR.update({"userID": rxID.value});
               rxB.value = "success";
 
               Get.snackbar(
