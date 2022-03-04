@@ -11,7 +11,7 @@ import 'package:getwidget/components/drawer/gf_drawer.dart';
 import 'package:getwidget/getwidget.dart';
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -46,8 +46,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
           ],
           leading: const DrawerIcon(),
         ),
-        body:
-            curretContainer(),
+        body: curretContainer(),
         bottomNavigationBar: const BottomNavigationBarW(),
       ),
     );

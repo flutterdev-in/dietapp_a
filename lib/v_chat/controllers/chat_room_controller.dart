@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
+
+import 'package:dietapp_a/v_chat/constants/chat_const_variables.dart';
 import 'package:dietapp_a/v_chat/constants/chat_strings.dart';
-import 'package:dietapp_a/v_chat/controllers/chat_controller.dart';
 import 'package:dietapp_a/y_Firebase/fire_ref.dart';
 import 'package:get/get.dart';
 
@@ -29,13 +30,13 @@ class ChatScreenController extends GetxController {
     Map<String, dynamic> map = {
       userUID: {crs.isThisChatOpen: isThisChatOpen}
     };
-    await chatRoomC.doc(cc.thisChatDocID.value).update(map);
+    await chatRoomC.doc(thisChatDocID.value).update(map);
 
     //2
     WriteBatch batch = FirebaseFirestore.instance.batch();
     await chatRoomC
-        .doc(cc.thisChatDocID.value)
-        .collection(crs.messages)
+        .doc(thisChatDocID.value)
+        .collection(crs.chats)
         .where(crs.isThisChatOpen, isEqualTo: false)
         .get()
         .then((querySnapshot) {

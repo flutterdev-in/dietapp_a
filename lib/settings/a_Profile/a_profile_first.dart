@@ -44,7 +44,7 @@ class ProfileFirst extends StatelessWidget {
                               height: 12,
                             ),
                             Text(
-                              uwm.displayName!,
+                              uwm.displayName,
                               textScaleFactor: 1.4,
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
@@ -52,7 +52,7 @@ class ProfileFirst extends StatelessWidget {
                               height: 4,
                             ),
                             Text(
-                              uwm.userID!,
+                              uwm.userID,
                               textScaleFactor: 1.2,
                             ),
                             // Text(userProfileMap["userID"]),

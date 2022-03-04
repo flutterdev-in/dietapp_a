@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
-import 'package:dietapp_a/v_chat/controllers/chat_controller.dart';
+
+import 'package:dietapp_a/v_chat/constants/chat_const_variables.dart';
 import 'package:dietapp_a/v_chat/constants/chat_strings.dart';
 import 'package:dietapp_a/v_chat/models/message_model.dart';
 import 'package:flutter/material.dart';
@@ -54,24 +55,31 @@ class ChatRoomBottom extends StatelessWidget {
                     String tcText = tc.text;
                     tc.clear();
                     if (tcText.replaceAll(" ", "") != "") {
-                      Map<String, dynamic> msm = MessageModel(
-                        chatSentBy: userUID,
-                        chatRecdBy: cc.thisChatPersonUID.value,
-                        chatTime: Timestamp.fromDate(DateTime.now()),
-                        isChatUploaded: false,
-                        chatType: crs.string,
-                        chatString: tcText,
-                      ).toMap();
-
                       //
                       await FirebaseFirestore.instance
                           .collection(crs.chatRooms)
-                          .doc(cc.thisChatDocID.value)
-                          .collection(crs.messages)
-                          .add(msm)
+                          .doc(thisChatDocID.value)
+                          .collection(crs.chats)
+                          .add(
+                            MessageModel(
+                              chatSentBy: userUID,
+                              chatRecdBy: chatPersonUID.value,
+                              chatString: tcText,
+                              senderSentTime:
+                                  Timestamp.fromDate(DateTime.now()),
+                            ).toMap(),
+                          )
                           .then((docRf) async {
-                        return await docRf.update(
-                            {mms.isChatUploaded: true, mms.docID: docRf.id});
+                        await docRf.update(
+                          {
+                            mms.docID: docRf.id,
+                            mms.senderSentTime:
+                                Timestamp.fromDate(DateTime.now()),
+                            mms.recieverSeenTime: isChatPersonOnChat.value
+                                ? Timestamp.fromDate(DateTime.now())
+                                : null,
+                          },
+                        );
                       });
                     }
                   },

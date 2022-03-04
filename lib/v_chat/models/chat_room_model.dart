@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/v_chat/constants/chat_strings.dart';
 
 class ChatRoomModel {
-  String? chatDocID;
+  String chatDocID;
   List chatMembers = [];
   String? lastChatSentBy;
   String? lastChatRecdBy;

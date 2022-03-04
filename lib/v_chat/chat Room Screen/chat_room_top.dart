@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dietapp_a/userData/models/user_strings.dart';
 import 'package:dietapp_a/userData/models/user_welcome_model.dart';
+import 'package:dietapp_a/v_chat/constants/chat_const_variables.dart';
 import 'package:dietapp_a/v_chat/constants/chat_strings.dart';
-import 'package:dietapp_a/v_chat/controllers/chat_controller.dart';
 import 'package:dietapp_a/x_customWidgets/colors.dart';
 import 'package:dietapp_a/x_customWidgets/stream_builder_functions.dart';
 import 'package:flutter/material.dart';
@@ -9,20 +10,20 @@ import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-Rx<bool> isChatPersonOnChat = false.obs;
+// Rx<bool> isChatPersonOnChat = false.obs;
 
 Widget chatRoomAppBar() {
   Widget ifChatOpen({required Widget elseW}) {
     return StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection(crs.chatRooms)
-            .doc(cc.thisChatDocID.value)
+            .doc(thisChatDocID.value)
             .snapshots(),
         builder: (c, AsyncSnapshot<DocumentSnapshot> d) {
           var data = docStreamReturn(c, d, widType: "tile");
           if (data is Map) {
             bool isOnChat =
-                data[cc.thisChatPersonUID.value][crs.isThisChatOpen] ?? false;
+                data[chatPersonUID.value][crs.isThisChatOpen];
             if (isOnChat) {
               isChatPersonOnChat.value = true;
               return Text(
@@ -41,8 +42,8 @@ Widget chatRoomAppBar() {
   Widget details() {
     return StreamBuilder(
         stream: FirebaseFirestore.instance
-            .collection("Users")
-            .doc(cc.thisChatPersonUID.value)
+            .collection(uss.users)
+            .doc(chatPersonUID.value)
             .snapshots(),
         builder: (c, AsyncSnapshot<DocumentSnapshot> d) {
           var data = docStreamReturn(c, d, widType: "tile");

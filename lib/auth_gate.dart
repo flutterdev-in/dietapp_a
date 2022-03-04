@@ -11,24 +11,20 @@ class AuthGate extends StatelessWidget {
     return StreamBuilder<User?>(
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
-        return StreamBuilder<User?>(
-          stream: FirebaseAuth.instance.authStateChanges(),
-          builder: (context, snapshot) {
-            // User is not signed in
-            if (!snapshot.hasData) {
-              return const SignInScreen(
-                providerConfigs: [
-                  GoogleProviderConfiguration(
-                    clientId: '1:237115759240:android:2ce36ff5e9acc35bfc9d3d',
-                  ),
-                ],
-              );
-            }
+        // User is not signed in
+        if (!snapshot.hasData) {
+          return const SignInScreen(
+            providerConfigs: [
+              GoogleProviderConfiguration(
+                clientId: '1:237115759240:android:2ce36ff5e9acc35bfc9d3d',
+              ),
+            ],
+          );
+        } else {
+          return HomeScreen();
+        }
 
-            // Render your application if authenticated
-            return HomeScreen();
-          },
-        );
+        // Render your application if authenticated
       },
     );
   }

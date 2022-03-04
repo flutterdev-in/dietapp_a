@@ -1,12 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/global%20Strings/global_strings.dart';
 import 'package:dietapp_a/userData/models/user_strings.dart';
 import 'package:dietapp_a/userData/models/user_welcome_model.dart';
-import 'package:dietapp_a/app%20Constants/constant_objects.dart';
+
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/_chat_room_screen.dart';
+import 'package:dietapp_a/v_chat/constants/chat_const_variables.dart';
 import 'package:dietapp_a/v_chat/constants/chat_strings.dart';
 import 'package:dietapp_a/v_chat/chat%20Search/chat_search_textfield.dart';
-import 'package:dietapp_a/v_chat/controllers/chat_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/firestore.dart';
 import 'package:get/get.dart';
@@ -35,23 +36,23 @@ class ChatSearchListview extends StatelessWidget {
                   backgroundImage: NetworkImage(uwm.photoURL!),
                 ),
                 onTap: () async {
-                  cc.thisChatPersonUID.value = uwm.firebaseUID;
+                  chatPersonUID.value = uwm.firebaseUID;
                   List<String> chatDocIDList = [uwm.firebaseUID, userUID];
 
                   chatDocIDList.sort();
-                  cc.thisChatDocID.value =
+                  thisChatDocID.value =
                       chatDocIDList[0] + "_" + chatDocIDList[1];
 
                   bool noError = true;
                   await FirebaseFirestore.instance
                       .collection(gs.chatRooms)
-                      .doc(cc.thisChatDocID.value)
+                      .doc(thisChatDocID.value)
                       .get()
                       .then((docSnap) async {
                     if (docSnap.exists) {
                       await FirebaseFirestore.instance
                           .collection(gs.chatRooms)
-                          .doc(cc.thisChatDocID.value)
+                          .doc(thisChatDocID.value)
                           .update({
                         userUID: {crs.isThisChatOpen: true}
                       }).onError((error, stackTrace) {
@@ -60,18 +61,19 @@ class ChatSearchListview extends StatelessWidget {
                     } else {
                       Map<String, dynamic> chatIDMap = {
                         gs.chatMembers: chatDocIDList,
-                        gs.chatDocID: cc.thisChatDocID.value,
-                        userUID: {crs.isThisChatOpen: true}
+                        gs.chatDocID: thisChatDocID.value,
+                        userUID: {crs.isThisChatOpen: true},
+                        chatPersonUID.value: {crs.isThisChatOpen: false}
                       };
                       await FirebaseFirestore.instance
                           .collection(gs.chatRooms)
-                          .doc(cc.thisChatDocID.value)
+                          .doc(thisChatDocID.value)
                           .set(chatIDMap, SetOptions(merge: true))
                           .then((value) async {
                         await FirebaseFirestore.instance
                             .collection(gs.chatRooms)
-                            .doc(cc.thisChatDocID.value)
-                            .collection("messages")
+                            .doc(thisChatDocID.value)
+                            .collection(crs.chats)
                             .add({});
                       }).onError((error, stackTrace) {
                         noError = false;

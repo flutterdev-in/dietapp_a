@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/global%20Strings/global_strings.dart';
-import 'package:dietapp_a/app%20Constants/constant_objects.dart';
-import 'package:dietapp_a/v_chat/controllers/chat_controller.dart';
+
+import 'package:dietapp_a/v_chat/constants/chat_const_variables.dart';
 import 'package:dietapp_a/v_chat/models/message_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/firestore.dart';
@@ -22,7 +22,7 @@ class ChatRoomMiddle extends StatelessWidget {
           shrinkWrap: true,
           query: FirebaseFirestore.instance
               .collection(gs.chatRooms)
-              .doc(cc.thisChatDocID.value)
+              .doc(thisChatDocID.value)
               .collection(gs.messages)
               .orderBy(gs.chatTime, descending: true),
 
@@ -30,17 +30,7 @@ class ChatRoomMiddle extends StatelessWidget {
           itemBuilder: (context, snapshot) {
             Map<String, dynamic> messageMap = snapshot.data();
             MessageModel crm = MessageModel.fromMap(messageMap);
-            String ampm =
-                DateFormat("a").format(crm.chatTime.toDate()).toLowerCase();
-            String chatDayTime =
-                DateFormat("dd MMM h:mm ").format(crm.chatTime.toDate()) + ampm;
-            //
-            String today = DateFormat("dd MMM").format(DateTime.now());
-            String chatDay = DateFormat("dd MMM").format(crm.chatTime.toDate());
 
-            if (today == chatDay)
-              chatDayTime =
-                  DateFormat("h:mm ").format(crm.chatTime.toDate()) + ampm;
             double textPadding = 20.0;
             String chatString = crm.chatString ?? "";
             if (chatString.length > 10) {
@@ -79,59 +69,57 @@ class ChatRoomMiddle extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Text(chatDayTime, textScaleFactor: 0.85),
-                        SizedBox(width: 2),
-                        Icon(
-                          crm.isChatUploaded ? MdiIcons.check : MdiIcons.cached,
-                          color: Colors.black,
-                          size: 18,
-                        ),
+                        Text(chatTimeString(crm.senderSentTime),
+                            textScaleFactor: 0.85),
+                        const SizedBox(width: 2),
+                        tickIcon(crm.senderSentTime, crm.recieverSeenTime)
                       ],
                     ),
                   ),
                 ),
               ],
             );
-
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 10, 5),
-              child: Align(
-                alignment: Alignment.bottomRight,
-                child: Container(
-                  constraints: BoxConstraints(
-                      maxWidth: MediaQuery.of(context).size.width * 4 / 5),
-                  color: Colors.white,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(10, 5, textPadding, 3),
-                        child: Text(crm.chatString ?? ""),
-                      ),
-                      SizedBox(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Text(chatDayTime, textScaleFactor: 0.85),
-                              SizedBox(width: 2),
-                              Icon(
-                                crm.isChatUploaded
-                                    ? MdiIcons.check
-                                    : MdiIcons.cached,
-                                color: Colors.black,
-                                size: 18,
-                              ),
-                            ],
-                          ),
-                          width: 80),
-                    ],
-                  ),
-                ),
-              ),
-            );
           },
         ),
       ),
+    );
+  }
+}
+
+String chatTimeString(Timestamp? senderSentTime) {
+  senderSentTime = senderSentTime ?? Timestamp.fromDate(DateTime.now());
+  String ampm = DateFormat("a").format(senderSentTime.toDate()).toLowerCase();
+  String chatDayTime =
+      DateFormat("dd MMM h:mm ").format(senderSentTime.toDate()) + ampm;
+  //
+  String today = DateFormat("dd MMM").format(DateTime.now());
+  String chatDay = DateFormat("dd MMM").format(senderSentTime.toDate());
+
+  if (today == chatDay) {
+    chatDayTime = DateFormat("h:mm ").format(senderSentTime.toDate()) + ampm;
+  }
+
+  return chatDayTime;
+}
+
+Icon tickIcon(Timestamp? senderSentTime, Timestamp? recieverSeenTime) {
+  if (senderSentTime == null) {
+    return const Icon(
+      MdiIcons.cached,
+      color: Colors.black,
+      size: 18,
+    );
+  } else if (recieverSeenTime == null) {
+    return const Icon(
+      MdiIcons.check,
+      color: Colors.black,
+      size: 18,
+    );
+  } else {
+    return const Icon(
+      MdiIcons.checkAll,
+      color: Colors.blue,
+      size: 18,
     );
   }
 }
