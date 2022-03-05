@@ -12,92 +12,93 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 
 // Rx<bool> isChatPersonOnChat = false.obs;
 
-Widget chatRoomAppBar() {
-  Widget ifChatOpen({required Widget elseW}) {
-    return StreamBuilder(
-        stream: FirebaseFirestore.instance
-            .collection(crs.chatRooms)
-            .doc(thisChatDocID.value)
-            .snapshots(),
-        builder: (c, AsyncSnapshot<DocumentSnapshot> d) {
-          var data = docStreamReturn(c, d, widType: "tile");
-          if (data is Map) {
-            bool isOnChat =
-                data[chatPersonUID.value][crs.isThisChatOpen];
-            if (isOnChat) {
-              isChatPersonOnChat.value = true;
-              return Text(
+class ChatRoomAppBar extends StatelessWidget {
+  const ChatRoomAppBar({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 55,
+      color: CLR().primary,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          IconButton(
+              onPressed: () => Get.back(),
+              icon: Icon(
+                MdiIcons.arrowLeft,
+                color: Colors.white,
+              )),
+          details(),
+        ],
+      ),
+    );
+  }
+}
+
+Widget ifChatOpen({required Widget elseW}) {
+  return StreamBuilder(
+      stream: FirebaseFirestore.instance
+          .collection(crs.chatRooms)
+          .doc(thisChatDocID.value)
+          .snapshots(),
+      builder: (c, AsyncSnapshot<DocumentSnapshot> d) {
+        var data = docStreamReturn(c, d, widType: "tile");
+        isChatPersonOnChat.value = false;
+        if (data is Map) {
+          if (data[thisChatPersonUID][crs.isThisChatOpen]) {
+            isChatPersonOnChat.value = true;
+          }
+        }
+        return Obx(() => isChatPersonOnChat.value
+            ? Text(
                 "on chat",
                 style: TextStyle(color: Colors.white60),
-              );
-            } else {
-              return elseW;
-            }
-          } else {
-            return elseW;
-          }
-        });
-  }
+              )
+            : elseW);
+      });
+}
 
-  Widget details() {
-    return StreamBuilder(
-        stream: FirebaseFirestore.instance
-            .collection(uss.users)
-            .doc(chatPersonUID.value)
-            .snapshots(),
-        builder: (c, AsyncSnapshot<DocumentSnapshot> d) {
-          var data = docStreamReturn(c, d, widType: "tile");
+Widget details() {
+  return StreamBuilder(
+      stream: FirebaseFirestore.instance
+          .collection(uss.users)
+          .doc(thisChatPersonUID.value)
+          .snapshots(),
+      builder: (c, AsyncSnapshot<DocumentSnapshot> d) {
+        var data = docStreamReturn(c, d, widType: "tile");
+        if (data is Map) {
+          UserWelcomeModel uwm = UserWelcomeModel.fromMap(data);
 
-          if (data is Map) {
-            UserWelcomeModel uwm = UserWelcomeModel.fromMap(data);
-
-            return Row(
-              children: [
-                GFAvatar(
-                  maxRadius: 18,
-                  size: GFSize.SMALL,
-                  backgroundImage: NetworkImage(uwm.photoURL!),
-                ),
-                SizedBox(
-                  width: 12,
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      uwm.displayName,
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    ifChatOpen(
-                      elseW: Text(uwm.isActive ? "active" : "inactive",
-                          style: TextStyle(
-                            color: Colors.white60,
-                          )),
-                    ),
-                  ],
-                ),
-              ],
-            );
-          }
-          return Container();
-        });
-  }
-
-  return Container(
-    height: 55,
-    color: CLR().primary,
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        IconButton(
-            onPressed: () => Get.back(),
-            icon: Icon(
-              MdiIcons.arrowLeft,
-              color: Colors.white,
-            )),
-        details(),
-      ],
-    ),
-  );
+          return Row(
+            children: [
+              GFAvatar(
+                maxRadius: 18,
+                size: GFSize.SMALL,
+                backgroundImage: NetworkImage(uwm.photoURL!),
+              ),
+              SizedBox(
+                width: 12,
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    uwm.displayName,
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  ifChatOpen(
+                    elseW: Text(uwm.isActive ? "active" : "inactive",
+                        style: TextStyle(
+                          color: Colors.white60,
+                        )),
+                  ),
+                ],
+              ),
+            ],
+          );
+        }
+        return Container();
+      });
 }

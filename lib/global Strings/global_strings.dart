@@ -1,24 +1,23 @@
-GlobalStrings gs = GlobalStrings();
+// GlobalStrings gs = GlobalStrings();
 
-class GlobalStrings {
-  //Hive boxes
-  String chatBox = "chatBox";
+// class GlobalStrings {
+//   //Hive boxes
+//   String chatBox = "chatBox";
 
-  //Firestore
-  //# Users
+//   //Firestore
+//   //# Users
 
-  String userID = "userID";
+//   String userID = "userID";
 
-  //# chatRooms
-  String chatRooms = "chatRooms";
-  String chatDocID = "chatDocID";
+//   //# chatRooms
 
-  String chatMembers = "chatMembers";
-  String lastChatTime = "lastChatTime";
-  //## messages
-  String messages = "messages";
-  String chatTime = "chatTime";
 
-  //Chat timings
-  String lastChatTimeWhenOpen = "lastChatTimeWhenOpen";
-}
+//   String chatMembers = "chatMembers";
+//   String lastChatTime = "lastChatTime";
+//   //## messages
+//   String messages = "messages";
+//   String chatTime = "chatTime";
+// // 
+//   //Chat timings
+//   String lastChatTimeWhenOpen = "lastChatTimeWhenOpen";
+// }

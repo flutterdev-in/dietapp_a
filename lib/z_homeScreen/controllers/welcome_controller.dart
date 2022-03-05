@@ -1,9 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
-import 'package:dietapp_a/global%20Strings/global_strings.dart';
 import 'package:dietapp_a/userData/models/user_strings.dart';
 import 'package:dietapp_a/userData/models/user_welcome_model.dart';
-
 import 'package:dietapp_a/v_chat/constants/chat_const_variables.dart';
 import 'package:dietapp_a/v_chat/constants/chat_strings.dart';
 import 'package:get/get.dart';
@@ -42,30 +40,24 @@ class WelcomeController extends GetxController {
   }
 
   Future<void> createChatDoc() async {
-    List<String> chatDocIDList = [userUID, userUID];
-
-    chatDocIDList.sort();
-    thisChatDocID.value = chatDocIDList[0] + "_" + chatDocIDList[1];
-
-    bool noError = true;
     await FirebaseFirestore.instance
-        .collection(gs.chatRooms)
-        .doc(thisChatDocID.value)
+        .collection(crs.chatRooms)
+        .doc(userOwnChatDocID)
         .get()
         .then((docSnap) async {
       if (!docSnap.exists) {
+        List<String> chatDocIDList = [userUID, userUID];
+        chatDocIDList.sort();
         Map<String, dynamic> chatIDMap = {
-          gs.chatMembers: chatDocIDList,
-          gs.chatDocID: thisChatDocID.value,
+          crs.chatMembers: chatDocIDList,
+          crs.chatDocID: userOwnChatDocID,
           userUID: {crs.isThisChatOpen: false}
         };
         await FirebaseFirestore.instance
-            .collection(gs.chatRooms)
-            .doc(thisChatDocID.value)
+            .collection(crs.chatRooms)
+            .doc(userOwnChatDocID)
             .set(chatIDMap, SetOptions(merge: true))
-            .onError((error, stackTrace) {
-          noError = false;
-        });
+            .onError((error, stackTrace) {});
       }
     });
   }

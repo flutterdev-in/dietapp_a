@@ -1,20 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
-import 'package:dietapp_a/global%20Strings/global_strings.dart';
 import 'package:dietapp_a/userData/models/user_strings.dart';
 import 'package:dietapp_a/userData/models/user_welcome_model.dart';
 
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/_chat_room_screen.dart';
 import 'package:dietapp_a/v_chat/constants/chat_const_variables.dart';
-import 'package:dietapp_a/v_chat/constants/chat_strings.dart';
 import 'package:dietapp_a/v_chat/chat%20Search/chat_search_textfield.dart';
+import 'package:dietapp_a/v_chat/constants/chat_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/firestore.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
 
 class ChatSearchListview extends StatelessWidget {
-  const ChatSearchListview({Key? key}) : super(key: key);
+  ChatSearchListview({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +21,9 @@ class ChatSearchListview extends StatelessWidget {
           shrinkWrap: true,
           query: FirebaseFirestore.instance
               .collection(uss.users)
-              .where(gs.userID, isLessThanOrEqualTo: chatSearchString.value),
-          // .orderBy(gs.lastChatTime, descending: true),
+              .where(uss.userID, isEqualTo: chatSearchString.value)
+              .limit(1),
+          // .orderBy(crs.lastChatTime, descending: true),
           itemBuilder: (context, snapshot) {
             Map<String, dynamic> userMap = snapshot.data();
             UserWelcomeModel uwm = UserWelcomeModel.fromMap(userMap);
@@ -36,52 +36,36 @@ class ChatSearchListview extends StatelessWidget {
                   backgroundImage: NetworkImage(uwm.photoURL!),
                 ),
                 onTap: () async {
-                  chatPersonUID.value = uwm.firebaseUID;
                   List<String> chatDocIDList = [uwm.firebaseUID, userUID];
-
                   chatDocIDList.sort();
-                  thisChatDocID.value =
-                      chatDocIDList[0] + "_" + chatDocIDList[1];
-
+                 String thisChatDocID0 = chatDocIDList[0] + "_" + chatDocIDList[1];
                   bool noError = true;
                   await FirebaseFirestore.instance
-                      .collection(gs.chatRooms)
-                      .doc(thisChatDocID.value)
+                      .collection(crs.chatRooms)
+                      .doc(thisChatDocID0)
                       .get()
                       .then((docSnap) async {
-                    if (docSnap.exists) {
-                      await FirebaseFirestore.instance
-                          .collection(gs.chatRooms)
-                          .doc(thisChatDocID.value)
-                          .update({
-                        userUID: {crs.isThisChatOpen: true}
-                      }).onError((error, stackTrace) {
-                        noError = false;
-                      });
-                    } else {
+                    if (!docSnap.exists) {
                       Map<String, dynamic> chatIDMap = {
-                        gs.chatMembers: chatDocIDList,
-                        gs.chatDocID: thisChatDocID.value,
+                        crs.chatMembers: chatDocIDList,
+                        crs.chatDocID:
+                            thisChatDocID0,
                         userUID: {crs.isThisChatOpen: true},
-                        chatPersonUID.value: {crs.isThisChatOpen: false}
+                        uwm.firebaseUID: {crs.isThisChatOpen: false}
                       };
-                      await FirebaseFirestore.instance
-                          .collection(gs.chatRooms)
-                          .doc(thisChatDocID.value)
+                      await docSnap.reference
                           .set(chatIDMap, SetOptions(merge: true))
-                          .then((value) async {
-                        await FirebaseFirestore.instance
-                            .collection(gs.chatRooms)
-                            .doc(thisChatDocID.value)
-                            .collection(crs.chats)
-                            .add({});
-                      }).onError((error, stackTrace) {
+                          .onError((error, stackTrace) {
                         noError = false;
                       });
                     }
                   });
 
                   if (noError) {
+                    thisChatPersonUID.value = uwm.firebaseUID;
+                    thisChatDocID.value =
+                        thisChatDocID0;
+
                     Get.to(() => const ChatRoomScreen(), opaque: false);
                   }
                 });

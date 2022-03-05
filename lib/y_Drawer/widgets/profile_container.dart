@@ -25,7 +25,7 @@ class DrawerProfileContainer extends StatelessWidget {
               margin: const EdgeInsets.all(0),
               color: CLR().primary,
               title: Text(
-                uwm.displayName ?? "",
+                uwm.displayName,
                 textScaleFactor: 1.3,
                 style: const TextStyle(color: Colors.white),
               ),

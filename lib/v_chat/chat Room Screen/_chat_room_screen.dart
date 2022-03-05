@@ -15,8 +15,8 @@ class ChatRoomScreen extends StatelessWidget {
         child: Scaffold(
       body: Column(
         children: [
-          chatRoomAppBar(),
-          ChatRoomMiddle(),
+          const ChatRoomAppBar(),
+          const ChatRoomMiddle(),
           const ChatRoomBottom(),
         ],
       ),

@@ -19,6 +19,11 @@ class ChatRoomStrings {
   String isThisChatOpen = "isThisChatOpen";
 
   String string = "string";
+
+  //
+  String chatBox = "chatBox";
+  String thisChatPersonUID = "thisChatPersonUID";
+  String thisChatDocID = "thisChatDocID";
 }
 
 MessagesModelStrings mms = MessagesModelStrings();
@@ -27,6 +32,7 @@ class MessagesModelStrings {
   String docID = "docID";
   String chatSentBy = "chatSentBy";
   String chatRecdBy = "chatRecdBy";
+  String isChatUploaded = "isChatUploaded";
   String senderSentTime = "senderSentTime";
   String isChatString = "isChatString";
   String chatString = "chatString";

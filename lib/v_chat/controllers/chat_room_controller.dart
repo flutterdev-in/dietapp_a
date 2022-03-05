@@ -5,6 +5,7 @@ import 'package:dietapp_a/v_chat/constants/chat_const_variables.dart';
 import 'package:dietapp_a/v_chat/constants/chat_strings.dart';
 import 'package:dietapp_a/y_Firebase/fire_ref.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 
 class ChatScreenController extends GetxController {
   @override
@@ -12,6 +13,7 @@ class ChatScreenController extends GetxController {
     await updateFire(
       isThisChatOpen: true,
     );
+    
     super.onInit();
   }
 
@@ -31,24 +33,36 @@ class ChatScreenController extends GetxController {
       userUID: {crs.isThisChatOpen: isThisChatOpen}
     };
     await chatRoomC.doc(thisChatDocID.value).update(map);
-
     //2
     WriteBatch batch = FirebaseFirestore.instance.batch();
     await chatRoomC
         .doc(thisChatDocID.value)
         .collection(crs.chats)
-        .where(crs.isThisChatOpen, isEqualTo: false)
+        .where(mms.chatRecdBy, isEqualTo: userUID)
+        .where(mms.recieverSeenTime, isEqualTo: null)
         .get()
         .then((querySnapshot) {
-      querySnapshot.docs.forEach((document) {
-        Timestamp ts = Timestamp.fromDate(DateTime.now());
-        Map<String, dynamic> data = {
-          "isChatUploaded": true,
-          "docID": document.reference.id,
-          "chatTime": ts
-        };
-        batch.update(document.reference, data);
-      });
+      for (QueryDocumentSnapshot<Map<String, dynamic>> document
+          in querySnapshot.docs) {
+        batch.update(document.reference, {
+          mms.docID: document.reference.id,
+          mms.recieverSeenTime: Timestamp.fromDate(DateTime.now()),
+        });
+      }
+    });
+
+    await chatRoomC
+        .doc(thisChatDocID.value)
+        .collection(crs.chats)
+        .where(mms.docID, isEqualTo: null)
+        .get()
+        .then((querySnapshot) {
+      for (QueryDocumentSnapshot<Map<String, dynamic>> document
+          in querySnapshot.docs) {
+        batch.update(document.reference, {
+          mms.docID: document.reference.id,
+        });
+      }
       return batch.commit();
     });
   }

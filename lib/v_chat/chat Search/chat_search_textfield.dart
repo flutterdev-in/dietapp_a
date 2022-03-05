@@ -25,6 +25,7 @@ Widget chatSearchFieldRow = Row(
 );
 
 Widget chatSearchField = TextField(
+  decoration: InputDecoration(hintText: "search userID"),
   autofocus: true,
   textInputAction: TextInputAction.search,
   onChanged: (value) async {

@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
-
 import 'package:dietapp_a/v_chat/constants/chat_const_variables.dart';
 import 'package:dietapp_a/v_chat/constants/chat_strings.dart';
 import 'package:dietapp_a/v_chat/models/message_model.dart';
@@ -63,7 +62,7 @@ class ChatRoomBottom extends StatelessWidget {
                           .add(
                             MessageModel(
                               chatSentBy: userUID,
-                              chatRecdBy: chatPersonUID.value,
+                              chatRecdBy: thisChatPersonUID.value,
                               chatString: tcText,
                               senderSentTime:
                                   Timestamp.fromDate(DateTime.now()),

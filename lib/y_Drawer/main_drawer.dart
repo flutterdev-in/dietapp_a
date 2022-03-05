@@ -1,5 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/assets/assets.dart';
+import 'package:dietapp_a/userData/models/user_strings.dart';
 import 'package:dietapp_a/y_Drawer/widgets/profile_container.dart';
+import 'package:dietapp_a/y_Firebase/fire_ref.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -69,6 +73,12 @@ class MainDrawer extends StatelessWidget {
         onTap: () async {
           await GoogleSignIn().disconnect();
           await FirebaseAuth.instance.signOut();
+
+          await userDR.update({
+            "${uss.userActivity}.${uss.isActive}": false,
+            "${uss.userActivity}.${uss.inactiveAt}":
+                Timestamp.fromDate(DateTime.now()),
+          });
         });
   }
 }

@@ -1,15 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dietapp_a/global%20Strings/global_strings.dart';
 
 import 'package:dietapp_a/v_chat/constants/chat_const_variables.dart';
+import 'package:dietapp_a/v_chat/constants/chat_strings.dart';
 import 'package:dietapp_a/v_chat/models/message_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/firestore.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class ChatRoomMiddle extends StatelessWidget {
-  ChatRoomMiddle({Key? key}) : super(key: key);
+  const ChatRoomMiddle({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,21 +22,17 @@ class ChatRoomMiddle extends StatelessWidget {
           reverse: true,
           shrinkWrap: true,
           query: FirebaseFirestore.instance
-              .collection(gs.chatRooms)
+              .collection(crs.chatRooms)
               .doc(thisChatDocID.value)
-              .collection(gs.messages)
-              .orderBy(gs.chatTime, descending: true),
+              .collection(crs.chats)
+              .orderBy(mms.senderSentTime, descending: true),
 
           // .orderBy(gs.lastChatTime, descending: true),
           itemBuilder: (context, snapshot) {
             Map<String, dynamic> messageMap = snapshot.data();
             MessageModel crm = MessageModel.fromMap(messageMap);
 
-            double textPadding = 20.0;
-            String chatString = crm.chatString ?? "";
-            if (chatString.length > 10) {
-              textPadding = 20.0;
-            }
+            
             return Column(
               children: [
                 Align(
@@ -72,7 +69,8 @@ class ChatRoomMiddle extends StatelessWidget {
                         Text(chatTimeString(crm.senderSentTime),
                             textScaleFactor: 0.85),
                         const SizedBox(width: 2),
-                        tickIcon(crm.senderSentTime, crm.recieverSeenTime)
+                        tickIcon(
+                            crm.senderSentTime, crm.recieverSeenTime, crm.docID)
                       ],
                     ),
                   ),
@@ -86,8 +84,7 @@ class ChatRoomMiddle extends StatelessWidget {
   }
 }
 
-String chatTimeString(Timestamp? senderSentTime) {
-  senderSentTime = senderSentTime ?? Timestamp.fromDate(DateTime.now());
+String chatTimeString(Timestamp senderSentTime) {
   String ampm = DateFormat("a").format(senderSentTime.toDate()).toLowerCase();
   String chatDayTime =
       DateFormat("dd MMM h:mm ").format(senderSentTime.toDate()) + ampm;
@@ -102,14 +99,18 @@ String chatTimeString(Timestamp? senderSentTime) {
   return chatDayTime;
 }
 
-Icon tickIcon(Timestamp? senderSentTime, Timestamp? recieverSeenTime) {
-  if (senderSentTime == null) {
+Icon tickIcon(
+  Timestamp? senderSentTime,
+  Timestamp? recieverSeenTime,
+  String? docID,
+) {
+  if (recieverSeenTime != null) {
     return const Icon(
-      MdiIcons.cached,
-      color: Colors.black,
+      MdiIcons.checkAll,
+      color: Colors.blue,
       size: 18,
     );
-  } else if (recieverSeenTime == null) {
+  } else if (docID != null) {
     return const Icon(
       MdiIcons.check,
       color: Colors.black,
@@ -117,8 +118,8 @@ Icon tickIcon(Timestamp? senderSentTime, Timestamp? recieverSeenTime) {
     );
   } else {
     return const Icon(
-      MdiIcons.checkAll,
-      color: Colors.blue,
+      MdiIcons.cached,
+      color: Colors.black,
       size: 18,
     );
   }

@@ -6,10 +6,9 @@ class MessageModel {
   String chatRecdBy;
   bool isChatString;
   String? docID;
-
   Timestamp senderSentTime;
   Timestamp? recieverSeenTime;
-  
+
   String? chatString;
   Map<String, dynamic>? chatMap;
 
@@ -18,8 +17,8 @@ class MessageModel {
     required this.chatSentBy,
     required this.chatRecdBy,
    required this.senderSentTime,
-     this.isChatString = true,
-     this.recieverSeenTime,
+    this.isChatString = true,
+    this.recieverSeenTime,
     this.chatString,
     this.chatMap,
   });
