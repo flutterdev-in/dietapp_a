@@ -1,5 +1,9 @@
 import 'package:dietapp_a/v_chat/chat%20People%20View/chat_people_listview.dart';
 import 'package:dietapp_a/v_chat/chat%20Search/chat_search_button.dart';
+import 'package:dietapp_a/y_Firebase/manage%20Firestore/Names%20edit/screen.dart';
+import 'package:dietapp_a/y_Firebase/manage%20Firestore/names%20Modify/names_modify.dart';
+import 'package:dietapp_a/y_Firebase/manage%20Firestore/sub%20Names/sub_and_search_names.dart';
+import 'package:dietapp_a/y_Firebase/manage%20Firestore/sub%20Names/sub_names.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -10,12 +14,8 @@ List<Widget> listMainContainers = [
     child: Text("Home"),
   ),
   ChatPeopleListview(),
-  Container(
-    child: Text("Search"),
-  ),
-  Container(
-    child: Text("Profile"),
-  ),
+  SubSearchNamesN(),
+  RecipiesNamesEdit(),
 ];
 
 List<Widget> listAppBarButtons = [

@@ -1,5 +1,4 @@
 
-import 'package:dietapp_a/app_routes.dart';
 import 'package:dietapp_a/auth_gate.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

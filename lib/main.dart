@@ -1,4 +1,3 @@
-import 'package:dietapp_a/global%20Strings/global_strings.dart';
 import 'package:dietapp_a/myapp.dart';
 import 'package:dietapp_a/v_chat/constants/chat_strings.dart';
 import 'package:flutter/material.dart';

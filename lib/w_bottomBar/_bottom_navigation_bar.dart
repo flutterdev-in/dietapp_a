@@ -38,8 +38,8 @@ class BottomNavigationBarW extends StatelessWidget {
 
           /// Profile
           SalomonBottomBarItem(
-            icon: Icon(Icons.person),
-            title: Text("Profile"),
+            icon: Icon(Icons.edit),
+            title: Text("Fire"),
             selectedColor: Colors.teal,
           ),
         ],
