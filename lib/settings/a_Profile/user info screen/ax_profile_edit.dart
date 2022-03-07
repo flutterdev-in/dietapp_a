@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
-
 import 'package:dietapp_a/assets/assets.dart';
-import 'package:dietapp_a/settings/a_Profile/axx_userid_edit_screen.dart';
+import 'package:dietapp_a/settings/a_Profile/user%20info%20screen/axx_userid_edit_screen.dart';
+import 'package:dietapp_a/userData/models/user_strings.dart';
 import 'package:dietapp_a/userData/models/user_welcome_model.dart';
 import 'package:dietapp_a/x_customWidgets/stream_builder_functions.dart';
 import 'package:dietapp_a/y_Firebase/fire_ref.dart';
@@ -18,7 +18,10 @@ class ProfileEdit extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-        stream: userDS,
+        stream: FirebaseFirestore.instance
+            .collection(uss.users)
+            .doc(userUID)
+            .snapshots(),
         builder: (c, AsyncSnapshot<DocumentSnapshot> d) {
           var data = docStreamReturn(c, d, widType: "");
           if (data is Map) {

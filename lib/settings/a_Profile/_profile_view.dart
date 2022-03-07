@@ -1,5 +1,7 @@
-import 'package:dietapp_a/settings/a_Profile/b_basic_info.dart';
-import 'package:dietapp_a/settings/a_Profile/a_profile_first.dart';
+import 'package:dietapp_a/settings/a_Profile/basic%20info%20screen/b_basic_info.dart';
+import 'package:dietapp_a/settings/a_Profile/user%20info%20screen/a_profile_first.dart';
+import 'package:dietapp_a/settings/a_Profile/basic%20info%20screen/basic_info_edit_screen.dart';
+import 'package:dietapp_a/settings/a_Profile/food%20preferences/food_preferences_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/route_manager.dart';
@@ -38,7 +40,7 @@ class ProfileView extends StatelessWidget {
       titleText: "Basic Information",
       subTitleText: "Gender,Age,Height,Weight,Activity",
       onTap: () {
-        Get.to(() => BasicInfo());
+        Get.to(() => BasicInfoEditScreen());
       },
     );
   }
@@ -72,6 +74,9 @@ class ProfileView extends StatelessWidget {
         MdiIcons.foodVariant,
       ),
       titleText: "Food Preferences",
+      onTap: () {
+        Get.to(() => FoodPreferencesScreen());
+      },
       // subTitleText: "",
     );
   }

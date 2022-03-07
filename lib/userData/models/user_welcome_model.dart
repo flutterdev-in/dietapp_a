@@ -8,6 +8,7 @@ class UserWelcomeModel {
   String? photoURL;
   String displayName;
   String bioData;
+
   //
   bool isActive;
   Timestamp activeAt;
@@ -36,7 +37,7 @@ class UserWelcomeModel {
         uss.bioData: bioData,
       },
       uss.userActivity: {
-        uss.isActive:isActive,
+        uss.isActive: isActive,
         uss.activeAt: activeAt,
         uss.inactiveAt: inactiveAt,
       }
@@ -60,8 +61,3 @@ class UserWelcomeModel {
     );
   }
 }
-
-
-
-
-

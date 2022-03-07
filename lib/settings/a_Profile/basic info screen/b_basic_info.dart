@@ -28,6 +28,10 @@ class BasicInfo extends StatelessWidget {
         body: ListView(
           children: [
             SizedBox(height: 10),
+            Obx(
+              () => _bfp(),
+            ),
+            divider(),
             _gender(),
             divider(),
             _age(),
@@ -36,9 +40,6 @@ class BasicInfo extends StatelessWidget {
             divider(),
             _height(),
             divider(),
-            Obx(
-              () => _bfp(),
-            ),
           ],
         ),
       ),
@@ -86,7 +87,7 @@ class BasicInfo extends StatelessWidget {
     Rx<int> vd = rxAge.value.obs;
     TextEditingController tc = TextEditingController();
     tc.text = rxAge.value.toString();
-    tc.selection = 
+    tc.selection =
         TextSelection.fromPosition(TextPosition(offset: tc.text.length));
     return Row(
       children: [
@@ -317,16 +318,14 @@ class BasicInfo extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
           child: Icon(MdiIcons.humanMaleHeight),
         ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text("Your BMI = ${rxBMI.value.toStringAsFixed(1)}"),
-            Text("Your Body Fat = ${rxBfp.value.toString()} %"),
-            Text("Category = ${rxCat.value}"),
-            
-
-          ],
-        ),
+        Obx(() => Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text("Your BMI = ${rxBMI.value.toStringAsFixed(1)}"),
+                Text("Your Body Fat = ${rxBfp.value.toString()} %"),
+                Text("Category = ${rxCat.value}"),
+              ],
+            )),
       ],
     );
   }
