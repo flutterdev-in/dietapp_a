@@ -1,7 +1,7 @@
 UserStrings uss = UserStrings();
 
 class UserStrings {
-  String users = "Users";
+ final String users = "Users";
 
   String firebaseUID = "firebaseUID";
   String userID = "userID";

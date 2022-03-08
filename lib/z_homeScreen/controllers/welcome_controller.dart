@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
+import 'package:dietapp_a/my%20foods/screens/a_food%20timings/food_timing_model.dart';
 import 'package:dietapp_a/userData/models/user_strings.dart';
 import 'package:dietapp_a/userData/models/user_welcome_model.dart';
 import 'package:dietapp_a/v_chat/constants/chat_const_variables.dart';
@@ -11,6 +12,7 @@ class WelcomeController extends GetxController {
   void onInit() async {
     await createUserDoc();
     await createChatDoc();
+    await createFoodTimings();
     super.onInit();
   }
 
@@ -58,6 +60,54 @@ class WelcomeController extends GetxController {
             .doc(userOwnChatDocID)
             .set(chatIDMap, SetOptions(merge: true))
             .onError((error, stackTrace) {});
+      }
+    });
+  }
+
+  Future<void> createFoodTimings() async {
+    await FirebaseFirestore.instance
+        .collection(uss.users)
+        .doc(userUID)
+        .collection("userDocuments")
+        .doc("foodTimings")
+        .get()
+        .then((docSnap) async {
+      if (!docSnap.exists) {
+        List<Map<String, dynamic>> foodTimingsList = [
+          FoodTimingModel(
+                  name: "Breakfast",
+                  hours: 8,
+                  mins: 0,
+                  deviation: 45,
+                  isAm: true)
+              .toMap(),
+          FoodTimingModel(
+                  name: "Morning snaks",
+                  hours: 10,
+                  mins: 30,
+                  deviation: 30,
+                  isAm: true)
+              .toMap(),
+          FoodTimingModel(
+                  name: "Lunch", hours: 1, mins: 30, deviation: 30, isAm: false)
+              .toMap(),
+          FoodTimingModel(
+                  name: "Evening snaks",
+                  hours: 5,
+                  mins: 30,
+                  deviation: 45,
+                  isAm: false)
+              .toMap(),
+          FoodTimingModel(
+                  name: "Dinner",
+                  hours: 8,
+                  mins: 30,
+                  deviation: 45,
+                  isAm: false)
+              .toMap(),
+        ];
+        await docSnap.reference.set({"foodTimingsList": foodTimingsList},
+            SetOptions(merge: true)).onError((error, stackTrace) {});
       }
     });
   }

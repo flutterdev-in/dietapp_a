@@ -6,7 +6,7 @@ import 'package:dietapp_a/v_chat/constants/chat_strings.dart';
 //Strings
 Stream<DocumentSnapshot> userDS0 =
     FirebaseFirestore.instance.collection(uss.users).doc(userUID).snapshots();
-Stream<DocumentSnapshot> userDS=
+Stream<DocumentSnapshot> userDS =
     FirebaseFirestore.instance.collection(uss.users).doc(userUID).snapshots();
 
 final DocumentReference userDR =
@@ -14,3 +14,5 @@ final DocumentReference userDR =
 
 final CollectionReference chatRoomC =
     FirebaseFirestore.instance.collection(crs.chatRooms);
+
+

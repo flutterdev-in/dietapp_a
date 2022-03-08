@@ -2,16 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:getwidget/components/button/gf_button.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class BasicInfoEditScreen extends StatelessWidget {
   BasicInfoEditScreen({Key? key}) : super(key: key);
-  Rx<String> rxGender = "Male".obs; // Male or Female
-  Rx<num> rxHeight = 165.obs; // in cm
-  Rx<num> rxWeight = 60.0.obs; // in kg
-  Rx<int> rxAge = 30.obs; // in yrs
+  final Rx<String> rxGender = "Male".obs; // Male or Female
+  final Rx<num> rxHeight = 165.obs; // in cm
+  final Rx<num> rxWeight = 60.0.obs; // in kg
+  final Rx<int> rxAge = 30.obs; // in yrs
 
   @override
   Widget build(BuildContext context) {
@@ -202,13 +201,13 @@ class BasicInfoEditScreen extends StatelessWidget {
             },
           ),
         ),
-        Text("Kg"),
+        const Text("Kgs"),
         Padding(
           padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
           child: Obx(
             () => (vd.value > 1 && vd.value < 180)
-                ? Text("")
-                : Text(
+                ? const Text("")
+                : const Text(
                     "Enter valid weight",
                     style: TextStyle(color: Colors.brown),
                   ),
@@ -320,17 +319,17 @@ class BasicInfoEditScreen extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
       child: Row(
         children: [
-          Padding(
+          const Padding(
             padding: const EdgeInsets.fromLTRB(20, 5, 0, 5),
             child: Icon(MdiIcons.food),
           ),
-          SizedBox(width: 20),
+          const SizedBox(width: 20),
           Expanded(
             child: InkWell(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  const Text(
                     "I'm",
                     style: TextStyle(color: Colors.black54),
                   ),
@@ -338,7 +337,7 @@ class BasicInfoEditScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Obx(() => Text(iam.value)),
-                      Icon(MdiIcons.menuDown)
+                      const Icon(MdiIcons.menuDown)
                     ],
                   ),
                 ],
@@ -354,14 +353,14 @@ class BasicInfoEditScreen extends StatelessWidget {
                       children: [
                         Text(title),
                         Text(subtitle, textScaleFactor: 0.9),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         )
                       ],
                     ),
                     onTap: () async {
                       Navigator.of(context).pop();
-                      await Future.delayed(Duration(milliseconds: 300));
+                      await Future.delayed(const Duration(milliseconds: 300));
                       iam.value = title;
                     },
                   );
@@ -371,7 +370,8 @@ class BasicInfoEditScreen extends StatelessWidget {
                   barrierDismissible: false,
                   context: context,
                   builder: (context) => AlertDialog(
-                      contentPadding: EdgeInsets.fromLTRB(8.0, 20.0, 8.0, 24.0),
+                      contentPadding:
+                          const EdgeInsets.fromLTRB(8.0, 20.0, 8.0, 24.0),
                       scrollable: true,
                       actionsAlignment: MainAxisAlignment.start,
                       content: Column(
@@ -401,7 +401,7 @@ class BasicInfoEditScreen extends StatelessWidget {
               },
             ),
           ),
-          SizedBox(width: 20),
+          const SizedBox(width: 20),
         ],
       ),
     );

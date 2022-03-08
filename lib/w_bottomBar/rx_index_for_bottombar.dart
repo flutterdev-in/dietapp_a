@@ -1,3 +1,4 @@
+import 'package:dietapp_a/my%20foods/my_foods_view.dart';
 import 'package:dietapp_a/v_chat/chat%20People%20View/chat_people_listview.dart';
 import 'package:dietapp_a/v_chat/chat%20Search/chat_search_button.dart';
 import 'package:dietapp_a/y_Firebase/manage%20Firestore/Names%20edit/screen.dart';
@@ -15,7 +16,7 @@ List<Widget> listMainContainers = [
   ),
   ChatPeopleListview(),
   SubSearchNamesN(),
-  RecipiesNamesEdit(),
+  MyFoodsView(),
 ];
 
 List<Widget> listAppBarButtons = [
