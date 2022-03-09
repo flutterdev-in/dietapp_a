@@ -1,0 +1,57 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/foods_collection_strings.dart';
+
+class FoodsCollectionModel {
+  String fieldName;
+  Timestamp fieldTime;
+  bool isFolder;
+  String notes;
+  String? imgURL;
+  String? appFoodID;
+  String? webURL;
+  String? youtubeURL;
+
+  FoodsCollectionModel({
+    required this.fieldName,
+    required this.fieldTime,
+    required this.isFolder,
+    this.notes = "",
+    this.appFoodID,
+    this.webURL,
+    this.youtubeURL,
+    this.imgURL,
+  });
+
+  Map<String, dynamic> toMap() {
+    return isFolder
+        ? {
+            fdcs.fieldName: fieldName,
+            fdcs.fieldTime: fieldTime,
+            fdcs.isFolder: isFolder,
+            fdcs.notes: notes,
+          }
+        : {
+            fdcs.fieldName: fieldName,
+            fdcs.fieldTime: fieldTime,
+            fdcs.isFolder: isFolder,
+            fdcs.notes: notes,
+            fdcs.webURL: webURL,
+            fdcs.appFoodID: appFoodID,
+            fdcs.imgURL: imgURL,
+            fdcs.youtubeURL: youtubeURL,
+          };
+  }
+
+  factory FoodsCollectionModel.fromMap(Map foodCollectionFieldMap) {
+    return FoodsCollectionModel(
+      fieldName: foodCollectionFieldMap[fdcs.fieldName],
+      fieldTime: foodCollectionFieldMap[fdcs.fieldTime],
+      isFolder: foodCollectionFieldMap[fdcs.isFolder],
+      notes: foodCollectionFieldMap[fdcs.notes],
+      appFoodID: foodCollectionFieldMap[fdcs.appFoodID],
+      webURL: foodCollectionFieldMap[fdcs.webURL],
+      imgURL: foodCollectionFieldMap[fdcs.imgURL],
+      youtubeURL: foodCollectionFieldMap[fdcs.youtubeURL],
+    );
+  }
+}

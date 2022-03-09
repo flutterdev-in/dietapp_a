@@ -1,10 +1,9 @@
-import 'package:dietapp_a/my%20foods/my_foods_view.dart';
+import 'package:dietapp_a/my%20foods/screens/_my_foods_screen_view.dart';
+import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/_foods_folder_main_screen.dart';
 import 'package:dietapp_a/v_chat/chat%20People%20View/chat_people_listview.dart';
 import 'package:dietapp_a/v_chat/chat%20Search/chat_search_button.dart';
-import 'package:dietapp_a/y_Firebase/manage%20Firestore/Names%20edit/screen.dart';
-import 'package:dietapp_a/y_Firebase/manage%20Firestore/names%20Modify/names_modify.dart';
-import 'package:dietapp_a/y_Firebase/manage%20Firestore/sub%20Names/sub_and_search_names.dart';
 import 'package:dietapp_a/y_Firebase/manage%20Firestore/sub%20Names/sub_names.dart';
+import 'package:dietapp_a/z_homeScreen/widgets/a_drawe_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -16,7 +15,7 @@ List<Widget> listMainContainers = [
   ),
   ChatPeopleListview(),
   SubSearchNamesN(),
-  MyFoodsView(),
+  MyFoodsCollectionView(),
 ];
 
 List<Widget> listAppBarButtons = [
@@ -30,6 +29,32 @@ List<Widget> listAppBarButtons = [
   Container(
     child: Text("Profile"),
   ),
+  AppBar(
+    title: const Text("DietApp"),
+    actions: [
+      currentAppBarButton(),
+    ],
+    leading: const DrawerIcon(),
+  ),
+];
+
+List<Widget?> listAppBars = [
+  AppBar(
+    title: const Text("DietApp"),
+    actions: [
+      currentAppBarButton(),
+    ],
+    leading: const DrawerIcon(),
+  ),
+  AppBar(
+    title: const Text("DietApp"),
+    actions: [
+      currentAppBarButton(),
+    ],
+    leading: const DrawerIcon(),
+  ),
+  null,
+  null,
 ];
 
 Widget curretContainer() {
@@ -40,3 +65,5 @@ Widget curretContainer() {
 Widget currentAppBarButton() {
   return Obx(() => listAppBarButtons[bottomBarindex.value]);
 }
+
+

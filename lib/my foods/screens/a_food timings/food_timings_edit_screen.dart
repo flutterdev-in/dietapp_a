@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
-import 'package:dietapp_a/my%20foods/screens/a_food%20timings/food_timing_model.dart';
+import 'package:dietapp_a/my%20foods/screens/a_food%20timings/models/food_timing_model.dart';
 import 'package:dietapp_a/my%20foods/screens/a_food%20timings/functions/food_timings_list_sort.dart';
 import 'package:dietapp_a/userData/models/user_strings.dart';
 import 'package:dietapp_a/x_customWidgets/stream_builder_functions.dart';

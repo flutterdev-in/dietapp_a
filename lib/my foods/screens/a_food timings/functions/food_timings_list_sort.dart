@@ -1,4 +1,4 @@
-import 'package:dietapp_a/my%20foods/screens/a_food%20timings/food_timing_model.dart';
+import 'package:dietapp_a/my%20foods/screens/a_food%20timings/models/food_timing_model.dart';
 
 List foodTimingsListSort(
     List listmap) {
