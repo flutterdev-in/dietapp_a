@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
+import 'package:dietapp_a/userData/models/user_strings.dart';
 
 FoodsCollectionStrings fdcs = FoodsCollectionStrings();
 
@@ -14,11 +16,18 @@ class FoodsCollectionStrings {
   String youtubeURL = "youtubeURL";
   String isItemSelected = "isItemSelected";
   String fcPathSeperator = "/subCollections";
+  String pathCRstring = "pathCRstring";
   String pathCR = "pathCR";
   String snapRef = "snapRef";
   String itemIndex = "itemIndex";
   String fcModel = "fcModel";
+  String foodsCollection = "foodsCollection";
+  String subCollections = "subCollections";
 
+  CollectionReference foodsCR0 = FirebaseFirestore.instance
+      .collection(uss.users)
+      .doc(userUID)
+      .collection("foodsCollection");
 
-  String foodsCollectionPath0 = "/Users/$userUID/foodsCollection";
+  //  "/Users/$userUID/foodsCollection";
 }

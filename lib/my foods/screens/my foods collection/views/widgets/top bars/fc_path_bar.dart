@@ -39,7 +39,7 @@ class FcPathBar extends StatelessWidget {
       ),
       onTap: () async {
         await Future.delayed(const Duration(milliseconds: 100));
-        rxfcv.currentPathCR.value = fdcs.foodsCollectionPath0;
+        rxfcv.currentPathCR.value = fdcs.foodsCR0.path;
         rxfcv.selecAllUnselectAll(trueSelectAllfalseUnselectAll: false);
         rxfcv.pathsListMaps.clear();
       },
@@ -80,7 +80,7 @@ class ScrollPaths extends StatelessWidget {
                   ),
                   onTap: () {
                     rxfcv.currentPathCR.value =
-                        element[fdcs.pathCR] ?? fdcs.foodsCollectionPath0;
+                        element[fdcs.pathCRstring] ?? fdcs.foodsCR0;
                     if (element != rxfcv.pathsListMaps.last) {
                       rxfcv.pathsListMaps
                           .removeRange(index + 1, rxfcv.pathsListMaps.length);

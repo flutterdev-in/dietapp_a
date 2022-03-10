@@ -100,7 +100,9 @@ class FoodsCollectionListView extends StatelessWidget {
 
                 rxfcv.pathsListMaps.add(
                   {
-                    fdcs.pathCR: rxfcv.currentPathCR.value,
+                    fdcs.pathCR:
+                        snapshot.reference.collection(fdcs.subCollections),
+                    fdcs.pathCRstring: rxfcv.currentPathCR.value,
                     fdcs.fieldName: fdcm.fieldName
                   },
                 );

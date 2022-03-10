@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 RxFoodsCollectionVariables rxfcv = RxFoodsCollectionVariables();
 
 class RxFoodsCollectionVariables {
-  Rx<String> currentPathCR = fdcs.foodsCollectionPath0.obs;
+  Rx<String> currentPathCR = fdcs.foodsCR0.path.obs;
   RxList pathsListMaps = [].obs;
 
   Rx<bool> isUnselectAll = true.obs;
@@ -20,8 +20,7 @@ class RxFoodsCollectionVariables {
     currentsPathItemsMaps.forEach((snapRef, thisItemMap) {
       currentsPathItemsMaps[snapRef][fdcs.isItemSelected] =
           trueSelectAllfalseUnselectAll;
-      itemsSelectionCount.value =
-          countSelectedItems();
+      itemsSelectionCount.value = countSelectedItems();
     });
   }
 
