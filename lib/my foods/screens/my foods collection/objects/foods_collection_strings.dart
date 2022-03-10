@@ -12,6 +12,13 @@ class FoodsCollectionStrings {
   String appFoodID = "appFoodID";
   String webURL = "webURL";
   String youtubeURL = "youtubeURL";
+  String isItemSelected = "isItemSelected";
+  String fcPathSeperator = "/subCollections";
+  String pathCR = "pathCR";
+  String snapRef = "snapRef";
+  String itemIndex = "itemIndex";
+  String fcModel = "fcModel";
+
 
   String foodsCollectionPath0 = "/Users/$userUID/foodsCollection";
 }

@@ -1,4 +1,3 @@
-import 'package:dietapp_a/my%20foods/screens/_my_foods_screen_view.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/_foods_folder_main_screen.dart';
 import 'package:dietapp_a/v_chat/chat%20People%20View/chat_people_listview.dart';
 import 'package:dietapp_a/v_chat/chat%20Search/chat_search_button.dart';

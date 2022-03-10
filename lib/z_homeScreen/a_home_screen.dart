@@ -1,3 +1,7 @@
+
+
+import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/rx_variables.dart';
+import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/views/widgets/bottom%20bars/bottom_bar_for_fc.dart';
 import 'package:dietapp_a/w_bottomBar/_bottom_navigation_bar.dart';
 import 'package:dietapp_a/w_bottomBar/rx_index_for_bottombar.dart';
 import 'package:dietapp_a/y_Drawer/main_drawer.dart';
@@ -47,7 +51,11 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
           leading: const DrawerIcon(),
         ),
         body: curretContainer(),
-        bottomNavigationBar: const BottomNavigationBarW(),
+        bottomNavigationBar: Obx(
+          () => rxfcv.isSelectionStarted.value
+              ? OnSelectedBottomBarForFoodCollection()
+              : const BottomNavigationBarW(),
+        ),
       ),
     );
   }
