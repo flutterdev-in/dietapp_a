@@ -1,9 +1,6 @@
-import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/functions/fc_count_of_selected_items.dart';
-import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/rx_variables.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/views/widgets/bottom%20bars/buttons/d_delete_fc.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/views/widgets/bottom%20bars/buttons/r_rename_fc.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -21,7 +18,7 @@ class OnSelectedBottomBarForFoodCollection extends StatelessWidget {
           IconButton(onPressed: () {}, icon: const Icon(MdiIcons.contentCopy)),
           IconButton(
               onPressed: () {}, icon: const Icon(MdiIcons.folderMoveOutline)),
-          // FCitemEditButton(),
+          fcItemEditButton(),
           TextButton(
             child: const Text("Delete"),
             onPressed: () async {

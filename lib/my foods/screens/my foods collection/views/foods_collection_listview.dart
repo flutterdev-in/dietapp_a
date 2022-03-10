@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/functions/fc_count_of_selected_items.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/models/food_collection_model.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/foods_collection_strings.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/rx_variables.dart';
@@ -81,7 +80,7 @@ class FoodsCollectionListView extends StatelessWidget {
                         [fdcs.isItemSelected] = true;
                     rxfcv.isSelectionStarted.value = true;
                     rxfcv.itemsSelectionCount.value =
-                        fcCountOfSelectedItems(rxfcv.currentsPathItemsMaps);
+                        rxfcv.countSelectedItems();
                   },
                 );
               }
@@ -93,8 +92,7 @@ class FoodsCollectionListView extends StatelessWidget {
                 isItemSelected.value = !isItemSelected.value;
                 rxfcv.currentsPathItemsMaps[snapshot.reference]
                     [fdcs.isItemSelected] = isItemSelected.value;
-                rxfcv.itemsSelectionCount.value =
-                    fcCountOfSelectedItems(rxfcv.currentsPathItemsMaps);
+                rxfcv.itemsSelectionCount.value = rxfcv.countSelectedItems();
               } else {
                 rxfcv.selecAllUnselectAll(trueSelectAllfalseUnselectAll: false);
                 rxfcv.currentPathCR.value =
@@ -107,6 +105,15 @@ class FoodsCollectionListView extends StatelessWidget {
                   },
                 );
               }
+            },
+            onLongPress: () {
+              rxfcv.isSelectAll.value = false;
+              rxfcv.isUnselectAll.value = false;
+              rxfcv.isSelectionStarted.value = true;
+              isItemSelected.value = true;
+              rxfcv.currentsPathItemsMaps[snapshot.reference]
+                  [fdcs.isItemSelected] = true;
+              rxfcv.itemsSelectionCount.value = rxfcv.countSelectedItems();
             },
           );
         },
