@@ -8,10 +8,10 @@ Future<void> fcDeleteCopyMoveOperations({
   required List<DocumentReference> listSourceDR,
   required String? targetCRpath,
 }) async {
-  print("object");
   fcc.documentsFetchedForBatch.value = 0;
   fcc.documentsDeletedFromBatch.value = 0;
   Map<String, dynamic> mapsInfoOfNestedDRs = {};
+
   Future<void> nestedGetFunction(List<DocumentReference> listSourceDR) async {
     for (DocumentReference sourceDR in listSourceDR) {
       sourceDR.get().then((DocumentSnapshot ds) {
@@ -53,8 +53,8 @@ Future<void> fcDeleteCopyMoveOperations({
         fcc.printPurpose.value = sourceDocPath;
         await FirebaseFirestore.instance.doc(sourceDocPath).delete();
       } else if (sourceDocMap is Map<String, dynamic> && targetCRpath != null) {
-        String thisDocPath =
-            sourceDocPath.replaceAll(fdcPath.path, targetCRpath);
+        String thisDocPath = sourceDocPath.replaceAll(
+            listSourceDR.last.parent.path, targetCRpath);
         if (fcc.operationValue.value == 1) {
           await FirebaseFirestore.instance
               .doc(thisDocPath)
