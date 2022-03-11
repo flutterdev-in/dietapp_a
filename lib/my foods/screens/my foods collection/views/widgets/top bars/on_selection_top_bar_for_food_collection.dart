@@ -1,6 +1,8 @@
+import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/functions/fc_useful_functions.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/foods_collection_strings.dart';
-import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/rx_variables.dart';
+import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/controllers/fc_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class OnSelectedTopBarForFoodCollection extends StatelessWidget {
@@ -16,38 +18,36 @@ class OnSelectedTopBarForFoodCollection extends StatelessWidget {
             child: Icon(MdiIcons.close),
             onPressed: () async {
               await Future.delayed(Duration(milliseconds: 50));
-              rxfcv.isSelectionStarted.value = !rxfcv.isSelectionStarted.value;
-              rxfcv.isSelectAll.value = false;
-              rxfcv.isUnselectAll.value = true;
-              rxfcv.currentsPathItemsMaps.forEach((snapRef, thisItemMap) {
-                rxfcv.currentsPathItemsMaps[snapRef][fdcs.isItemSelected] =
+              fcc.isSelectionStarted.value = !fcc.isSelectionStarted.value;
+              fcc.isSelectAll.value = false;
+              fcc.isUnselectAll.value = true;
+              fcc.currentsPathItemsMaps.value.forEach((snapRef, thisItemMap) {
+                fcc.currentsPathItemsMaps.value[snapRef]?[fdcs.isItemSelected] =
                     false;
               });
             },
           ),
+          Obx(() => Text(
+                fcc.documentsFetchedForBatch.value.toString() +
+                    "..." +
+                    fcc.documentsDeletedFromBatch.value.toString(),
+              )),
           TextButton(
             child: const Text("Unselect all"),
             onPressed: () {
-              rxfcv.isUnselectAll.value = true;
-              rxfcv.isSelectAll.value = false;
-              rxfcv.selecAllUnselectAll(trueSelectAllfalseUnselectAll: false);
-              // rxfcv.currentsPathItemsMaps.forEach((snapRef, thisItemMap) {
-              //   rxfcv.currentsPathItemsMaps[snapRef][fdcs.isItemSelected] =
-              //       false;
-              // });
+              fcc.isUnselectAll.value = true;
+              fcc.isSelectAll.value = false;
+
+              fcufs.selecAllUnselectAll(trueSelectAllfalseUnselectAll: false);
             },
           ),
           TextButton(
             child: const Text("Select all"),
             onPressed: () {
-              rxfcv.isSelectAll.value = true;
-              rxfcv.isUnselectAll.value = false;
-              rxfcv.selecAllUnselectAll(trueSelectAllfalseUnselectAll: true);
-              // rxfcv.currentsPathItemsMaps.forEach((snapRef, thisItemMap) {
-              //   rxfcv.currentsPathItemsMaps[snapRef][fdcs.isItemSelected] =
-              //       true;
-              // });
-              // await FirebaseFirestore.instance.collection(fdcs.foodsCollectionPath0).add(FoodsCollectionModel(fieldName: "fieldName", fieldTime: Timestamp.fromDate(DateTime.now()), isFolder: true).toMap());
+              fcc.isSelectAll.value = true;
+              fcc.isUnselectAll.value = false;
+
+              fcufs.selecAllUnselectAll(trueSelectAllfalseUnselectAll: true);
             },
           ),
         ],

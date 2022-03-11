@@ -1,7 +1,6 @@
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/foods_collection_strings.dart';
-import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/rx_variables.dart';
+import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/controllers/fc_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -12,36 +11,40 @@ class FcPathBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
-      if (rxfcv.pathsListMaps.isNotEmpty) {
-        return Container(
-          color: Colors.green.shade100,
-          height: 40,
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: Row(children: [
+    return Container(
+      color: Colors.green.shade100,
+      height: 40,
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Obx(() {
+          if (fcc.pathsListMaps.value.isNotEmpty) {
+            return Row(children: [
               homeButton(),
               ScrollPaths(),
-            ]),
-          ),
-        );
-      } else {
-        return SizedBox();
-      }
-    });
+            ]);
+          } else {
+            return homeButton();
+          }
+        }),
+      ),
+    );
   }
 
   Widget homeButton() {
     return InkWell(
       child: const SizedBox(
-        child: Icon(MdiIcons.homeRemoveOutline),
+        child: Icon(MdiIcons.homeOutline),
         width: 40,
       ),
       onTap: () async {
         await Future.delayed(const Duration(milliseconds: 100));
-        rxfcv.currentPathCR.value = fdcs.foodsCR0.path;
-        rxfcv.selecAllUnselectAll(trueSelectAllfalseUnselectAll: false);
-        rxfcv.pathsListMaps.clear();
+        fcc.currentPathCR.value = fdcs.foodsCR0.path;
+        fcc.isUnselectAll.value = true;
+        fcc.pathsListMaps.value.clear();
+        fcc.currentsPathItemsMaps.value.forEach((key, value) {
+          fcc.currentsPathItemsMaps.value[key]?[fdcs.isItemSelected] = false;
+        });
+        fcc.itemsSelectionCount.value = 0;
       },
     );
   }
@@ -62,7 +65,7 @@ class ScrollPaths extends StatelessWidget {
           shrinkWrap: true,
           scrollDirection: Axis.horizontal,
           controller: _controller,
-          children: rxfcv.pathsListMaps.mapIndexed((index, element) {
+          children: fcc.pathsListMaps.value.mapIndexed((index, element) {
             return Row(
               children: [
                 const Icon(MdiIcons.chevronRight),
@@ -75,18 +78,22 @@ class ScrollPaths extends StatelessWidget {
                     ),
                     constraints: BoxConstraints(
                       minWidth: 15,
-                      maxWidth: rxfcv.pathsListMaps.length < 2 ? 100 : 45,
+                      maxWidth: fcc.pathsListMaps.value.length < 2 ? 100 : 45,
                     ),
                   ),
                   onTap: () {
-                    rxfcv.currentPathCR.value =
+                    fcc.currentPathCR.value =
                         element[fdcs.pathCRstring] ?? fdcs.foodsCR0;
-                    if (element != rxfcv.pathsListMaps.last) {
-                      rxfcv.pathsListMaps
-                          .removeRange(index + 1, rxfcv.pathsListMaps.length);
-                      rxfcv.selecAllUnselectAll(
-                          trueSelectAllfalseUnselectAll: false);
+                    if (element != fcc.pathsListMaps.value.last) {
+                      fcc.pathsListMaps.value.removeRange(
+                          index + 1, fcc.pathsListMaps.value.length);
+                      fcc.isUnselectAll.value = true;
                     }
+                    fcc.currentsPathItemsMaps.value.forEach((key, value) {
+                      fcc.currentsPathItemsMaps.value[key]
+                          ?[fdcs.isItemSelected] = false;
+                    });
+                    fcc.itemsSelectionCount.value = 0;
                   },
                 ),
               ],

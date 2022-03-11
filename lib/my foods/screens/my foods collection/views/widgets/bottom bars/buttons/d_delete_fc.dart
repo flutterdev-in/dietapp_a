@@ -1,5 +1,5 @@
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/foods_collection_strings.dart';
-import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/rx_variables.dart';
+import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/controllers/fc_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
@@ -7,7 +7,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 
   Future<void> deleteItemsFromFC(BuildContext context) async {
     int currentPathSelectedItems = 0;
-    rxfcv.currentsPathItemsMaps.forEach((snapRef, thisItemMap) {
+    fcc.currentsPathItemsMaps.value.forEach((snapRef, thisItemMap) {
       if (thisItemMap[fdcs.isItemSelected] ?? false) {
         currentPathSelectedItems++;
       }
@@ -40,7 +40,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
                     child: const Text("Yes, Delete"),
                       onPressed: () {
                         Get.back();
-                       rxfcv.currentsPathItemsMaps
+                       fcc.currentsPathItemsMaps.value
                             .forEach((snapRef, thisItemMap) async {
                           if (thisItemMap[fdcs.isItemSelected] ?? false) {
                             await snapRef.delete();

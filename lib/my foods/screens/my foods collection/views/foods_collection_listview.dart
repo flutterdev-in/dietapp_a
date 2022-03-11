@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/functions/fc_useful_functions.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/models/food_collection_model.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/foods_collection_strings.dart';
-import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/rx_variables.dart';
+import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/controllers/fc_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/firestore.dart';
 import 'package:get/get.dart';
@@ -17,43 +18,38 @@ class FoodsCollectionListView extends StatelessWidget {
       () => FirestoreListView<Map<String, dynamic>>(
         shrinkWrap: true,
         query: FirebaseFirestore.instance
-            .collection(rxfcv.currentPathCR.value)
+            .collection(fcc.currentPathCR.value)
             .orderBy(fdcs.fieldTime),
         itemBuilder: (context, snapshot) {
           //Rx variables
           Rx<bool> isItemSelected = false.obs;
 
-          //
-          // rxfcv.currentPathItemsListMaps.add({
-          //   snapshot.reference: {fdcs.isItemSelected: false}
-          // });
-
           Map<String, dynamic> fcMap = snapshot.data();
 
           FoodsCollectionModel fdcm = FoodsCollectionModel.fromMap(fcMap);
-          rxfcv.currentsPathItemsMaps.addAll({
+
+          fcc.currentsPathItemsMaps.value.addAll({
             snapshot.reference: {
               fdcs.isItemSelected: false,
-              fdcs.itemIndex: rxfcv.currentsPathItemsMaps.length,
+              fdcs.itemIndex: fcc.currentsPathItemsMaps.value.length,
               fdcs.fcModel: fdcm
             }
           });
           return GFListTile(
-            padding: EdgeInsets.all(10),
-            margin: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
-            avatar: Icon(
+            padding: const EdgeInsets.fromLTRB(0, 5, 8, 0),
+            margin: const EdgeInsets.symmetric(vertical: 7, horizontal: 10),
+            avatar:const Icon(
               MdiIcons.folder,
               color: Colors.orange,
             ),
             title: Text(fdcm.fieldName),
             icon: Obx(() {
-              isItemSelected.value =
-                  rxfcv.currentsPathItemsMaps[snapshot.reference]
-                      [fdcs.isItemSelected];
-              if (rxfcv.isSelectionStarted.value) {
-                if (rxfcv.isSelectAll.value) {
+              isItemSelected.value = fcc.currentsPathItemsMaps
+                  .value[snapshot.reference]?[fdcs.isItemSelected];
+              if (fcc.isSelectionStarted.value) {
+                if (fcc.isSelectAll.value) {
                   return Icon(MdiIcons.checkboxMarkedCircle);
-                } else if (rxfcv.isUnselectAll.value) {
+                } else if (fcc.isUnselectAll.value) {
                   return Icon(MdiIcons.checkboxBlankCircleOutline);
                 } else if (isItemSelected.value) {
                   return Icon(MdiIcons.checkboxMarkedCircle);
@@ -64,7 +60,7 @@ class FoodsCollectionListView extends StatelessWidget {
                 }
               } else {
                 return InkWell(
-                  child: SizedBox(
+                  child:const SizedBox(
                     width: 20,
                     height: 20,
                     child: Icon(
@@ -74,48 +70,47 @@ class FoodsCollectionListView extends StatelessWidget {
                     ),
                   ),
                   onTap: () {
-                    rxfcv.isSelectAll.value = false;
-                    rxfcv.isUnselectAll.value = false;
-                    rxfcv.currentsPathItemsMaps[snapshot.reference]
-                        [fdcs.isItemSelected] = true;
-                    rxfcv.isSelectionStarted.value = true;
-                    rxfcv.itemsSelectionCount.value =
-                        rxfcv.countSelectedItems();
+                    fcc.isSelectAll.value = false;
+                    fcc.isUnselectAll.value = false;
+                    fcc.currentsPathItemsMaps.value[snapshot.reference]
+                        ?[fdcs.isItemSelected] = true;
+                    fcc.isSelectionStarted.value = true;
+                    fcc.itemsSelectionCount.value = fcufs.countSelectedItems();
                   },
                 );
               }
             }),
             onTap: () {
-              rxfcv.isSelectAll.value = false;
-              rxfcv.isUnselectAll.value = false;
-              if (rxfcv.isSelectionStarted.value) {
+              fcc.isSelectAll.value = false;
+              fcc.isUnselectAll.value = false;
+              if (fcc.isSelectionStarted.value) {
                 isItemSelected.value = !isItemSelected.value;
-                rxfcv.currentsPathItemsMaps[snapshot.reference]
-                    [fdcs.isItemSelected] = isItemSelected.value;
-                rxfcv.itemsSelectionCount.value = rxfcv.countSelectedItems();
+                fcc.currentsPathItemsMaps.value[snapshot.reference]
+                    ?[fdcs.isItemSelected] = isItemSelected.value;
+                fcc.itemsSelectionCount.value = fcufs.countSelectedItems();
               } else {
-                rxfcv.selecAllUnselectAll(trueSelectAllfalseUnselectAll: false);
-                rxfcv.currentPathCR.value =
+                // fcufs.selecAllUnselectAll(trueSelectAllfalseUnselectAll: false);
+                fcc.currentPathCR.value =
                     snapshot.reference.path + fdcs.fcPathSeperator;
 
-                rxfcv.pathsListMaps.add(
+                fcc.pathsListMaps.value.add(
                   {
                     fdcs.pathCR:
                         snapshot.reference.collection(fdcs.subCollections),
-                    fdcs.pathCRstring: rxfcv.currentPathCR.value,
+                    fdcs.pathCRstring: fcc.currentPathCR.value,
                     fdcs.fieldName: fdcm.fieldName
                   },
                 );
               }
             },
             onLongPress: () {
-              rxfcv.isSelectAll.value = false;
-              rxfcv.isUnselectAll.value = false;
-              rxfcv.isSelectionStarted.value = true;
+              fcc.isSelectAll.value = false;
+              fcc.isUnselectAll.value = false;
+              fcc.isSelectionStarted.value = true;
               isItemSelected.value = true;
-              rxfcv.currentsPathItemsMaps[snapshot.reference]
-                  [fdcs.isItemSelected] = true;
-              rxfcv.itemsSelectionCount.value = rxfcv.countSelectedItems();
+              fcc.currentsPathItemsMaps.value[snapshot.reference]
+                  ?[fdcs.isItemSelected] = true;
+              fcc.itemsSelectionCount.value = fcufs.countSelectedItems();
             },
           );
         },

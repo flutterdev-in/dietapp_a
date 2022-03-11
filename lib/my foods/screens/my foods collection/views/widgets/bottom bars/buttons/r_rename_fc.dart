@@ -1,19 +1,34 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/functions/fc_count_of_selected_items.dart';
+import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/functions/fc_useful_functions.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/models/food_collection_model.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/foods_collection_strings.dart';
-import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/rx_variables.dart';
+import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/controllers/fc_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 Widget fcItemEditButton() {
+  Widget nullEditButton = TextButton(
+      onPressed: () {},
+      child: Text(
+        "Edit",
+        style: TextStyle(color: Colors.black54),
+      ));
+
+  //
   return Obx(
-      () => rxfcv.itemsSelectionCount == 1 ? FCitemEditButton() : TextButton(
-            onPressed: () {},
-            child: Text(
-              "Edit",
-              style: TextStyle(color: Colors.black54),
-            )),);
+    () {
+      if (fcc.isSelectAll.value ||
+          fcc.isUnselectAll.value ||
+          fcc.itemsSelectionCount.value != 1) {
+        return nullEditButton;
+      } else if (fcc.itemsSelectionCount.value == 1) {
+        return FCitemEditButton();
+      } else {
+        return nullEditButton;
+      }
+    },
+  );
 }
 
 class FCitemEditButton extends StatelessWidget {
@@ -22,7 +37,6 @@ class FCitemEditButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    
 
     DocumentReference? snapshotReference;
     // Values only for initialisation
@@ -30,7 +44,7 @@ class FCitemEditButton extends StatelessWidget {
         fieldName: "",
         fieldTime: Timestamp.fromDate(DateTime.now()),
         isFolder: true);
-    rxfcv.currentsPathItemsMaps.forEach((snapReference, thisItemMap) {
+    fcc.currentsPathItemsMaps.value.forEach((snapReference, thisItemMap) {
       if (thisItemMap[fdcs.isItemSelected] ?? false) {
         snapshotReference = snapReference;
         fdcm = thisItemMap[fdcs.fcModel];
@@ -88,12 +102,11 @@ class FCitemEditButton extends StatelessWidget {
                         if (fdcm.isFolder && snapshotReference != null) {
                           await Future.delayed(
                               const Duration(milliseconds: 700));
-                          rxfcv.currentsPathItemsMaps[snapshotReference]
-                              [fdcs.isItemSelected] = false;
-                          rxfcv.isUnselectAll.value = true;
-                          rxfcv.itemsSelectionCount.value =
-                             rxfcv. countSelectedItems(
-                                  );
+                          fcc.currentsPathItemsMaps.value[snapshotReference]
+                              ?[fdcs.isItemSelected] = false;
+                          fcc.isUnselectAll.value = true;
+                          fcc.itemsSelectionCount.value =
+                              fcufs.countSelectedItems();
 
                           await snapshotReference!.update({
                             fdcs.fieldName: tcName.text,

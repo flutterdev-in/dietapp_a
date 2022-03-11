@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dietapp_a/my%20foods/screens/a_food%20timings/models/food_timing_model.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/models/food_collection_model.dart';
-import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/foods_collection_strings.dart';
-import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/rx_variables.dart';
+import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/controllers/fc_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -39,7 +37,7 @@ void addFolderForFoods(BuildContext context) async {
                 Get.back();
                 await Future.delayed(Duration(milliseconds: 700));
                 await FirebaseFirestore.instance
-                    .collection(rxfcv.currentPathCR.value)
+                    .collection(fcc.currentPathCR.value)
                     .add(FoodsCollectionModel(
                             fieldName: tc.text,
                             fieldTime: Timestamp.fromDate(DateTime.now()),

@@ -1,5 +1,9 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/foods_collection_strings.dart';
+
+BatchCopyNestedCollections batchCopyNestedCollections =
+    BatchCopyNestedCollections();
 
 class BatchCopyNestedCollections {
   //Combined function
@@ -8,8 +12,25 @@ class BatchCopyNestedCollections {
     required String targetSubCRstring,
   }) async {
     for (DocumentReference sourceDR in listSourceDR) {
-      await batchCopyNestedFunction(
-          sourceDR: sourceDR, targetSubCRstring: targetSubCRstring);
+      sourceDR.get().then((value) async {
+        Map<String, dynamic> data = value.data() as Map<String, dynamic>;
+        await FirebaseFirestore.instance
+            .collection(targetSubCRstring)
+            .doc(sourceDR.id)
+            .set(
+              data,
+              SetOptions(merge: true),
+            )
+            .then((value) async {
+          String thistargetSubCRstring = FirebaseFirestore.instance
+              .collection(targetSubCRstring)
+              .doc(sourceDR.id)
+              .collection(fdcs.subCollections)
+              .path;
+          await batchCopyNestedFunction(
+              sourceDR: sourceDR, targetSubCRstring: thistargetSubCRstring);
+        });
+      });
     }
   }
 
@@ -18,7 +39,6 @@ class BatchCopyNestedCollections {
     required DocumentReference sourceDR,
     required String targetSubCRstring,
   }) async {
-    
     await sourceDR.collection(fdcs.subCollections).get().then(
       (querySnapshot) async {
         for (QueryDocumentSnapshot<Map<String, dynamic>> document
