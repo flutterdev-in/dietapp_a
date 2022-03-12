@@ -1,3 +1,4 @@
+import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/functions/fc_back_button_function.dart';
 import 'package:dietapp_a/w_bottomBar/_bottom_navigation_bar.dart';
 import 'package:dietapp_a/w_bottomBar/rx_index_for_bottombar.dart';
 import 'package:dietapp_a/y_Drawer/main_drawer.dart';
@@ -34,7 +35,13 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
+    return WillPopScope(
+      onWillPop: () async {
+        if (bottomBarindex.value == 3) {
+          fcBackButtonFunction();
+        }
+        return false;
+      },
       child: Scaffold(
         drawer: GFDrawer(
           child: MainDrawer(),

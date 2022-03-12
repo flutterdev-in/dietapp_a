@@ -53,14 +53,24 @@ Future<void> fcDeleteCopyMoveOperations({
         fcc.printPurpose.value = sourceDocPath;
         await FirebaseFirestore.instance.doc(sourceDocPath).delete();
       } else if (sourceDocMap is Map<String, dynamic> && targetCRpath != null) {
-        String thisDocPath = sourceDocPath.replaceAll(
-            listSourceDR.last.parent.path, targetCRpath);
         if (fcc.operationValue.value == 1) {
+          String afterPath =
+              sourceDocPath.replaceAll(listSourceDR.last.parent.path, "");
+          if (afterPath.contains(fdcs.subCollections + "/")) {
+            afterPath = afterPath.replaceAll(
+                fdcs.subCollections + "/", fdcs.subCollections + "/a");
+          } else {
+            afterPath = afterPath + "a";
+          }
+
+          String thisDocPath = targetCRpath + afterPath;
           await FirebaseFirestore.instance
               .doc(thisDocPath)
               .set(sourceDocMap, SetOptions(merge: true));
         } else if (fcc.operationValue.value == 2) {
-          fcc.printPurpose.value = targetCRpath + "++" + thisDocPath;
+          String thisDocPath = sourceDocPath.replaceAll(
+              listSourceDR.last.parent.path, targetCRpath);
+
           await FirebaseFirestore.instance.doc(sourceDocPath).delete();
           await FirebaseFirestore.instance
               .doc(thisDocPath)

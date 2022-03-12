@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/controllers/fc_controller.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/functions/fc_delete_copy_move_operations_function.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:getwidget/components/toast/gf_toast.dart';
 
 class PasteBarForFC extends StatelessWidget {
   const PasteBarForFC({Key? key}) : super(key: key);
@@ -27,17 +29,14 @@ class PasteBarForFC extends StatelessWidget {
             child: Obx(() => Text(
                   "Paste",
                   style: TextStyle(
-                    color: (fcc.pathWhenCopyOrMovePressed.value !=
-                                fcc.currentPathCR.value &&
+                    color: (isPasteValidPath() &&
                             fcc.pathWhenCopyOrMovePressed.value != "")
                         ? Colors.purple
                         : Colors.black38,
                   ),
                 )),
             onPressed: () async {
-              
-              if (fcc.pathWhenCopyOrMovePressed.value !=
-                      fcc.currentPathCR.value &&
+              if (isPasteValidPath() &&
                   fcc.pathWhenCopyOrMovePressed.value != "") {
                 await fcDeleteCopyMoveOperations(
                   listSourceDR: fcc.listSelectedItemsDRsForOperation.value,
@@ -45,12 +44,34 @@ class PasteBarForFC extends StatelessWidget {
                 );
 
                 fcc.isCopyOrMoveStarted.value = false;
+                fcc.itemsSelectionCount.value = 0;
                 fcc.operationValue.value = 9;
+              } else {
+                GFToast.showToast(
+                  "Paste location cannot be the same path",
+                  context,
+                );
               }
             },
           ),
         ],
       ),
     );
+  }
+
+  bool isPasteValidPath() {
+    bool isPathValid = true;
+    if (fcc.currentPathCR.value == fcc.pathWhenCopyOrMovePressed.value) {
+      isPathValid = false;
+    } else {
+      fcc.listSelectedItemsDRsForOperation.value
+          .forEach((DocumentReference<Map<String, dynamic>> thisDR) {
+        if (fcc.currentPathCR.value.contains(thisDR.path)) {
+          isPathValid = false;
+        }
+      });
+    }
+
+    return isPathValid;
   }
 }

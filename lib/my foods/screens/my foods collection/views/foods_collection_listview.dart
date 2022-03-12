@@ -89,7 +89,6 @@ class FoodsCollectionListView extends StatelessWidget {
                     ?[fdcs.isItemSelected] = isItemSelected.value;
                 fcc.itemsSelectionCount.value = fcufs.countSelectedItems();
               } else {
-                // fcufs.selecAllUnselectAll(trueSelectAllfalseUnselectAll: false);
                 fcc.currentPathCR.value =
                     snapshot.reference.path + fdcs.fcPathSeperator;
 

@@ -11,7 +11,7 @@ class OnSelectedBottomBarForFoodCollection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     void addItemsToListForOperation() {
-      if (fcc.itemsSelectionCount.value > 0) {
+      if (fcc.itemsSelectionCount.value > 0 ) {
         fcc.currentsPathItemsMaps.value.forEach((snapRef, thisItemMap) {
           if (thisItemMap[fdcs.isItemSelected] ?? false) {
             fcc.listSelectedItemsDRsForOperation.value.add(snapRef);
@@ -78,6 +78,7 @@ class OnSelectedBottomBarForFoodCollection extends StatelessWidget {
                     targetCRpath: fcc.currentPathCR.value,
                   );
                   fcc.operationValue.value = 9;
+                  
                 },
               ),
               fcItemEditButton(),
