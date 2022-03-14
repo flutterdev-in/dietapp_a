@@ -14,33 +14,41 @@ class YoutubeTestScreen extends StatelessWidget {
       ),
     );
     return Scaffold(
-      body: Column(
+      body: ListView(
         children: [
-          Container(
-            height: 300,
-            child: YoutubePlayerBuilder(
-              player: YoutubePlayer(
-                controller: YoutubePlayerController(
-                  initialVideoId: YoutubePlayer.convertUrlToId("https://www.youtube.com/watch?v=BBAyRBTfsOU")??"kjiSVunIWpU",
-                  flags: YoutubePlayerFlags(
-                    autoPlay: true,
-                    mute: true,
-                  ),
-                ),
-                showVideoProgressIndicator: true,
-                progressIndicatorColor: Colors.amber,
-                progressColors: ProgressBarColors(
-                  playedColor: Colors.amber,
-                  handleColor: Colors.amberAccent,
-                ),
-                onReady: () {},
+          YoutubePlayer(
+            controller: YoutubePlayerController(
+              initialVideoId: YoutubePlayer.convertUrlToId(
+                      "https://www.youtube.com/watch?v=nf9tq7cNkTQ") ??
+                  "kjiSVunIWpU",
+              flags: const YoutubePlayerFlags(
+                autoPlay: false,
+                hideThumbnail: true,
+                enableCaption: false,
+                startAt: 1,
+                useHybridComposition: false,
               ),
-              builder: (p0, p1) {
-                return ListTile(
-                  title: Text("jdcbhhbchbc"),
-                );
-              },
             ),
+            showVideoProgressIndicator: true,
+            bottomActions: [
+              CurrentPosition(),
+              ProgressBar(isExpanded: true,colors: ProgressBarColors(
+              bufferedColor: Colors.green,
+              playedColor: Colors.red,
+              handleColor: Colors.red,
+              backgroundColor: Colors.purple,
+            ),),
+              RemainingDuration(),
+            ],
+            progressColors: ProgressBarColors(
+              bufferedColor: Colors.transparent,
+              playedColor: Colors.red,
+              backgroundColor: Colors.purple,
+            ),
+            onReady: () {},
+          ),
+          SizedBox(
+            height: 300,
           ),
         ],
       ),

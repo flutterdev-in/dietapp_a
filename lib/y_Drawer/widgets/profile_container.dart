@@ -29,7 +29,7 @@ class DrawerProfileContainer extends StatelessWidget {
               return GFListTile(
                 padding: const EdgeInsets.all(10),
                 margin: const EdgeInsets.all(0),
-                color: CLR().primary,
+                color: primaryColor,
                 title: Text(
                   uwm.displayName,
                   textScaleFactor: 1.3,

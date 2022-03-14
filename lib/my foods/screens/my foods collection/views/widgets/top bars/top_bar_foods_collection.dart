@@ -1,3 +1,4 @@
+import 'package:dietapp_a/my%20foods/screens/Add%20food/add_food_sreen.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/functions/fc_useful_functions.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/foods_collection_strings.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/views/widgets/top%20bars/a_add_folder_for_foods.dart';
@@ -26,15 +27,21 @@ class FoodsCollectionTopBar extends StatelessWidget {
             child: const Text("Select")),
         TextButton(onPressed: () {}, child: const Text("Sort")),
         TextButton(
-            onPressed: () async {
-              List<String> listSubs =
-                  fcc.currentPathCR.split(fdcs.subCollections);
-              if (listSubs.length < 6) {
-                addFolderForFoods(context);
-              }
-            },
-            child: const Text("Add Folder")),
-        TextButton(onPressed: () {}, child: const Text("Add Food")),
+          child: const Text("Add Folder"),
+          onPressed: () async {
+            List<String> listSubs =
+                fcc.currentPathCR.split(fdcs.subCollections);
+            if (listSubs.length < 6) {
+              addFolderForFoods(context);
+            }
+          },
+        ),
+        TextButton(
+          child: const Text("Add Food"),
+          onPressed: () {
+            Get.to(AddFoodScreen());
+          },
+        ),
       ],
     );
     return Column(

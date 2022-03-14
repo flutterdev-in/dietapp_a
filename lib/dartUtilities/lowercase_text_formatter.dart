@@ -10,3 +10,4 @@ class LowerCaseTextFormatter extends TextInputFormatter {
     );
   }
 }
+

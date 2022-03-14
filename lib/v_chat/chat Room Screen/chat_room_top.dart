@@ -19,7 +19,7 @@ class ChatRoomAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 55,
-      color: CLR().primary,
+      color: primaryColor,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
