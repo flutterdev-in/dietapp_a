@@ -5,6 +5,7 @@ import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/models/food
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/foods_collection_strings.dart';
 
 import 'package:dietapp_a/x_customWidgets/alert_dialogue.dart';
+import 'package:dietapp_a/x_customWidgets/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -17,6 +18,7 @@ class CountButtonAdfdW extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GFIconButton(
+      color: Colors.blueGrey.shade100,
       shape: GFIconButtonShape.circle,
       icon:
           Obx(() => Text(adfc.grossSelectedFCmodelMap.value.length.toString())),

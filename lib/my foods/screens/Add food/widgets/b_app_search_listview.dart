@@ -5,7 +5,6 @@ import 'package:dietapp_a/my%20foods/screens/Add%20food/models/food_model_of_fir
 import 'package:dietapp_a/my%20foods/screens/Add%20food/widgets/website_open.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/models/food_collection_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutterfire_ui/firestore.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';

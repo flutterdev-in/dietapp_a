@@ -1,5 +1,8 @@
 import 'package:dietapp_a/my%20foods/screens/Add%20food/add_food_sreen.dart';
 import 'package:dietapp_a/my%20foods/screens/Add%20food/web_view_plugin.dart';
+import 'package:dietapp_a/my%20foods/screens/Add%20food/widgets/inapp_web_view.dart';
+import 'package:dietapp_a/my%20foods/screens/Add%20food/widgets/webscrape.dart';
+import 'package:dietapp_a/my%20foods/screens/Add%20food/widgets/yt_explode.dart';
 import 'package:dietapp_a/z_homeScreen/a_home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +26,7 @@ class AuthGate extends StatelessWidget {
             ],
           );
         } else {
-          // return WebViewPluginScreen();
+          // return InAppWebViewScreen();
           return AddFoodScreen();
           return HomeScreen();
         }
