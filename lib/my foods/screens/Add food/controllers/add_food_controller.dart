@@ -1,6 +1,5 @@
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/models/food_collection_model.dart';
 import 'package:get/get.dart';
-import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 AddFoodController adfc = AddFoodController();
 

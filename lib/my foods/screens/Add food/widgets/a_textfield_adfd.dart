@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/my%20foods/screens/Add%20food/controllers/add_food_controller.dart';
 import 'package:dietapp_a/my%20foods/screens/Add%20food/controllers/browser_controllers.dart';
+import 'package:dietapp_a/my%20foods/screens/Add%20food/controllers/rxvariables_for_count_button.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/models/food_collection_model.dart';
-import 'package:dietapp_a/x_customWidgets/colors.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -101,14 +101,18 @@ class TextFieldAdfd extends StatelessWidget {
                   .toList();
 
               if (!ls.contains(data?.url)) {
-                adfc.isItemAddedToList.value = true;
+                countbvs.isItemAdded.value = true;
                 adfc.addedFoodList.value.add(fdcm);
-                await Future.delayed(const Duration(milliseconds: 1200));
-                adfc.isItemAddedToList.value = false;
+                await Future.delayed(const Duration(milliseconds: 1500));
+                countbvs.isItemAdded.value = false;
+              } else {
+                countbvs.isItemDuplicate.value = true;
+                await Future.delayed(const Duration(milliseconds: 3000));
+                countbvs.isItemDuplicate.value = false;
               }
             },
             padding: const EdgeInsets.all(0),
-            icon: Icon(MdiIcons.webPlus, color: primaryColor),
+            icon: Icon(MdiIcons.webPlus, color: Colors.black87),
           );
         } else {
           return IconButton(

@@ -23,4 +23,6 @@ class BrowserController {
       await bc.wvc!.loadUrl(urlRequest: URLRequest(url: Uri.parse(webURL)));
     }
   }
+
+  
 }

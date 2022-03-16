@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dietapp_a/my%20foods/screens/Add%20food/controllers/browser_controllers.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/functions/fc_useful_functions.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/models/food_collection_model.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/foods_collection_strings.dart';
@@ -7,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/firestore.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/components/list_tile/gf_list_tile.dart';
+import 'package:getwidget/getwidget.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class FoodsCollectionListView extends StatelessWidget {
@@ -35,14 +37,53 @@ class FoodsCollectionListView extends StatelessWidget {
               fdcs.fcModel: fdcm
             }
           });
+          Widget avatarW() {
+            if (fdcm.isFolder) {
+              return const Icon(
+                MdiIcons.folder,
+                color: Colors.orange,
+              );
+            } else {
+              Widget avatar = GFAvatar(
+                shape: GFAvatarShape.standard,
+                size: GFSize.MEDIUM,
+                maxRadius: 20,
+                backgroundImage: NetworkImage(fdcm.imgURL ?? ""),
+              );
+              if (fdcm.webURL?.contains("youtube.com/watch?v=") ?? false) {
+                return Stack(
+                  children: [
+                    avatar,
+                    Positioned(
+                      child: Container(
+                        color: Colors.white70,
+                        child: Icon(
+                          MdiIcons.youtube,
+                          color: Colors.red,
+                          size: 15,
+                        ),
+                      ),
+                      right: 0,
+                      bottom: 0,
+                    )
+                  ],
+                );
+              } else {
+                return avatar;
+              }
+            }
+          }
+
           return GFListTile(
             padding: const EdgeInsets.fromLTRB(0, 5, 8, 0),
             margin: const EdgeInsets.symmetric(vertical: 7, horizontal: 10),
-            avatar:const Icon(
-              MdiIcons.folder,
-              color: Colors.orange,
+            avatar: avatarW(),
+            title: Text(
+              fdcm.fieldName,
+              softWrap: true,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
             ),
-            title: Text(fdcm.fieldName),
             icon: Obx(() {
               isItemSelected.value = fcc.currentsPathItemsMaps
                   .value[snapshot.reference]?[fdcs.isItemSelected];
@@ -60,7 +101,7 @@ class FoodsCollectionListView extends StatelessWidget {
                 }
               } else {
                 return InkWell(
-                  child:const SizedBox(
+                  child: const SizedBox(
                     width: 20,
                     height: 20,
                     child: Icon(
@@ -88,7 +129,7 @@ class FoodsCollectionListView extends StatelessWidget {
                 fcc.currentsPathItemsMaps.value[snapshot.reference]
                     ?[fdcs.isItemSelected] = isItemSelected.value;
                 fcc.itemsSelectionCount.value = fcufs.countSelectedItems();
-              } else {
+              } else if (fdcm.isFolder) {
                 fcc.currentPathCR.value =
                     snapshot.reference.path + fdcs.fcPathSeperator;
 
@@ -100,6 +141,8 @@ class FoodsCollectionListView extends StatelessWidget {
                     fdcs.fieldName: fdcm.fieldName
                   },
                 );
+              } else {
+                // bc.loadURl(fdcm.webURL ?? "");
               }
             },
             onLongPress: () {

@@ -16,12 +16,7 @@ class MyFoodsCollectionView extends StatelessWidget {
       children: [
         const FoodsCollectionTopBar(),
         const Expanded(child: FoodsCollectionListView()),
-        Obx(
-          () => SizedBox(
-            height: 200,
-            child: SingleChildScrollView(child: Text(fcc.printPurpose.value)),
-          ),
-        ),
+       
         Obx(() {
           if (fcc.isCopyOrMoveStarted.value) {
             return const PasteBarForFC();

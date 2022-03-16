@@ -1,13 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/my%20foods/screens/Add%20food/constants/adf_const_variables.dart';
 import 'package:dietapp_a/my%20foods/screens/Add%20food/controllers/add_food_controller.dart';
 import 'package:dietapp_a/my%20foods/screens/Add%20food/controllers/browser_controllers.dart';
+import 'package:dietapp_a/my%20foods/screens/Add%20food/controllers/rxvariables_for_count_button.dart';
 import 'package:dietapp_a/my%20foods/screens/Add%20food/models/food_model_of_fire_food.dart';
+import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/controllers/fc_controller.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/models/food_collection_model.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/foods_collection_strings.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/views/widgets/top%20bars/fc_path_bar.dart';
 
 import 'package:dietapp_a/x_customWidgets/alert_dialogue.dart';
-import 'package:dietapp_a/x_customWidgets/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
@@ -21,11 +23,12 @@ class CountButtonAdfdW extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GFIconButton(
+      color: Colors.black26,
       type: GFButtonType.outline,
       shape: GFIconButtonShape.circle,
       icon: Obx(() => Text(
             adfc.addedFoodList.value.length.toString(),
-            textScaleFactor: 1.2,
+            textScaleFactor: 1.3,
           )),
       onPressed: () {
         alertDialogueW(
@@ -41,12 +44,23 @@ class CountButtonAdfdW extends StatelessWidget {
 
   Widget listViewSelected() {
     return SizedBox(
-      height: 510,
+      height: 520,
       width: double.maxFinite,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           FcPathBar(),
+          Wrap(
+            children: [
+              Text("Tap on ", textScaleFactor: 0.7),
+              Icon(MdiIcons.webPlus, color: Colors.black, size: 12),
+              Text(
+                " or Long press on webLinks to Add foods",
+                textScaleFactor: 0.7,
+              ),
+            ],
+          ),
+          SizedBox(height: 5),
           SizedBox(
             height: 410,
             child: Obx(
@@ -61,21 +75,33 @@ class CountButtonAdfdW extends StatelessWidget {
                       padding: const EdgeInsets.fromLTRB(2, 3, 3, 3),
                       child: Row(
                         children: [
-                          GFAvatar(
-                            shape: GFAvatarShape.standard,
-                            size: GFSize.MEDIUM,
-                            maxRadius: 20,
-                            backgroundImage: NetworkImage(fdcm.imgURL ?? ""),
+                          InkWell(
+                            child: GFAvatar(
+                              shape: GFAvatarShape.standard,
+                              size: GFSize.MEDIUM,
+                              maxRadius: 20,
+                              backgroundImage: NetworkImage(fdcm.imgURL ?? ""),
+                            ),
+                            onTap: () {
+                              Get.back();
+                              bc.loadURl(fdcm.imgURL ?? "");
+                            },
                           ),
                           SizedBox(
                             width: 5,
                           ),
                           Expanded(
-                            child: Text(
-                              fdcm.fieldName,
-                              softWrap: true,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
+                            child: InkWell(
+                              child: Text(
+                                fdcm.fieldName,
+                                softWrap: true,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              onTap: () {
+                                Get.back();
+                                bc.loadURl(fdcm.webURL ?? "");
+                              },
                             ),
                             flex: 8,
                           ),
@@ -123,10 +149,32 @@ class CountButtonAdfdW extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 ElevatedButton(
-                    onPressed: () => Get.back(), child: Text("Add more")),
+                    onPressed: () async {
+                      await Future.delayed(const Duration(milliseconds: 600));
+                      adfc.addedFoodList.value.clear();
+                      await Future.delayed(const Duration(milliseconds: 200));
+                      Get.back();
+                      countbvs.isClearAll.value = true;
+                      await Future.delayed(const Duration(milliseconds: 2500));
+                      countbvs.isClearAll.value = false;
+                    },
+                    child: Text("Clear all")),
                 ElevatedButton(
                   child: Text("Add all"),
-                  onPressed: () {},
+                  onPressed: () async {
+                    for (FoodsCollectionModel f in adfc.addedFoodList.value) {
+                      await FirebaseFirestore.instance
+                          .collection(fcc.currentPathCR.value)
+                          .add(f.toMap());
+                    }
+                    await Future.delayed(const Duration(milliseconds: 900));
+                    adfc.addedFoodList.value.clear();
+                    await Future.delayed(const Duration(milliseconds: 300));
+                    Get.back();
+                    countbvs.isAddAll.value = true;
+                    await Future.delayed(const Duration(milliseconds: 2800));
+                    countbvs.isAddAll.value = false;
+                  },
                 ),
               ],
             ),

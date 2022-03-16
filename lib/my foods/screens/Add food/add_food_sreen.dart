@@ -1,30 +1,24 @@
 import 'package:dietapp_a/my%20foods/screens/Add%20food/controllers/add_food_controller.dart';
 import 'package:dietapp_a/my%20foods/screens/Add%20food/controllers/browser_controllers.dart';
+import 'package:dietapp_a/my%20foods/screens/Add%20food/controllers/rxvariables_for_count_button.dart';
 import 'package:dietapp_a/my%20foods/screens/Add%20food/widgets/ab_count_button_adfd.dart';
 import 'package:dietapp_a/my%20foods/screens/Add%20food/widgets/a_textfield_adfd.dart';
 import 'package:dietapp_a/my%20foods/screens/Add%20food/widgets/browser/b_web_view_adfd.dart';
-import 'package:dietapp_a/my%20foods/screens/Add%20food/widgets/browser/bba_menu_buttons.dart';
 import 'package:dietapp_a/my%20foods/screens/Add%20food/widgets/browser/bb_menu_items_adfd.dart';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
-
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class AddFoodScreen extends StatelessWidget {
-  AddFoodScreen({Key? key}) : super(key: key);
+  const AddFoodScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        if (bc.currentURL.value.contains("youtube.com/watch")) {
-          bc.wvc?.goBack();
-          return false;
-        } else {
-          return true;
-        }
+        bc.wvc?.goBack();
+        return false;
       },
       child: Scaffold(
         appBar: appBarW(context),
@@ -48,15 +42,7 @@ class AddFoodScreen extends StatelessWidget {
           SizedBox(width: 5),
           Expanded(child: TextFieldAdfd(), flex: 5),
           SizedBox(width: 10),
-          Obx(() => adfc.isItemAddedToList.value
-              ? SizedBox(
-                  width: 44,
-                  height: 40,
-                  child: Lottie.network(
-                      'https://assets6.lottiefiles.com/packages/lf20_qsrtwdyv.json',
-                      repeat: false),
-                )
-              : CountButtonAdfdW()),
+          countButton(),
           SizedBox(
             width: 40,
             child: MenuItemsWebBrowser(),
@@ -66,6 +52,45 @@ class AddFoodScreen extends StatelessWidget {
     );
   }
 
+  Widget countButton() {
+    return Obx(() {
+      if (countbvs.isItemAdded.value) {
+        return SizedBox(
+          width: 44,
+          height: 40,
+          child: Lottie.network(
+              'https://assets6.lottiefiles.com/packages/lf20_qsrtwdyv.json',
+              repeat: false),
+        );
+      } else if (countbvs.isItemDuplicate.value) {
+        return SizedBox(
+          width: 44,
+          height: 40,
+          child: Lottie.network(
+              'https://assets8.lottiefiles.com/packages/lf20_olhixnxg.json',
+              repeat: false),
+        );
+      } else if (countbvs.isAddAll.value) {
+        return SizedBox(
+          width: 44,
+          height: 40,
+          child: Lottie.network(
+              'https://assets6.lottiefiles.com/packages/lf20_vRx1sP.json',
+              repeat: false),
+        );
+      } else if (countbvs.isClearAll.value) {
+        return SizedBox(
+          width: 44,
+          height: 40,
+          child: Lottie.network(
+              'https://assets4.lottiefiles.com/packages/lf20_nux6g0kx.json',
+              repeat: false),
+        );
+      } else {
+        return CountButtonAdfdW();
+      }
+    });
+  }
 
   Widget textFieldPrefix() {
     return PopupMenuButton(

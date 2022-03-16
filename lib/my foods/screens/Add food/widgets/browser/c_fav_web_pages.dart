@@ -66,6 +66,7 @@ class FavWebPages extends StatelessWidget {
                               ),
                               onTap: () async {
                                 Get.back();
+                                Get.back();
                                 await bc.loadURl(dataMap["webURL"]);
                               },
                             ),

@@ -12,15 +12,14 @@ class MenuButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Rx<bool> isHeartTapped = false.obs;
     return SizedBox(
       height: 40,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           InkWell(
-            child: SizedBox(
-              width: 30,
+            child: const SizedBox(
+              width: 35,
               height: double.maxFinite,
               child: Align(
                 alignment: Alignment.centerLeft,
@@ -29,11 +28,14 @@ class MenuButtons extends StatelessWidget {
                 ),
               ),
             ),
-            onTap: () => Get.back(),
+            onTap: () {
+              Get.back();
+              Get.back();
+            },
           ),
           InkWell(
-            child: SizedBox(
-              width: 30,
+            child: const SizedBox(
+              width: 35,
               height: double.maxFinite,
               child: Icon(
                 MdiIcons.arrowRight,
@@ -45,8 +47,8 @@ class MenuButtons extends StatelessWidget {
             },
           ),
           InkWell(
-            child: SizedBox(
-              width: 30,
+            child: const SizedBox(
+              width: 35,
               height: double.maxFinite,
               child: Icon(
                 MdiIcons.refresh,
@@ -59,7 +61,7 @@ class MenuButtons extends StatelessWidget {
           ),
           InkWell(
             child: SizedBox(
-              width: 30,
+              width: 35,
               height: double.maxFinite,
               child: Obx(() {
                 bool isSameURL = false;
@@ -87,8 +89,8 @@ class MenuButtons extends StatelessWidget {
             },
           ),
           InkWell(
-            child: SizedBox(
-              width: 30,
+            child: const SizedBox(
+              width: 35,
               height: double.maxFinite,
               child: Icon(
                 MdiIcons.home,

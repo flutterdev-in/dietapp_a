@@ -23,9 +23,8 @@ class AuthGate extends StatelessWidget {
             ],
           );
         } else {
-          // return InAppWebViewScreen();
-          return AddFoodScreen();
-          return HomeScreen();
+         
+          return const HomeScreen();
         }
 
         // Render your application if authenticated
