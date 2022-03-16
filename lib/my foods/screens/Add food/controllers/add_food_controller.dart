@@ -14,4 +14,6 @@ class AddFoodController {
   final netSelectedFCmodelMap = RxMap<String, FoodsCollectionModel>().obs;
   final grossSelectedCount = RxInt(0).obs;
   final ytSeachList = RxList().obs;
+  final isItemAddedToList = false.obs;
+  final addedFoodList = RxList<FoodsCollectionModel>([]).obs;
 }

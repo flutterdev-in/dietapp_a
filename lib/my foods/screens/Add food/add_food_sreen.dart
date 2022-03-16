@@ -1,9 +1,14 @@
-import 'package:dietapp_a/my%20foods/screens/Add%20food/widgets/b_app_search_listview.dart';
+import 'package:dietapp_a/my%20foods/screens/Add%20food/controllers/add_food_controller.dart';
+import 'package:dietapp_a/my%20foods/screens/Add%20food/controllers/browser_controllers.dart';
 import 'package:dietapp_a/my%20foods/screens/Add%20food/widgets/ab_count_button_adfd.dart';
 import 'package:dietapp_a/my%20foods/screens/Add%20food/widgets/a_textfield_adfd.dart';
-import 'package:dietapp_a/my%20foods/screens/Add%20food/widgets/inapp_web_view.dart';
+import 'package:dietapp_a/my%20foods/screens/Add%20food/widgets/browser/b_web_view_adfd.dart';
+import 'package:dietapp_a/my%20foods/screens/Add%20food/widgets/browser/bba_menu_buttons.dart';
+import 'package:dietapp_a/my%20foods/screens/Add%20food/widgets/browser/bb_menu_items_adfd.dart';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -14,7 +19,12 @@ class AddFoodScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        return true;
+        if (bc.currentURL.value.contains("youtube.com/watch")) {
+          bc.wvc?.goBack();
+          return false;
+        } else {
+          return true;
+        }
       },
       child: Scaffold(
         appBar: appBarW(context),
@@ -37,24 +47,25 @@ class AddFoodScreen extends StatelessWidget {
         children: [
           SizedBox(width: 5),
           Expanded(child: TextFieldAdfd(), flex: 5),
-          SizedBox(width: 8),
-          CountButtonAdfdW(),
+          SizedBox(width: 10),
+          Obx(() => adfc.isItemAddedToList.value
+              ? SizedBox(
+                  width: 44,
+                  height: 40,
+                  child: Lottie.network(
+                      'https://assets6.lottiefiles.com/packages/lf20_qsrtwdyv.json',
+                      repeat: false),
+                )
+              : CountButtonAdfdW()),
           SizedBox(
-            width: 25,
-            child: Icon(MdiIcons.dotsVertical, color: Colors.black),
+            width: 40,
+            child: MenuItemsWebBrowser(),
           ),
         ],
       ),
     );
   }
 
-  Widget floatingButtonW() {
-    return FloatingActionButton(
-      onPressed: () {},
-      child: Text("Add"),
-      backgroundColor: Colors.green.shade500,
-    );
-  }
 
   Widget textFieldPrefix() {
     return PopupMenuButton(

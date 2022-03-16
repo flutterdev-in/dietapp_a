@@ -1,14 +1,15 @@
-import 'package:dietapp_a/dartUtilities/lowercase_text_formatter.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/my%20foods/screens/Add%20food/controllers/add_food_controller.dart';
 import 'package:dietapp_a/my%20foods/screens/Add%20food/controllers/browser_controllers.dart';
+import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/models/food_collection_model.dart';
 import 'package:dietapp_a/x_customWidgets/colors.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
-import 'package:getwidget/getwidget.dart';
 
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:metadata_fetch/metadata_fetch.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class TextFieldAdfd extends StatelessWidget {
@@ -31,7 +32,6 @@ class TextFieldAdfd extends StatelessWidget {
         controller: bc.tec,
         keyboardType: TextInputType.name,
         textInputAction: TextInputAction.search,
-        
         decoration: InputDecoration(
           suffixIcon: textfieldSuffix(),
           hintText: 'Search or enter URL',
@@ -53,27 +53,26 @@ class TextFieldAdfd extends StatelessWidget {
               adfc.searchString.value = value;
             });
           }
-
-         
         },
         onTap: () async {
           bc.isTextFieldTapped.value = true;
-         bc. tec.selection =
-        TextSelection.fromPosition(TextPosition(offset: bc.tec.text.length));
+          bc.tec.selection = TextSelection.fromPosition(
+              TextPosition(offset: bc.tec.text.length));
         },
         onSubmitted: (value) async {
           bc.isTextFieldTapped.value = false;
-         bool isURL =  GetUtils.isURL(value);
-         Uri? uri;
-          if (isURL) {
-            uri = Uri.parse(value);
-          }else{
-            uri = Uri.parse(
-                "https://www.google.com/search?q=$value");
+          String uriString = value;
+          if (value.trim().toLowerCase() == "google") {
+            uriString = "https://www.google.com/";
+          } else if (value.trim().toLowerCase() == "youtube") {
+            uriString = "https://m.youtube.com/";
+          } else if (!GetUtils.isURL(value)) {
+            uriString = "https://www.google.com/search?q=$value";
           }
-          
+
           if (bc.wvc != null) {
-            await bc.wvc!.loadUrl(urlRequest: URLRequest(url: uri));
+            await bc.wvc!
+                .loadUrl(urlRequest: URLRequest(url: Uri.parse(uriString)));
           }
         },
       ),
@@ -86,21 +85,26 @@ class TextFieldAdfd extends StatelessWidget {
         if (bc.isTextFieldTapped.value) {
           return IconButton(
               onPressed: () => bc.tec.clear(), icon: Icon(MdiIcons.close));
-        } else if (bc.isLinkYoutubeVideo.value) {
-          return IconButton(
-            onPressed: null,
-            icon: Stack(
-              children: [
-                Icon(MdiIcons.youtube),
-                Icon(MdiIcons.plus),
-              ],
-            ),
-          );
-        } else if (bc.isValidURL.value) {
+        } else if (GetUtils.isURL(bc.currentURL.value)) {
           return IconButton(
             onPressed: () async {
-              if (bc.wvc != null) {
-                bc.tec.text = await bc.wvc!.getTitle() ?? "";
+              Metadata? data = await MetadataFetch.extract(bc.currentURL.value);
+              FoodsCollectionModel fdcm = FoodsCollectionModel(
+                fieldName: data?.title ?? "",
+                fieldTime: Timestamp.fromDate(DateTime.now()),
+                isFolder: false,
+                imgURL: data?.image,
+                webURL: data?.url,
+              );
+              List<String> ls = adfc.addedFoodList.value
+                  .map((element) => element.webURL.toString())
+                  .toList();
+
+              if (!ls.contains(data?.url)) {
+                adfc.isItemAddedToList.value = true;
+                adfc.addedFoodList.value.add(fdcm);
+                await Future.delayed(const Duration(milliseconds: 1200));
+                adfc.isItemAddedToList.value = false;
               }
             },
             padding: const EdgeInsets.all(0),
@@ -108,7 +112,7 @@ class TextFieldAdfd extends StatelessWidget {
           );
         } else {
           return IconButton(
-            onPressed: () {},
+            onPressed: null,
             icon: const Icon(MdiIcons.webPlus, color: Colors.black45),
           );
         }

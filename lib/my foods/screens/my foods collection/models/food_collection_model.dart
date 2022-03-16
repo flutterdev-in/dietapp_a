@@ -9,7 +9,7 @@ class FoodsCollectionModel {
   String? imgURL;
   String? appFoodID;
   String? webURL;
-  String? youtubeURL;
+
 
   FoodsCollectionModel({
     required this.fieldName,
@@ -18,7 +18,7 @@ class FoodsCollectionModel {
     this.notes = "",
     this.appFoodID,
     this.webURL,
-    this.youtubeURL,
+
     this.imgURL,
   });
 
@@ -38,7 +38,7 @@ class FoodsCollectionModel {
             fdcs.webURL: webURL,
             fdcs.appFoodID: appFoodID,
             fdcs.imgURL: imgURL,
-            fdcs.youtubeURL: youtubeURL,
+      
           };
   }
 
@@ -51,7 +51,7 @@ class FoodsCollectionModel {
       appFoodID: foodCollectionFieldMap[fdcs.appFoodID],
       webURL: foodCollectionFieldMap[fdcs.webURL],
       imgURL: foodCollectionFieldMap[fdcs.imgURL],
-      youtubeURL: foodCollectionFieldMap[fdcs.youtubeURL],
+
     );
   }
 }

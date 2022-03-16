@@ -1,3 +1,4 @@
+import 'package:dietapp_a/hive%20Boxes/box_names.dart';
 import 'package:dietapp_a/myapp.dart';
 import 'package:dietapp_a/v_chat/constants/chat_strings.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ Future<void> main() async {
   await Firebase.initializeApp();
   await Hive.initFlutter();
   await Hive.openBox(crs.chatBox);
+  Hive.openBox(boxNames.favWebPages);
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(const MyApp());
 }
