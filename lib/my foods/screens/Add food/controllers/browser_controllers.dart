@@ -11,6 +11,7 @@ class BrowserController {
   Rx<bool> isTextFieldTapped = false.obs;
   Rx<String> homeURL = "youtube.com".obs;
   Rx<String> lastFavWebURL = "".obs;
+  Rx<String> functionButtonType = "".obs;
 
   void tecText(String text) {
     tec.text = text;
@@ -23,6 +24,4 @@ class BrowserController {
       await bc.wvc!.loadUrl(urlRequest: URLRequest(url: Uri.parse(webURL)));
     }
   }
-
-  
 }

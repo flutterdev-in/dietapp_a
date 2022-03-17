@@ -82,6 +82,7 @@ class TextFieldAdfd extends StatelessWidget {
   Widget textfieldSuffix() {
     return Obx(
       () {
+        
         if (bc.isTextFieldTapped.value) {
           return IconButton(
               onPressed: () => bc.tec.clear(), icon: Icon(MdiIcons.close));

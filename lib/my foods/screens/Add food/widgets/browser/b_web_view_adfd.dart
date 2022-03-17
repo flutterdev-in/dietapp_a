@@ -25,36 +25,38 @@ class InAppWebViewWidget extends StatelessWidget {
         }
       },
       onLongPressHitTestResult: (controller, hitTestResult) async {
-        RequestFocusNodeHrefResult? k = await bc.wvc!.requestFocusNodeHref();
-        Uri uri = k?.url ?? Uri.parse("about:blank");
-        String longPressURL = uri.toString();
-        String title = k?.title ?? "";
+        if (bc.functionButtonType.value != "getURL") {
+          RequestFocusNodeHrefResult? k = await bc.wvc!.requestFocusNodeHref();
+          Uri uri = k?.url ?? Uri.parse("about:blank");
+          String longPressURL = uri.toString();
+          String title = k?.title ?? "";
 
-        if (!title.contains(RegExp(r"[a-zA-Z]+"))) {
-          var data = await MetadataFetch.extract(longPressURL);
-          title = data?.title ?? "";
-        }
-        FoodsCollectionModel fdcm = FoodsCollectionModel(
-          fieldName: title,
-          fieldTime: Timestamp.fromDate(DateTime.now()),
-          isFolder: false,
-          imgURL: k?.src,
-          webURL: longPressURL,
-        );
+          if (!title.contains(RegExp(r"[a-zA-Z]+"))) {
+            var data = await MetadataFetch.extract(longPressURL);
+            title = data?.title ?? "";
+          }
+          FoodsCollectionModel fdcm = FoodsCollectionModel(
+            fieldName: title,
+            fieldTime: Timestamp.fromDate(DateTime.now()),
+            isFolder: false,
+            imgURL: k?.src,
+            webURL: longPressURL,
+          );
 
-        List<String> ls = adfc.addedFoodList.value
-            .map((element) => element.webURL.toString())
-            .toList();
+          List<String> ls = adfc.addedFoodList.value
+              .map((element) => element.webURL.toString())
+              .toList();
 
-        if (!ls.contains(longPressURL)) {
-          countbvs.isItemAdded.value = true;
-          adfc.addedFoodList.value.add(fdcm);
-          await Future.delayed(const Duration(milliseconds: 1500));
-          countbvs.isItemAdded.value = false;
-        } else {
-          countbvs.isItemDuplicate.value = true;
-          await Future.delayed(const Duration(milliseconds: 4000));
-          countbvs.isItemDuplicate.value = false;
+          if (!ls.contains(longPressURL)) {
+            countbvs.isItemAdded.value = true;
+            adfc.addedFoodList.value.add(fdcm);
+            await Future.delayed(const Duration(milliseconds: 1500));
+            countbvs.isItemAdded.value = false;
+          } else {
+            countbvs.isItemDuplicate.value = true;
+            await Future.delayed(const Duration(milliseconds: 4000));
+            countbvs.isItemDuplicate.value = false;
+          }
         }
       },
     );

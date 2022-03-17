@@ -54,7 +54,9 @@ class AddFoodScreen extends StatelessWidget {
 
   Widget countButton() {
     return Obx(() {
-      if (countbvs.isItemAdded.value) {
+      if (bc.functionButtonType.value == "getURL") {
+        return IconButton(onPressed: null, icon: Icon(MdiIcons.plus));
+      } else if (countbvs.isItemAdded.value) {
         return SizedBox(
           width: 44,
           height: 40,
