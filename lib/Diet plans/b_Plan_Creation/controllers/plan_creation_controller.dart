@@ -18,12 +18,29 @@ class PlanCreationController extends GetxController {
   Rx<String> editScreenModel = "".obs;
   Rx<int> lastDayIndex = 0.obs;
 
+  // Box Models
+  String listTimings = "listTimings";
+  List<String> constListTimings = [
+    "Breakfast",
+    "Mid morning snacks",
+    "Lunch",
+    "Evening snacks",
+    "Dinner",
+  ];
+
   @override
   void onInit() async {
-    pcc.lastDayIndex.value = 0;
-
+    await Hive.openBox("planCreationBox");
+    addDefaultItemsToBox();
     super.onInit();
   }
 
-  
+  void addDefaultItemsToBox() {
+    if (pcBox.get(listTimings)?.isEmpty ?? true) {
+      pcBox.put(listTimings, constListTimings);
+    }
+  }
 }
+
+Box pcBox = Hive.box("planCreationBox");
+

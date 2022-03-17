@@ -3,8 +3,8 @@ class TimingInfoModel {
   bool? hasChoices;
   int timingIndex;
   String timingName;
-  String notes;
-  String refURL;
+  String? notes;
+  String? refURL;
 
   TimingInfoModel({
     required this.hasChoices,

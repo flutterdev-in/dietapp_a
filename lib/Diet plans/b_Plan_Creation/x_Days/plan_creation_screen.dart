@@ -1,11 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/Screens/Days/days_listview.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/day_basic_info.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/diet_plan_model.dart';
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/x_Days/Menu%20button/_menu_button.dart';
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/x_Days/days_listview.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class PlanCreationScreen extends StatelessWidget {
   const PlanCreationScreen({Key? key}) : super(key: key);
@@ -15,6 +17,9 @@ class PlanCreationScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Diet Plan"),
+        actions: [
+          MenuButtonPCdays(),
+        ],
       ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
@@ -59,11 +64,26 @@ class PlanCreationScreen extends StatelessWidget {
       alignment: Alignment.bottomRight,
       child: ElevatedButton(
           onPressed: () async {
+            int dayIndex = 0;
             await FirebaseFirestore.instance
                 .doc(pcc.currentPlanDocRefPath.value)
-                .collection("days")
+                .collection(daypbims.days)
+                .orderBy(daypbims.docEntryTime, descending: true)
+                .limit(1)
+                .get()
+                .then((value) {
+              if (value.docs.length == 1) {
+                Map<String, dynamic> dataMap =
+                    value.docs.last.data() as Map<String, dynamic>;
+                dayIndex = dataMap[daypbims.dayIndex];
+              }
+            });
+            await FirebaseFirestore.instance
+                .doc(pcc.currentPlanDocRefPath.value)
+                .collection(daypbims.days)
                 .add(DayPlanBasicInfoModel(
-                        dayIndex: pcc.lastDayIndex.value + 1,
+                        dayIndex: dayIndex + 1,
+                        docEntryTime: Timestamp.fromDate(DateTime.now()),
                         notes: null,
                         refURL: null)
                     .toMap());

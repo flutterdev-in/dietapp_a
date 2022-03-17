@@ -8,4 +8,5 @@ class ConstantObjectsPlanCreate {
   String startPlanEdit = "startPlanEdit";
   String boxPlanCreate = "boxPlanCreate";
   CollectionReference<Map<String, dynamic>> dietPlansCR = userDR.collection(copc.dietPlans);
+  String timings = "timings";
 }

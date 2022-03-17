@@ -1,12 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/day_basic_info.dart';
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/y_Timings/add_timing_button.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-class DayEditScreen extends StatelessWidget {
-  const DayEditScreen({Key? key}) : super(key: key);
+class TimingsEditScreen extends StatelessWidget {
+  const TimingsEditScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +31,7 @@ class DayEditScreen extends StatelessWidget {
                   Expanded(
                     child: Container(),
                   ),
-                  addTimingButton(),
+                  AddTimingButton(),
                 ],
               ),
             ),
@@ -88,77 +89,6 @@ class DayEditScreen extends StatelessWidget {
       child: Column(
         children: [
           notesField(),
-        ],
-      ),
-    );
-  }
-
-  Widget addTimingButton() {
-    return Container(
-      height: 40,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          IconButton(
-              onPressed: () async {
-                await FirebaseFirestore.instance
-                    .doc(pcc.currentPlanDocRefPath.value)
-                    .collection("days")
-                    .add(DayPlanBasicInfoModel(
-                            dayIndex: pcc.lastDayIndex.value + 1,
-                            notes: null,
-                            refURL: null)
-                        .toMap());
-              },
-              icon: Icon(MdiIcons.plusBoxMultipleOutline)),
-          IconButton(
-              onPressed: () async {
-                await FirebaseFirestore.instance
-                    .doc(pcc.currentPlanDocRefPath.value)
-                    .collection("days")
-                    .add(DayPlanBasicInfoModel(
-                            dayIndex: pcc.lastDayIndex.value + 1,
-                            notes: null,
-                            refURL: null)
-                        .toMap());
-              },
-              icon: Icon(MdiIcons.penPlus)),
-          IconButton(
-              onPressed: () async {
-                await FirebaseFirestore.instance
-                    .doc(pcc.currentPlanDocRefPath.value)
-                    .collection("days")
-                    .add(DayPlanBasicInfoModel(
-                            dayIndex: pcc.lastDayIndex.value + 1,
-                            notes: null,
-                            refURL: null)
-                        .toMap());
-              },
-              icon: Icon(MdiIcons.webPlus)),
-          IconButton(
-              onPressed: () async {
-                await FirebaseFirestore.instance
-                    .doc(pcc.currentPlanDocRefPath.value)
-                    .collection("days")
-                    .add(DayPlanBasicInfoModel(
-                            dayIndex: pcc.lastDayIndex.value + 1,
-                            notes: null,
-                            refURL: null)
-                        .toMap());
-              },
-              icon: Icon(MdiIcons.folderPlusOutline)),
-          IconButton(
-              onPressed: () async {
-                await FirebaseFirestore.instance
-                    .doc(pcc.currentPlanDocRefPath.value)
-                    .collection("days")
-                    .add(DayPlanBasicInfoModel(
-                            dayIndex: pcc.lastDayIndex.value + 1,
-                            notes: null,
-                            refURL: null)
-                        .toMap());
-              },
-              icon: Icon(MdiIcons.folderPlusOutline)),
         ],
       ),
     );
