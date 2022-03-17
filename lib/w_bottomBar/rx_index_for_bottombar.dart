@@ -1,8 +1,8 @@
+import 'package:dietapp_a/Diet%20plans/a_Main%20Screen/main_screen_dp.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/_foods_folder_main_screen.dart';
 import 'package:dietapp_a/my%20foods/screens/youtube/youtube_test_screen.dart';
 import 'package:dietapp_a/v_chat/chat%20People%20View/chat_people_listview.dart';
 import 'package:dietapp_a/v_chat/chat%20Search/chat_search_button.dart';
-import 'package:dietapp_a/y_Firebase/manage%20Firestore/sub%20Names/sub_names.dart';
 import 'package:dietapp_a/z_homeScreen/widgets/a_drawe_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -14,7 +14,8 @@ List<Widget> listMainContainers = [
     child: Text("Home"),
   ),
   ChatPeopleListview(),
-  YoutubeTestScreen(),
+  MainScreenDP(),
+  // YoutubeTestScreen(),
   MyFoodsCollectionView(),
 ];
 
@@ -24,37 +25,11 @@ List<Widget> listAppBarButtons = [
   ),
   chatSearchButton,
   Container(
-    child: Text("Search"),
+    child: Text("Sear"),
   ),
   Container(
-    child: Text("Profile"),
+    child: Text("Pro"),
   ),
-  AppBar(
-    title: const Text("DietApp"),
-    actions: [
-      currentAppBarButton(),
-    ],
-    leading: const DrawerIcon(),
-  ),
-];
-
-List<Widget?> listAppBars = [
-  AppBar(
-    title: const Text("DietApp"),
-    actions: [
-      currentAppBarButton(),
-    ],
-    leading: const DrawerIcon(),
-  ),
-  AppBar(
-    title: const Text("DietApp"),
-    actions: [
-      currentAppBarButton(),
-    ],
-    leading: const DrawerIcon(),
-  ),
-  null,
-  null,
 ];
 
 Widget curretContainer() {

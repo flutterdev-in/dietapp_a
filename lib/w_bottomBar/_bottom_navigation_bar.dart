@@ -32,7 +32,7 @@ class BottomNavigationBarW extends StatelessWidget {
 
           /// Search
           SalomonBottomBarItem(
-            icon: Icon(Icons.search),
+            icon: Icon(MdiIcons.clipboardTextOutline),
             title: Text(""),
             selectedColor: Colors.orange,
           ),

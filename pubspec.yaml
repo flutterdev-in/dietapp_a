@@ -58,7 +58,7 @@ dependencies:
   awesome_dialog: ^2.1.2
   web_scraper: ^0.1.4
   flutter_inappwebview: ^5.3.2
-  any_link_preview: ^2.0.6
+  
   metadata_fetch: ^0.4.1
   lottie: ^1.2.2
 dev_dependencies:
