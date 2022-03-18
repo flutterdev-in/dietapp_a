@@ -2,9 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/day_basic_info.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/y_Timings/add_timing_button.dart';
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/y_Timings/timings_listview.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class TimingsEditScreen extends StatelessWidget {
   const TimingsEditScreen({Key? key}) : super(key: key);
@@ -29,15 +29,18 @@ class TimingsEditScreen extends StatelessWidget {
                 children: [
                   basicInfo(daypbim),
                   Expanded(
-                    child: Container(),
-                  ),
+                      child: TimingsListViewOnPlanCreation(
+                          docRef: docSnap.data!.reference)),
                   AddTimingButton(),
                 ],
               ),
             ),
           );
         } else {
-          return Scaffold(appBar: AppBar());
+          return Scaffold(
+            appBar: AppBar(),
+            body: Text("Network error"),
+          );
         }
       },
     );

@@ -1,11 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
-import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/day_basic_info.dart';
-import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/y_Timings/timings_edit_screen.dart';
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/timing_info_model.dart';
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/z_Foods/-foods_screen_pc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/firestore.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class TimingsListViewOnPlanCreation extends StatelessWidget {
   final DocumentReference docRef;
@@ -14,26 +15,24 @@ class TimingsListViewOnPlanCreation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      child: FirestoreListView<Map<String, dynamic>>(
-        shrinkWrap: true,
-        query: docRef.collection("timings"),
-        itemBuilder: (context, snapshot) {
-          Map<String, dynamic> dataMap = snapshot.data();
-          DayPlanBasicInfoModel daypbim =
-              DayPlanBasicInfoModel.fromMap(dataMap);
-          pcc.lastDayIndex.value = daypbim.dayIndex ;
-          return Card(
-            child: GFListTile(
-              titleText: "Day " + daypbim.dayIndex.toString(),
-              onTap: () {
-                pcc.currentDayDRpath.value = snapshot.reference.path;
-                Get.to(TimingsEditScreen());
-              },
-            ),
-          );
-        },
-      ),
+    return FirestoreListView<Map<String, dynamic>>(
+      shrinkWrap: true,
+      query: docRef
+          .collection(tims.timings)
+          .orderBy(tims.timingIndex, descending: false),
+      itemBuilder: (context, snapshot) {
+        Map<String, dynamic> dataMap = snapshot.data();
+        TimingInfoModel tim = TimingInfoModel.fromMap(dataMap);
+
+        return GFListTile(
+          titleText: tim.timingName,
+          icon: Icon(MdiIcons.dotsVertical),
+          onTap: () {
+            pcc.currentTimingDRpath.value = snapshot.reference.path;
+            Get.to(FoodsScreenPC());
+          },
+        );
+      },
     );
   }
 }

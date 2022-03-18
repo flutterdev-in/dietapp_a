@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/constsnts/const_objects_pc.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
-import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/day_basic_info.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/timing_info_model.dart';
 import 'package:dietapp_a/x_customWidgets/alert_dialogue.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +28,7 @@ class AddTimingButton extends StatelessWidget {
                   )),
             );
           },
-          child: Text("Add timing")),
+          child: const Text("Add timing")),
     );
   }
 
@@ -71,9 +70,10 @@ class AddTimingButton extends StatelessWidget {
   }
 
   Future<void> addTiming(String name) async {
+
     await FirebaseFirestore.instance
         .doc(pcc.currentDayDRpath.value)
-        .collection(copc.timings)
+        .collection(tims.timings)
         .orderBy(tims.timingIndex, descending: true)
         .limit(1)
         .get()
@@ -85,7 +85,7 @@ class AddTimingButton extends StatelessWidget {
       }
       await FirebaseFirestore.instance
           .doc(pcc.currentDayDRpath.value)
-          .collection(copc.timings)
+          .collection(tims.timings)
           .add(TimingInfoModel(
                   hasChoices: null,
                   timingIndex: timingIndex + 1,
@@ -116,7 +116,7 @@ class AddTimingButton extends StatelessWidget {
               },
             ),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Align(
             child: TextButton(
                 onPressed: () async {

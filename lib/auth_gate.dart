@@ -1,5 +1,3 @@
-import 'package:dietapp_a/my%20foods/screens/Add%20food/add_food_sreen.dart';
-
 import 'package:dietapp_a/z_homeScreen/a_home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

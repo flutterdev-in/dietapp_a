@@ -35,7 +35,7 @@ class TimingInfoModel {
   }
 }
 
-TimingInfoModelStrings tims = TimingInfoModelStrings();
+final TimingInfoModelStrings tims = TimingInfoModelStrings();
 
 class TimingInfoModelStrings {
   final String hasChoices = "hasChoices";
@@ -43,4 +43,9 @@ class TimingInfoModelStrings {
   final String timingName = "timingName";
   final String notes = "notes";
   final String refURL = "refURL";
+
+  //
+  final String timings = "timings";
+
+
 }

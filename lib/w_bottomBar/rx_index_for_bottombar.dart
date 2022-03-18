@@ -1,3 +1,4 @@
+import 'package:dietapp_a/Diet%20plans/a_Main%20Screen/Menu%20button/diet_plan_screen_menu_button.dart';
 import 'package:dietapp_a/Diet%20plans/a_Main%20Screen/main_screen_dp.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/_foods_folder_main_screen.dart';
 import 'package:dietapp_a/my%20foods/screens/youtube/youtube_test_screen.dart';
@@ -24,9 +25,7 @@ List<Widget> listAppBarButtons = [
     child: Text("Home"),
   ),
   chatSearchButton,
-  Container(
-    child: Text("Sear"),
-  ),
+  MenuButtonDietPlanScreen(),
   Container(
     child: Text("Pro"),
   ),

@@ -174,6 +174,8 @@ class CountButtonAdfdW extends StatelessWidget {
                     countbvs.isAddAll.value = true;
                     await Future.delayed(const Duration(milliseconds: 2800));
                     countbvs.isAddAll.value = false;
+                    Get.back();
+                    
                   },
                 ),
               ],

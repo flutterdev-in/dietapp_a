@@ -1,4 +1,3 @@
-
 import 'package:dietapp_a/auth_gate.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -9,17 +8,20 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      themeMode: ThemeMode.system,
-      theme: ThemeData.from(
-          colorScheme: ColorScheme.light(primary: Colors.deepPurple.shade800)),
-      // initialBinding: HomeBinding(),
-      // theme: ThemeData(
-      //   primaryColor: Colors.green,
+      themeMode: ThemeMode.light,
+      theme: ThemeData(
+        colorScheme: ColorScheme.light(primary: Colors.deepPurple.shade800),
+        primaryColor: Colors.deepPurple.shade800,
+        primaryColorLight: Colors.deepPurple.shade800,
+        // textTheme: Theme.of(context).textTheme.apply(),
+        popupMenuTheme: PopupMenuThemeData(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+        ),
+      ),
 
-      //   // textTheme: Theme.of(context).textTheme.apply(
-      //   //       fontSizeFactor: 1.0,
-      //   //     ),
-      // ),
+      // initialBinding: HomeBinding(),
       title: 'DietApp',
       // initialRoute: "/",
       // getPages: AppRoutes.routes,

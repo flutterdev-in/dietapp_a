@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/y_Firebase/fire_ref.dart';
 
-ConstantObjectsPlanCreate copc = ConstantObjectsPlanCreate();
+final ConstantObjectsPlanCreate copc = ConstantObjectsPlanCreate();
 
 class ConstantObjectsPlanCreate {
   String dietPlans = "dietPlans";

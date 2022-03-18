@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/day_basic_info.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/diet_plan_model.dart';
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/x_Days/Bottom%20buttons/_bottom_row.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/x_Days/Menu%20button/_menu_button.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/x_Days/days_listview.dart';
 import 'package:easy_debounce/easy_debounce.dart';
@@ -47,7 +48,7 @@ class PlanCreationScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  addDayButton(),
+                  daysBottomButtons(),
                 ],
               ),
             );
