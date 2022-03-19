@@ -1,3 +1,4 @@
+import 'package:dietapp_a/my%20foods/screens/Add%20food/constants/adf_const_variables.dart';
 import 'package:dietapp_a/my%20foods/screens/Add%20food/controllers/add_food_controller.dart';
 import 'package:dietapp_a/my%20foods/screens/Add%20food/controllers/browser_controllers.dart';
 import 'package:dietapp_a/my%20foods/screens/Add%20food/controllers/rxvariables_for_count_button.dart';
@@ -60,9 +61,7 @@ class AddFoodScreen extends StatelessWidget {
         return SizedBox(
           width: 44,
           height: 40,
-          child: Lottie.network(
-              'https://assets6.lottiefiles.com/packages/lf20_qsrtwdyv.json',
-              repeat: false),
+          child: Lottie.asset(adfcv.heartAnimation, repeat: false),
         );
       } else if (countbvs.isItemDuplicate.value) {
         return SizedBox(
@@ -76,17 +75,13 @@ class AddFoodScreen extends StatelessWidget {
         return SizedBox(
           width: 44,
           height: 40,
-          child: Lottie.network(
-              'https://assets6.lottiefiles.com/packages/lf20_vRx1sP.json',
-              repeat: false),
+          child: Lottie.asset(adfcv.sendAnimation, repeat: false),
         );
       } else if (countbvs.isClearAll.value) {
         return SizedBox(
           width: 44,
           height: 40,
-          child: Lottie.network(
-              'https://assets4.lottiefiles.com/packages/lf20_nux6g0kx.json',
-              repeat: false),
+          child: Lottie.asset(adfcv.deleteAnimation, repeat: false),
         );
       } else {
         return CountButtonAdfdW();

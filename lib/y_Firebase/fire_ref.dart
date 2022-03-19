@@ -15,5 +15,6 @@ final DocumentReference userDR =
 final CollectionReference chatRoomC =
     FirebaseFirestore.instance.collection(crs.chatRooms);
 
-
-
+DocumentReference fireDR(String docPath) {
+  return FirebaseFirestore.instance.doc(docPath);
+}

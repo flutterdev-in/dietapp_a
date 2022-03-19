@@ -21,7 +21,8 @@ class FoodsCollectionListView extends StatelessWidget {
         shrinkWrap: true,
         query: FirebaseFirestore.instance
             .collection(fcc.currentPathCR.value)
-            .orderBy(fdcs.fieldTime),
+            .orderBy(fdcs.isFolder, descending: true)
+            .orderBy(fdcs.fieldTime, descending: false),
         itemBuilder: (context, snapshot) {
           //Rx variables
           Rx<bool> isItemSelected = false.obs;
