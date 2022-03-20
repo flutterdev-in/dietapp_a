@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:metadata_fetch/metadata_fetch.dart';
 
 class AddFoodScreen extends StatelessWidget {
   const AddFoodScreen({Key? key}) : super(key: key);
@@ -43,7 +44,16 @@ class AddFoodScreen extends StatelessWidget {
           SizedBox(width: 5),
           Expanded(child: TextFieldAdfd(), flex: 5),
           SizedBox(width: 10),
-          countButton(),
+          Obx(() => bc.isBrowserForRefURL.value
+              ? IconButton(
+                  onPressed: () async {
+                    Metadata? data =
+                        await MetadataFetch.extract(bc.currentURL.value);
+                    bc.currentRefURLimageURL.value = data?.image ?? "";
+                    Get.back();
+                  },
+                  icon: Icon(MdiIcons.webPlus, color: Colors.black))
+              : countButton()),
           SizedBox(
             width: 40,
             child: MenuItemsWebBrowser(),

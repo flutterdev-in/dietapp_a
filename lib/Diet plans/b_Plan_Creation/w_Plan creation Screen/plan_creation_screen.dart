@@ -1,23 +1,45 @@
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/w_Plan%20creation%20Screen/default_timing_model.dart';
+import 'package:dietapp_a/my%20foods/screens/Add%20food/add_food_sreen.dart';
+import 'package:dietapp_a/my%20foods/screens/Add%20food/controllers/browser_controllers.dart';
 import 'package:dietapp_a/x_customWidgets/alert_dialogue.dart';
+import 'package:dietapp_a/x_customWidgets/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:getwidget/components/list_tile/gf_list_tile.dart';
+import 'package:getwidget/getwidget.dart';
 
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class PlanCreationScreen extends StatelessWidget {
   PlanCreationScreen({Key? key}) : super(key: key);
-  Rx<String> name = "".obs;
-  Rx<String> day = "Sunday".obs;
-  Rx<int> noOfWeeks = 4.obs;
-  final listDefaultTimingModels = RxList<DefaultTimingModel>([]).obs;
-  List<int> listnoOfWeeks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+  final Rx<String> planName = "".obs;
+  final Rx<String> notes = "".obs;
+  final listDefaultTimingModels = RxList<DefaultTimingModel>([
+    DefaultTimingModel(timingName: "Breakfast", hour: 8, min: 00, isAM: true),
+    DefaultTimingModel(
+        timingName: "Morning snacks", hour: 10, min: 30, isAM: true),
+    DefaultTimingModel(timingName: "Lunch", hour: 1, min: 30, isAM: false),
+    DefaultTimingModel(
+        timingName: "Evening snacks", hour: 5, min: 30, isAM: false),
+    DefaultTimingModel(timingName: "Dinner", hour: 9, min: 00, isAM: false),
+  ]).obs;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("Create Plan")),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: Obx(() {
+        bool isEmpty = planName.value.isEmpty;
+        return ElevatedButton(
+            onPressed: () {
+              if (isEmpty) {
+                null;
+              } else {}
+            },
+            child: Text("Create"));
+      }),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
         child: ListView(
@@ -33,7 +55,9 @@ class PlanCreationScreen extends StatelessWidget {
                   decoration: InputDecoration(
                     labelText: "Plan Name",
                   ),
-                  onChanged: (value) {},
+                  onChanged: (value) {
+                    planName.value = value;
+                  },
                 ),
               ),
             ),
@@ -42,62 +66,19 @@ class PlanCreationScreen extends StatelessWidget {
                 maxHeight: 150,
                 child: TextField(
                   maxLines: null,
+                  autofocus: false,
                   keyboardType: TextInputType.multiline,
                   decoration: InputDecoration(
                     labelText: "Notes",
                   ),
-                  onChanged: (value) {},
+                  onChanged: (value) {
+                    notes.value = value;
+                  },
                 ),
               ),
             ),
-            SizedBox(height: 25),
-            Card(
-              child: Row(
-                children: [
-                  Text("No of weeks", textScaleFactor: 1.2),
-                  Expanded(child: SizedBox()),
-                  SizedBox(
-                    height: 60,
-                    width: 70,
-                    child: CupertinoPicker(
-                      magnification: 0.9,
-                      itemExtent: 40,
-                      diameterRatio: 10,
-                      scrollController:
-                          FixedExtentScrollController(initialItem: 3),
-                      onSelectedItemChanged: (v) {
-                        noOfWeeks.value = listnoOfWeeks[v];
-                      },
-                      children: listnoOfWeeks
-                          .map((e) => Center(
-                                  child: Text(
-                                e.toString(),
-                                textScaleFactor: 1,
-                              )))
-                          .toList(),
-                    ),
-                  ),
-                  SizedBox(width: 40)
-                ],
-              ),
-            ),
-            Card(
-              child: Row(
-                children: [
-                  Text("Starting day\nof the week", textScaleFactor: 1.2),
-                  Expanded(child: SizedBox()),
-                  SizedBox(
-                    width: 130,
-                    child: Obx(() => DropdownButton<String>(
-                        items: dropdownMenuItems(),
-                        onChanged: (value) {
-                          day.value = value ?? "Sunday";
-                        },
-                        value: day.value)),
-                  ),
-                ],
-              ),
-            ),
+            refURL(),
+            SizedBox(height: 5),
             timingsW(context),
           ],
         ),
@@ -105,23 +86,51 @@ class PlanCreationScreen extends StatelessWidget {
     );
   }
 
-  List<DropdownMenuItem<String>> dropdownMenuItems() {
-    List<String> days = [
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-      "Sunday"
-    ];
-
-    return days.map((e) => DropdownMenuItem(child: Text(e), value: e)).toList();
+  Widget refURL() {
+    return Obx(() {
+      if (bc.currentURL.value == "http://m.youtube.com") {
+        return Card(
+            child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text("Ref URL"),
+            IconButton(
+                onPressed: () {
+                  bc.isBrowserForRefURL.value = true;
+                  Get.to(AddFoodScreen());
+                },
+                icon: Icon(MdiIcons.webPlus)),
+          ],
+        ));
+      } else {
+        return GFListTile(
+          margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 0),
+          avatar: Obx(() => bc.currentRefURLimageURL.value.isEmpty
+              ? SizedBox()
+              : GFAvatar(
+                  shape: GFAvatarShape.standard,
+                  size: GFSize.MEDIUM,
+                  maxRadius: 20,
+                  backgroundImage: NetworkImage(bc.currentRefURLimageURL.value),
+                )),
+          title: Text(
+            bc.currentURL.value,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+          icon: IconButton(
+              onPressed: () {
+                bc.isBrowserForRefURL.value = true;
+                Get.to(AddFoodScreen());
+              },
+              icon: Icon(MdiIcons.webSync)),
+        );
+      }
+    });
   }
 
   Widget timingsW(BuildContext context) {
     return Card(
-      margin: EdgeInsets.all(0),
       child: Column(
         children: [
           Row(
@@ -130,7 +139,8 @@ class PlanCreationScreen extends StatelessWidget {
               Text("Default timings"),
               IconButton(
                   onPressed: () {
-                    alertDialogueW(context, body: alertBodyW());
+                    FocusScope.of(context).unfocus();
+                    alertDialogueW(context, body: alertBodyW(context));
                   },
                   icon: const Icon(MdiIcons.plus)),
             ],
@@ -141,6 +151,7 @@ class PlanCreationScreen extends StatelessWidget {
                   dtmos.foodTimingsListSort(listDefaultTimingModels.value);
               return ListView.builder(
                 shrinkWrap: true,
+                physics: ScrollPhysics(),
                 itemCount: listDTMsorted.length,
                 itemBuilder: (context, index) {
                   DefaultTimingModel dftm = listDTMsorted[index];
@@ -175,7 +186,7 @@ class PlanCreationScreen extends StatelessWidget {
                           ),
                           const SizedBox(width: 10),
                           InkWell(
-                            splashColor: Colors.red,
+                            splashColor: primaryColor,
                             child: const SizedBox(
                                 child: Icon(MdiIcons.close, size: 17),
                                 width: 20),
@@ -198,7 +209,7 @@ class PlanCreationScreen extends StatelessWidget {
     );
   }
 
-  Widget alertBodyW() {
+  Widget alertBodyW(BuildContext context) {
     List<int> listHours = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
     Rx<bool> isAM = true.obs;
@@ -299,13 +310,23 @@ class PlanCreationScreen extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: ElevatedButton(
               onPressed: () async {
+                FocusScope.of(context).unfocus();
                 Get.back();
-                await Future.delayed(const Duration(milliseconds: 600));
-                listDefaultTimingModels.value.add(DefaultTimingModel(
-                    timingName: timingName.value,
-                    hour: hour.value,
-                    min: mins.value,
-                    isAM: isAM.value));
+                if (timingName.value.isNotEmpty) {
+                  DefaultTimingModel dtm = DefaultTimingModel(
+                      timingName: timingName.value.trim(),
+                      hour: hour.value,
+                      min: mins.value,
+                      isAM: isAM.value);
+                  String s = "${dtm.hour}${dtm.min}${dtm.isAM}";
+                  List<String> ls = listDefaultTimingModels.value
+                      .map((m) => "${m.hour}${m.min}${m.isAM}")
+                      .toList();
+                  if (!ls.contains(s)) {
+                    await Future.delayed(const Duration(milliseconds: 600));
+                    listDefaultTimingModels.value.add(dtm);
+                  }
+                }
               },
               child: Text("Add")),
         )

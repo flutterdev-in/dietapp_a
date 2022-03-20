@@ -13,7 +13,7 @@ import 'package:metadata_fetch/metadata_fetch.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class TextFieldAdfd extends StatelessWidget {
- const TextFieldAdfd({Key? key}) : super(key: key);
+  const TextFieldAdfd({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -36,9 +36,9 @@ class TextFieldAdfd extends StatelessWidget {
           suffixIcon: textfieldSuffix(),
           hintText: 'Search or enter URL',
           contentPadding: const EdgeInsets.fromLTRB(15, 0, 10, 0),
-          enabledBorder:  OutlineInputBorder(
+          enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(24.0),
-            borderSide:const BorderSide(color: Colors.black12),
+            borderSide: const BorderSide(color: Colors.black12),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(24.0),
@@ -79,11 +79,12 @@ class TextFieldAdfd extends StatelessWidget {
     );
   }
 
-  Widget textfieldSuffix() {
+  Widget? textfieldSuffix() {
     return Obx(
       () {
-        
-        if (bc.isTextFieldTapped.value) {
+        if (bc.isBrowserForRefURL.value) {
+          return const SizedBox();
+        } else if (bc.isTextFieldTapped.value) {
           return IconButton(
               onPressed: () => bc.tec.clear(), icon: Icon(MdiIcons.close));
         } else if (GetUtils.isURL(bc.currentURL.value)) {
