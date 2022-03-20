@@ -84,7 +84,7 @@ class MainScreenDP extends StatelessWidget {
                             pcc.currentPlanDocRefPath.value = value.path;
                           });
                           Get.back();
-                          Get.to(PlanCreationScreen());
+                          Get.to(PlanCreationScreen0());
                           print("objectsvvv");
                         },
                         child: Text("Continue")),

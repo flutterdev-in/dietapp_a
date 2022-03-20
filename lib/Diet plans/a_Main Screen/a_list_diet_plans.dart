@@ -28,7 +28,7 @@ class ListDietPlansW extends StatelessWidget {
           titleText: dpbim.planName,
           onTap: () {
             pcc.currentPlanDocRefPath.value = snapshot.reference.path;
-            Get.to(PlanCreationScreen());
+            Get.to(PlanCreationScreen0());
           },
         );
       },

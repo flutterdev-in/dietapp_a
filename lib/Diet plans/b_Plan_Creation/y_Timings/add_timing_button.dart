@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/constsnts/const_objects_pc.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/coice_foods_model.dart';
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/foods_model_for_plan.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/timing_info_model.dart';
 import 'package:dietapp_a/x_customWidgets/alert_dialogue.dart';
 import 'package:flutter/material.dart';
@@ -70,7 +72,6 @@ class AddTimingButton extends StatelessWidget {
   }
 
   Future<void> addTiming(String name) async {
-
     await FirebaseFirestore.instance
         .doc(pcc.currentDayDRpath.value)
         .collection(tims.timings)
@@ -92,7 +93,12 @@ class AddTimingButton extends StatelessWidget {
                   timingName: name,
                   notes: null,
                   refURL: null)
-              .toMap());
+              .toMap())
+          .then((docRef) async {
+        await docRef.collection(choiceFMS.choices).add(ChoiceFoodsModel(
+                choiceIndex: 0, choiceName: "", notes: null, refURL: null)
+            .toMap());
+      });
     });
   }
 

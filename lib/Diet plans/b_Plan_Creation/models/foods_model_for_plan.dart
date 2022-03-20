@@ -15,28 +15,28 @@ class FoodsModelForPlan {
 
   Map<String, dynamic> toMap() {
     return {
-      choiceFMS.choiceIndex: choiceIndex,
-      choiceFMS.choiceName: choiceName,
+      fmfpo.choiceIndex: choiceIndex,
+      fmfpo.choiceName: choiceName,
 
-      choiceFMS.notes: notes,
-      choiceFMS.refURL: refURL,
+      fmfpo.notes: notes,
+      fmfpo.refURL: refURL,
     };
   }
 
   factory FoodsModelForPlan.fromMap(Map dataMap) {
     return FoodsModelForPlan(
-      choiceIndex: dataMap[choiceFMS.choiceIndex],
-      choiceName: dataMap[choiceFMS.choiceName],
+      choiceIndex: dataMap[fmfpo.choiceIndex],
+      choiceName: dataMap[fmfpo.choiceName],
  
-      notes: dataMap[choiceFMS.notes],
-      refURL: dataMap[choiceFMS.refURL],
+      notes: dataMap[fmfpo.notes],
+      refURL: dataMap[fmfpo.refURL],
     );
   }
 }
 
-final ChoiceFoodsModelStrings choiceFMS = ChoiceFoodsModelStrings();
+final FoodsModelForPlanObjects fmfpo = FoodsModelForPlanObjects();
 
-class ChoiceFoodsModelStrings {
+class FoodsModelForPlanObjects {
   final String choiceIndex = "choiceIndex";
   final String choiceName = "choiceName";
   final String totalFoodsHas = "totalFoodsHas";
