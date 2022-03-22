@@ -1,14 +1,17 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/constsnts/const_objects_pc.dart';
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/diet_plan_model.dart';
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/week_model.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/w_Plan%20creation%20Screen/default_timing_model.dart';
 import 'package:dietapp_a/my%20foods/screens/Add%20food/add_food_sreen.dart';
 import 'package:dietapp_a/my%20foods/screens/Add%20food/controllers/browser_controllers.dart';
 import 'package:dietapp_a/x_customWidgets/alert_dialogue.dart';
 import 'package:dietapp_a/x_customWidgets/colors.dart';
+import 'package:dietapp_a/y_Firebase/fire_ref.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:getwidget/components/list_tile/gf_list_tile.dart';
 import 'package:getwidget/getwidget.dart';
-
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class PlanCreationScreen extends StatelessWidget {
@@ -33,10 +36,8 @@ class PlanCreationScreen extends StatelessWidget {
       floatingActionButton: Obx(() {
         bool isEmpty = planName.value.isEmpty;
         return ElevatedButton(
-            onPressed: () {
-              if (isEmpty) {
-                null;
-              } else {}
+            onPressed: () async {
+              if (planName.value.isNotEmpty) {}
             },
             child: Text("Create"));
       }),
@@ -52,8 +53,9 @@ class PlanCreationScreen extends StatelessWidget {
                   maxLines: null,
                   keyboardType: TextInputType.name,
                   textInputAction: TextInputAction.next,
-                  decoration: InputDecoration(
-                    labelText: "Plan Name",
+                  decoration: const InputDecoration(
+                    contentPadding: EdgeInsets.all(7),
+                    labelText: "Plan Name*",
                   ),
                   onChanged: (value) {
                     planName.value = value;
@@ -69,6 +71,7 @@ class PlanCreationScreen extends StatelessWidget {
                   autofocus: false,
                   keyboardType: TextInputType.multiline,
                   decoration: InputDecoration(
+                    contentPadding: EdgeInsets.all(7),
                     labelText: "Notes",
                   ),
                   onChanged: (value) {
@@ -88,12 +91,12 @@ class PlanCreationScreen extends StatelessWidget {
 
   Widget refURL() {
     return Obx(() {
-      if (bc.currentURL.value == "http://m.youtube.com") {
+      if (bc.currentURL.value == "https://m.youtube.com/") {
         return Card(
             child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text("Ref URL"),
+            Text("  Ref URL"),
             IconButton(
                 onPressed: () {
                   bc.isBrowserForRefURL.value = true;
@@ -136,7 +139,7 @@ class PlanCreationScreen extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("Default timings"),
+              Text("  Default timings"),
               IconButton(
                   onPressed: () {
                     FocusScope.of(context).unfocus();
@@ -332,5 +335,36 @@ class PlanCreationScreen extends StatelessWidget {
         )
       ],
     );
+  }
+
+  Future<void> continueButton() async {
+    String? refURL;
+    if (bc.currentURL.value != "https://m.youtube.com/") {
+      refURL = bc.currentURL.value;
+    }
+    await copc.dietPlansCR
+        .add(DietPlanBasicInfoModel(
+                planName: planName.value,
+                notes: notes.value,
+                planCreationTime: Timestamp.fromDate(DateTime.now()),
+                refURL: refURL,
+                defaultTimings: listDefaultTimingModels.value
+                    .map((tm) => tm.toMap())
+                    .toList())
+            .toMap())
+        .then((planDocRef) async {
+      for (int weekIndex in [0, 1, 2, 3]) {
+        return await planDocRef
+            .collection(wmfos.weeks)
+            .doc(weekIndex.toString())
+            .set(WeekModel(weekIndex: weekIndex, notes: null, refURL: null).toMap())
+            .then((value) async{
+              for (int dayIndex in [0, 1, 2, 3,4,5,6]) {
+              return planDocRef
+            .collection(wmfos.weeks)
+            .doc(weekIndex.toString()).collection(collectionPath)
+            });
+      }
+    });
   }
 }

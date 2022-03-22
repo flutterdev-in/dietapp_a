@@ -7,10 +7,10 @@ BrowserController bc = BrowserController();
 class BrowserController {
   InAppWebViewController? wvc;
   TextEditingController tec = TextEditingController();
-  Rx<String> currentURL = "http://www.youtube.com".obs;
+  Rx<String> currentURL = "https://m.youtube.com/".obs;
   Rx<String> currentRefURLimageURL = "".obs;
   Rx<bool> isTextFieldTapped = false.obs;
-  Rx<String> homeURL = "http://www.youtube.com".obs;
+  Rx<String> homeURL = "https://m.youtube.com/".obs;
   Rx<String> lastFavWebURL = "".obs;
   Rx<String> functionButtonType = "".obs;
   Rx<bool> isBrowserForRefURL = false.obs;

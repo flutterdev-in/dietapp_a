@@ -1,4 +1,5 @@
 import 'package:dietapp_a/auth_gate.dart';
+import 'package:dietapp_a/a_Testing%20purpose/sliver_test.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -25,7 +26,8 @@ class MyApp extends StatelessWidget {
       title: 'DietApp',
       // initialRoute: "/",
       // getPages: AppRoutes.routes,
-      home: const AuthGate(),
+      home: 
+       const AuthGate(),
     );
   }
 }
