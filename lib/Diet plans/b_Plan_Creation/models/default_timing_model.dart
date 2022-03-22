@@ -39,6 +39,7 @@ class DefaultTimingModelObjects {
   String min = "min";
 
   String isAM = "isAM";
+  String timings = "timings";
 
   List<DefaultTimingModel> foodTimingsListSort(
       List<DefaultTimingModel> listDefaultTimingModel) {

@@ -1,13 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/constsnts/const_objects_pc.dart';
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/day_basic_info.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/diet_plan_model.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/week_model.dart';
-import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/w_Plan%20creation%20Screen/default_timing_model.dart';
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/default_timing_model.dart';
 import 'package:dietapp_a/my%20foods/screens/Add%20food/add_food_sreen.dart';
 import 'package:dietapp_a/my%20foods/screens/Add%20food/controllers/browser_controllers.dart';
 import 'package:dietapp_a/x_customWidgets/alert_dialogue.dart';
 import 'package:dietapp_a/x_customWidgets/colors.dart';
 import 'package:dietapp_a/y_Firebase/fire_ref.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -37,7 +39,9 @@ class PlanCreationScreen extends StatelessWidget {
         bool isEmpty = planName.value.isEmpty;
         return ElevatedButton(
             onPressed: () async {
-              if (planName.value.isNotEmpty) {}
+              if (planName.value.isNotEmpty) {
+                await continueButton();
+              }
             },
             child: Text("Create"));
       }),
@@ -338,11 +342,14 @@ class PlanCreationScreen extends StatelessWidget {
   }
 
   Future<void> continueButton() async {
+    String dietPlans = "dietPlans";
     String? refURL;
     if (bc.currentURL.value != "https://m.youtube.com/") {
       refURL = bc.currentURL.value;
     }
-    await copc.dietPlansCR
+
+    await userDR
+        .collection(dietPlans)
         .add(DietPlanBasicInfoModel(
                 planName: planName.value,
                 notes: notes.value,
@@ -354,17 +361,35 @@ class PlanCreationScreen extends StatelessWidget {
             .toMap())
         .then((planDocRef) async {
       for (int weekIndex in [0, 1, 2, 3]) {
-        return await planDocRef
+        await planDocRef
             .collection(wmfos.weeks)
             .doc(weekIndex.toString())
-            .set(WeekModel(weekIndex: weekIndex, notes: null, refURL: null).toMap())
-            .then((value) async{
-              for (int dayIndex in [0, 1, 2, 3,4,5,6]) {
-              return planDocRef
-            .collection(wmfos.weeks)
-            .doc(weekIndex.toString()).collection(collectionPath)
+            .set(WeekModel(weekIndex: weekIndex, notes: null, refURL: null)
+                .toMap())
+            .then((value) async {
+          for (int dayIndex in [0, 1, 2, 3, 4, 5, 6]) {
+             planDocRef
+                .collection(wmfos.weeks)
+                .doc(weekIndex.toString())
+                .collection(daymfos.days)
+                .doc(dayIndex.toString())
+                .set(DayModel(dayIndex: dayIndex, notes: null, refURL: null)
+                    .toMap())
+                .then((value) async {
+              for (DefaultTimingModel dfm in listDefaultTimingModels.value) {
+                 planDocRef
+                    .collection(wmfos.weeks)
+                    .doc(weekIndex.toString())
+                    .collection(daymfos.days)
+                    .doc(dayIndex.toString())
+                    .collection(dtmos.timings)
+                    .add(dfm.toMap());
+              }
             });
+          }
+        });
       }
     });
+    Get.back();
   }
 }

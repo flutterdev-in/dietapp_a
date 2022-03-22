@@ -42,8 +42,8 @@ class MenuButtonDietPlanScreen extends StatelessWidget {
       onTap: () async {
         await FirebaseFirestore.instance
             .doc(pcc.currentPlanDocRefPath.value)
-            .collection(daypbims.days)
-            .orderBy(daypbims.docEntryTime, descending: true)
+            .collection(daymfos.days)
+      
             .limit(1)
             .get()
             .then((value) async {

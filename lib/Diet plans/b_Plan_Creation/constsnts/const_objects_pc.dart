@@ -4,9 +4,9 @@ import 'package:dietapp_a/y_Firebase/fire_ref.dart';
 final ConstantObjectsPlanCreate copc = ConstantObjectsPlanCreate();
 
 class ConstantObjectsPlanCreate {
-  String dietPlans = "dietPlans";
+ final String dietPlans = "dietPlans";
   String startPlanEdit = "startPlanEdit";
   String boxPlanCreate = "boxPlanCreate";
-  CollectionReference<Map<String, dynamic>> dietPlansCR = userDR.collection(copc.dietPlans);
+ final CollectionReference<Map<String, dynamic>>   dietPlansCR = userDR.collection(copc.dietPlans);
   String timings = "timings";
 }

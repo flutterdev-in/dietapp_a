@@ -16,11 +16,11 @@ class DaysListViewOnPlanCreation extends StatelessWidget {
   Widget build(BuildContext context) {
     return FirestoreListView<Map<String, dynamic>>(
       shrinkWrap: true,
-      query: docRef.collection("days").orderBy(daypbims.docEntryTime),
+      query: docRef.collection("days"),
       itemBuilder: (context, snapshot) {
         Map<String, dynamic> dataMap = snapshot.data();
-        DayPlanBasicInfoModel daypbim =
-            DayPlanBasicInfoModel.fromMap(dataMap);
+        DayModel daypbim =
+            DayModel.fromMap(dataMap);
         pcc.lastDayIndex.value = daypbim.dayIndex;
         return Card(
           child: GFListTile(

@@ -68,23 +68,23 @@ class PlanCreationScreen0 extends StatelessWidget {
             int dayIndex = 0;
             await FirebaseFirestore.instance
                 .doc(pcc.currentPlanDocRefPath.value)
-                .collection(daypbims.days)
-                .orderBy(daypbims.docEntryTime, descending: true)
+                .collection(daymfos.days)
+            
                 .limit(1)
                 .get()
                 .then((value) {
               if (value.docs.length == 1) {
                 Map<String, dynamic> dataMap =
                     value.docs.last.data() as Map<String, dynamic>;
-                dayIndex = dataMap[daypbims.dayIndex];
+                dayIndex = dataMap[daymfos.dayIndex];
               }
             });
             await FirebaseFirestore.instance
                 .doc(pcc.currentPlanDocRefPath.value)
-                .collection(daypbims.days)
-                .add(DayPlanBasicInfoModel(
+                .collection(daymfos.days)
+                .add(DayModel(
                         dayIndex: dayIndex + 1,
-                        docEntryTime: Timestamp.fromDate(DateTime.now()),
+                      
                         notes: null,
                         refURL: null)
                     .toMap());

@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class DayPlanBasicInfoModel {
+class DayModel {
   int dayIndex;
   String? notes;
   String? refURL;
 
-  DayPlanBasicInfoModel({
+  DayModel({
     required this.dayIndex,
     required this.notes,
     required this.refURL,
@@ -14,26 +14,26 @@ class DayPlanBasicInfoModel {
 
   Map<String, dynamic> toMap() {
     return {
-      daypbims.dayIndex: dayIndex,
-      daypbims.notes: notes,
-      daypbims.refURL: refURL,
+      daymfos.dayIndex: dayIndex,
+      daymfos.notes: notes,
+      daymfos.refURL: refURL,
 
     };
   }
 
-  factory DayPlanBasicInfoModel.fromMap(Map dayPlanMap) {
-    return DayPlanBasicInfoModel(
-      dayIndex: dayPlanMap[daypbims.dayIndex],
-      notes: dayPlanMap[daypbims.notes],
-      refURL: dayPlanMap[daypbims.refURL],
+  factory DayModel.fromMap(Map dayPlanMap) {
+    return DayModel(
+      dayIndex: dayPlanMap[daymfos.dayIndex],
+      notes: dayPlanMap[daymfos.notes],
+      refURL: dayPlanMap[daymfos.refURL],
 
     );
   }
 }
 
-final DayPlanBasicInfoModelStrings daypbims = DayPlanBasicInfoModelStrings();
+final DayModelFinalObjects daymfos = DayModelFinalObjects();
 
-class DayPlanBasicInfoModelStrings {
+class DayModelFinalObjects {
   String dayIndex = "dayIndex";
 
   String notes = "notes";

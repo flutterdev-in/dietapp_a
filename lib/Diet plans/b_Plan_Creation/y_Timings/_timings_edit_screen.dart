@@ -19,7 +19,7 @@ class TimingsEditScreen extends StatelessWidget {
         if (docSnap.hasData) {
           Map<String, dynamic> docMap =
               docSnap.data!.data() as Map<String, dynamic>;
-          DayPlanBasicInfoModel daypbim = DayPlanBasicInfoModel.fromMap(docMap);
+          DayModel daypbim = DayModel.fromMap(docMap);
 
           return Scaffold(
             appBar: AppBar(title: Text("Day " + daypbim.dayIndex.toString())),
@@ -46,7 +46,7 @@ class TimingsEditScreen extends StatelessWidget {
     );
   }
 
-  Widget basicInfo(DayPlanBasicInfoModel daypbim) {
+  Widget basicInfo(DayModel daypbim) {
     Widget notesField() {
       TextEditingController tc = TextEditingController();
       tc.text = daypbim.notes ?? "";

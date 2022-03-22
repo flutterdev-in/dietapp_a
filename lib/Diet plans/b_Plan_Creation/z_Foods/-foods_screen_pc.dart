@@ -27,7 +27,7 @@ class FoodsScreenPC extends StatelessWidget {
     );
   }
 
-  Widget basicInfo(DayPlanBasicInfoModel daypbim) {
+  Widget basicInfo(DayModel daypbim) {
     Widget notesField() {
       TextEditingController tc = TextEditingController();
       tc.text = daypbim.notes ?? "";
