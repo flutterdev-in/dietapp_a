@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller0.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/coice_foods_model.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/timing_info_model.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/z_Foods/-foods_screen_pc.dart';
@@ -23,14 +23,14 @@ class ChoiceFoodsListView extends StatelessWidget {
       itemBuilder: (context, snapshot) {
         Map<String, dynamic> dataMap = snapshot.data();
         ChoiceFoodsModel cfm = ChoiceFoodsModel.fromMap(dataMap);
-        pcc.activePageChoicesinMaps.value.addAll({snapshot.reference: cfm});
+        pcc0.activePageChoicesinMaps.value.addAll({snapshot.reference: cfm});
 
         return GFListTile(
           titleText: cfm.choiceName,
           icon: Icon(MdiIcons.dotsVertical),
           onTap: () {
-            pcc.selectedChoiceMap.value.clear();
-            pcc.selectedChoiceMap.value.addAll({snapshot.reference: cfm});
+            pcc0.selectedChoiceMap.value.clear();
+            pcc0.selectedChoiceMap.value.addAll({snapshot.reference: cfm});
 
             Get.to(FoodsScreenPC());
           },

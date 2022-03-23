@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller0.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/coice_foods_model.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/controllers/fc_controller.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/functions/fc_useful_functions.dart';
@@ -30,7 +30,7 @@ class FoldersPickFromFolderScren extends StatelessWidget {
                       fdcm.isFolder &&
                       fdcmMap.isNotEmpty) {
                     await FirebaseFirestore.instance
-                        .doc(pcc.currentTimingDRpath.value)
+                        .doc(pcc0.currentTimingDRpath.value)
                         .collection("foods")
                         .where(fdcs.fieldTime, isEqualTo: fdcm.fieldTime)
                         .limit(1)

@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller0.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/coice_foods_model.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/timing_info_model.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/z_Foods/-foods_screen_pc.dart';
@@ -31,10 +31,10 @@ class TimingsListViewOnPlanCreation extends StatelessWidget {
           onTap: () async {
             
 
-            pcc.currentTimingDRpath.value = snapshot.reference.path;
-            pcc.activePageTimingsMaps.value.addAll({snapshot.reference: tim});
+            pcc0.currentTimingDRpath.value = snapshot.reference.path;
+            pcc0.activePageTimingsMaps.value.addAll({snapshot.reference: tim});
 
-            pcc.choiceCounts.value = 0;
+            pcc0.choiceCounts.value = 0;
             Get.to(FoodsScreenPC());
           },
         );

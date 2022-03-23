@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/Combined%20screen/_plan_creation_combined_screen.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller0.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/diet_plan_model.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/x_Days/_plan_creation_screen.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
@@ -27,8 +29,9 @@ class ListDietPlansW extends StatelessWidget {
         return GFListTile(
           titleText: dpbim.planName,
           onTap: () {
-            pcc.currentPlanDocRefPath.value = snapshot.reference.path;
-            Get.to(PlanCreationScreen0());
+            pcc0.currentPlanDocRefPath.value = snapshot.reference.path;
+            pcc.currentPlanDRpath.value = snapshot.reference.path;
+            Get.to(PlanCreationCombinedScreen());
           },
         );
       },

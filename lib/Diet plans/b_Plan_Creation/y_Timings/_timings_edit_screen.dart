@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller0.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/day_basic_info.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/y_Timings/add_timing_button.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/y_Timings/timings_listview.dart';
@@ -13,7 +13,7 @@ class TimingsEditScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return StreamBuilder(
       stream: FirebaseFirestore.instance
-          .doc(pcc.currentDayDRpath.value)
+          .doc(pcc0.currentDayDRpath.value)
           .snapshots(),
       builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> docSnap) {
         if (docSnap.hasData) {
@@ -77,7 +77,7 @@ class TimingsEditScreen extends StatelessWidget {
                 const Duration(seconds: 5),
                 () async {
                   await FirebaseFirestore.instance
-                      .doc(pcc.currentPlanDocRefPath.value)
+                      .doc(pcc0.currentPlanDocRefPath.value)
                       .update({"notes": value});
                 },
               );

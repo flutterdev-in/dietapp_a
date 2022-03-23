@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller0.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/day_basic_info.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/diet_plan_model.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/x_Days/Bottom%20buttons/_bottom_row.dart';
@@ -24,7 +24,7 @@ class PlanCreationScreen0 extends StatelessWidget {
       ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
-            .doc(pcc.currentPlanDocRefPath.value)
+            .doc(pcc0.currentPlanDocRefPath.value)
             .snapshots(),
         builder:
             (BuildContext context, AsyncSnapshot<DocumentSnapshot> docSnap) {
@@ -67,7 +67,7 @@ class PlanCreationScreen0 extends StatelessWidget {
           onPressed: () async {
             int dayIndex = 0;
             await FirebaseFirestore.instance
-                .doc(pcc.currentPlanDocRefPath.value)
+                .doc(pcc0.currentPlanDocRefPath.value)
                 .collection(daymfos.days)
             
                 .limit(1)
@@ -80,7 +80,7 @@ class PlanCreationScreen0 extends StatelessWidget {
               }
             });
             await FirebaseFirestore.instance
-                .doc(pcc.currentPlanDocRefPath.value)
+                .doc(pcc0.currentPlanDocRefPath.value)
                 .collection(daymfos.days)
                 .add(DayModel(
                         dayIndex: dayIndex + 1,
@@ -122,7 +122,7 @@ class PlanCreationScreen0 extends StatelessWidget {
             onChanged: (value) async {
               EasyDebounce.debounce("1", const Duration(seconds: 3), () async {
                 await FirebaseFirestore.instance
-                    .doc(pcc.currentPlanDocRefPath.value)
+                    .doc(pcc0.currentPlanDocRefPath.value)
                     .update({"planName": value});
               });
             },
@@ -161,7 +161,7 @@ class PlanCreationScreen0 extends StatelessWidget {
                 const Duration(seconds: 5),
                 () async {
                   await FirebaseFirestore.instance
-                      .doc(pcc.currentPlanDocRefPath.value)
+                      .doc(pcc0.currentPlanDocRefPath.value)
                       .update({"notes": value});
                 },
               );

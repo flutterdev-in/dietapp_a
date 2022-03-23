@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller0.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/day_basic_info.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/timing_info_model.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/z_Foods/food_add_bottom_buttons.dart';
@@ -12,7 +12,7 @@ class FoodsScreenPC extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(pcc.activePageTimingsMaps.value.values.last.timingName)),
+      appBar: AppBar(title: Text(pcc0.activePageTimingsMaps.value.values.last.timingName)),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
         child: Column(
@@ -58,7 +58,7 @@ class FoodsScreenPC extends StatelessWidget {
                 const Duration(seconds: 5),
                 () async {
                   await FirebaseFirestore.instance
-                      .doc(pcc.currentPlanDocRefPath.value)
+                      .doc(pcc0.currentPlanDocRefPath.value)
                       .update({"notes": value});
                 },
               );

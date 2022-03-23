@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/Combined%20screen/_plan_creation_combined_screen.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/constsnts/const_objects_pc.dart';
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/day_basic_info.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/diet_plan_model.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/week_model.dart';
@@ -21,13 +23,36 @@ class PlanCreationScreen extends StatelessWidget {
   final Rx<String> planName = "".obs;
   final Rx<String> notes = "".obs;
   final listDefaultTimingModels = RxList<DefaultTimingModel>([
-    DefaultTimingModel(timingName: "Breakfast", hour: 8, min: 00, isAM: true),
     DefaultTimingModel(
-        timingName: "Morning snacks", hour: 10, min: 30, isAM: true),
-    DefaultTimingModel(timingName: "Lunch", hour: 1, min: 30, isAM: false),
+        timingName: "Breakfast",
+        hour: 8,
+        min: 00,
+        isAM: true,
+        timingString: dtmos.timingStringF(8, 0, true)),
     DefaultTimingModel(
-        timingName: "Evening snacks", hour: 5, min: 30, isAM: false),
-    DefaultTimingModel(timingName: "Dinner", hour: 9, min: 00, isAM: false),
+        timingName: "Morning snacks",
+        hour: 10,
+        min: 30,
+        isAM: true,
+        timingString: dtmos.timingStringF(10, 30, true)),
+    DefaultTimingModel(
+        timingName: "Lunch",
+        hour: 1,
+        min: 30,
+        isAM: false,
+        timingString: dtmos.timingStringF(1, 30, false)),
+    DefaultTimingModel(
+        timingName: "Evening snacks",
+        hour: 5,
+        min: 30,
+        isAM: false,
+        timingString: dtmos.timingStringF(5, 30, false)),
+    DefaultTimingModel(
+        timingName: "Dinner",
+        hour: 9,
+        min: 00,
+        isAM: false,
+        timingString: dtmos.timingStringF(9, 00, false)),
   ]).obs;
 
   @override
@@ -321,10 +346,13 @@ class PlanCreationScreen extends StatelessWidget {
                 Get.back();
                 if (timingName.value.isNotEmpty) {
                   DefaultTimingModel dtm = DefaultTimingModel(
-                      timingName: timingName.value.trim(),
-                      hour: hour.value,
-                      min: mins.value,
-                      isAM: isAM.value);
+                    timingName: timingName.value.trim(),
+                    hour: hour.value,
+                    min: mins.value,
+                    isAM: isAM.value,
+                    timingString:
+                        dtmos.timingStringF(hour.value, mins.value, isAM.value),
+                  );
                   String s = "${dtm.hour}${dtm.min}${dtm.isAM}";
                   List<String> ls = listDefaultTimingModels.value
                       .map((m) => "${m.hour}${m.min}${m.isAM}")
@@ -347,7 +375,6 @@ class PlanCreationScreen extends StatelessWidget {
     if (bc.currentURL.value != "https://m.youtube.com/") {
       refURL = bc.currentURL.value;
     }
-
     await userDR
         .collection(dietPlans)
         .add(DietPlanBasicInfoModel(
@@ -360,36 +387,38 @@ class PlanCreationScreen extends StatelessWidget {
                     .toList())
             .toMap())
         .then((planDocRef) async {
+      pcc.currentPlanDRpath.value = planDocRef.path;
       for (int weekIndex in [0, 1, 2, 3]) {
-        await planDocRef
-            .collection(wmfos.weeks)
-            .doc(weekIndex.toString())
-            .set(WeekModel(weekIndex: weekIndex, notes: null, refURL: null)
-                .toMap())
-            .then((value) async {
-          for (int dayIndex in [0, 1, 2, 3, 4, 5, 6]) {
-             planDocRef
-                .collection(wmfos.weeks)
-                .doc(weekIndex.toString())
-                .collection(daymfos.days)
-                .doc(dayIndex.toString())
-                .set(DayModel(dayIndex: dayIndex, notes: null, refURL: null)
-                    .toMap())
-                .then((value) async {
-              for (DefaultTimingModel dfm in listDefaultTimingModels.value) {
-                 planDocRef
-                    .collection(wmfos.weeks)
-                    .doc(weekIndex.toString())
-                    .collection(daymfos.days)
-                    .doc(dayIndex.toString())
-                    .collection(dtmos.timings)
-                    .add(dfm.toMap());
-              }
-            });
-          }
-        });
+        await planDocRef.collection(wmfos.weeks).doc(weekIndex.toString()).set(
+            WeekModel(weekIndex: weekIndex, notes: null, refURL: null).toMap());
       }
+      pcc.currentPlanName.value = planName.value;
+      Get.to(PlanCreationCombinedScreen());
+      for (int weekIndex in [0, 1, 2, 3]) {
+        for (int dayIndex in [0, 1, 2, 3, 4, 5, 6]) {
+          planDocRef
+              .collection(wmfos.weeks)
+              .doc(weekIndex.toString())
+              .collection(daymfos.days)
+              .doc(dayIndex.toString())
+              .set(DayModel(dayIndex: dayIndex, notes: null, refURL: null)
+                  .toMap())
+              .then((value) async {
+            for (DefaultTimingModel dfm in listDefaultTimingModels.value) {
+              planDocRef
+                  .collection(wmfos.weeks)
+                  .doc(weekIndex.toString())
+                  .collection(daymfos.days)
+                  .doc(dayIndex.toString())
+                  .collection(dtmos.timings)
+                  .add(dfm.toMap());
+            }
+          });
+        }
+      }
+      ;
     });
-    Get.back();
+
+    // await Future.delayed(Duration)
   }
 }

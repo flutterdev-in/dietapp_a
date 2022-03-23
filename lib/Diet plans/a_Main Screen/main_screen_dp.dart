@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/Diet%20plans/a_Main%20Screen/a_list_diet_plans.dart';
-import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller0.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/x_Days/_plan_creation_screen.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/userData/models/user_strings.dart';
@@ -81,11 +81,11 @@ class MainScreenDP extends StatelessWidget {
                               .doc(userUID)
                               .collection("dietPlans")
                               .add({"planName": rxName.value}).then((value) {
-                            pcc.currentPlanDocRefPath.value = value.path;
+                            pcc0.currentPlanDocRefPath.value = value.path;
                           });
                           Get.back();
                           Get.to(PlanCreationScreen0());
-                          print("objectsvvv");
+                   
                         },
                         child: Text("Continue")),
                   ],

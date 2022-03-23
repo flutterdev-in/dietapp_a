@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller0.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/coice_foods_model.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/controllers/fc_controller.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/functions/fc_useful_functions.dart';
@@ -31,10 +31,10 @@ class FoodsPickFromFolderScren extends StatelessWidget {
                       !fdcm.isFolder &&
                       fdcmMap.isNotEmpty) {
                     DocumentReference dr;
-                    if (pcc.selectedChoiceMap.value.isEmpty) {
-                      dr = await pcc.getFirstEmptyChoiceDR();
+                    if (pcc0.selectedChoiceMap.value.isEmpty) {
+                      dr = await pcc0.getFirstEmptyChoiceDR();
                     } else {
-                      dr =  pcc.selectedChoiceMap.value.keys.last;
+                      dr =  pcc0.selectedChoiceMap.value.keys.last;
                     }
                     await dr
                         .collection("foods")

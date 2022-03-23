@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/constsnts/const_objects_pc.dart';
-import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller0.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/coice_foods_model.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/foods_model_for_plan.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/timing_info_model.dart';
@@ -11,7 +11,7 @@ import 'package:get/get.dart';
 class AddTimingButton extends StatelessWidget {
   AddTimingButton({Key? key}) : super(key: key);
   final List<String> listTimings =
-      pcBox.get(pcc.listTimings) ?? pcc.constListTimings;
+      pcBox.get(pcc0.listTimings) ?? pcc0.constListTimings;
   final Rx<bool> isAddNewPressed = false.obs;
   final Rx<String> newTimingName = "".obs;
   @override
@@ -73,7 +73,7 @@ class AddTimingButton extends StatelessWidget {
 
   Future<void> addTiming(String name) async {
     await FirebaseFirestore.instance
-        .doc(pcc.currentDayDRpath.value)
+        .doc(pcc0.currentDayDRpath.value)
         .collection(tims.timings)
         .orderBy(tims.timingIndex, descending: true)
         .limit(1)
@@ -85,7 +85,7 @@ class AddTimingButton extends StatelessWidget {
         timingIndex = dataMap[tims.timingIndex];
       }
       await FirebaseFirestore.instance
-          .doc(pcc.currentDayDRpath.value)
+          .doc(pcc0.currentDayDRpath.value)
           .collection(tims.timings)
           .add(TimingInfoModel(
                   hasChoices: null,

@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller0.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/day_basic_info.dart';
 import 'package:dietapp_a/my%20foods/screens/Add%20food/widgets/browser/bba_menu_buttons.dart';
 import 'package:dietapp_a/my%20foods/screens/Add%20food/widgets/browser/c_fav_web_pages.dart';
@@ -48,7 +48,7 @@ class MenuButtonPCdays extends StatelessWidget {
       ),
       onTap: () async {
         await FirebaseFirestore.instance
-            .doc(pcc.currentPlanDocRefPath.value)
+            .doc(pcc0.currentPlanDocRefPath.value)
             .collection(daymfos.days)
            
             .limit(1)
