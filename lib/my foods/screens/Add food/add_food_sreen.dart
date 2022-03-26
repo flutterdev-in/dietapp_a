@@ -19,8 +19,12 @@ class AddFoodScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        bc.wvc?.goBack();
-        return false;
+        if (bc.currentURL.value != "https://m.youtube.com/") {
+          bc.wvc?.goBack();
+          return false;
+        } else {
+          return true;
+        }
       },
       child: Scaffold(
         appBar: appBarW(context),

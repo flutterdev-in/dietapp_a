@@ -5,6 +5,7 @@ final ConstantObjectsPlanCreate copc = ConstantObjectsPlanCreate();
 
 class ConstantObjectsPlanCreate {
   final String dietPlans = "dietPlans";
+  final String dietPlansBeta = "dietPlansBeta";
   String startPlanEdit = "startPlanEdit";
   String boxPlanCreate = "boxPlanCreate";
   final CollectionReference<Map<String, dynamic>> dietPlansCR =

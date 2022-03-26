@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller0.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/z_Foods/a0_folders_pick_from_folder_screen.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/z_Foods/a1_foods_pick_from_folder_screen.dart';
@@ -38,8 +39,7 @@ class FoodAddButtons extends StatelessWidget {
               icon: Icon(MdiIcons.penPlus)),
           IconButton(
               onPressed: () {
-                fcc.currentPathCR.value = FirebaseFirestore.instance
-                    .doc(pcc0.currentTimingDRpath.value)
+                fcc.currentPathCR.value = pcc.currentTimingDR.value
                     .collection("foods")
                     .path;
                 Get.to(AddFoodScreen());
@@ -78,7 +78,7 @@ class FoodAddButtons extends StatelessWidget {
                   autofocus: true,
                   keyboardType: TextInputType.multiline,
                   textInputAction: TextInputAction.next,
-                  decoration: InputDecoration(
+                  decoration:const InputDecoration(
                     labelText: 'Food name',
                     isDense: true,
                   ),

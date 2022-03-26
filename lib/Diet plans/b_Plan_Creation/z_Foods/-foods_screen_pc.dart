@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller0.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/day_basic_info.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/timing_info_model.dart';
-import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/z_Foods/food_add_bottom_buttons.dart';
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/Combined%20screen/Widgets/food_add_bottom_buttons.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 

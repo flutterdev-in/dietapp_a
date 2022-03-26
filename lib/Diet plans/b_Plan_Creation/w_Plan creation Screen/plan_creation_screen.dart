@@ -24,35 +24,17 @@ class PlanCreationScreen extends StatelessWidget {
   final Rx<String> notes = "".obs;
   final listDefaultTimingModels = RxList<DefaultTimingModel>([
     DefaultTimingModel(
-        timingName: "Breakfast",
-        hour: 8,
-        min: 00,
-        isAM: true,
-        timingString: dtmos.timingStringF(8, 0, true)),
+        timingName: "Breakfast", timingString: dtmos.timingStringF(8, 0, true)),
     DefaultTimingModel(
         timingName: "Morning snacks",
-        hour: 10,
-        min: 30,
-        isAM: true,
         timingString: dtmos.timingStringF(10, 30, true)),
     DefaultTimingModel(
-        timingName: "Lunch",
-        hour: 1,
-        min: 30,
-        isAM: false,
-        timingString: dtmos.timingStringF(1, 30, false)),
+        timingName: "Lunch", timingString: dtmos.timingStringF(1, 30, false)),
     DefaultTimingModel(
         timingName: "Evening snacks",
-        hour: 5,
-        min: 30,
-        isAM: false,
         timingString: dtmos.timingStringF(5, 30, false)),
     DefaultTimingModel(
-        timingName: "Dinner",
-        hour: 9,
-        min: 00,
-        isAM: false,
-        timingString: dtmos.timingStringF(9, 00, false)),
+        timingName: "Dinner", timingString: dtmos.timingStringF(9, 00, false)),
   ]).obs;
 
   @override
@@ -187,8 +169,7 @@ class PlanCreationScreen extends StatelessWidget {
                 itemCount: listDTMsorted.length,
                 itemBuilder: (context, index) {
                   DefaultTimingModel dftm = listDTMsorted[index];
-                  String ampm = dftm.isAM ? "AM" : "PM";
-                  String min = dftm.min == 0 ? "00" : dftm.min.toString();
+
                   return Card(
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -209,7 +190,8 @@ class PlanCreationScreen extends StatelessWidget {
                                 ),
                                 Expanded(
                                     child: Align(
-                                      child: Text("${dftm.hour} : $min $ampm"),
+                                      child: Text(dtmos
+                                          .displayTiming(dftm.timingString)),
                                       alignment: Alignment.centerRight,
                                     ),
                                     flex: 4),
@@ -347,15 +329,12 @@ class PlanCreationScreen extends StatelessWidget {
                 if (timingName.value.isNotEmpty) {
                   DefaultTimingModel dtm = DefaultTimingModel(
                     timingName: timingName.value.trim(),
-                    hour: hour.value,
-                    min: mins.value,
-                    isAM: isAM.value,
                     timingString:
                         dtmos.timingStringF(hour.value, mins.value, isAM.value),
                   );
-                  String s = "${dtm.hour}${dtm.min}${dtm.isAM}";
+                  String s = dtm.timingString;
                   List<String> ls = listDefaultTimingModels.value
-                      .map((m) => "${m.hour}${m.min}${m.isAM}")
+                      .map((m) => m.timingString)
                       .toList();
                   if (!ls.contains(s)) {
                     await Future.delayed(const Duration(milliseconds: 600));
@@ -370,7 +349,7 @@ class PlanCreationScreen extends StatelessWidget {
   }
 
   Future<void> continueButton() async {
-    String dietPlans = "dietPlans";
+    String dietPlans = "dietPlansBeta";
     String? refURL;
     if (bc.currentURL.value != "https://m.youtube.com/") {
       refURL = bc.currentURL.value;
@@ -393,6 +372,7 @@ class PlanCreationScreen extends StatelessWidget {
             WeekModel(weekIndex: weekIndex, notes: null, refURL: null).toMap());
       }
       pcc.currentPlanName.value = planName.value;
+      Get.back();
       Get.to(PlanCreationCombinedScreen());
       for (int weekIndex in [0, 1, 2, 3]) {
         for (int dayIndex in [0, 1, 2, 3, 4, 5, 6]) {
@@ -411,7 +391,12 @@ class PlanCreationScreen extends StatelessWidget {
                   .collection(daymfos.days)
                   .doc(dayIndex.toString())
                   .collection(dtmos.timings)
-                  .add(dfm.toMap());
+                  .add(dfm.toMap())
+                  .then((docRef) {
+                if (pcc.currentTimingDR.value == userDR) {
+                  pcc.currentTimingDR.value = docRef;
+                }
+              });
             }
           });
         }

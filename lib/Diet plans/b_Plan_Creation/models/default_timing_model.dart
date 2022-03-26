@@ -2,26 +2,17 @@ import 'package:flutter/widgets.dart';
 
 class DefaultTimingModel {
   String timingName;
-  int hour;
-  int min;
 
-  bool isAM;
   String timingString;
 
   DefaultTimingModel({
     required this.timingName,
-    required this.hour,
-    required this.min,
-    required this.isAM,
     required this.timingString,
   });
 
   Map<String, dynamic> toMap() {
     return {
       dtmos.timingName: timingName,
-      dtmos.hour: hour,
-      dtmos.min: min,
-      dtmos.isAM: isAM,
       dtmos.timingString: timingString,
     };
   }
@@ -29,9 +20,6 @@ class DefaultTimingModel {
   factory DefaultTimingModel.fromMap(Map dataMap) {
     return DefaultTimingModel(
       timingName: dataMap[dtmos.timingName],
-      hour: dataMap[dtmos.hour],
-      min: dataMap[dtmos.min],
-      isAM: dataMap[dtmos.isAM],
       timingString: dataMap[dtmos.timingString],
     );
   }
@@ -52,7 +40,7 @@ class DefaultTimingModelObjects {
       List<DefaultTimingModel> listDefaultTimingModel) {
     listDefaultTimingModel.sort((a, b) {
       String timeF(DefaultTimingModel dtm) {
-        return timingStringF(dtm.hour, dtm.min, dtm.isAM);
+        return dtm.timingString;
       }
 
       return timeF(a).compareTo(timeF(b));
@@ -65,5 +53,12 @@ class DefaultTimingModelObjects {
     String hours = hour > 9 ? hour.toString() : "0${hour.toString()}";
     String mins = min == 0 ? "00" : min.toString();
     return ampm + hours + mins;
+  }
+
+  String displayTiming(String timingString) {
+    return timingString.substring(2, 4).replaceAll(RegExp(r"^0"), "") +
+        "." +
+        timingString.substring(4) +
+        timingString.substring(0, 2);
   }
 }

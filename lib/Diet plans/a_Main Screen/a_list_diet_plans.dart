@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/Combined%20screen/_plan_creation_combined_screen.dart';
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/constsnts/const_objects_pc.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller0.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/diet_plan_model.dart';
@@ -21,7 +22,7 @@ class ListDietPlansW extends StatelessWidget {
       query: FirebaseFirestore.instance
           .collection(uss.users)
           .doc(userUID)
-          .collection("dietPlans"),
+          .collection("dietPlansBeta"),
       itemBuilder: (context, snapshot) {
         Map<String, dynamic> dietPlanMap = snapshot.data();
         DietPlanBasicInfoModel dpbim =
