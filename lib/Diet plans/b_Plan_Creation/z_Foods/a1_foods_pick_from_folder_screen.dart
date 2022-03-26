@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller0.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/coice_foods_model.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/controllers/fc_controller.dart';
@@ -22,26 +23,18 @@ class FoodsPickFromFolderScren extends StatelessWidget {
         actions: [
           ElevatedButton(
               onPressed: () async {
-                List<Map<String, dynamic>> listSelectedMaps = [{}];
-                fcc.currentsPathItemsMaps.value
-                    .forEach((docRef, itemMap) async {
-                  FoodsCollectionModel fdcm = itemMap[fdcs.fcModel];
-                  Map fdcmMap = fdcm.toMap();
-                  if (itemMap[fdcs.isItemSelected] &&
-                      !fdcm.isFolder &&
-                      fdcmMap.isNotEmpty) {
-                    DocumentReference dr;
-                    if (pcc0.selectedChoiceMap.value.isEmpty) {
-                      dr = await pcc0.getFirstEmptyChoiceDR();
-                    } else {
-                      dr =  pcc0.selectedChoiceMap.value.keys.last;
+             
+                fcc.currentsPathItemsMaps.value.forEach(
+                  (docRef, itemMap) async {
+                    FoodsCollectionModel fcm = itemMap[fdcs.fcModel];
+                    Map fdcmMap = fcm.toMap();
+                    if (itemMap[fdcs.isItemSelected] &&
+                        !fcm.isFolder &&
+                        fdcmMap.isNotEmpty) {
+                      await  pcc.addFoods(fcm);
                     }
-                    await dr
-                        .collection("foods")
-                        .add(fdcm.toMap());
-                    
-                  }
-                });
+                  },
+                );
 
                 Get.back();
               },

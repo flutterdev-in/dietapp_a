@@ -7,6 +7,7 @@ import 'package:flutterfire_ui/firestore.dart';
 import 'package:get/get.dart';
 
 Widget weeksRow000PlanCreationCombinedScreen() {
+  int wi = 0;
   return SizedBox(
     width: Get.width,
     height: 35,
@@ -23,6 +24,10 @@ Widget weeksRow000PlanCreationCombinedScreen() {
                       .collection(wmfos.weeks)
                       .orderBy(wmfos.weekIndex, descending: false),
                   itemBuilder: (context, doc) {
+                    wi++;
+                    if (pcc.currentWeekDR.value == userDR) {
+                      pcc.currentWeekDR.value = doc.reference;
+                    }
                     Map<String, dynamic> weekMap = doc.data();
                     WeekModel wm = WeekModel.fromMap(weekMap);
                     return Padding(
@@ -33,19 +38,21 @@ Widget weeksRow000PlanCreationCombinedScreen() {
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(1)),
                                 border: Border.all(color: Colors.black26),
-                                color:
-                                    pcc.currentWeekIndex.value == wm.weekIndex
-                                        ? Colors.deepPurple.shade200
-                                        : Colors.white,
+                                color: pcc.currentWeekDR.value == doc.reference
+                                    // pcc.currentWeekIndex.value == wm.weekIndex
+                                    ? Colors.deepPurple.shade200
+                                    : Colors.white,
                               ),
                               child: Padding(
                                 padding: const EdgeInsets.fromLTRB(3, 0, 3, 0),
                                 child: Center(
-                                    child: Text(pcc.weekName(wm.weekIndex),
+                                    child: Text(pcc.weekName(wi),
                                         textScaleFactor: 1.0)),
                               ),
                             )),
                         onTap: () {
+                          pcc.currentWeekDR.value = doc.reference;
+                          pcc.zeroIndexs();
                           pcc.currentTimingDR.value = userDR;
                           pcc.currentWeekIndex.value = wm.weekIndex;
                         },

@@ -25,6 +25,7 @@ Widget daysRow000PlanCreationCombinedScreen() {
                   )),
               splashColor: Colors.deepPurple,
               onTap: () {
+                pcc.zeroIndexs();
                 pcc.currentTimingDR.value = userDR;
                 pcc.currentDayIndex.value = index;
               },

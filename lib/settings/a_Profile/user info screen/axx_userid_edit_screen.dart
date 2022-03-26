@@ -123,7 +123,7 @@ class ProfileIdEdit extends StatelessWidget {
                   }
                 });
               } else {
-                print("offline");
+              
               }
               stopwatch2.stop();
               if (stopwatch2.elapsed > Duration(seconds: 2)) {
@@ -225,9 +225,9 @@ class ProfileIdEdit extends StatelessWidget {
       }
 
       Future<void> onpress() async {
-        print(v);
+      
         if (rxValid.value == "original" || rxValid.value == "available") {
-          print("inside");
+         
           rxB.value = "started";
           Stopwatch stopwatch3 = Stopwatch()..start();
           await FirebaseFirestore.instance
@@ -262,7 +262,7 @@ class ProfileIdEdit extends StatelessWidget {
             }
           });
         } else {
-          print(v);
+       
           rxB.value = "invalid";
           Get.snackbar(
             "Something went wrong",

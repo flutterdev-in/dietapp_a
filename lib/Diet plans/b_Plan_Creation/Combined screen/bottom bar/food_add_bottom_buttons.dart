@@ -25,7 +25,6 @@ class FoodAddButtons extends StatelessWidget {
           IconButton(
               onPressed: () {
                 Get.to(FoldersPickFromFolderScren());
-
               },
               icon: Icon(MdiIcons.folderPlusOutline)),
           IconButton(
@@ -39,9 +38,8 @@ class FoodAddButtons extends StatelessWidget {
               icon: Icon(MdiIcons.penPlus)),
           IconButton(
               onPressed: () {
-                fcc.currentPathCR.value = pcc.currentTimingDR.value
-                    .collection("foods")
-                    .path;
+                fcc.currentPathCR.value =
+                    pcc.currentTimingDR.value.collection("foods").path;
                 Get.to(AddFoodScreen());
               },
               icon: Icon(MdiIcons.webPlus)),
@@ -78,7 +76,7 @@ class FoodAddButtons extends StatelessWidget {
                   autofocus: true,
                   keyboardType: TextInputType.multiline,
                   textInputAction: TextInputAction.next,
-                  decoration:const InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Food name',
                     isDense: true,
                   ),
@@ -110,15 +108,11 @@ class FoodAddButtons extends StatelessWidget {
                 child: ElevatedButton(
                     onPressed: () async {
                       if (name.value.isNotEmpty || notes.value.isNotEmpty) {
-                        await FirebaseFirestore.instance
-                            .doc(pcc0.currentTimingDRpath.value)
-                            .collection("foods")
-                            .add(FoodsCollectionModel(
-                                    fieldName: name.value,
-                                    fieldTime:
-                                        Timestamp.fromDate(DateTime.now()),
-                                    isFolder: false)
-                                .toMap());
+                        await pcc.addFoods(FoodsCollectionModel(
+                            fieldName: name.value,
+                            fieldTime: Timestamp.fromDate(DateTime.now()),
+                            isFolder: false,
+                            notes: notes.value));
                       }
                       Get.back();
                     },

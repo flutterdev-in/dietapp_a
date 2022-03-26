@@ -1,7 +1,7 @@
 class FoodsModelForPlanCreation {
-  int? choiceIndex;
-  int? optionIndex;
-  int? foodIndex;
+  int choiceIndex;
+  int optionIndex;
+  int foodIndex;
   String foodName;
   String? imgURL;
   String? notes;
@@ -34,7 +34,7 @@ class FoodsModelForPlanCreation {
       choiceIndex: dataMap[fmfpcfos.choiceIndex],
       optionIndex: dataMap[fmfpcfos.optionIndex],
       foodIndex: dataMap[fmfpcfos.foodIndex],
-      foodName: dataMap[fmfpcfos.foodName],
+      foodName: dataMap[fmfpcfos.foodName] ?? "",
       imgURL: dataMap[fmfpcfos.imgURL],
       notes: dataMap[fmfpcfos.notes],
       refURL: dataMap[fmfpcfos.refURL],

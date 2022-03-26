@@ -27,8 +27,7 @@ Future<void> batchDeleteFunction(List<DocumentReference> listSourceDR) async {
   await nestedGetFunction(listSourceDR);
   listAllNestedDRs.reversed;
   for (DocumentReference eachDR in listAllNestedDRs) {
-    print(eachDR.path);
-    print(fcc.currentPathCR.value);
+ 
     // eachDR.delete();
     fcc.documentsDeletedFromBatch.value++;
   }

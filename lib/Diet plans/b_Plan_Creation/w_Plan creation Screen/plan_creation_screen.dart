@@ -372,8 +372,10 @@ class PlanCreationScreen extends StatelessWidget {
             WeekModel(weekIndex: weekIndex, notes: null, refURL: null).toMap());
       }
       pcc.currentPlanName.value = planName.value;
+      pcc.init();
       Get.back();
       Get.to(PlanCreationCombinedScreen());
+
       for (int weekIndex in [0, 1, 2, 3]) {
         for (int dayIndex in [0, 1, 2, 3, 4, 5, 6]) {
           planDocRef
@@ -391,12 +393,7 @@ class PlanCreationScreen extends StatelessWidget {
                   .collection(daymfos.days)
                   .doc(dayIndex.toString())
                   .collection(dtmos.timings)
-                  .add(dfm.toMap())
-                  .then((docRef) {
-                if (pcc.currentTimingDR.value == userDR) {
-                  pcc.currentTimingDR.value = docRef;
-                }
-              });
+                  .add(dfm.toMap());
             }
           });
         }
