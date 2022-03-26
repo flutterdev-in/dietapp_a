@@ -1,3 +1,6 @@
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/default_timing_model.dart';
+import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
 import 'package:dietapp_a/my%20foods/screens/Add%20food/constants/adf_const_variables.dart';
 import 'package:dietapp_a/my%20foods/screens/Add%20food/controllers/add_food_controller.dart';
 import 'package:dietapp_a/my%20foods/screens/Add%20food/controllers/browser_controllers.dart';
@@ -48,16 +51,7 @@ class AddFoodScreen extends StatelessWidget {
           SizedBox(width: 5),
           Expanded(child: TextFieldAdfd(), flex: 5),
           SizedBox(width: 10),
-          Obx(() => bc.isBrowserForRefURL.value
-              ? IconButton(
-                  onPressed: () async {
-                    Metadata? data =
-                        await MetadataFetch.extract(bc.currentURL.value);
-                    bc.currentRefURLimageURL.value = data?.image ?? "";
-                    Get.back();
-                  },
-                  icon: Icon(MdiIcons.webPlus, color: Colors.black))
-              : countButton()),
+          Obx(() => bc.isBrowserForRefURL.value ? forRefURL() : countButton()),
           SizedBox(
             width: 40,
             child: MenuItemsWebBrowser(),
@@ -65,6 +59,29 @@ class AddFoodScreen extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Widget forRefURL() {
+    return IconButton(
+        onPressed: () async {
+          Metadata? data = await MetadataFetch.extract(bc.currentURL.value);
+          if (data != null) {
+            bc.currentRefUrlMetadataModel.value = RefUrlMetadataModel(
+                url: data.url ?? bc.currentURL.value,
+                img: data.image,
+                title: data.title);
+            if (pcc.isCombinedCreationScreen.value) {
+              await pcc.currentTimingDR.value.update({
+                dtmos.refUrlMetadata: bc.currentRefUrlMetadataModel.value
+                    .toMap()
+              });
+            } else {
+              bc.currentRefURLimageURL.value = data.image ?? "";
+            }
+          }
+          Get.back();
+        },
+        icon: Icon(MdiIcons.webPlus, color: Colors.black));
   }
 
   Widget countButton() {

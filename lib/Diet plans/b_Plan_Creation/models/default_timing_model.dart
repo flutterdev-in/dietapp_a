@@ -1,19 +1,23 @@
-import 'package:flutter/widgets.dart';
 
 class DefaultTimingModel {
   String timingName;
-
   String timingString;
+  String? notes;
+  Map<String, dynamic>? refUrlMetadata;
 
   DefaultTimingModel({
     required this.timingName,
     required this.timingString,
+    this.notes,
+    this.refUrlMetadata,
   });
 
   Map<String, dynamic> toMap() {
     return {
       dtmos.timingName: timingName,
       dtmos.timingString: timingString,
+       dtmos.notes: notes,
+      dtmos.refUrlMetadata: refUrlMetadata,
     };
   }
 
@@ -21,6 +25,8 @@ class DefaultTimingModel {
     return DefaultTimingModel(
       timingName: dataMap[dtmos.timingName],
       timingString: dataMap[dtmos.timingString],
+      notes: dataMap[dtmos.notes],
+      refUrlMetadata: dataMap[dtmos.refUrlMetadata],
     );
   }
 }
@@ -29,12 +35,11 @@ final DefaultTimingModelObjects dtmos = DefaultTimingModelObjects();
 
 class DefaultTimingModelObjects {
   String timingName = "timingName";
-  String hour = "hour";
-  String min = "min";
 
-  String isAM = "isAM";
   String timingString = "timingString";
   String timings = "timings";
+  final String notes = "notes";
+  final String refUrlMetadata = "refUrlMetadata";
 
   List<DefaultTimingModel> foodTimingsListSort(
       List<DefaultTimingModel> listDefaultTimingModel) {

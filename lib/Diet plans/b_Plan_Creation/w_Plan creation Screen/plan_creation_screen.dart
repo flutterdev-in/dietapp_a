@@ -6,6 +6,7 @@ import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/day_basic_info.dar
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/diet_plan_model.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/week_model.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/default_timing_model.dart';
+import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
 import 'package:dietapp_a/my%20foods/screens/Add%20food/add_food_sreen.dart';
 import 'package:dietapp_a/my%20foods/screens/Add%20food/controllers/browser_controllers.dart';
 import 'package:dietapp_a/x_customWidgets/alert_dialogue.dart';
@@ -119,13 +120,13 @@ class PlanCreationScreen extends StatelessWidget {
       } else {
         return GFListTile(
           margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 0),
-          avatar: Obx(() => bc.currentRefURLimageURL.value.isEmpty
+          avatar: Obx(() => bc.currentRefUrlMetadataModel.value == rummfos.constModel
               ? SizedBox()
               : GFAvatar(
                   shape: GFAvatarShape.standard,
                   size: GFSize.MEDIUM,
                   maxRadius: 20,
-                  backgroundImage: NetworkImage(bc.currentRefURLimageURL.value),
+                  backgroundImage: NetworkImage(bc.currentRefUrlMetadataModel.value.img??""),
                 )),
           title: Text(
             bc.currentURL.value,
@@ -365,42 +366,53 @@ class PlanCreationScreen extends StatelessWidget {
                     .map((tm) => tm.toMap())
                     .toList())
             .toMap())
-        .then((planDocRef) async {
-      pcc.currentPlanDRpath.value = planDocRef.path;
-      for (int weekIndex in [0, 1, 2, 3]) {
-        await planDocRef.collection(wmfos.weeks).doc(weekIndex.toString()).set(
-            WeekModel(weekIndex: weekIndex, notes: null, refURL: null).toMap());
-      }
-      pcc.currentPlanName.value = planName.value;
-      pcc.init();
-      Get.back();
-      Get.to(PlanCreationCombinedScreen());
-
-      for (int weekIndex in [0, 1, 2, 3]) {
-        for (int dayIndex in [0, 1, 2, 3, 4, 5, 6]) {
-          planDocRef
+        .then(
+      (planDocRef) async {
+        pcc.currentPlanDRpath.value = planDocRef.path;
+        List<DocumentReference<Map<String, dynamic>>> lds = [];
+        for (int weekIndex in [0, 1, 2, 3]) {
+          await planDocRef
               .collection(wmfos.weeks)
-              .doc(weekIndex.toString())
-              .collection(daymfos.days)
-              .doc(dayIndex.toString())
-              .set(DayModel(dayIndex: dayIndex, notes: null, refURL: null)
+              .add(WeekModel(
+                      weekCreationTime: Timestamp.fromDate(DateTime.now()),
+                      notes: null,
+                      refURL: null)
                   .toMap())
-              .then((value) async {
-            for (DefaultTimingModel dfm in listDefaultTimingModels.value) {
-              planDocRef
-                  .collection(wmfos.weeks)
-                  .doc(weekIndex.toString())
-                  .collection(daymfos.days)
-                  .doc(dayIndex.toString())
-                  .collection(dtmos.timings)
-                  .add(dfm.toMap());
-            }
-          });
+              .then((dr) => lds.add(dr));
         }
-      }
-      ;
-    });
 
-    // await Future.delayed(Duration)
+        pcc.currentPlanName.value = planName.value;
+        pcc.currentWeekDR.value = lds.first;
+        pcc.currentDayIndex.value = 0;
+        Get.back();
+        Get.to(const PlanCreationCombinedScreen());
+
+        for (DocumentReference<Map<String, dynamic>> weekDR in lds) {
+          for (int dayIndex in [0, 1, 2, 3, 4, 5, 6]) {
+            weekDR
+                .collection(daymfos.days)
+                .doc(dayIndex.toString())
+                .set(DayModel(dayIndex: dayIndex, notes: null, refURL: null)
+                    .toMap())
+                .then(
+              (value) async {
+                for (DefaultTimingModel dfm in listDefaultTimingModels.value) {
+                  weekDR
+                      .collection(daymfos.days)
+                      .doc(dayIndex.toString())
+                      .collection(dtmos.timings)
+                      .add(dfm.toMap())
+                      .then((tDR) {
+                    if (pcc.currentTimingDR.value == userDR) {
+                      pcc.currentTimingDR.value = tDR;
+                    }
+                  });
+                }
+              },
+            );
+          }
+        }
+      },
+    );
   }
 }

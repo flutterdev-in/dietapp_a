@@ -24,10 +24,9 @@ Widget daysRow000PlanCreationCombinedScreen() {
                     child: Center(child: Text(e)),
                   )),
               splashColor: Colors.deepPurple,
-              onTap: () {
-                pcc.zeroIndexs();
-                pcc.currentTimingDR.value = userDR;
+              onTap: () async {
                 pcc.currentDayIndex.value = index;
+                pcc.getCurrentTimingDR();
               },
             ),
           );

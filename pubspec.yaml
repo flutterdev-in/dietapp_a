@@ -64,6 +64,7 @@ dependencies:
   any_link_preview: ^2.0.6
   simple_url_preview: ^3.0.1
   sliver_tools: ^0.2.5
+  expandable: ^5.0.1
   
 dev_dependencies:
   flutter_test:

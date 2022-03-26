@@ -1,16 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class FoodsModelForPlanCreation {
-  int choiceIndex;
-  int optionIndex;
-  int foodIndex;
+  Timestamp foodAddedTime;
   String foodName;
   String? imgURL;
   String? notes;
   String? refURL;
 
   FoodsModelForPlanCreation({
-    required this.choiceIndex,
-    required this.optionIndex,
-    required this.foodIndex,
+
+    required this.foodAddedTime,
     required this.foodName,
     required this.notes,
     required this.imgURL,
@@ -19,9 +18,8 @@ class FoodsModelForPlanCreation {
 
   Map<String, dynamic> toMap() {
     return {
-      fmfpcfos.choiceIndex: choiceIndex,
-      fmfpcfos.optionIndex: optionIndex,
-      fmfpcfos.foodIndex: foodIndex,
+
+      fmfpcfos.foodAddedTime: foodAddedTime,
       fmfpcfos.foodName: foodName,
       fmfpcfos.imgURL: imgURL,
       fmfpcfos.notes: notes,
@@ -31,9 +29,8 @@ class FoodsModelForPlanCreation {
 
   factory FoodsModelForPlanCreation.fromMap(Map dataMap) {
     return FoodsModelForPlanCreation(
-      choiceIndex: dataMap[fmfpcfos.choiceIndex],
-      optionIndex: dataMap[fmfpcfos.optionIndex],
-      foodIndex: dataMap[fmfpcfos.foodIndex],
+
+      foodAddedTime: dataMap[fmfpcfos.foodAddedTime],
       foodName: dataMap[fmfpcfos.foodName] ?? "",
       imgURL: dataMap[fmfpcfos.imgURL],
       notes: dataMap[fmfpcfos.notes],
@@ -46,11 +43,13 @@ final FoodsModelForPlanCreationFinalObjects fmfpcfos =
     FoodsModelForPlanCreationFinalObjects();
 
 class FoodsModelForPlanCreationFinalObjects {
-  final String choiceIndex = "choiceIndex";
-  final String optionIndex = "optionIndex";
-  final String foodIndex = "foodIndex";
+
+  final String foodAddedTime = "foodAddedTime";
   final String foodName = "foodName";
   final String imgURL = "imgURL";
   final String notes = "notes";
   final String refURL = "refURL";
+
+  //
+  final String foods = "foods";
 }

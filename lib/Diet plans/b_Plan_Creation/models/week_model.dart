@@ -1,18 +1,20 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class WeekModel {
-  int weekIndex;
+  Timestamp weekCreationTime;
 
   String? notes;
   String? refURL;
 
   WeekModel({
-    required this.weekIndex,
+    required this.weekCreationTime,
     required this.notes,
     required this.refURL,
   });
 
   Map<String, dynamic> toMap() {
     return {
-      wmfos.weekIndex: weekIndex,
+      wmfos.weekCreationTime: weekCreationTime,
       wmfos.notes: notes,
       wmfos.refURL: refURL,
     };
@@ -20,7 +22,7 @@ class WeekModel {
 
   factory WeekModel.fromMap(Map dataMap) {
     return WeekModel(
-      weekIndex: dataMap[wmfos.weekIndex],
+      weekCreationTime: dataMap[wmfos.weekCreationTime],
       notes: dataMap[wmfos.notes],
       refURL: dataMap[wmfos.refURL],
     );
@@ -30,7 +32,7 @@ class WeekModel {
 final WeekModelFinalObjects wmfos = WeekModelFinalObjects();
 
 class WeekModelFinalObjects {
-  final String weekIndex = "weekIndex";
+  final String weekCreationTime = "weekCreationTime";
 
   final String notes = "notes";
   final String refURL = "refURL";

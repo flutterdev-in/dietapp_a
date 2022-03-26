@@ -1,3 +1,4 @@
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/Combined%20screen/info%20view/timing_info_view_pc.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/Combined%20screen/top%20rows/days_row.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/Combined%20screen/list%20view/timing_foods_listview.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/Combined%20screen/top%20rows/timings_row.dart';
@@ -20,9 +21,16 @@ class PlanCreationCombinedScreen extends StatelessWidget {
           weeksRow000PlanCreationCombinedScreen(),
           daysRow000PlanCreationCombinedScreen(),
           TimingsRow000PlanCreationCombinedScreen(),
-          TimingFoodsListView(),
-          // Container(height: 0.5, width: double.maxFinite, color: Colors.black38)
-
+          Expanded(
+            child: ListView(
+              shrinkWrap: true,
+              children: [
+                TimingInfoViewPC(),
+                
+                FoodsListViewforPC(),
+              ],
+            ),
+          ),
           FoodAddButtons(),
         ],
       ),

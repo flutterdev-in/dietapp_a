@@ -1,11 +1,10 @@
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/day_basic_info.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/default_timing_model.dart';
-import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/week_model.dart';
+import 'package:dietapp_a/y_Firebase/fire_ref.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/firestore.dart';
 import 'package:get/get.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class TimingsRow000PlanCreationCombinedScreen extends StatelessWidget {
   const TimingsRow000PlanCreationCombinedScreen({Key? key}) : super(key: key);
@@ -20,37 +19,35 @@ class TimingsRow000PlanCreationCombinedScreen extends StatelessWidget {
           Expanded(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
-              child: Obx(() => FirestoreListView<Map<String, dynamic>>(
+              child: Obx(() {
+                if (pcc.currentWeekDR.value == userDR) {
+                  return SizedBox();
+                } else {
+                  return FirestoreListView<Map<String, dynamic>>(
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
-                    query: FirebaseFirestore.instance
-                        .doc(pcc.currentPlanDRpath.value)
-                        .collection(wmfos.weeks)
-                        .doc(pcc.currentWeekIndex.value.toString())
+                    query: pcc.currentWeekDR.value
                         .collection(daymfos.days)
                         .doc(pcc.currentDayIndex.value.toString())
                         .collection(dtmos.timings)
                         .orderBy(dtmos.timingString, descending: false),
                     itemBuilder: (context, doc) {
                       Map<String, dynamic> timingMap = doc.data();
-                      if (pcc.curreTimingDRpath.value.isEmpty) {
-                        pcc.curreTimingDRpath.value = doc.reference.path;
-                      }
-                  
+
                       DefaultTimingModel dtm =
                           DefaultTimingModel.fromMap(timingMap);
                       return Padding(
                         padding: const EdgeInsets.fromLTRB(0, 2, 1, 0),
                         child: InkWell(
                           child: LimitedBox(
-                            maxWidth: 75,
+                            maxWidth: 65,
                             child: Obx(() => Container(
                                   decoration: BoxDecoration(
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(1)),
                                     border: Border.all(color: Colors.black26),
-                                    color: (pcc.curreTimingDRpath.value ==
-                                            doc.reference.path)
+                                    color: (pcc.currentTimingDR.value ==
+                                            doc.reference)
                                         ? Colors.deepPurple.shade200
                                         : Colors.white,
                                   ),
@@ -75,15 +72,15 @@ class TimingsRow000PlanCreationCombinedScreen extends StatelessWidget {
                                   ),
                                 )),
                           ),
-                          onTap: () {
-                            pcc.zeroIndexs();
-                            pcc.curreTimingDRpath.value = doc.reference.path;
+                          onTap: () async {
                             pcc.currentTimingDR.value = doc.reference;
                           },
                         ),
                       );
                     },
-                  )),
+                  );
+                }
+              }),
             ),
           ),
         ],

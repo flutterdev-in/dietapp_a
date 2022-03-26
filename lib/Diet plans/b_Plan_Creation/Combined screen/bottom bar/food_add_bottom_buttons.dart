@@ -1,8 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
-import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller0.dart';
-import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/z_Foods/a0_folders_pick_from_folder_screen.dart';
-import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/z_Foods/a1_foods_pick_from_folder_screen.dart';
+
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/Combined%20screen/bottom%20bar/a1_foods_pick_from_folder_screen.dart';
 import 'package:dietapp_a/my%20foods/screens/Add%20food/add_food_sreen.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/controllers/fc_controller.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/models/food_collection_model.dart';
@@ -18,19 +17,11 @@ class FoodAddButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 40,
+      height: 50,
+      color: Colors.blue.shade50,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          IconButton(
-              onPressed: () {
-                Get.to(FoldersPickFromFolderScren());
-              },
-              icon: Icon(MdiIcons.folderPlusOutline)),
-          IconButton(
-              onPressed: () async {},
-              icon: Icon(MdiIcons.plusBoxMultipleOutline)),
-          Text("|"),
           IconButton(
               onPressed: () {
                 manualAddFood(context);
@@ -85,7 +76,7 @@ class FoodAddButtons extends StatelessWidget {
                   },
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               LimitedBox(
                 maxHeight: 180,
                 child: TextField(
@@ -93,7 +84,7 @@ class FoodAddButtons extends StatelessWidget {
                   autofocus: true,
                   keyboardType: TextInputType.multiline,
                   textInputAction: TextInputAction.newline,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Notes',
                     isDense: true,
                   ),
@@ -102,7 +93,7 @@ class FoodAddButtons extends StatelessWidget {
                   },
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Align(
                 alignment: Alignment.bottomRight,
                 child: ElevatedButton(
@@ -116,7 +107,7 @@ class FoodAddButtons extends StatelessWidget {
                       }
                       Get.back();
                     },
-                    child: Text("Add")),
+                    child: const Text("Add")),
               ),
             ],
           ),

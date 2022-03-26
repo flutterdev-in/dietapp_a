@@ -1,3 +1,4 @@
+import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
@@ -9,6 +10,9 @@ class BrowserController {
   TextEditingController tec = TextEditingController();
   Rx<String> currentURL = "https://m.youtube.com/".obs;
   Rx<String> currentRefURLimageURL = "".obs;
+  final currentRefUrlMetadataModel =
+      RefUrlMetadataModel(url: "https://m.youtube.com/", img: null, title: null)
+          .obs;
   Rx<bool> isTextFieldTapped = false.obs;
   Rx<String> homeURL = "https://m.youtube.com/".obs;
   Rx<String> lastFavWebURL = "".obs;
