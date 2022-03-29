@@ -33,50 +33,54 @@ class TimingsRow000PlanCreationCombinedScreen extends StatelessWidget {
                         .orderBy(dtmos.timingString, descending: false),
                     itemBuilder: (context, doc) {
                       Map<String, dynamic> timingMap = doc.data();
-
-                      DefaultTimingModel dtm =
-                          DefaultTimingModel.fromMap(timingMap);
-                      return Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 2, 1, 0),
-                        child: InkWell(
-                          child: LimitedBox(
-                            maxWidth: 65,
-                            child: Obx(() => Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(1)),
-                                    border: Border.all(color: Colors.black26),
-                                    color: (pcc.currentTimingDR.value ==
-                                            doc.reference)
-                                        ? Colors.deepPurple.shade200
-                                        : Colors.white,
-                                  ),
-                                  child: Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(3, 0, 3, 0),
-                                    child: Center(
-                                        child: Column(
-                                      children: [
-                                        SingleChildScrollView(
-                                          scrollDirection: Axis.horizontal,
-                                          child: Text(dtm.timingName,
-                                              maxLines: 1,
+                      if (timingMap[dtmos.timingString] != null ||
+                          timingMap[dtmos.timingName] != null) {
+                        DefaultTimingModel dtm =
+                            DefaultTimingModel.fromMap(timingMap);
+                        return Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 2, 1, 0),
+                          child: InkWell(
+                            child: LimitedBox(
+                              maxWidth: 65,
+                              child: Obx(() => Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(1)),
+                                      border: Border.all(color: Colors.black26),
+                                      color: (pcc.currentTimingDR.value ==
+                                              doc.reference)
+                                          ? Colors.deepPurple.shade200
+                                          : Colors.white,
+                                    ),
+                                    child: Padding(
+                                      padding:
+                                          const EdgeInsets.fromLTRB(3, 0, 3, 0),
+                                      child: Center(
+                                          child: Column(
+                                        children: [
+                                          SingleChildScrollView(
+                                            scrollDirection: Axis.horizontal,
+                                            child: Text(dtm.timingName,
+                                                maxLines: 1,
+                                                textScaleFactor: 0.9),
+                                          ),
+                                          Text(
+                                              dtmos.displayTiming(
+                                                  dtm.timingString),
                                               textScaleFactor: 0.9),
-                                        ),
-                                        Text(
-                                            dtmos.displayTiming(
-                                                dtm.timingString),
-                                            textScaleFactor: 0.9),
-                                      ],
-                                    )),
-                                  ),
-                                )),
+                                        ],
+                                      )),
+                                    ),
+                                  )),
+                            ),
+                            onTap: () async {
+                              pcc.currentTimingDR.value = doc.reference;
+                            },
                           ),
-                          onTap: () async {
-                            pcc.currentTimingDR.value = doc.reference;
-                          },
-                        ),
-                      );
+                        );
+                      } else {
+                        return SizedBox();
+                      }
                     },
                   );
                 }

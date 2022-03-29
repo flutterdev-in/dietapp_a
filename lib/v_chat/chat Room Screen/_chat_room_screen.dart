@@ -20,6 +20,7 @@ class ChatRoomScreen extends StatelessWidget {
           const ChatRoomBottom(),
         ],
       ),
+    
     ));
   }
 }

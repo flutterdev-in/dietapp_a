@@ -6,13 +6,7 @@ class YoutubeTestScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    YoutubePlayerController ytc = YoutubePlayerController(
-      initialVideoId: 'kjiSVunIWpU',
-      flags: YoutubePlayerFlags(
-        autoPlay: true,
-        mute: true,
-      ),
-    );
+   
     return Scaffold(
       body: ListView(
         children: [

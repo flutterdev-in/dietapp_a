@@ -34,10 +34,19 @@ class ChatRoomBottom extends StatelessWidget {
                   keyboardType: TextInputType.multiline,
                   controller: tc,
                   decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.grey[100],
-                      hintText: 'Message...',
-                      border: InputBorder.none),
+                    filled: true,
+                    fillColor: Colors.grey[100],
+                    hintText: 'Message...',
+                    contentPadding: const EdgeInsets.fromLTRB(15, 0, 10, 0),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(24.0),
+                      borderSide: const BorderSide(color: Colors.black12),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(24.0),
+                      borderSide: const BorderSide(color: Colors.black12),
+                    ),
+                  ),
                 ),
               ),
             ),

@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/Combined%20screen/list%20view/url_viewer_pc.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/food_model_for_plan_creation.dart';
 import 'package:dietapp_a/app%20Constants/url/url_avatar.dart';
+import 'package:dietapp_a/my%20foods/screens/Add%20food/controllers/browser_controllers.dart';
 import 'package:dietapp_a/x_customWidgets/alert_dialogue.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/firestore.dart';
@@ -28,7 +30,7 @@ class FoodsListViewforPC extends StatelessWidget {
             Map<String, dynamic> foodMap = doc.data();
             FoodsModelForPlanCreation fm =
                 FoodsModelForPlanCreation.fromMap(foodMap);
-
+            
             return GFListTile(
               padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
               margin: const EdgeInsets.symmetric(vertical: 3, horizontal: 0),
@@ -45,13 +47,18 @@ class FoodsListViewforPC extends StatelessWidget {
                   : LimitedBox(
                       maxHeight: 50,
                       child: SingleChildScrollView(
-                        child: Text(
-                          fm.notes ?? "",
-                          softWrap: true,
-                          textScaleFactor: 0.9,
-                        ),
+                        child: Text(fm.notes ?? "",
+                            softWrap: true,
+                            textScaleFactor: 0.9,
+                            style: TextStyle(color: Colors.brown)),
                       ),
                     ),
+              onTap: () {
+                FocusScope.of(context).unfocus();
+                if (GetUtils.isURL(fm.refURL ?? "")) {
+                  Get.to(URLviewerPC(), arguments: fm.refURL);
+                }
+              },
               icon: InkWell(
                 child: Icon(MdiIcons.playlistEdit),
                 onTap: () {

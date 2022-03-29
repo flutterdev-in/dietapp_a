@@ -17,18 +17,10 @@ class MainScreenDP extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             SizedBox(),
-           
           ],
         ),
         SizedBox(child: ListDietPlansW(), height: 200),
-        GFListTile(
-          titleText: "Day models",
-        ),
-        GFListTile(
-          titleText: "Timing models",
-        ),
       ],
     );
   }
-
 }

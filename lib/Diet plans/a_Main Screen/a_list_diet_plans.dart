@@ -40,7 +40,7 @@ class ListDietPlansW extends StatelessWidget {
                 await pcc.getCurrentTimingDR();
               }
             });
-
+            pcc.currentPlanName.value = dpbim.planName;
             pcc.currentPlanDRpath.value = snapshot.reference.path;
             pcc.isCombinedCreationScreen.value = true;
             Get.to(() => const PlanCreationCombinedScreen());

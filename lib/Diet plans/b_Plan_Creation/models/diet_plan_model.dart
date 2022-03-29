@@ -6,6 +6,7 @@ class DietPlanBasicInfoModel {
   Timestamp? planCreationTime;
   String? refURL;
   List defaultTimings;
+  List defaultTimings0;
 
   DietPlanBasicInfoModel({
     required this.planName,
@@ -13,6 +14,7 @@ class DietPlanBasicInfoModel {
     required this.planCreationTime,
     required this.refURL,
     required this.defaultTimings,
+    required this.defaultTimings0,
   });
 
   Map<String, dynamic> toMap() {
@@ -22,6 +24,7 @@ class DietPlanBasicInfoModel {
       dietpbims.planCreationTime: planCreationTime,
       dietpbims.refURL: refURL,
       dietpbims.defaultTimings: defaultTimings,
+      dietpbims.defaultTimings0: defaultTimings0,
     };
   }
 
@@ -31,8 +34,8 @@ class DietPlanBasicInfoModel {
       notes: mainPlanBasicMap[dietpbims.notes],
       planCreationTime: mainPlanBasicMap[dietpbims.planCreationTime],
       refURL: mainPlanBasicMap[dietpbims.refURL],
-      defaultTimings: mainPlanBasicMap[dietpbims.defaultTimings]
-          ,
+      defaultTimings: mainPlanBasicMap[dietpbims.defaultTimings],
+      defaultTimings0: mainPlanBasicMap[dietpbims.defaultTimings0],
     );
   }
 }
@@ -45,4 +48,5 @@ class DietPlanBasicInfoModelStrings {
   final String notes = "notes";
   final String refURL = "refURL";
   final String defaultTimings = "defaultTimings";
+  final String defaultTimings0 = "defaultTimings0";
 }

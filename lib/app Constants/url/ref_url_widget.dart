@@ -14,37 +14,45 @@ class RefURLWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (refUrlMetadataModel.url == "https://m.youtube.com/") {
-      return Card(
-          child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text("  Ref URL"),
-          IconButton(
-              onPressed: () {
-                bc.isBrowserForRefURL.value = true;
-                Get.to(AddFoodScreen());
-              },
-              icon: Icon(MdiIcons.webPlus)),
-        ],
-      ));
+      return SizedBox(
+        height: 46,
+        child: Card(
+            child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text("  Ref URL"),
+            IconButton(
+                onPressed: () {
+                  bc.isBrowserForRefURL.value = true;
+                  Get.to(AddFoodScreen());
+                },
+                icon: Icon(MdiIcons.webPlus)),
+          ],
+        )),
+      );
     } else {
-      return GFListTile(
-        padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
-        margin: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
-        avatar: URLavatar(
-            imgURL: refUrlMetadataModel.img ?? "",
-            webURL: refUrlMetadataModel.url),
-        title: Text(
-          refUrlMetadataModel.title ?? refUrlMetadataModel.url,
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-        ),
-        icon: IconButton(
-            onPressed: () {
-              bc.isBrowserForRefURL.value = true;
-              Get.to(AddFoodScreen());
-            },
-            icon: Icon(MdiIcons.webSync)),
+      return Column(
+        children: [
+          GFListTile(
+            padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
+            margin: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
+            avatar: URLavatar(
+                imgURL: refUrlMetadataModel.img ?? "",
+                webURL: refUrlMetadataModel.url),
+            title: Text(
+              refUrlMetadataModel.title ?? refUrlMetadataModel.url,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+            icon: IconButton(
+                onPressed: () {
+                  bc.isBrowserForRefURL.value = true;
+                  Get.to(AddFoodScreen());
+                },
+                icon: Icon(MdiIcons.webSync)),
+          ),
+          Divider(thickness: 2, color: Colors.deepPurple.shade100)
+        ],
       );
     }
   }

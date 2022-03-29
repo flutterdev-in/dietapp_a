@@ -120,14 +120,16 @@ class PlanCreationScreen extends StatelessWidget {
       } else {
         return GFListTile(
           margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 0),
-          avatar: Obx(() => bc.currentRefUrlMetadataModel.value == rummfos.constModel
-              ? SizedBox()
-              : GFAvatar(
-                  shape: GFAvatarShape.standard,
-                  size: GFSize.MEDIUM,
-                  maxRadius: 20,
-                  backgroundImage: NetworkImage(bc.currentRefUrlMetadataModel.value.img??""),
-                )),
+          avatar: Obx(
+              () => bc.currentRefUrlMetadataModel.value == rummfos.constModel
+                  ? SizedBox()
+                  : GFAvatar(
+                      shape: GFAvatarShape.standard,
+                      size: GFSize.MEDIUM,
+                      maxRadius: 20,
+                      backgroundImage: NetworkImage(
+                          bc.currentRefUrlMetadataModel.value.img ?? ""),
+                    )),
           title: Text(
             bc.currentURL.value,
             maxLines: 2,
@@ -355,6 +357,12 @@ class PlanCreationScreen extends StatelessWidget {
     if (bc.currentURL.value != "https://m.youtube.com/") {
       refURL = bc.currentURL.value;
     }
+    List<Map<String, String>> lms = listDefaultTimingModels.value
+        .map((dt) => {
+              dtmos.timingName: dt.timingName,
+              dtmos.timingString: dt.timingString
+            })
+        .toList();
     await userDR
         .collection(dietPlans)
         .add(DietPlanBasicInfoModel(
@@ -362,32 +370,27 @@ class PlanCreationScreen extends StatelessWidget {
                 notes: notes.value,
                 planCreationTime: Timestamp.fromDate(DateTime.now()),
                 refURL: refURL,
-                defaultTimings: listDefaultTimingModels.value
-                    .map((tm) => tm.toMap())
-                    .toList())
+                defaultTimings: lms,
+                defaultTimings0: lms)
             .toMap())
         .then(
       (planDocRef) async {
         pcc.currentPlanDRpath.value = planDocRef.path;
-        List<DocumentReference<Map<String, dynamic>>> lds = [];
-        for (int weekIndex in [0, 1, 2, 3]) {
-          await planDocRef
-              .collection(wmfos.weeks)
-              .add(WeekModel(
-                      weekCreationTime: Timestamp.fromDate(DateTime.now()),
-                      notes: null,
-                      refURL: null)
-                  .toMap())
-              .then((dr) => lds.add(dr));
-        }
 
-        pcc.currentPlanName.value = planName.value;
-        pcc.currentWeekDR.value = lds.first;
-        pcc.currentDayIndex.value = 0;
-        Get.back();
-        Get.to(const PlanCreationCombinedScreen());
-
-        for (DocumentReference<Map<String, dynamic>> weekDR in lds) {
+       
+        await planDocRef
+            .collection(wmfos.weeks)
+            .add(WeekModel(
+                    weekCreationTime: Timestamp.fromDate(DateTime.now()),
+                    notes: null,
+                    refURL: null)
+                .toMap())
+            .then((weekDR) async {
+          pcc.currentPlanName.value = planName.value;
+          pcc.currentWeekDR.value = weekDR;
+          pcc.currentDayIndex.value = 0;
+          Get.back();
+          Get.to(const PlanCreationCombinedScreen());
           for (int dayIndex in [0, 1, 2, 3, 4, 5, 6]) {
             weekDR
                 .collection(daymfos.days)
@@ -411,7 +414,7 @@ class PlanCreationScreen extends StatelessWidget {
               },
             );
           }
-        }
+        });
       },
     );
   }

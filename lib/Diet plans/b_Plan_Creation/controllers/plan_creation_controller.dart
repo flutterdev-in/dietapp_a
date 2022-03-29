@@ -2,12 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/day_basic_info.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/default_timing_model.dart';
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/diet_plan_model.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/food_model_for_plan_creation.dart';
-import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/foods_model_for_plan.dart';
-import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/timing_info_model.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/week_model.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/models/food_collection_model.dart';
-import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/foods_collection_strings.dart';
 import 'package:dietapp_a/y_Firebase/fire_ref.dart';
 import 'package:get/get.dart';
 
@@ -22,6 +20,10 @@ class PlanCreationController {
   final currentWeekDR = userDR.obs;
   final currentTimingDR = userDR.obs;
   final Rx<bool> isCombinedCreationScreen = false.obs;
+  final currentTimingFoodDRsList =
+      RxList<DocumentReference<Map<String, dynamic>>>([]).obs;
+
+  final Rx<bool> isPlanView = false.obs;
 
 ////
   String weekName(int weekIndex) {
@@ -68,5 +70,28 @@ class PlanCreationController {
                 imgURL: fcm.imgURL,
                 refURL: fcm.webURL)
             .toMap());
+  }
+
+  Future<List<DefaultTimingModel>> getDefaultTimings({required bool isWantGross}) async {
+    List<DefaultTimingModel> listTimingsInFire = [];
+    await FirebaseFirestore.instance
+        .doc(currentPlanDRpath.value)
+        .get()
+        .then((docSnap) async {
+      if (docSnap.exists && docSnap.data() != null) {
+        DietPlanBasicInfoModel dpbim =
+            DietPlanBasicInfoModel.fromMap(docSnap.data()!);
+        if (isWantGross) {
+          listTimingsInFire = dpbim.defaultTimings
+              .map((e) => DefaultTimingModel.fromMap(e))
+              .toList();
+        } else {
+          listTimingsInFire = dpbim.defaultTimings0
+              .map((e) => DefaultTimingModel.fromMap(e))
+              .toList();
+        }
+      }
+    });
+    return listTimingsInFire;
   }
 }
