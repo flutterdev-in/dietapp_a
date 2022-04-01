@@ -213,6 +213,7 @@ class MenuItemsPC extends StatelessWidget {
                   await drf.reference.delete();
                 }
               });
+              await dr.reference.delete();
             }
           });
 

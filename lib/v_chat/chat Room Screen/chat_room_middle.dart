@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 
 import 'package:dietapp_a/v_chat/constants/chat_const_variables.dart';
 import 'package:dietapp_a/v_chat/constants/chat_strings.dart';
@@ -31,8 +32,8 @@ class ChatRoomMiddle extends StatelessWidget {
           itemBuilder: (context, snapshot) {
             Map<String, dynamic> messageMap = snapshot.data();
             MessageModel crm = MessageModel.fromMap(messageMap);
+            bool isSentByMe = crm.chatSentBy == userUID;
 
-            
             return Column(
               children: [
                 Align(
@@ -40,14 +41,19 @@ class ChatRoomMiddle extends StatelessWidget {
                     padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
                     child: Container(
                       decoration: BoxDecoration(
-                        color: Colors.green.shade100,
+                        color:
+                            isSentByMe ? Colors.green.shade100 : Colors.white,
                         borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(10),
+                          topLeft:
+                              isSentByMe ? Radius.circular(10) : Radius.zero,
                           topRight: Radius.circular(10),
                           bottomLeft: Radius.circular(10),
+                          bottomRight:
+                              isSentByMe ? Radius.zero : Radius.circular(10),
                         ),
                       ),
                       constraints: BoxConstraints(
+                        minHeight: 35,
                         minWidth: 100,
                         maxWidth: MediaQuery.of(context).size.width * 4 / 5,
                       ),
@@ -57,20 +63,24 @@ class ChatRoomMiddle extends StatelessWidget {
                       ),
                     ),
                   ),
-                  alignment: Alignment.bottomRight,
+                  alignment:
+                      isSentByMe ? Alignment.bottomRight : Alignment.bottomLeft,
                 ),
                 Align(
                   alignment: Alignment.bottomRight,
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(10, 0, 0, 5),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisAlignment: isSentByMe
+                          ? MainAxisAlignment.end
+                          : MainAxisAlignment.start,
                       children: [
                         Text(chatTimeString(crm.senderSentTime),
                             textScaleFactor: 0.85),
                         const SizedBox(width: 2),
-                        tickIcon(
-                            crm.senderSentTime, crm.recieverSeenTime, crm.docID)
+                        if (isSentByMe)
+                          tickIcon(crm.senderSentTime, crm.recieverSeenTime,
+                              crm.docID)
                       ],
                     ),
                   ),

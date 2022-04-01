@@ -5,15 +5,19 @@ import 'package:dietapp_a/v_chat/constants/chat_const_variables.dart';
 import 'package:dietapp_a/v_chat/constants/chat_strings.dart';
 import 'package:dietapp_a/y_Firebase/fire_ref.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
+import 'package:getwidget/components/bottom_sheet/gf_bottom_sheet.dart';
+
+ChatScreenController chatSC = ChatScreenController();
 
 class ChatScreenController extends GetxController {
+  final bottomCont = GFBottomSheetController();
+
   @override
   void onInit() async {
     await updateFire(
       isThisChatOpen: true,
     );
-    
+
     super.onInit();
   }
 

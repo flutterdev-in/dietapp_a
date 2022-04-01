@@ -1,11 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
+import 'package:dietapp_a/assets/drive.dart';
 import 'package:dietapp_a/v_chat/constants/chat_const_variables.dart';
 import 'package:dietapp_a/v_chat/constants/chat_strings.dart';
+import 'package:dietapp_a/v_chat/controllers/chat_room_controller.dart';
 import 'package:dietapp_a/v_chat/models/message_model.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:get/utils.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:get/get.dart';
 
 class ChatRoomBottom extends StatelessWidget {
   const ChatRoomBottom({
@@ -34,6 +40,7 @@ class ChatRoomBottom extends StatelessWidget {
                   keyboardType: TextInputType.multiline,
                   controller: tc,
                   decoration: InputDecoration(
+                    suffixIcon: suffixIconW(context),
                     filled: true,
                     fillColor: Colors.grey[100],
                     hintText: 'Message...',
@@ -97,6 +104,37 @@ class ChatRoomBottom extends StatelessWidget {
           )
         ],
       ),
+    );
+  }
+
+  Widget suffixIconW(BuildContext context) {
+    return InkWell(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Icon(MdiIcons.paperclip),
+      ),
+      highlightColor: Colors.purple,
+      splashColor: Colors.purple,
+      onTap: () async {
+        // DriveService().getHttpClient();
+        final ImagePicker picker = ImagePicker();
+        XFile? image = await picker.pickImage(source: ImageSource.camera);
+        if (image != null) {
+          await DriveService().upload(image);
+        }
+
+        // await Get.bottomSheet(Container(
+        //     height: 500,
+        //     color: Colors.white,
+        //     child: Column(
+        //       children: [
+        //         ElevatedButton(
+        //             onPressed: null, child: Text("Send food collectios")),
+        //         ElevatedButton(
+        //             onPressed: null, child: Text("Send food collectios")),
+        //       ],
+        //     )));
+      },
     );
   }
 }

@@ -377,7 +377,6 @@ class PlanCreationScreen extends StatelessWidget {
       (planDocRef) async {
         pcc.currentPlanDRpath.value = planDocRef.path;
 
-       
         await planDocRef
             .collection(wmfos.weeks)
             .add(WeekModel(
