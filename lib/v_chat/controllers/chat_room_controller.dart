@@ -11,13 +11,12 @@ ChatScreenController chatSC = ChatScreenController();
 
 class ChatScreenController extends GetxController {
   final bottomCont = GFBottomSheetController();
-
+  final docList = RxList<DocumentReference<Map<String, dynamic>>>([]).obs;
   @override
   void onInit() async {
     await updateFire(
       isThisChatOpen: true,
     );
-
     super.onInit();
   }
 

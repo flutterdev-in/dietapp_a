@@ -39,4 +39,10 @@ class DayModelFinalObjects {
   String notes = "notes";
   String refURL = "refURL";
   String days = "days";
+
+  List<String> ls = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
+  String dayString (int dayIndex){
+    return ls[dayIndex];
+  }
 }

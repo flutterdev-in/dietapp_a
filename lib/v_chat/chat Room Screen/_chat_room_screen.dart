@@ -18,7 +18,7 @@ class ChatRoomScreen extends StatelessWidget {
         children: [
           const ChatRoomAppBar(),
           const ChatRoomMiddle(),
-          const ChatRoomBottom(),
+           ChatRoomBottom(),
         ],
       ),
       bottomSheet: GFBottomSheet(

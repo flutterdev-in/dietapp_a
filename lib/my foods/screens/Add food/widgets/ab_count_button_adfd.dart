@@ -165,9 +165,9 @@ class CountButtonAdfdW extends StatelessWidget {
                   onPressed: () async {
                     for (FoodsCollectionModel fcm in adfc.addedFoodList.value) {
                       if (bottomBarindex.value == 2) {
-                      await  pcc.addFoods(fcm);
+                        pcc.addFoods(fcm);
                       } else if (bottomBarindex.value == 3) {
-                        await FirebaseFirestore.instance
+                        FirebaseFirestore.instance
                             .collection(fcc.currentPathCR.value)
                             .add(fcm.toMap());
                       }
