@@ -29,7 +29,7 @@ class ChatRoomFunctions {
         chatSC.selectedList.value;
     List<Map<String, dynamic>> finalList = selectedList.map((snapshot) {
       Map<String, dynamic> map = snapshot.data();
-      map.remove(fdcs.isFolder);
+      // map.remove(fdcs.isFolder);
       map[docRef0] = snapshot.reference.path;
       return map;
     }).toList();
@@ -53,20 +53,8 @@ class ChatRoomFunctions {
           chatSC.chatType.value = chatTS.singleCustomFood;
         }
       } else {
-        bool isContainFolder = false;
-        for (var element in selectedList) {
-          FoodsCollectionModel fdm =
-              FoodsCollectionModel.fromMap(element.data());
-          if (fdm.isFolder) {
-            isContainFolder = true;
-            break;
-          }
-        }
-        if (isContainFolder) {
-          chatSC.chatType.value = chatTS.multiFoodsWithFolders;
-        } else {
-          chatSC.chatType.value = chatTS.multiFoodsNoFolder;
-        }
+        chatSC.chatType.value = chatTS.multiFoodCollection;
+  
       }
     } else if (selectedList.first.reference.path
         .contains(chatTS.dietPlansBeta)) {
@@ -88,7 +76,7 @@ class ChatRoomFunctions {
         if (isSingle) {
           FoodsModelForPlanCreation fmp =
               FoodsModelForPlanCreation.fromMap(snapshot.data());
-          if (fmp.refURL?.contains("youtube.com") ?? false) {
+          if (fmp.refURL?.contains("youtube.com/watch?v=") ?? false) {
             chatSC.chatType.value = chatTS.singleYoutube;
           } else if (fmp.refURL != null) {
             chatSC.chatType.value = chatTS.singleWebFood;
@@ -96,7 +84,7 @@ class ChatRoomFunctions {
             chatSC.chatType.value = chatTS.singleCustomFood;
           }
         } else {
-          chatSC.chatType.value = chatTS.multiFoodsNoFolder;
+          chatSC.chatType.value = chatTS.multiFoodCollection;
         }
       }
     }

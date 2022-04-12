@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/models/food_collection_model.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/foods_collection_strings.dart';
+import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/multi_foods_collection_middle.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/single_chat_from_strem_w.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/single_folder_middle.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/text_widget_chat.dart';
@@ -94,6 +95,14 @@ Widget chatWidget(MessageModel mm) {
     Map<String, dynamic> map = listDocMaps!.first as Map<String, dynamic>;
     FoodsCollectionModel fdcm = FoodsCollectionModel.fromMap(map);
     return SingleFolderMiddle(fdcm: fdcm, text: mm.chatString);
+  } else if (mm.chatType == chatTS.multiFoodCollection) {
+   
+    return MultiFoodsCollectionMiddle(
+        listFDCM: listDocMaps!.map((e) {
+          Map<String, dynamic> map = e as Map<String, dynamic>;
+          return FoodsCollectionModel.fromMap(map);
+        }).toList(),
+        text: mm.chatString);
   } else {
     return TextWidgetChatMiddle(mm: mm);
   }

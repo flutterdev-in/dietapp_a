@@ -1,4 +1,6 @@
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/views/widgets/top%20bars/fc_path_bar.dart';
+import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/helper%20widgets/web_page_middle.dart';
+import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/helper%20widgets/youtube_player_middle.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/models/food_collection_model.dart';
@@ -107,6 +109,11 @@ class FolderViewMiddle extends StatelessWidget {
                           fdcs.fieldName: fdcm.fieldName
                         },
                       );
+                    } else if (fdcm.webURL?.contains("youtube.com") ?? false) {
+                      Get.to(() => YoutubePlayerMiddle(fdcm: fdcm));
+                    } else if (fdcm.webURL != null) {
+                      Get.to(() => WebPageMiddle(
+                          webURL: fdcm.webURL!, title: fdcm.fieldName));
                     }
                   },
                 );

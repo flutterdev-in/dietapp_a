@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/controllers/fc_controller.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/models/food_collection_model.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/foods_collection_strings.dart';
-import 'package:dietapp_a/userData/models/user_strings.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/_common_top_widget_middle.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/helper%20widgets/folder_view_middle.dart';
 import 'package:flutter/material.dart';
@@ -24,11 +23,11 @@ class SingleFolderMiddle extends StatelessWidget {
         children: [
           InkWell(
             child: Container(
-              color: Colors.black87,
+              color: Colors.blueGrey.shade900,
               padding: const EdgeInsets.all(10),
               child: Row(
                 children: [
-                  Icon(MdiIcons.folderOutline, color: Colors.white),
+                  const Icon(MdiIcons.folderOutline, color: Colors.white),
                   SizedBox(width: 15),
                   Text(fdcm.fieldName, style: TextStyle(color: Colors.white)),
                 ],
@@ -36,17 +35,19 @@ class SingleFolderMiddle extends StatelessWidget {
             ),
             onTap: () {
               if (fdcm.docRef != null) {
-                fcc.currentPathCR.value = fdcm.docRef! + fdcs.fcPathSeperator;
+                fcc.pathsListMaps.value.clear();
+                fcc.currentPathCR.value = FirebaseFirestore.instance
+                    .doc(fdcm.docRef!)
+                    .collection(fdcs.subCollections)
+                    .path;
                 Get.to(() => FolderViewMiddle(
                       folderName: fdcm.fieldName,
-                      homePath: FirebaseFirestore.instance
-                          .collection(fcc.currentPathCR.value)
-                          .path,
+                      homePath: fcc.currentPathCR.value,
                     ));
               }
             },
           ),
-          if (text != null || text != "")
+          if (text != null && text != "")
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(text!),

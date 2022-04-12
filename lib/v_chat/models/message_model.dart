@@ -87,8 +87,6 @@ class ChatTypesStrings {
   final singleWeek = "singleWeek";
   final singlePlan = "singlePlan";
   //
-  final multiFoodsNoFolder = "multiFoodsNoFolder";
-  final multiFoodsWithFolders = "multiFoodsWithFolders";
   final multiFoodCollection = "multiFoodCollection";
   final multiTiming = "multiTiming";
   final multiDay = "multiDay";
