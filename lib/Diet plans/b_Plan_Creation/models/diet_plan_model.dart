@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 
 class DietPlanBasicInfoModel {
   String planName;
@@ -7,7 +8,7 @@ class DietPlanBasicInfoModel {
   String? refURL;
   List defaultTimings;
   List defaultTimings0;
-
+ String? docRef;
   DietPlanBasicInfoModel({
     required this.planName,
     required this.notes,
@@ -15,6 +16,7 @@ class DietPlanBasicInfoModel {
     required this.refURL,
     required this.defaultTimings,
     required this.defaultTimings0,
+    this.docRef,
   });
 
   Map<String, dynamic> toMap() {
@@ -25,6 +27,7 @@ class DietPlanBasicInfoModel {
       dietpbims.refURL: refURL,
       dietpbims.defaultTimings: defaultTimings,
       dietpbims.defaultTimings0: defaultTimings0,
+      dietpbims.docRef: docRef,
     };
   }
 
@@ -36,6 +39,7 @@ class DietPlanBasicInfoModel {
       refURL: mainPlanBasicMap[dietpbims.refURL],
       defaultTimings: mainPlanBasicMap[dietpbims.defaultTimings],
       defaultTimings0: mainPlanBasicMap[dietpbims.defaultTimings0],
+      docRef: mainPlanBasicMap[dietpbims.docRef],
     );
   }
 }
@@ -49,4 +53,4 @@ class DietPlanBasicInfoModelStrings {
   final String refURL = "refURL";
   final String defaultTimings = "defaultTimings";
   final String defaultTimings0 = "defaultTimings0";
-}
+String docRef = docRef0;}

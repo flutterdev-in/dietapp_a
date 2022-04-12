@@ -13,7 +13,7 @@ class FoodsCollectionStrings {
   String imgURL = "imgURL";
   String appFoodID = "appFoodID";
   String webURL = "webURL";
-  String youtubeURL = "youtubeURL";
+ 
   String isItemSelected = "isItemSelected";
   String fcPathSeperator = "/subCollections";
   String pathCRstring = "pathCRstring";
@@ -23,6 +23,7 @@ class FoodsCollectionStrings {
   String fcModel = "fcModel";
   String foodsCollection = "foodsCollection";
   String subCollections = "subCollections";
+  String docRef = "docRef";
 
   CollectionReference foodsCR0 = FirebaseFirestore.instance
       .collection(uss.users)

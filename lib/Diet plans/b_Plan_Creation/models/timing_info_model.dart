@@ -1,17 +1,20 @@
 
+import 'package:dietapp_a/app%20Constants/constant_objects.dart';
+
 class TimingInfoModel {
   bool? hasChoices;
   int timingIndex;
   String timingName;
   String? notes;
   String? refURL;
-
+String? docRef;
   TimingInfoModel({
     required this.hasChoices,
     required this.timingIndex,
     required this.timingName,
     required this.notes,
     required this.refURL,
+    this.docRef,
   });
 
   Map<String, dynamic> toMap() {
@@ -21,6 +24,7 @@ class TimingInfoModel {
       tims.timingName: timingName,
       tims.notes: notes,
       tims.refURL: refURL,
+       tims. docRef: docRef,
     };
   }
 
@@ -31,6 +35,7 @@ class TimingInfoModel {
       timingName: dataMap[tims.timingName],
       notes: dataMap[tims.notes],
       refURL: dataMap[tims.refURL],
+      docRef: dataMap[tims.docRef],
     );
   }
 }
@@ -43,7 +48,7 @@ class TimingInfoModelStrings {
   final String timingName = "timingName";
   final String notes = "notes";
   final String refURL = "refURL";
-
+  String docRef = docRef0;
   //
   final String timings = "timings";
 

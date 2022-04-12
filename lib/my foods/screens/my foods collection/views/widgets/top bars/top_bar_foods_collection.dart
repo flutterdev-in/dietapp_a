@@ -53,7 +53,7 @@ class FoodsCollectionTopBar extends StatelessWidget {
               ? OnSelectedTopBarForFoodCollection()
               : onStartW),
         ),
-        FcPathBar(),
+       const FcPathBar(),
       ],
     );
   }

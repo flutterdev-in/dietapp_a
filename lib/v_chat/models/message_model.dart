@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/v_chat/constants/chat_strings.dart';
+import 'package:dietapp_a/y_Firebase/fire_ref.dart';
 
 class MessageModel {
   String chatSentBy;
@@ -10,17 +11,20 @@ class MessageModel {
   Timestamp? recieverSeenTime;
 
   String? chatString;
-  Map<String, dynamic>? chatMap;
+  String? chatType;
+  List? listSelection;
+  List? listDocMaps;
 
   MessageModel({
     this.docID,
     required this.chatSentBy,
     required this.chatRecdBy,
-   required this.senderSentTime,
+    required this.senderSentTime,
     this.isChatString = true,
     this.recieverSeenTime,
     this.chatString,
-    this.chatMap,
+    this.chatType,
+    this.listDocMaps,
   });
 
   Map<String, dynamic> toMap() {
@@ -32,7 +36,8 @@ class MessageModel {
       mms.isChatString: isChatString,
       mms.recieverSeenTime: recieverSeenTime,
       mms.chatString: chatString,
-      mms.chatMap: chatMap,
+      mms.chatType: chatType,
+      mms.listDocMaps: listDocMaps,
     };
   }
 
@@ -45,7 +50,48 @@ class MessageModel {
       isChatString: messageMap[mms.isChatString],
       recieverSeenTime: messageMap[mms.recieverSeenTime],
       chatString: messageMap[mms.chatString],
-      chatMap: messageMap[mms.chatMap],
+      chatType: messageMap[mms.chatType],
+      listDocMaps: messageMap[mms.listDocMaps],
     );
   }
+}
+
+MessageModelObjects mmos = MessageModelObjects();
+
+class MessageModelObjects {
+  final String collection = "collection";
+  final String dietPlan = "dietPlan";
+  final String dietPlansBeta = "dietPlansBeta";
+}
+
+ChatTypesStrings chatTS = ChatTypesStrings();
+
+class ChatTypesStrings {
+  //
+  final planView = "planView";
+  final collectionView = "collectionView";
+  //
+  final foodsCollection = userDR.collection("foodsCollection").path;
+  final dietPlansBeta = userDR.collection("dietPlansBeta").path;
+
+  //
+  final stringOnly = "stringOnly";
+  //
+  final singleYoutube = "singleYoutube";
+  final singleWebFood = "singleWebFood";
+  final singleCustomFood = "singleCustomFood";
+  final singleWebFolder = "singleWebFolder";
+  final singleFolder = "singleFolder";
+  final singleTiming = "singleTiming";
+  final singleDay = "singleDay";
+  final singleWeek = "singleWeek";
+  final singlePlan = "singlePlan";
+  //
+  final multiFoodsNoFolder = "multiFoodsNoFolder";
+  final multiFoodsWithFolders = "multiFoodsWithFolders";
+  final multiFoodCollection = "multiFoodCollection";
+  final multiTiming = "multiTiming";
+  final multiDay = "multiDay";
+  final multiWeek = "multiWeek";
+  final multiPlan = "multiPlan";
 }

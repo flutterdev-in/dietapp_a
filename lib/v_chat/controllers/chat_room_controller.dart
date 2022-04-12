@@ -3,15 +3,19 @@ import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 
 import 'package:dietapp_a/v_chat/constants/chat_const_variables.dart';
 import 'package:dietapp_a/v_chat/constants/chat_strings.dart';
+
+import 'package:dietapp_a/v_chat/models/message_model.dart';
 import 'package:dietapp_a/y_Firebase/fire_ref.dart';
 import 'package:get/get.dart';
-import 'package:getwidget/components/bottom_sheet/gf_bottom_sheet.dart';
 
 ChatScreenController chatSC = ChatScreenController();
 
 class ChatScreenController extends GetxController {
-  final bottomCont = GFBottomSheetController();
-  final docList = RxList<DocumentReference<Map<String, dynamic>>>([]).obs;
+  // final docList = RxList<DocumentReference<Map<String, dynamic>>>([]).obs;
+  final selectedList =
+      RxList<QueryDocumentSnapshot<Map<String, dynamic>>>([]).obs;
+  final Rx<String> tcText = "".obs;
+  final Rx<String> chatType = chatTS.stringOnly.obs;
   @override
   void onInit() async {
     await updateFire(

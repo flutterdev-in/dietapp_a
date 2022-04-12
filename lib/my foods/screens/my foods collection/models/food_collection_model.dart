@@ -9,7 +9,7 @@ class FoodsCollectionModel {
   String? imgURL;
   String? appFoodID;
   String? webURL;
-
+  String? docRef;
 
   FoodsCollectionModel({
     required this.fieldName,
@@ -18,8 +18,8 @@ class FoodsCollectionModel {
     this.notes = "",
     this.appFoodID,
     this.webURL,
-
     this.imgURL,
+    this.docRef,
   });
 
   Map<String, dynamic> toMap() {
@@ -29,6 +29,7 @@ class FoodsCollectionModel {
             fdcs.fieldTime: fieldTime,
             fdcs.isFolder: isFolder,
             fdcs.notes: notes,
+            fdcs.docRef: docRef,
           }
         : {
             fdcs.fieldName: fieldName,
@@ -38,7 +39,6 @@ class FoodsCollectionModel {
             fdcs.webURL: webURL,
             fdcs.appFoodID: appFoodID,
             fdcs.imgURL: imgURL,
-      
           };
   }
 
@@ -46,12 +46,12 @@ class FoodsCollectionModel {
     return FoodsCollectionModel(
       fieldName: foodCollectionFieldMap[fdcs.fieldName],
       fieldTime: foodCollectionFieldMap[fdcs.fieldTime],
-      isFolder: foodCollectionFieldMap[fdcs.isFolder],
+      isFolder: foodCollectionFieldMap[fdcs.isFolder]??false,
       notes: foodCollectionFieldMap[fdcs.notes],
       appFoodID: foodCollectionFieldMap[fdcs.appFoodID],
       webURL: foodCollectionFieldMap[fdcs.webURL],
       imgURL: foodCollectionFieldMap[fdcs.imgURL],
-
+      docRef: foodCollectionFieldMap[fdcs.docRef],
     );
   }
 }

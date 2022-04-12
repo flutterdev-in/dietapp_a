@@ -1,41 +1,50 @@
+import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/views/widgets/top%20bars/fc_path_bar.dart';
+import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/controllers/fc_controller.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/models/food_collection_model.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/foods_collection_strings.dart';
-import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/views/widgets/top%20bars/fc_path_bar.dart';
-import 'package:dietapp_a/v_chat/chat%20Room%20Screen/c_chat_room_bottom.dart';
-import 'package:dietapp_a/v_chat/controllers/chat_room_controller.dart';
-import 'package:flutter/material.dart';
+import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/controllers/fc_controller.dart';
 import 'package:flutterfire_ui/firestore.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-class CollectionViewNavBar extends StatelessWidget {
- const CollectionViewNavBar({Key? key}) : super(key: key);
+class FolderViewMiddle extends StatelessWidget {
+  final String folderName;
+  final String homePath;
+  const FolderViewMiddle(
+      {Key? key, required this.folderName, required this.homePath})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    chatSC.selectedList.value.clear();
-    return Column(
-      children: [
-        SizedBox(
-            child: ChatRoomBottom(isSuffixButtonsRequired: false), height: 60),
-        const FcPathBar(),
-        Expanded(
-          child: Obx(
+    return Scaffold(
+      appBar: AppBar(title: Text(folderName)),
+      body: Column(
+        children: [
+          FcPathBar(homePath: homePath),
+          Obx(
             () => FirestoreListView<Map<String, dynamic>>(
               shrinkWrap: true,
               query: FirebaseFirestore.instance
                   .collection(fcc.currentPathCR.value)
-                  .orderBy(fdcs.isFolder, descending: true),
+                  .orderBy(fdcs.isFolder, descending: true)
+                  .orderBy(fdcs.fieldTime, descending: false),
               itemBuilder: (context, snapshot) {
                 //Rx variables
+                Rx<bool> isItemSelected = false.obs;
 
                 Map<String, dynamic> fcMap = snapshot.data();
 
                 FoodsCollectionModel fdcm = FoodsCollectionModel.fromMap(fcMap);
 
+                fcc.currentsPathItemsMaps.value.addAll({
+                  snapshot.reference: {
+                    fdcs.isItemSelected: false,
+                    fdcs.itemIndex: fcc.currentsPathItemsMaps.value.length,
+                    fdcs.fcModel: fdcm
+                  }
+                });
                 Widget avatarW() {
                   if (fdcm.isFolder) {
                     return const Icon(
@@ -57,7 +66,7 @@ class CollectionViewNavBar extends StatelessWidget {
                           Positioned(
                             child: Container(
                               color: Colors.white70,
-                              child:const Icon(
+                              child: Icon(
                                 MdiIcons.youtube,
                                 color: Colors.red,
                                 size: 15,
@@ -85,29 +94,8 @@ class CollectionViewNavBar extends StatelessWidget {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  icon: IconButton(
-                    icon: Obx(
-                      () {
-                        if (chatSC.selectedList.value.contains(snapshot)) {
-                          return const Icon(MdiIcons.checkboxMarkedCircle);
-                        } else {
-                          return const Icon(
-                              MdiIcons.checkboxBlankCircleOutline);
-                        }
-                      },
-                    ),
-                    onPressed: () {
-                      if (chatSC.selectedList.value.contains(snapshot)) {
-                        chatSC.selectedList.value.remove(snapshot);
-                      } else {
-                        chatSC.selectedList.value.add(snapshot);
-                      }
-                    },
-                  ),
-                  onTap: () async {
+                  onTap: () {
                     if (fdcm.isFolder) {
-                      chatSC.selectedList.value.clear();
-                      await Future.delayed(const Duration(milliseconds: 200));
                       fcc.currentPathCR.value =
                           snapshot.reference.path + fdcs.fcPathSeperator;
 
@@ -125,8 +113,8 @@ class CollectionViewNavBar extends StatelessWidget {
               },
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

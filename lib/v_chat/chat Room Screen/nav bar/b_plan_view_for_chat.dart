@@ -10,11 +10,7 @@ import 'package:dietapp_a/y_Firebase/fire_ref.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/controllers/fc_controller.dart';
-import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/models/food_collection_model.dart';
-import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/foods_collection_strings.dart';
-import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/views/widgets/top%20bars/fc_path_bar.dart';
-import 'package:dietapp_a/v_chat/chat%20Room%20Screen/chat_room_bottom.dart';
-import 'package:flutter/material.dart';
+import 'package:dietapp_a/v_chat/chat%20Room%20Screen/c_chat_room_bottom.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutterfire_ui/firestore.dart';
 import 'package:get/get.dart';
@@ -32,13 +28,12 @@ class PlanViewForChat extends StatelessWidget {
   int weekIndex = 0;
   final listCR = RxList<QueryDocumentSnapshot<Map<String, dynamic>>>([]).obs;
   Rx<String> currentWeekName = "".obs;
-  // final listSelectedDRs =
-  //     RxList<DocumentReference<Map<String, dynamic>>>([]).obs;
 
   @override
   Widget build(BuildContext context) {
     listCR.value.clear();
-    chatSC.docList.value.clear();
+
+    chatSC.selectedList.value.clear();
     return Column(
       children: [
         SizedBox(
@@ -56,7 +51,6 @@ class PlanViewForChat extends StatelessWidget {
                 itemBuilder: (context, snapshot) {
                   String weekNm = '';
 
-                  Rx<bool> isItemSelected = false.obs;
                   getTitle(snapshot);
                   if (currentPathCR.value.id == wmfos.weeks) {
                     weekNm = title;
@@ -77,8 +71,7 @@ class PlanViewForChat extends StatelessWidget {
                     icon: IconButton(
                       icon: Obx(
                         () {
-                          if (chatSC.docList.value
-                              .contains(snapshot.reference)) {
+                          if (chatSC.selectedList.value.contains(snapshot)) {
                             return const Icon(MdiIcons.checkboxMarkedCircle);
                           } else {
                             return const Icon(
@@ -87,24 +80,16 @@ class PlanViewForChat extends StatelessWidget {
                         },
                       ),
                       onPressed: () {
-                        if (chatSC.docList.value.contains(snapshot.reference)) {
-                          chatSC.docList.value.remove(snapshot.reference);
+                        if (chatSC.selectedList.value.contains(snapshot)) {
+                          chatSC.selectedList.value.remove(snapshot);
                         } else {
-                          chatSC.docList.value.add(snapshot.reference);
+                          chatSC.selectedList.value.add(snapshot);
                         }
-
-                        // bool isSlected = fcc.currentsPathItemsMaps
-                        //     .value[snapshot.reference]?[fdcs.isItemSelected];
-
-                        // // isItemSelected.value = !isItemSelected.value;
-                        // fcc.currentsPathItemsMaps.value[snapshot.reference]
-                        //     ?[fdcs.isItemSelected] = !isSlected;
-                        // isItemSelected.value = !isSlected;
                       },
                     ),
                     onTap: () async {
-                      if (chatSC.docList.value.isNotEmpty) {
-                        chatSC.docList.value.clear();
+                      if (chatSC.selectedList.value.isNotEmpty) {
+                        chatSC.selectedList.value.clear();
                         await Future.delayed(const Duration(milliseconds: 200));
                       }
 

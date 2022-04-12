@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dietapp_a/my%20foods/screens/Add%20food/controllers/browser_controllers.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/functions/fc_useful_functions.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/models/food_collection_model.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/foods_collection_strings.dart';
@@ -7,7 +6,6 @@ import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/controllers
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/firestore.dart';
 import 'package:get/get.dart';
-import 'package:getwidget/components/list_tile/gf_list_tile.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -16,6 +14,7 @@ class FoodsCollectionListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+   
     return Obx(
       () => FirestoreListView<Map<String, dynamic>>(
         shrinkWrap: true,
@@ -132,8 +131,8 @@ class FoodsCollectionListView extends StatelessWidget {
                 fcc.itemsSelectionCount.value = fcufs.countSelectedItems();
               } else if (fdcm.isFolder) {
                 fcc.currentPathCR.value =
-                    snapshot.reference.path + fdcs.fcPathSeperator;
-
+                    snapshot.reference.collection(fdcs.subCollections).path;
+                print(fcc.currentPathCR.value);
                 fcc.pathsListMaps.value.add(
                   {
                     fdcs.pathCR:

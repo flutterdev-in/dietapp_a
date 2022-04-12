@@ -7,7 +7,8 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:collection/collection.dart';
 
 class FcPathBar extends StatelessWidget {
-  const FcPathBar({Key? key}) : super(key: key);
+  final String? homePath;
+  const FcPathBar({Key? key, this.homePath}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +39,8 @@ class FcPathBar extends StatelessWidget {
       ),
       onTap: () async {
         await Future.delayed(const Duration(milliseconds: 100));
-        fcc.currentPathCR.value = fdcs.foodsCR0.path;
+        fcc.currentPathCR.value =
+            (homePath != null) ? homePath! : fdcs.foodsCR0.path;
         fcc.isUnselectAll.value = true;
         fcc.pathsListMaps.value.clear();
         fcc.currentsPathItemsMaps.value.forEach((key, value) {

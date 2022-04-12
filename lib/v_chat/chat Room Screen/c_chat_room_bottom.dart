@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
+import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/controllers/fc_controller.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/nav%20bar/a_colllecton_view_navbar.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/nav%20bar/b_plan_view_for_chat.dart';
 import 'package:dietapp_a/v_chat/constants/chat_const_variables.dart';
 import 'package:dietapp_a/v_chat/constants/chat_strings.dart';
+import 'package:dietapp_a/v_chat/controllers/chat_room_controller.dart';
+import 'package:dietapp_a/v_chat/controllers/chat_room_functions.dart';
 import 'package:dietapp_a/v_chat/models/message_model.dart';
 import 'package:dietapp_a/x_customWidgets/bottom_sheet_widget.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +20,7 @@ class ChatRoomBottom extends StatelessWidget {
     Key? key,
     this.isSuffixButtonsRequired = true,
   }) : super(key: key);
-  Rx<String> tcString = ''.obs;
+
   @override
   Widget build(BuildContext context) {
     TextEditingController tc = TextEditingController();
@@ -40,7 +43,7 @@ class ChatRoomBottom extends StatelessWidget {
                       keyboardType: TextInputType.multiline,
                       controller: tc,
                       decoration: InputDecoration(
-                        suffixIcon: (tcString.value.length < 1 &&
+                        suffixIcon: (chatSC.tcText.value.length < 1 &&
                                 isSuffixButtonsRequired)
                             ? suffixIconW(context)
                             : null,
@@ -58,7 +61,7 @@ class ChatRoomBottom extends StatelessWidget {
                         ),
                       ),
                       onChanged: (value) {
-                        tcString.value = value;
+                        chatSC.tcText.value = value;
                       },
                     )),
               ),
@@ -73,10 +76,18 @@ class ChatRoomBottom extends StatelessWidget {
                 child: IconButton(
                   icon: const Icon(MdiIcons.send),
                   onPressed: () async {
-                    String tcText = tcString.value;
+                    String tcText = chatSC.tcText.value;
                     tc.clear();
-                    tcString.value = "";
-                    if (tcText.replaceAll(" ", "") != "") {
+                    chatSC.tcText.value = "";
+                    List<Map<String, dynamic>>? listDocMaps;
+                    String chatType = chatTS.stringOnly;
+                    if (chatSC.selectedList.value.isNotEmpty) {
+                      listDocMaps = ChatRoomFunctions().getFinalList();
+                      chatType = chatSC.chatType.value;
+                    }
+
+                    if (tcText.replaceAll(" ", "") != "" ||
+                        chatSC.selectedList.value.isNotEmpty) {
                       //
                       await FirebaseFirestore.instance
                           .collection(crs.chatRooms)
@@ -89,12 +100,17 @@ class ChatRoomBottom extends StatelessWidget {
                               chatString: tcText,
                               senderSentTime:
                                   Timestamp.fromDate(DateTime.now()),
+                              listDocMaps: listDocMaps,
+                              chatType: chatType,
                             ).toMap(),
                           )
                           .then((docRf) async {
+                        if (chatType != null) {
+                          Navigator.pop(context);
+                        }
                         await docRf.update(
                           {
-                            mms.docID: docRf.id,
+                            mms.docRef: docRf.path,
                             mms.senderSentTime:
                                 Timestamp.fromDate(DateTime.now()),
                             mms.recieverSeenTime: isChatPersonOnChat.value
@@ -103,6 +119,7 @@ class ChatRoomBottom extends StatelessWidget {
                           },
                         );
                       });
+                      chatSC.chatType.value = chatTS.stringOnly;
                     }
                   },
                 ),
@@ -123,19 +140,12 @@ class ChatRoomBottom extends StatelessWidget {
           InkWell(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Icon(MdiIcons.paperclip),
-            ),
-            highlightColor: Colors.purple,
-            splashColor: Colors.purple,
-          ),
-          InkWell(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Icon(MdiIcons.paperclip),
+              child: Icon(MdiIcons.folderTextOutline),
             ),
             highlightColor: Colors.purple,
             splashColor: Colors.purple,
             onTap: () {
+              chatSC.chatType.value = chatTS.collectionView;
               bottomSheetW(
                 context,
                 CollectionViewNavBar(),
@@ -145,11 +155,12 @@ class ChatRoomBottom extends StatelessWidget {
           InkWell(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Icon(MdiIcons.paperclip),
+              child: Icon(MdiIcons.clipboardTextOutline),
             ),
             highlightColor: Colors.purple,
             splashColor: Colors.purple,
             onTap: () {
+              chatSC.chatType.value = chatTS.planView;
               bottomSheetW(
                 context,
                 PlanViewForChat(),

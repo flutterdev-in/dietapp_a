@@ -1,23 +1,26 @@
+import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 
 class DefaultTimingModel {
   String timingName;
   String timingString;
   String? notes;
   Map<String, dynamic>? refUrlMetadata;
-
-  DefaultTimingModel({
+  String? docRef;
+   DefaultTimingModel({
     required this.timingName,
     required this.timingString,
     this.notes,
     this.refUrlMetadata,
+    this.docRef,
   });
 
   Map<String, dynamic> toMap() {
     return {
       dtmos.timingName: timingName,
       dtmos.timingString: timingString,
-       dtmos.notes: notes,
+      dtmos.notes: notes,
       dtmos.refUrlMetadata: refUrlMetadata,
+      dtmos.docRef: docRef,
     };
   }
 
@@ -27,6 +30,7 @@ class DefaultTimingModel {
       timingString: dataMap[dtmos.timingString],
       notes: dataMap[dtmos.notes],
       refUrlMetadata: dataMap[dtmos.refUrlMetadata],
+      docRef: dataMap[dtmos.docRef],
     );
   }
 }
@@ -40,6 +44,9 @@ class DefaultTimingModelObjects {
   String timings = "timings";
   final String notes = "notes";
   final String refUrlMetadata = "refUrlMetadata";
+  String docRef = docRef0;
+  
+  
 
   List<DefaultTimingModel> foodTimingsListSort(
       List<DefaultTimingModel> listDefaultTimingModel) {

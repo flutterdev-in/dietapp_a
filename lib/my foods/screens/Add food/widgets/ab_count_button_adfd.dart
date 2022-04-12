@@ -50,7 +50,7 @@ class CountButtonAdfdW extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          FcPathBar(),
+         const FcPathBar(),
           Wrap(
             children: [
               Text("Tap on ", textScaleFactor: 0.7),

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/models/food_collection_model.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/controllers/fc_controller.dart';
+import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/foods_collection_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -42,7 +43,10 @@ void addFolderForFoods(BuildContext context) async {
                             fieldName: tc.text,
                             fieldTime: Timestamp.fromDate(DateTime.now()),
                             isFolder: true)
-                        .toMap());
+                        .toMap())
+                    .then((dr) async {
+                   dr.update({fdcs.docRef: dr.path});
+                });
               },
               child: Text("Add Folder")),
         ],

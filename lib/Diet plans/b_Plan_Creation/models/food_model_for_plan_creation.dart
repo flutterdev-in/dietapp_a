@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 
 class FoodsModelForPlanCreation {
   Timestamp foodAddedTime;
@@ -6,7 +7,7 @@ class FoodsModelForPlanCreation {
   String? imgURL;
   String? notes;
   String? refURL;
-
+String? docRef;
   FoodsModelForPlanCreation({
 
     required this.foodAddedTime,
@@ -14,6 +15,7 @@ class FoodsModelForPlanCreation {
     required this.notes,
     required this.imgURL,
     required this.refURL,
+    this.docRef,
   });
 
   Map<String, dynamic> toMap() {
@@ -24,6 +26,7 @@ class FoodsModelForPlanCreation {
       fmfpcfos.imgURL: imgURL,
       fmfpcfos.notes: notes,
       fmfpcfos.refURL: refURL,
+     fmfpcfos. docRef: docRef,
     };
   }
 
@@ -35,6 +38,7 @@ class FoodsModelForPlanCreation {
       imgURL: dataMap[fmfpcfos.imgURL],
       notes: dataMap[fmfpcfos.notes],
       refURL: dataMap[fmfpcfos.refURL],
+      docRef: dataMap[fmfpcfos.docRef],
     );
   }
 }
@@ -49,7 +53,7 @@ class FoodsModelForPlanCreationFinalObjects {
   final String imgURL = "imgURL";
   final String notes = "notes";
   final String refURL = "refURL";
-
+  String docRef = docRef0;
   //
   final String foods = "foods";
 }

@@ -1,3 +1,5 @@
+import 'package:dietapp_a/app%20Constants/constant_objects.dart';
+
 ChatRoomStrings crs = ChatRoomStrings();
 
 class ChatRoomStrings {
@@ -30,6 +32,7 @@ MessagesModelStrings mms = MessagesModelStrings();
 
 class MessagesModelStrings {
   String docID = "docID";
+  String docRef = docRef0;
   String chatSentBy = "chatSentBy";
   String chatRecdBy = "chatRecdBy";
   String isChatUploaded = "isChatUploaded";
@@ -38,4 +41,6 @@ class MessagesModelStrings {
   String chatString = "chatString";
   String chatMap = "chatMap";
   String recieverSeenTime = "recieverSeenTime";
+  final String chatType = "chatType";
+  final String listDocMaps = "listDocMaps";
 }

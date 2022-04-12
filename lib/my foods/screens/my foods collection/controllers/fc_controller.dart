@@ -25,30 +25,9 @@ class FoodsCollectionController extends GetxController {
   Rx<int> documentsDeletedFromBatch = 0.obs;
   final listSelectedItemsDRsForOperation =
       RxList<DocumentReference<Map<String, dynamic>>>([]).obs;
-
-  // selectAllever() {
-  //   if (isSelectAll.value && currentsPathItemsMaps.value.isNotEmpty) {
-  //     isUnselectAll.value = false;
-  //     currentsPathItemsMaps.value.forEach((snapRef, thisItemMap) {
-  //       currentsPathItemsMaps.value[snapRef]![fdcs.isItemSelected] = true;
-  //       fcc.itemsSelectionCount.value = currentsPathItemsMaps.value.length;
-  //     });
-  //   }
-  // }
-
-  // unSelectAllever() {
-  //   if (isUnselectAll.value && currentsPathItemsMaps.value.isNotEmpty) {
-  //     isSelectAll.value = false;
-  //     currentsPathItemsMaps.value.forEach((snapRef, thisItemMap) {
-  //       currentsPathItemsMaps.value[snapRef]![fdcs.isItemSelected] = false;
-  //       fcc.itemsSelectionCount.value = 0;
-  //     });
-  //   }
-  // }
-
-  // whenUpdatecurrentsPathItemsMaps() {
-  //   if (currentsPathItemsMaps.value.isNotEmpty) {
-  //     fcc.itemsSelectionCount.value = fcufs.countSelectedItems();
-  //   }
-  // }
+  @override
+  void onClose() {
+    fcc.currentPathCR.value = fdcs.foodsCR0.path;
+    super.onClose();
+  }
 }

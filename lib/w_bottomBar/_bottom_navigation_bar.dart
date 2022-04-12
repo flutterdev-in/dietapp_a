@@ -1,3 +1,5 @@
+import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/controllers/fc_controller.dart';
+import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/foods_collection_strings.dart';
 import 'package:dietapp_a/w_bottomBar/rx_index_for_bottombar.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -13,6 +15,9 @@ class BottomNavigationBarW extends StatelessWidget {
       () => SalomonBottomBar(
         currentIndex: bottomBarindex.value,
         onTap: (i) {
+          fcc.pathsListMaps.value.clear();
+          fcc.currentPathCR.value = fdcs.foodsCR0.path;
+
           return bottomBarindex.value = i;
         },
         items: [
