@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 class CommonTopWidgetMiddle extends StatelessWidget {
   final Widget child;
   final BoxConstraints? constraints;
-  const CommonTopWidgetMiddle({Key? key, required this.child, this.constraints})
+  final String? text;
+  const CommonTopWidgetMiddle(
+      {Key? key, required this.child, required this.text, this.constraints})
       : super(key: key);
 
   @override
@@ -14,7 +16,17 @@ class CommonTopWidgetMiddle extends StatelessWidget {
           width: MediaQuery.of(context).size.width * 8 / 10,
           color: Colors.blueGrey.shade200,
           constraints: constraints,
-          child: child),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(color: Colors.blueGrey.shade900, child: child),
+              if (text != null && text != "")
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(text!),
+                ),
+            ],
+          )),
     );
   }
 }

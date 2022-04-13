@@ -18,41 +18,28 @@ class SingleFolderMiddle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CommonTopWidgetMiddle(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          InkWell(
-            child: Container(
-              color: Colors.blueGrey.shade900,
-              padding: const EdgeInsets.all(10),
-              child: Row(
-                children: [
-                  const Icon(MdiIcons.folderOutline, color: Colors.white),
-                  SizedBox(width: 15),
-                  Text(fdcm.fieldName, style: TextStyle(color: Colors.white)),
-                ],
-              ),
-            ),
-            onTap: () {
-              if (fdcm.docRef != null) {
-                fcc.pathsListMaps.value.clear();
-                fcc.currentPathCR.value = FirebaseFirestore.instance
-                    .doc(fdcm.docRef!)
-                    .collection(fdcs.subCollections)
-                    .path;
-                Get.to(() => FolderViewMiddle(
-                      folderName: fdcm.fieldName,
-                      homePath: fcc.currentPathCR.value,
-                    ));
-              }
-            },
-          ),
-          if (text != null && text != "")
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(text!),
-            ),
-        ],
+      text: text,
+      child: InkWell(
+        child: Row(
+          children: [
+            const Icon(MdiIcons.folderOutline, color: Colors.white),
+            SizedBox(width: 15),
+            Text(fdcm.fieldName, style: TextStyle(color: Colors.white)),
+          ],
+        ),
+        onTap: () {
+          if (fdcm.docRef != null) {
+            fcc.pathsListMaps.value.clear();
+            fcc.currentPathCR.value = FirebaseFirestore.instance
+                .doc(fdcm.docRef!)
+                .collection(fdcs.subCollections)
+                .path;
+            Get.to(() => FolderViewMiddle(
+                  folderName: fdcm.fieldName,
+                  homePath: fcc.currentPathCR.value,
+                ));
+          }
+        },
       ),
     );
   }

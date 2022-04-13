@@ -24,6 +24,7 @@ class MultiFoodsCollectionMiddle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CommonTopWidgetMiddle(
+      text: text,
         child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -96,11 +97,7 @@ class MultiFoodsCollectionMiddle extends StatelessWidget {
             },
           ),
         ),
-        if (text != null && text != "")
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(text!),
-          ),
+        
       ],
     ));
   }

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/day_basic_info.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/default_timing_model.dart';
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/diet_plan_model.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/food_model_for_plan_creation.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/week_model.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
@@ -37,6 +38,7 @@ class ChatRoomFunctions {
     bool isSingle = selectedList.length == 1;
 
     String parent = selectedList.first.reference.parent.id;
+
     QueryDocumentSnapshot<Map<String, dynamic>> snapshot = selectedList.first;
     if (selectedList.first.reference.path.contains(chatTS.foodsCollection)) {
       FoodsCollectionModel fdcm = FoodsCollectionModel.fromMap(snapshot.data());
@@ -57,15 +59,14 @@ class ChatRoomFunctions {
       }
     } else if (selectedList.first.reference.path
         .contains(chatTS.dietPlansBeta)) {
-      if (parent == "dietPlansBeta") {
-        chatSC.chatType.value = isSingle ? chatTS.singlePlan : chatTS.multiPlan;
+      if (parent == dietpbims.dietPlansBeta) {
+        chatSC.chatType.value = chatTS.multiPlan;
       } else if (parent == wmfos.weeks) {
-        chatSC.chatType.value = isSingle ? chatTS.singleWeek : chatTS.multiWeek;
+        chatSC.chatType.value = chatTS.multiWeek;
       } else if (parent == daymfos.days) {
-        chatSC.chatType.value = isSingle ? chatTS.singleDay : chatTS.multiDay;
+        chatSC.chatType.value = chatTS.multiDay;
       } else if (parent == dtmos.timings) {
-        chatSC.chatType.value =
-            isSingle ? chatTS.singleTiming : chatTS.multiTiming;
+        chatSC.chatType.value = chatTS.multiTiming;
       } else if (parent == fmfpcfos.foods) {
         finalList = finalList
             .map((e) => foodCollectionModelFromPlan(
@@ -86,7 +87,9 @@ class ChatRoomFunctions {
           chatSC.chatType.value = chatTS.multiFoodCollection;
         }
       }
+     
     }
+
     return finalList;
   }
 }

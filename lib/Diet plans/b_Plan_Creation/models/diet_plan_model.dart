@@ -8,7 +8,7 @@ class DietPlanBasicInfoModel {
   String? refURL;
   List defaultTimings;
   List defaultTimings0;
- String? docRef;
+  String? docRef;
   DietPlanBasicInfoModel({
     required this.planName,
     required this.notes,
@@ -47,10 +47,13 @@ class DietPlanBasicInfoModel {
 DietPlanBasicInfoModelStrings dietpbims = DietPlanBasicInfoModelStrings();
 
 class DietPlanBasicInfoModelStrings {
+  final String dietPlansBeta = "dietPlansBeta";
   final String planName = "planName";
+
   final String planCreationTime = "planCreationTime";
   final String notes = "notes";
   final String refURL = "refURL";
   final String defaultTimings = "defaultTimings";
   final String defaultTimings0 = "defaultTimings0";
-String docRef = docRef0;}
+  String docRef = docRef0;
+}

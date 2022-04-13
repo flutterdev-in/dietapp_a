@@ -16,55 +16,41 @@ class WebFoodMiddle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CommonTopWidgetMiddle(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            padding: const EdgeInsets.all(2),
-            color: Colors.blueGrey.shade900,
-            child: InkWell(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (fdcm.imgURL != null)
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(4),
-                      child: CachedNetworkImage(
-                        imageUrl: fdcm.imgURL!,
-                        progressIndicatorBuilder:
-                            (context, url, downloadProgress) =>
-                                CircularProgressIndicator(
-                                    value: downloadProgress.progress),
-                        errorWidget: (context, url, error) => Icon(Icons.error),
-                      ),
-                    ),
-                  SizedBox(
-                    width: double.maxFinite,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(fdcm.fieldName,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            color: Colors.white,
-                          )),
-                    ),
-                  ),
-                ],
+      text: text,
+      child: InkWell(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (fdcm.imgURL != null)
+              ClipRRect(
+                borderRadius: BorderRadius.circular(4),
+                child: CachedNetworkImage(
+                  imageUrl: fdcm.imgURL!,
+                  progressIndicatorBuilder: (context, url, downloadProgress) =>
+                      CircularProgressIndicator(
+                          value: downloadProgress.progress),
+                  errorWidget: (context, url, error) => Icon(Icons.error),
+                ),
               ),
-              onTap: () {
-                if (fdcm.webURL != null)
-                  Get.to(() => WebPageMiddle(
-                      webURL: fdcm.webURL!, title: fdcm.fieldName));
-              },
+            SizedBox(
+              width: double.maxFinite,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(fdcm.fieldName,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      color: Colors.white,
+                    )),
+              ),
             ),
-          ),
-          if (text != null && text != "")
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(text!),
-            ),
-        ],
+          ],
+        ),
+        onTap: () {
+          if (fdcm.webURL != null)
+            Get.to(() =>
+                WebPageMiddle(webURL: fdcm.webURL!, title: fdcm.fieldName));
+        },
       ),
     );
   }

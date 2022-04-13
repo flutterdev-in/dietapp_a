@@ -1,12 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/day_basic_info.dart';
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/default_timing_model.dart';
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/diet_plan_model.dart';
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/week_model.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/models/food_collection_model.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/foods_collection_strings.dart';
+import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/day_plan_middle.dart';
+import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/diet_plans_middle.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/multi_foods_collection_middle.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/single_chat_from_strem_w.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/single_folder_middle.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/text_widget_chat.dart';
+import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/timing_plan_middle%20copy.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/web_food_middle.dart';
+import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/week_plan_middle.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/youtube_video_widget.dart';
 
 import 'package:dietapp_a/v_chat/constants/chat_const_variables.dart';
@@ -96,22 +104,41 @@ Widget chatWidget(MessageModel mm) {
     FoodsCollectionModel fdcm = FoodsCollectionModel.fromMap(map);
     return SingleFolderMiddle(fdcm: fdcm, text: mm.chatString);
   } else if (mm.chatType == chatTS.multiFoodCollection) {
-   
     return MultiFoodsCollectionMiddle(
         listFDCM: listDocMaps!.map((e) {
           Map<String, dynamic> map = e as Map<String, dynamic>;
           return FoodsCollectionModel.fromMap(map);
         }).toList(),
         text: mm.chatString);
-  }else if (mm.chatType == chatTS.multiFoodCollection) {
-   
-    return MultiFoodsCollectionMiddle(
-        listFDCM: listDocMaps!.map((e) {
+  } else if (mm.chatType == chatTS.multiDay) {
+    return DayPlanMiddle(
+        listDays: listDocMaps!.map((e) {
           Map<String, dynamic> map = e as Map<String, dynamic>;
-          return FoodsCollectionModel.fromMap(map);
+          return DayModel.fromMap(map);
         }).toList(),
         text: mm.chatString);
-  }  else {
+  } else if (mm.chatType == chatTS.multiWeek) {
+    return WeekPlanMiddle(
+        listModels: listDocMaps!.map((e) {
+          Map<String, dynamic> map = e as Map<String, dynamic>;
+          return WeekModel.fromMap(map);
+        }).toList(),
+        text: mm.chatString);
+  } else if (mm.chatType == chatTS.multiTiming) {
+    return TimingPlanMiddle(
+        listModels: listDocMaps!.map((e) {
+          Map<String, dynamic> map = e as Map<String, dynamic>;
+          return DefaultTimingModel.fromMap(map);
+        }).toList(),
+        text: mm.chatString);
+  } else if (mm.chatType == chatTS.multiPlan) {
+    return DietPlansMiddle(
+        listModels: listDocMaps!.map((e) {
+          Map<String, dynamic> map = e as Map<String, dynamic>;
+          return DietPlanBasicInfoModel.fromMap(map);
+        }).toList(),
+        text: mm.chatString);
+  } else {
     return TextWidgetChatMiddle(mm: mm);
   }
 }

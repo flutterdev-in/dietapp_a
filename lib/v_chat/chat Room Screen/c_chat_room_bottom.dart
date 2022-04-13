@@ -81,8 +81,10 @@ class ChatRoomBottom extends StatelessWidget {
                     chatSC.tcText.value = "";
                     List<Map<String, dynamic>>? listDocMaps;
                     String chatType = chatTS.stringOnly;
+
                     if (chatSC.selectedList.value.isNotEmpty) {
                       listDocMaps = ChatRoomFunctions().getFinalList();
+
                       chatType = chatSC.chatType.value;
                     }
 
@@ -105,9 +107,8 @@ class ChatRoomBottom extends StatelessWidget {
                             ).toMap(),
                           )
                           .then((docRf) async {
-                        if (chatType != null) {
-                          Navigator.pop(context);
-                        }
+                        Navigator.pop(context);
+
                         await docRf.update(
                           {
                             mms.docRef: docRf.path,
@@ -119,6 +120,7 @@ class ChatRoomBottom extends StatelessWidget {
                           },
                         );
                       });
+
                       chatSC.chatType.value = chatTS.stringOnly;
                     }
                   },

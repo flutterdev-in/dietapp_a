@@ -87,10 +87,12 @@ class PlanViewForChat extends StatelessWidget {
                         } else {
                           chatSC.selectedList.value.add(snapshot);
                         }
+                        
                       },
                     ),
                     onTap: () async {
-                      if (chatSC.selectedList.value.isNotEmpty) {
+                      if (chatSC.selectedList.value.isNotEmpty &&
+                          snapshot.reference.parent.id != fmfpcfos.foods) {
                         chatSC.selectedList.value.clear();
                         await Future.delayed(const Duration(milliseconds: 200));
                       }
