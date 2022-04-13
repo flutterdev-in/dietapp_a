@@ -84,7 +84,8 @@ class MultiFoodsCollectionMiddle extends StatelessWidget {
                       onTap: () {
                         if (fdcm.webURL?.contains("youtube.com/watch?v=") ??
                             false) {
-                          Get.to(() => YoutubePlayerMiddle(fdcm: fdcm));
+                          Get.to(() => YoutubePlayerMiddle(
+                              webURL: fdcm.webURL!, title: fdcm.fieldName));
                         } else if (fdcm.webURL != null) {
                           Get.to(() => WebPageMiddle(
                               webURL: fdcm.webURL!, title: fdcm.fieldName));

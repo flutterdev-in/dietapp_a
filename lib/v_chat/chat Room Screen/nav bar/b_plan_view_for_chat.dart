@@ -60,7 +60,9 @@ class PlanViewForChat extends StatelessWidget {
                     padding: const EdgeInsets.fromLTRB(0, 5, 8, 0),
                     margin:
                         const EdgeInsets.symmetric(vertical: 7, horizontal: 10),
-                    avatar: avatarW,
+                    avatar: (snapshot.reference.parent.id == fmfpcfos.foods)
+                        ? avatarW
+                        : null,
                     subTitleText: subTitle,
                     title: Text(
                       title,

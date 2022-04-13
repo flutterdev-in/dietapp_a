@@ -54,7 +54,6 @@ class ChatRoomFunctions {
         }
       } else {
         chatSC.chatType.value = chatTS.multiFoodCollection;
-  
       }
     } else if (selectedList.first.reference.path
         .contains(chatTS.dietPlansBeta)) {

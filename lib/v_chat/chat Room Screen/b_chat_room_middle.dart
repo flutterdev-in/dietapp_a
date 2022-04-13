@@ -103,7 +103,15 @@ Widget chatWidget(MessageModel mm) {
           return FoodsCollectionModel.fromMap(map);
         }).toList(),
         text: mm.chatString);
-  } else {
+  }else if (mm.chatType == chatTS.multiFoodCollection) {
+   
+    return MultiFoodsCollectionMiddle(
+        listFDCM: listDocMaps!.map((e) {
+          Map<String, dynamic> map = e as Map<String, dynamic>;
+          return FoodsCollectionModel.fromMap(map);
+        }).toList(),
+        text: mm.chatString);
+  }  else {
     return TextWidgetChatMiddle(mm: mm);
   }
 }

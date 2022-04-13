@@ -1,17 +1,21 @@
-import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/models/food_collection_model.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class YoutubePlayerMiddle extends StatelessWidget {
-  final FoodsCollectionModel fdcm;
-  const YoutubePlayerMiddle({Key? key, required this.fdcm}) : super(key: key);
+  final String webURL;
+
+  final String? title;
+  const YoutubePlayerMiddle({
+    Key? key,
+    required this.webURL,
+    required this.title,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     YoutubePlayerController ytc = YoutubePlayerController(
-      initialVideoId:
-          YoutubePlayer.convertUrlToId(fdcm.webURL!) ?? "kjiSVunIWpU",
+      initialVideoId: YoutubePlayer.convertUrlToId(webURL) ?? "kjiSVunIWpU",
       flags: const YoutubePlayerFlags(
         autoPlay: true,
         hideThumbnail: true,
@@ -58,7 +62,7 @@ class YoutubePlayerMiddle extends StatelessWidget {
               player,
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text(fdcm.fieldName),
+                child: Text(title ?? ""),
               ),
               Row(
                 children: [
