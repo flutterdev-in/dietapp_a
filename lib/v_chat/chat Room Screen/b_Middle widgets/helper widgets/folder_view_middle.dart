@@ -1,11 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/controllers/fc_controller.dart';
+import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/models/food_collection_model.dart';
+import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/foods_collection_strings.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/views/widgets/top%20bars/fc_path_bar.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/helper%20widgets/web_page_middle.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/helper%20widgets/youtube_player_middle.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/models/food_collection_model.dart';
-import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/foods_collection_strings.dart';
-import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/controllers/fc_controller.dart';
 import 'package:flutterfire_ui/firestore.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
@@ -34,7 +34,6 @@ class FolderViewMiddle extends StatelessWidget {
                   .orderBy(fdcs.fieldTime, descending: false),
               itemBuilder: (context, snapshot) {
                 //Rx variables
-                Rx<bool> isItemSelected = false.obs;
 
                 Map<String, dynamic> fcMap = snapshot.data();
 
@@ -58,17 +57,16 @@ class FolderViewMiddle extends StatelessWidget {
                       shape: GFAvatarShape.standard,
                       size: GFSize.MEDIUM,
                       maxRadius: 20,
-                      backgroundImage: NetworkImage(fdcm.imgURL ?? ""),
+                      backgroundImage: NetworkImage(fdcm.rumm?.img ?? ""),
                     );
-                    if (fdcm.webURL?.contains("youtube.com/watch?v=") ??
-                        false) {
+                    if (fdcm.rumm?.isYoutubeVideo ?? false) {
                       return Stack(
                         children: [
                           avatar,
                           Positioned(
                             child: Container(
                               color: Colors.white70,
-                              child: Icon(
+                              child: const Icon(
                                 MdiIcons.youtube,
                                 color: Colors.red,
                                 size: 15,
@@ -109,11 +107,12 @@ class FolderViewMiddle extends StatelessWidget {
                           fdcs.fieldName: fdcm.fieldName
                         },
                       );
-                    } else if (fdcm.webURL?.contains("youtube.com") ?? false) {
-                      Get.to(() => YoutubePlayerMiddle(webURL: fdcm.webURL!, title: fdcm.fieldName));
-                    } else if (fdcm.webURL != null) {
+                    } else if (fdcm.rumm?.isYoutubeVideo ?? false) {
+                      Get.to(() => YoutubePlayerMiddle(
+                          webURL: fdcm.rumm!.url, title: fdcm.fieldName));
+                    } else if (fdcm.rumm != null) {
                       Get.to(() => WebPageMiddle(
-                          webURL: fdcm.webURL!, title: fdcm.fieldName));
+                          webURL: fdcm.rumm!.url, title: fdcm.fieldName));
                     }
                   },
                 );

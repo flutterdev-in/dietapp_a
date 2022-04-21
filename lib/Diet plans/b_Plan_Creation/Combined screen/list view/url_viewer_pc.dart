@@ -1,10 +1,12 @@
+import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
 import 'package:dietapp_a/my%20foods/screens/Add%20food/widgets/browser/b_web_view_adfd.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class URLviewerPC extends StatelessWidget {
-  const URLviewerPC({Key? key}) : super(key: key);
+  final RefUrlMetadataModel? rumm;
+  const URLviewerPC({Key? key,required this.rumm}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +14,7 @@ class URLviewerPC extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
           body: WebView(
-        initialUrl: url,
+        initialUrl: rumm?.url,
         javascriptMode: JavascriptMode.unrestricted,
       )),
     );

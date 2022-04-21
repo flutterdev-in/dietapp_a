@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/day_basic_info.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/default_timing_model.dart';
@@ -7,10 +8,15 @@ import 'package:flutterfire_ui/firestore.dart';
 import 'package:get/get.dart';
 
 class TimingsRow000PlanCreationCombinedScreen extends StatelessWidget {
-  const TimingsRow000PlanCreationCombinedScreen({Key? key}) : super(key: key);
+  DocumentReference<Map<String, dynamic>>? dayDocRef;
+  TimingsRow000PlanCreationCombinedScreen({Key? key, this.dayDocRef})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    dayDocRef ??= pcc.currentWeekDR.value
+        .collection(daymfos.days)
+        .doc(pcc.currentDayIndex.value.toString());
     return SizedBox(
       width: Get.width,
       height: 37,
@@ -20,15 +26,13 @@ class TimingsRow000PlanCreationCombinedScreen extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
               child: Obx(() {
-                if (pcc.currentWeekDR.value == userDR) {
-                  return SizedBox();
+                if (pcc.currentWeekDR.value == userDR && dayDocRef == null) {
+                  return const SizedBox();
                 } else {
                   return FirestoreListView<Map<String, dynamic>>(
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
-                    query: pcc.currentWeekDR.value
-                        .collection(daymfos.days)
-                        .doc(pcc.currentDayIndex.value.toString())
+                    query: dayDocRef!
                         .collection(dtmos.timings)
                         .orderBy(dtmos.timingString, descending: false),
                     itemBuilder: (context, doc) {
@@ -44,8 +48,8 @@ class TimingsRow000PlanCreationCombinedScreen extends StatelessWidget {
                               maxWidth: 65,
                               child: Obx(() => Container(
                                     decoration: BoxDecoration(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(1)),
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(1)),
                                       border: Border.all(color: Colors.black26),
                                       color: (pcc.currentTimingDR.value ==
                                               doc.reference)
@@ -79,7 +83,7 @@ class TimingsRow000PlanCreationCombinedScreen extends StatelessWidget {
                           ),
                         );
                       } else {
-                        return SizedBox();
+                        return const SizedBox();
                       }
                     },
                   );

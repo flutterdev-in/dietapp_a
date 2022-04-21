@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/controllers/fc_controller.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/functions/fc_useful_functions.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/models/food_collection_model.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/foods_collection_strings.dart';
-import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/controllers/fc_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/firestore.dart';
 import 'package:get/get.dart';
@@ -14,7 +14,6 @@ class FoodsCollectionListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-   
     return Obx(
       () => FirestoreListView<Map<String, dynamic>>(
         shrinkWrap: true,
@@ -48,16 +47,16 @@ class FoodsCollectionListView extends StatelessWidget {
                 shape: GFAvatarShape.standard,
                 size: GFSize.MEDIUM,
                 maxRadius: 20,
-                backgroundImage: NetworkImage(fdcm.imgURL ?? ""),
+                backgroundImage: NetworkImage(fdcm.rumm?.img ?? ""),
               );
-              if (fdcm.webURL?.contains("youtube.com/watch?v=") ?? false) {
+              if (fdcm.rumm?.isYoutubeVideo ?? false) {
                 return Stack(
                   children: [
                     avatar,
                     Positioned(
                       child: Container(
                         color: Colors.white70,
-                        child: Icon(
+                        child: const Icon(
                           MdiIcons.youtube,
                           color: Colors.red,
                           size: 15,
@@ -89,15 +88,15 @@ class FoodsCollectionListView extends StatelessWidget {
                   .value[snapshot.reference]?[fdcs.isItemSelected];
               if (fcc.isSelectionStarted.value) {
                 if (fcc.isSelectAll.value) {
-                  return Icon(MdiIcons.checkboxMarkedCircle);
+                  return const Icon(MdiIcons.checkboxMarkedCircle);
                 } else if (fcc.isUnselectAll.value) {
-                  return Icon(MdiIcons.checkboxBlankCircleOutline);
+                  return const Icon(MdiIcons.checkboxBlankCircleOutline);
                 } else if (isItemSelected.value) {
-                  return Icon(MdiIcons.checkboxMarkedCircle);
+                  return const Icon(MdiIcons.checkboxMarkedCircle);
                 } else if (!isItemSelected.value) {
-                  return Icon(MdiIcons.checkboxBlankCircleOutline);
+                  return const Icon(MdiIcons.checkboxBlankCircleOutline);
                 } else {
-                  return SizedBox();
+                  return const SizedBox();
                 }
               } else {
                 return InkWell(
@@ -132,7 +131,7 @@ class FoodsCollectionListView extends StatelessWidget {
               } else if (fdcm.isFolder) {
                 fcc.currentPathCR.value =
                     snapshot.reference.collection(fdcs.subCollections).path;
-                print(fcc.currentPathCR.value);
+
                 fcc.pathsListMaps.value.add(
                   {
                     fdcs.pathCR:

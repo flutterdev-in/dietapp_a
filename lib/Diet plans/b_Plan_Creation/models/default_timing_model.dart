@@ -1,16 +1,20 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
+import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
 
 class DefaultTimingModel {
   String timingName;
   String timingString;
   String? notes;
-  Map<String, dynamic>? refUrlMetadata;
-  String? docRef;
-   DefaultTimingModel({
+  RefUrlMetadataModel? rumm;
+  DocumentReference? docRef;
+
+  //
+  DefaultTimingModel({
     required this.timingName,
     required this.timingString,
     this.notes,
-    this.refUrlMetadata,
+    this.rumm,
     this.docRef,
   });
 
@@ -18,9 +22,11 @@ class DefaultTimingModel {
     return {
       dtmos.timingName: timingName,
       dtmos.timingString: timingString,
-      dtmos.notes: notes,
-      dtmos.refUrlMetadata: refUrlMetadata,
-      dtmos.docRef: docRef,
+      unIndexed: {
+        dtmos.notes: notes,
+        rummfos.rumm: rumm?.toMap(),
+        dtmos.docRef: docRef,
+      }
     };
   }
 
@@ -28,9 +34,9 @@ class DefaultTimingModel {
     return DefaultTimingModel(
       timingName: dataMap[dtmos.timingName],
       timingString: dataMap[dtmos.timingString],
-      notes: dataMap[dtmos.notes],
-      refUrlMetadata: dataMap[dtmos.refUrlMetadata],
-      docRef: dataMap[dtmos.docRef],
+      notes: dataMap[unIndexed][dtmos.notes],
+      rumm: rummfos.rummFromRummMap(dataMap[unIndexed][rummfos.rumm]),
+      docRef: dataMap[unIndexed][dtmos.docRef],
     );
   }
 }
@@ -45,8 +51,6 @@ class DefaultTimingModelObjects {
   final String notes = "notes";
   final String refUrlMetadata = "refUrlMetadata";
   String docRef = docRef0;
-  
-  
 
   List<DefaultTimingModel> foodTimingsListSort(
       List<DefaultTimingModel> listDefaultTimingModel) {

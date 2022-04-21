@@ -90,9 +90,9 @@ class FoodsPickFromFolderScren extends StatelessWidget {
                       shape: GFAvatarShape.standard,
                       size: GFSize.MEDIUM,
                       maxRadius: 20,
-                      backgroundImage: NetworkImage(fdcm.imgURL ?? ""),
+                      backgroundImage: NetworkImage(fdcm.rumm?.img ?? ""),
                     );
-                    if (fdcm.webURL?.contains("youtube.com/watch?v=") ??
+                    if (fdcm.rumm?.isYoutubeVideo ??
                         false) {
                       return Stack(
                         children: [

@@ -1,10 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dietapp_a/Diet%20plans/a_Main%20Screen/a_list_diet_plans.dart';
-
+import 'package:dietapp_a/Diet%20plans/a_Main%20Screen/b_list_diet_plans.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:getwidget/getwidget.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class MainScreenDP extends StatelessWidget {
   const MainScreenDP({Key? key}) : super(key: key);
@@ -15,11 +10,28 @@ class MainScreenDP extends StatelessWidget {
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
-          children: [
+          children: const [
             SizedBox(),
           ],
         ),
-        SizedBox(child: ListDietPlansW(), height: 200),
+        Expanded(
+            flex: 1,
+            child: Card(
+                child: Column(
+              children: const [
+                Text("Active plans"),
+                ListDietPlansW(),
+              ],
+            ))),
+        Expanded(
+            flex: 1,
+            child: Card(
+                child: Column(
+              children: const [
+                Text("Diet plans"),
+                ListDietPlansW(),
+              ],
+            ))),
       ],
     );
   }

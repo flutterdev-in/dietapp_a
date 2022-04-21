@@ -5,24 +5,20 @@ import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/diet_plan_model.da
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/week_model.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/models/food_collection_model.dart';
-import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/foods_collection_strings.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/day_plan_middle.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/diet_plans_middle.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/multi_foods_collection_middle.dart';
-import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/single_chat_from_strem_w.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/single_folder_middle.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/text_widget_chat.dart';
-import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/timing_plan_middle%20copy.dart';
+import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/timing_plan_middle.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/web_food_middle.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/week_plan_middle.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/youtube_video_widget.dart';
-
 import 'package:dietapp_a/v_chat/constants/chat_const_variables.dart';
 import 'package:dietapp_a/v_chat/constants/chat_strings.dart';
 import 'package:dietapp_a/v_chat/models/message_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/firestore.dart';
-import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -50,36 +46,42 @@ class ChatRoomMiddle extends StatelessWidget {
             MessageModel mm = MessageModel.fromMap(messageMap);
             bool isSentByMe = mm.chatSentBy == userUID;
 
-            return Column(
-              children: [
-                Align(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                    child: chatWidget(mm),
+            return InkWell(
+              child: Column(
+                children: [
+                  Align(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                      child: chatWidget(mm),
+                    ),
+                    alignment: isSentByMe
+                        ? Alignment.bottomRight
+                        : Alignment.bottomLeft,
                   ),
-                  alignment:
-                      isSentByMe ? Alignment.bottomRight : Alignment.bottomLeft,
-                ),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(10, 0, 0, 5),
-                    child: Row(
-                      mainAxisAlignment: isSentByMe
-                          ? MainAxisAlignment.end
-                          : MainAxisAlignment.start,
-                      children: [
-                        Text(chatTimeString(mm.senderSentTime),
-                            textScaleFactor: 0.85),
-                        const SizedBox(width: 2),
-                        if (isSentByMe)
-                          tickIcon(
-                              mm.senderSentTime, mm.recieverSeenTime, mm.docID)
-                      ],
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(10, 0, 0, 5),
+                      child: Row(
+                        mainAxisAlignment: isSentByMe
+                            ? MainAxisAlignment.end
+                            : MainAxisAlignment.start,
+                        children: [
+                          Text(chatTimeString(mm.senderSentTime),
+                              textScaleFactor: 0.85),
+                          const SizedBox(width: 2),
+                          if (isSentByMe)
+                            tickIcon(mm.senderSentTime, mm.recieverSeenTime,
+                                mm.docRef)
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
+              onLongPress: () async {
+                await snapshot.reference.delete();
+              },
             );
           },
         ),
@@ -161,7 +163,7 @@ String chatTimeString(Timestamp senderSentTime) {
 Icon tickIcon(
   Timestamp? senderSentTime,
   Timestamp? recieverSeenTime,
-  String? docID,
+  DocumentReference? docRef,
 ) {
   if (recieverSeenTime != null) {
     return const Icon(
@@ -169,7 +171,7 @@ Icon tickIcon(
       color: Colors.blue,
       size: 18,
     );
-  } else if (docID != null) {
+  } else if (docRef != null) {
     return const Icon(
       MdiIcons.check,
       color: Colors.black,

@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/controllers/fc_controller.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/models/food_collection_model.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/foods_collection_strings.dart';
@@ -23,17 +22,15 @@ class SingleFolderMiddle extends StatelessWidget {
         child: Row(
           children: [
             const Icon(MdiIcons.folderOutline, color: Colors.white),
-            SizedBox(width: 15),
-            Text(fdcm.fieldName, style: TextStyle(color: Colors.white)),
+            const SizedBox(width: 15),
+            Text(fdcm.fieldName, style: const TextStyle(color: Colors.white)),
           ],
         ),
         onTap: () {
           if (fdcm.docRef != null) {
             fcc.pathsListMaps.value.clear();
-            fcc.currentPathCR.value = FirebaseFirestore.instance
-                .doc(fdcm.docRef!)
-                .collection(fdcs.subCollections)
-                .path;
+            fcc.currentPathCR.value =
+                fdcm.docRef!.collection(fdcs.subCollections).path;
             Get.to(() => FolderViewMiddle(
                   folderName: fdcm.fieldName,
                   homePath: fcc.currentPathCR.value,

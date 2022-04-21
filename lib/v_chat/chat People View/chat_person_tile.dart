@@ -2,20 +2,19 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/userData/models/user_strings.dart';
 import 'package:dietapp_a/userData/models/user_welcome_model.dart';
-
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/_chat_room_screen.dart';
 import 'package:dietapp_a/v_chat/constants/chat_const_variables.dart';
-import 'package:dietapp_a/v_chat/models/chat_room_model.dart';
 import 'package:dietapp_a/v_chat/constants/chat_strings.dart';
+import 'package:dietapp_a/v_chat/models/chat_room_model.dart';
 import 'package:dietapp_a/x_customWidgets/stream_builder_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
 
 class ChatRoomTile extends StatelessWidget {
-  late final Map<String, dynamic> chatRoomMap;
+  final Map<String, dynamic> chatRoomMap;
 
-  ChatRoomTile({
+  const ChatRoomTile({
     required this.chatRoomMap,
     Key? key,
   }) : super(key: key);
@@ -57,7 +56,7 @@ class ChatRoomTile extends StatelessWidget {
                 }, opaque: false, transition: Transition.leftToRightWithFade);
               },
             );
-          }
+          } 
           return data;
         });
   }

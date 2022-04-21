@@ -72,6 +72,7 @@ dependencies:
   extension_google_sign_in_as_googleapis_auth: ^2.0.4
   persistent_bottom_nav_bar: ^4.0.2
   bottom_sheet: ^1.0.5
+  syncfusion_flutter_calendar: ^20.1.50
   
 
 dev_dependencies:

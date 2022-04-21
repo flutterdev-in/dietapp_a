@@ -1,19 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/default_timing_model.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
+import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
 
 class DietPlanBasicInfoModel {
   String planName;
-  String? notes;
   Timestamp? planCreationTime;
-  String? refURL;
-  List defaultTimings;
-  List defaultTimings0;
-  String? docRef;
+  RefUrlMetadataModel? rumm;
+  String? notes;
+  List<DefaultTimingModel> defaultTimings;
+  List<DefaultTimingModel> defaultTimings0;
+  DocumentReference? docRef;
   DietPlanBasicInfoModel({
     required this.planName,
     required this.notes,
     required this.planCreationTime,
-    required this.refURL,
+    required this.rumm,
     required this.defaultTimings,
     required this.defaultTimings0,
     this.docRef,
@@ -22,24 +24,28 @@ class DietPlanBasicInfoModel {
   Map<String, dynamic> toMap() {
     return {
       dietpbims.planName: planName,
-      dietpbims.notes: notes,
       dietpbims.planCreationTime: planCreationTime,
-      dietpbims.refURL: refURL,
-      dietpbims.defaultTimings: defaultTimings,
-      dietpbims.defaultTimings0: defaultTimings0,
-      dietpbims.docRef: docRef,
+      unIndexed: {
+        dietpbims.notes: notes,
+        rummfos.rumm: rumm?.toMap(),
+        dietpbims.defaultTimings: defaultTimings.map((e) => e.toMap()).toList(),
+        dietpbims.defaultTimings0: defaultTimings0.map((e) => e.toMap()).toList(),
+        dietpbims.docRef: docRef,
+      }
     };
   }
 
   factory DietPlanBasicInfoModel.fromMap(Map mainPlanBasicMap) {
     return DietPlanBasicInfoModel(
       planName: mainPlanBasicMap[dietpbims.planName],
-      notes: mainPlanBasicMap[dietpbims.notes],
       planCreationTime: mainPlanBasicMap[dietpbims.planCreationTime],
-      refURL: mainPlanBasicMap[dietpbims.refURL],
-      defaultTimings: mainPlanBasicMap[dietpbims.defaultTimings],
-      defaultTimings0: mainPlanBasicMap[dietpbims.defaultTimings0],
-      docRef: mainPlanBasicMap[dietpbims.docRef],
+      notes: mainPlanBasicMap[unIndexed][dietpbims.notes],
+      rumm: rummfos.rummFromRummMap(mainPlanBasicMap[unIndexed][rummfos.rumm]),
+      defaultTimings: dietpbims
+          .listDFTM(mainPlanBasicMap[unIndexed][dietpbims.defaultTimings]),
+      defaultTimings0: dietpbims
+          .listDFTM(mainPlanBasicMap[unIndexed][dietpbims.defaultTimings0]),
+      docRef: mainPlanBasicMap[unIndexed][dietpbims.docRef],
     );
   }
 }
@@ -56,4 +62,10 @@ class DietPlanBasicInfoModelStrings {
   final String defaultTimings = "defaultTimings";
   final String defaultTimings0 = "defaultTimings0";
   String docRef = docRef0;
+
+  List<DefaultTimingModel> listDFTM(List list) {
+    return list.map((e) {
+      return DefaultTimingModel.fromMap(e);
+    }).toList();
+  }
 }

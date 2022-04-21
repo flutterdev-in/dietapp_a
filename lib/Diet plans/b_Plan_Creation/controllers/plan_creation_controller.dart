@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/day_basic_info.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/default_timing_model.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/diet_plan_model.dart';
@@ -67,12 +66,12 @@ class PlanCreationController {
                 foodAddedTime: Timestamp.fromDate(DateTime.now()),
                 foodName: fcm.fieldName,
                 notes: fcm.notes,
-                imgURL: fcm.imgURL,
-                refURL: fcm.webURL)
+                rumm: fcm.rumm)
             .toMap());
   }
 
-  Future<List<DefaultTimingModel>> getDefaultTimings({required bool isWantGross}) async {
+  Future<List<DefaultTimingModel>> getDefaultTimings(
+      {required bool isWantGross}) async {
     List<DefaultTimingModel> listTimingsInFire = [];
     await FirebaseFirestore.instance
         .doc(currentPlanDRpath.value)
@@ -82,16 +81,31 @@ class PlanCreationController {
         DietPlanBasicInfoModel dpbim =
             DietPlanBasicInfoModel.fromMap(docSnap.data()!);
         if (isWantGross) {
-          listTimingsInFire = dpbim.defaultTimings
-              .map((e) => DefaultTimingModel.fromMap(e))
-              .toList();
+          listTimingsInFire = dpbim.defaultTimings;
         } else {
-          listTimingsInFire = dpbim.defaultTimings0
-              .map((e) => DefaultTimingModel.fromMap(e))
-              .toList();
+          listTimingsInFire = dpbim.defaultTimings0;
         }
       }
     });
     return listTimingsInFire;
+  }
+
+  Future<void> getPlanRxValues(
+      DocumentReference planDocRef,
+      DietPlanBasicInfoModel dpbim) async {
+    await planDocRef
+        .collection(wmfos.weeks)
+        .orderBy(wmfos.weekCreationTime, descending: false)
+        .limit(1)
+        .get()
+        .then((snapshot) async {
+      if (snapshot.docs.isNotEmpty) {
+        pcc.currentWeekDR.value = snapshot.docs.first.reference;
+        pcc.currentDayIndex.value = 0;
+        await pcc.getCurrentTimingDR();
+      }
+    });
+    pcc.currentPlanName.value = dpbim.planName;
+    pcc.currentPlanDRpath.value = planDocRef.path;
   }
 }

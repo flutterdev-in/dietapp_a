@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/src/list_extensions.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/day_basic_info.dart';
@@ -5,12 +6,11 @@ import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/default_timing_mod
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/diet_plan_model.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/food_model_for_plan_creation.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/week_model.dart';
+import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/controllers/fc_controller.dart';
+import 'package:dietapp_a/v_chat/chat%20Room%20Screen/c_chat_room_bottom.dart';
 import 'package:dietapp_a/v_chat/controllers/chat_room_controller.dart';
 import 'package:dietapp_a/y_Firebase/fire_ref.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/controllers/fc_controller.dart';
-import 'package:dietapp_a/v_chat/chat%20Room%20Screen/c_chat_room_bottom.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutterfire_ui/firestore.dart';
 import 'package:get/get.dart';
@@ -87,7 +87,6 @@ class PlanViewForChat extends StatelessWidget {
                         } else {
                           chatSC.selectedList.value.add(snapshot);
                         }
-                        
                       },
                     ),
                     onTap: () async {
@@ -162,16 +161,16 @@ class PlanViewForChat extends StatelessWidget {
         shape: GFAvatarShape.standard,
         size: GFSize.MEDIUM,
         maxRadius: 20,
-        backgroundImage: NetworkImage(fm.imgURL ?? ""),
+        backgroundImage: NetworkImage(fm.rumm?.img ?? ""),
       );
-      if (fm.refURL?.contains("youtube.com/watch?v=") ?? false) {
+      if (fm.rumm?.isYoutubeVideo ?? false) {
         avatar = Stack(
           children: [
             avatar,
             Positioned(
               child: Container(
                 color: Colors.white70,
-                child: Icon(
+                child: const Icon(
                   MdiIcons.youtube,
                   color: Colors.red,
                   size: 15,
@@ -183,7 +182,7 @@ class PlanViewForChat extends StatelessWidget {
           ],
         );
       }
-      if (fm.imgURL != null) {
+      if (fm.rumm?.img != null) {
         avatarW = avatar;
       }
     }

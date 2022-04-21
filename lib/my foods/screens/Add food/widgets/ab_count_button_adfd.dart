@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
-import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/food_model_for_plan_creation.dart';
 import 'package:dietapp_a/my%20foods/screens/Add%20food/controllers/add_food_controller.dart';
 import 'package:dietapp_a/my%20foods/screens/Add%20food/controllers/browser_controllers.dart';
 import 'package:dietapp_a/my%20foods/screens/Add%20food/controllers/rxvariables_for_count_button.dart';
@@ -9,12 +8,10 @@ import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/models/food
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/foods_collection_strings.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/views/widgets/top%20bars/fc_path_bar.dart';
 import 'package:dietapp_a/w_bottomBar/rx_index_for_bottombar.dart';
-
 import 'package:dietapp_a/x_customWidgets/alert_dialogue.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
-
 import 'package:getwidget/getwidget.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -32,6 +29,7 @@ class CountButtonAdfdW extends StatelessWidget {
             textScaleFactor: 1.3,
           )),
       onPressed: () {
+        
         alertDialogueW(
           context,
           contentPadding: const EdgeInsets.fromLTRB(8.0, 10.0, 8.0, 10.0),
@@ -50,9 +48,9 @@ class CountButtonAdfdW extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-         const FcPathBar(),
+          const FcPathBar(),
           Wrap(
-            children: [
+            children: const [
               Text("Tap on ", textScaleFactor: 0.7),
               Icon(MdiIcons.webPlus, color: Colors.black, size: 12),
               Text(
@@ -61,7 +59,7 @@ class CountButtonAdfdW extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 5),
+          const SizedBox(height: 5),
           SizedBox(
             height: 410,
             child: Obx(
@@ -81,14 +79,15 @@ class CountButtonAdfdW extends StatelessWidget {
                               shape: GFAvatarShape.standard,
                               size: GFSize.MEDIUM,
                               maxRadius: 20,
-                              backgroundImage: NetworkImage(fdcm.imgURL ?? ""),
+                              backgroundImage:
+                                  NetworkImage(fdcm.rumm?.img ?? ""),
                             ),
                             onTap: () {
                               Get.back();
-                              bc.loadURl(fdcm.imgURL ?? "");
+                              bc.loadURl(fdcm.rumm?.img ?? "");
                             },
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 5,
                           ),
                           Expanded(
@@ -101,17 +100,17 @@ class CountButtonAdfdW extends StatelessWidget {
                               ),
                               onTap: () {
                                 Get.back();
-                                bc.loadURl(fdcm.webURL ?? "");
+                                bc.loadURl(fdcm.rumm?.img ?? "");
                               },
                             ),
                             flex: 8,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 5,
                           ),
                           Expanded(
                             child: InkWell(
-                              child: Icon(
+                              child: const Icon(
                                 MdiIcons.circleEditOutline,
                                 color: Colors.black,
                               ),
@@ -121,12 +120,12 @@ class CountButtonAdfdW extends StatelessWidget {
                             ),
                             flex: 1,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 12,
                           ),
                           Expanded(
                             child: InkWell(
-                              child: Icon(
+                              child: const Icon(
                                 MdiIcons.minusCircleOutline,
                                 color: Colors.black,
                               ),
@@ -143,7 +142,7 @@ class CountButtonAdfdW extends StatelessWidget {
               },
             ),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           SizedBox(
             height: 40,
             child: Row(
@@ -159,9 +158,9 @@ class CountButtonAdfdW extends StatelessWidget {
                       await Future.delayed(const Duration(milliseconds: 2500));
                       countbvs.isClearAll.value = false;
                     },
-                    child: Text("Clear all")),
+                    child: const Text("Clear all")),
                 ElevatedButton(
-                  child: Text("Add all"),
+                  child: const Text("Add all"),
                   onPressed: () async {
                     for (FoodsCollectionModel fcm in adfc.addedFoodList.value) {
                       if (bottomBarindex.value == 2) {
@@ -195,7 +194,7 @@ class CountButtonAdfdW extends StatelessWidget {
     TextEditingController tcName = TextEditingController();
     TextEditingController tcNotes = TextEditingController();
     tcName.text = fdcm.fieldName;
-    tcNotes.text = fdcm.notes;
+    tcNotes.text = fdcm.notes ?? "";
     return WillPopScope(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -214,11 +213,11 @@ class CountButtonAdfdW extends StatelessWidget {
                 decoration: InputDecoration(
                   labelText: "Food name",
                   suffixIcon: InkWell(
-                    child: Icon(MdiIcons.web, color: Colors.black),
+                    child: const Icon(MdiIcons.web, color: Colors.black),
                     onTap: () {
                       bc.wvc?.loadUrl(
                         urlRequest: URLRequest(
-                          url: Uri.parse(fdcm.webURL ?? ""),
+                          url: Uri.parse(fdcm.rumm?.url ?? ""),
                         ),
                       );
                       Get.back();
@@ -241,7 +240,7 @@ class CountButtonAdfdW extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [

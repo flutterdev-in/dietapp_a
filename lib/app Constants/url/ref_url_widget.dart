@@ -8,8 +8,14 @@ import 'package:getwidget/getwidget.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class RefURLWidget extends StatelessWidget {
-  RefUrlMetadataModel refUrlMetadataModel;
-  RefURLWidget({Key? key, required this.refUrlMetadataModel}) : super(key: key);
+  final RefUrlMetadataModel refUrlMetadataModel;
+  final bool editingIconRequired;
+
+  const RefURLWidget({
+    Key? key,
+    required this.refUrlMetadataModel,
+    this.editingIconRequired = true,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,13 +26,13 @@ class RefURLWidget extends StatelessWidget {
             child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text("  Ref URL"),
+            const Text("  Ref URL"),
             IconButton(
                 onPressed: () {
                   bc.isBrowserForRefURL.value = true;
-                  Get.to(AddFoodScreen());
+                  Get.to(const AddFoodScreen());
                 },
-                icon: Icon(MdiIcons.webPlus)),
+                icon: const Icon(MdiIcons.webPlus)),
           ],
         )),
       );
@@ -44,12 +50,14 @@ class RefURLWidget extends StatelessWidget {
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
-            icon: IconButton(
-                onPressed: () {
-                  bc.isBrowserForRefURL.value = true;
-                  Get.to(AddFoodScreen());
-                },
-                icon: Icon(MdiIcons.webSync)),
+            icon: editingIconRequired
+                ? IconButton(
+                    onPressed: () {
+                      bc.isBrowserForRefURL.value = true;
+                      Get.to(const AddFoodScreen());
+                    },
+                    icon: const Icon(MdiIcons.webSync))
+                : null,
           ),
           Divider(thickness: 2, color: Colors.deepPurple.shade100)
         ],

@@ -1,33 +1,38 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
+import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
 
 class DayModel {
   int dayIndex;
+
   String? notes;
-  String? refURL;
-  String? docRef;
+  RefUrlMetadataModel? rumm;
+  DocumentReference? docRef;
 
   DayModel({
     required this.dayIndex,
     required this.notes,
-    required this.refURL,
+    required this.rumm,
     this.docRef,
   });
 
   Map<String, dynamic> toMap() {
     return {
       daymfos.dayIndex: dayIndex,
-      daymfos.notes: notes,
-      daymfos.refURL: refURL,
-      daymfos.docRef: docRef,
+      unIndexed: {
+        daymfos.notes: notes,
+        rummfos.rumm: rumm?.toMap(),
+        daymfos.docRef: docRef,
+      }
     };
   }
 
   factory DayModel.fromMap(Map dayPlanMap) {
     return DayModel(
       dayIndex: dayPlanMap[daymfos.dayIndex],
-      notes: dayPlanMap[daymfos.notes],
-      refURL: dayPlanMap[daymfos.refURL],
-      docRef: dayPlanMap[daymfos.docRef],
+      notes: dayPlanMap[unIndexed][daymfos.notes],
+      rumm: rummfos.rummFromRummMap(dayPlanMap[unIndexed][rummfos.rumm]),
+      docRef: dayPlanMap[unIndexed][daymfos.docRef],
     );
   }
 }

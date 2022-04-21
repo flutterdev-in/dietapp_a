@@ -11,7 +11,6 @@ class SliverTest extends StatelessWidget {
       appBar: AppBar(),
       body: CustomScrollView(
         slivers: [
-          
           SliverList(
               delegate: SliverChildBuilderDelegate(
             (context, index) {
@@ -25,7 +24,7 @@ class SliverTest extends StatelessWidget {
           )),
           SliverPinnedHeader(
               child: Container(
-            child: Text("dfvdvfffdv\ndsnjndvdvndndvnvv"),
+            child: const Text("dfvdvfffdv\ndsnjndvdvndndvnvv"),
             width: double.maxFinite,
             color: Colors.white,
           )),

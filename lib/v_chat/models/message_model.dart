@@ -1,26 +1,24 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/v_chat/constants/chat_strings.dart';
 import 'package:dietapp_a/y_Firebase/fire_ref.dart';
 
 class MessageModel {
   String chatSentBy;
   String chatRecdBy;
-  bool isChatString;
-  String? docID;
+  DocumentReference? docRef;
   Timestamp senderSentTime;
   Timestamp? recieverSeenTime;
-
   String? chatString;
   String? chatType;
-  List? listSelection;
+
   List? listDocMaps;
 
   MessageModel({
-    this.docID,
+    this.docRef,
     required this.chatSentBy,
     required this.chatRecdBy,
     required this.senderSentTime,
-    this.isChatString = true,
     this.recieverSeenTime,
     this.chatString,
     this.chatType,
@@ -29,29 +27,29 @@ class MessageModel {
 
   Map<String, dynamic> toMap() {
     return {
-      mms.docID: docID,
-      mms.chatSentBy: chatSentBy,
-      mms.chatRecdBy: chatRecdBy,
       mms.senderSentTime: senderSentTime,
-      mms.isChatString: isChatString,
-      mms.recieverSeenTime: recieverSeenTime,
-      mms.chatString: chatString,
-      mms.chatType: chatType,
-      mms.listDocMaps: listDocMaps,
+      unIndexed: {
+        mms.docRef: docRef,
+        mms.chatSentBy: chatSentBy,
+        mms.chatRecdBy: chatRecdBy,
+        mms.recieverSeenTime: recieverSeenTime,
+        mms.chatString: chatString,
+        mms.chatType: chatType,
+        mms.listDocMaps: listDocMaps,
+      }
     };
   }
 
   factory MessageModel.fromMap(Map messageMap) {
     return MessageModel(
-      docID: messageMap[mms.docID],
-      chatSentBy: messageMap[mms.chatSentBy],
-      chatRecdBy: messageMap[mms.chatRecdBy],
+      docRef: messageMap[unIndexed][mms.docRef],
+      chatSentBy: messageMap[unIndexed][mms.chatSentBy],
+      chatRecdBy: messageMap[unIndexed][mms.chatRecdBy],
       senderSentTime: messageMap[mms.senderSentTime],
-      isChatString: messageMap[mms.isChatString],
-      recieverSeenTime: messageMap[mms.recieverSeenTime],
-      chatString: messageMap[mms.chatString],
-      chatType: messageMap[mms.chatType],
-      listDocMaps: messageMap[mms.listDocMaps],
+      recieverSeenTime: messageMap[unIndexed][mms.recieverSeenTime],
+      chatString: messageMap[unIndexed][mms.chatString],
+      chatType: messageMap[unIndexed][mms.chatType],
+      listDocMaps: messageMap[unIndexed][mms.listDocMaps],
     );
   }
 }

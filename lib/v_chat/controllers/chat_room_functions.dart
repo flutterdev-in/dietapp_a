@@ -5,9 +5,7 @@ import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/diet_plan_model.da
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/food_model_for_plan_creation.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/week_model.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
-
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/models/food_collection_model.dart';
-import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/foods_collection_strings.dart';
 import 'package:dietapp_a/v_chat/controllers/chat_room_controller.dart';
 import 'package:dietapp_a/v_chat/models/message_model.dart';
 
@@ -18,9 +16,8 @@ class ChatRoomFunctions {
       fieldName: fmp.foodName,
       fieldTime: fmp.foodAddedTime,
       isFolder: false,
-      notes: fmp.notes ?? "",
-      webURL: fmp.refURL,
-      imgURL: fmp.imgURL,
+      notes: fmp.notes,
+      rumm: fmp.rumm,
       docRef: fmp.docRef,
     );
   }
@@ -30,8 +27,8 @@ class ChatRoomFunctions {
         chatSC.selectedList.value;
     List<Map<String, dynamic>> finalList = selectedList.map((snapshot) {
       Map<String, dynamic> map = snapshot.data();
-      // map.remove(fdcs.isFolder);
-      map[docRef0] = snapshot.reference.path;
+ 
+      map[unIndexed][docRef0] = snapshot.reference;
       return map;
     }).toList();
 
@@ -43,13 +40,13 @@ class ChatRoomFunctions {
     if (selectedList.first.reference.path.contains(chatTS.foodsCollection)) {
       FoodsCollectionModel fdcm = FoodsCollectionModel.fromMap(snapshot.data());
       if (isSingle) {
-        if (fdcm.isFolder && fdcm.webURL != null) {
+        if (fdcm.isFolder && fdcm.rumm != null) {
           chatSC.chatType.value = chatTS.singleWebFolder;
         } else if (fdcm.isFolder) {
           chatSC.chatType.value = chatTS.singleFolder;
-        } else if (fdcm.webURL?.contains("youtube.com") ?? false) {
+        } else if (fdcm.rumm?.isYoutubeVideo ?? false) {
           chatSC.chatType.value = chatTS.singleYoutube;
-        } else if (fdcm.webURL != null) {
+        } else if (fdcm.rumm != null) {
           chatSC.chatType.value = chatTS.singleWebFood;
         } else {
           chatSC.chatType.value = chatTS.singleCustomFood;
@@ -76,9 +73,9 @@ class ChatRoomFunctions {
         if (isSingle) {
           FoodsModelForPlanCreation fmp =
               FoodsModelForPlanCreation.fromMap(snapshot.data());
-          if (fmp.refURL?.contains("youtube.com/watch?v=") ?? false) {
+          if (fmp.rumm?.isYoutubeVideo ?? false) {
             chatSC.chatType.value = chatTS.singleYoutube;
-          } else if (fmp.refURL != null) {
+          } else if (fmp.rumm != null) {
             chatSC.chatType.value = chatTS.singleWebFood;
           } else {
             chatSC.chatType.value = chatTS.singleCustomFood;
@@ -87,7 +84,6 @@ class ChatRoomFunctions {
           chatSC.chatType.value = chatTS.multiFoodCollection;
         }
       }
-     
     }
 
     return finalList;

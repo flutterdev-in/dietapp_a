@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
-
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/Combined%20screen/bottom%20bar/a1_foods_pick_from_folder_screen.dart';
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
 import 'package:dietapp_a/my%20foods/screens/Add%20food/add_food_sreen.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/controllers/fc_controller.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/models/food_collection_model.dart';
@@ -26,19 +25,19 @@ class FoodAddButtons extends StatelessWidget {
               onPressed: () {
                 manualAddFood(context);
               },
-              icon: Icon(MdiIcons.penPlus)),
+              icon: const Icon(MdiIcons.penPlus)),
           IconButton(
               onPressed: () {
                 fcc.currentPathCR.value =
                     pcc.currentTimingDR.value.collection("foods").path;
-                Get.to(AddFoodScreen());
+                Get.to(const AddFoodScreen());
               },
-              icon: Icon(MdiIcons.webPlus)),
+              icon: const Icon(MdiIcons.webPlus)),
           IconButton(
               onPressed: () {
                 Get.to(FoodsPickFromFolderScren());
               },
-              icon: Icon(MdiIcons.textBoxPlusOutline)),
+              icon: const Icon(MdiIcons.textBoxPlusOutline)),
         ],
       ),
     );
@@ -46,7 +45,7 @@ class FoodAddButtons extends StatelessWidget {
 
   Future<void> foodsAddFromFolder(BuildContext context) async {
     alertDialogueW(context,
-        body: SizedBox(
+        body: const SizedBox(
           height: 300,
           child: Expanded(child: FoodsCollectionListView()),
         ));
@@ -100,10 +99,12 @@ class FoodAddButtons extends StatelessWidget {
                     onPressed: () async {
                       if (name.value.isNotEmpty || notes.value.isNotEmpty) {
                         await pcc.addFoods(FoodsCollectionModel(
-                            fieldName: name.value,
-                            fieldTime: Timestamp.fromDate(DateTime.now()),
-                            isFolder: false,
-                            notes: notes.value));
+                          fieldName: name.value,
+                          fieldTime: Timestamp.fromDate(DateTime.now()),
+                          isFolder: false,
+                          notes: notes.value,
+                          rumm: null,
+                        ));
                       }
                       Get.back();
                     },

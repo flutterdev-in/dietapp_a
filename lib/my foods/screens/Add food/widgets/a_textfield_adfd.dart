@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
 import 'package:dietapp_a/my%20foods/screens/Add%20food/controllers/add_food_controller.dart';
 import 'package:dietapp_a/my%20foods/screens/Add%20food/controllers/browser_controllers.dart';
 import 'package:dietapp_a/my%20foods/screens/Add%20food/controllers/rxvariables_for_count_button.dart';
@@ -7,21 +8,14 @@ import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
-
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:metadata_fetch/metadata_fetch.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 class TextFieldAdfd extends StatelessWidget {
   const TextFieldAdfd({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    Rx<bool> isTextFieldTap = false.obs;
-    late WebViewController webController;
-    Rx<bool> isTextFieldActive = true.obs;
-    Rx<String> currentURL = "".obs;
-
     bc.tec.text = "Youtube";
     return Container(
       height: 45,
@@ -49,7 +43,7 @@ class TextFieldAdfd extends StatelessWidget {
           value = value.trimLeft();
           value = value.replaceAll(RegExp(r"\s{2,}"), " ");
           if (!value.contains(RegExp(r"\s$")) && value.length > 3) {
-            EasyDebounce.debounce("1", Duration(seconds: 2), () {
+            EasyDebounce.debounce("1", const Duration(seconds: 2), () {
               adfc.searchString.value = value;
             });
           }
@@ -86,7 +80,8 @@ class TextFieldAdfd extends StatelessWidget {
           return const SizedBox();
         } else if (bc.isTextFieldTapped.value) {
           return IconButton(
-              onPressed: () => bc.tec.clear(), icon: Icon(MdiIcons.close));
+              onPressed: () => bc.tec.clear(),
+              icon: const Icon(MdiIcons.close));
         } else if (GetUtils.isURL(bc.currentURL.value)) {
           return IconButton(
             onPressed: () async {
@@ -95,11 +90,12 @@ class TextFieldAdfd extends StatelessWidget {
                 fieldName: data?.title ?? "",
                 fieldTime: Timestamp.fromDate(DateTime.now()),
                 isFolder: false,
-                imgURL: data?.image,
-                webURL: data?.url,
+                rumm: await rummfos.rummModel(bc.currentURL.value,
+                    metaData: data),
+                notes: null,
               );
               List<String> ls = adfc.addedFoodList.value
-                  .map((element) => element.webURL.toString())
+                  .map((element) => element.rumm?.url.toString() ?? "")
                   .toList();
 
               if (!ls.contains(data?.url)) {
@@ -114,12 +110,12 @@ class TextFieldAdfd extends StatelessWidget {
               }
             },
             padding: const EdgeInsets.all(0),
-            icon: Icon(MdiIcons.webPlus, color: Colors.black87),
+            icon: const Icon(MdiIcons.webPlus, color: Colors.black87),
           );
         } else {
-          return IconButton(
+          return const IconButton(
             onPressed: null,
-            icon: const Icon(MdiIcons.webPlus, color: Colors.black45),
+            icon: Icon(MdiIcons.webPlus, color: Colors.black45),
           );
         }
       },

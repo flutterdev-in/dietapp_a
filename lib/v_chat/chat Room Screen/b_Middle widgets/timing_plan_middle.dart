@@ -1,18 +1,16 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/Combined%20screen/top%20rows/days_row.dart';
-import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/Combined%20screen/top%20rows/weeks_row.dart';
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/Combined%20screen/info%20view/timing_info_view_pc.dart';
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/Combined%20screen/list%20view/timing_foods_listview.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
-import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/diet_plan_model.dart';
-import 'package:dietapp_a/Diet%20plans/c_diet_view/a_timings_view_pc.dart';
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/default_timing_model.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/_common_top_widget_middle.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-class DietPlansMiddle extends StatelessWidget {
-  final List<DietPlanBasicInfoModel> listModels;
+class TimingPlanMiddle extends StatelessWidget {
+  final List<DefaultTimingModel> listModels;
   final String? text;
-  const DietPlansMiddle({
+  const TimingPlanMiddle({
     Key? key,
     required this.listModels,
     required this.text,
@@ -29,30 +27,30 @@ class DietPlansMiddle extends StatelessWidget {
           physics: const ClampingScrollPhysics(),
           itemCount: listModels.length,
           itemBuilder: (context, index) {
-            DietPlanBasicInfoModel model = listModels[index];
+            DefaultTimingModel model = listModels[index];
             return InkWell(
               child: Row(
                 children: [
                   const Padding(
                     padding: EdgeInsets.all(8.0),
-                    child: Icon(MdiIcons.clipboardTextOutline,
-                        color: Colors.white),
+                    child: Icon(MdiIcons.calendarClock, color: Colors.white),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      model.planName,
+                      "Timing plan\n(${model.timingName})",
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                       style: const TextStyle(color: Colors.white),
                     ),
                   )
                 ],
               ),
-              onTap: () async {
+              onTap: () {
                 if (model.docRef != null) {
-                  await pcc.getPlanRxValues(
-                      model.docRef!, model);
-                  pcc.isCombinedCreationScreen.value = false;
-                  Get.to(() => DietPlanViewFromChat(model: model));
+                  pcc.currentTimingDR.value = model.docRef!;
+
+                  Get.to(() => TimingViewFromChat(dtm: model));
                 }
               },
             );
@@ -63,24 +61,20 @@ class DietPlansMiddle extends StatelessWidget {
   }
 }
 
-class DietPlanViewFromChat extends StatelessWidget {
-  final DietPlanBasicInfoModel model;
-  const DietPlanViewFromChat({Key? key, required this.model}) : super(key: key);
+class TimingViewFromChat extends StatelessWidget {
+  final DefaultTimingModel dtm;
+  const TimingViewFromChat({Key? key, required this.dtm}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          title: Text(
-        model.planName,
-      )),
-      body: Column(
+      appBar: AppBar(title: Text(dtm.timingName)),
+      body: ListView(
+        shrinkWrap: true,
         children: [
-          weeksRow000PlanCreationCombinedScreen(),
-          daysRow000PlanCreationCombinedScreen(),
-          Expanded(
-            child: TimingsViewPC(editingIconRequired: false),
-          ),
+          if (dtm.rumm != null || dtm.notes != null)
+            const TimingInfoViewPC(editingIconRequired: false),
+          const FoodsListViewforPC(editIconRequired: false),
         ],
       ),
     );

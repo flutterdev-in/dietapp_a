@@ -3,7 +3,6 @@ import 'package:dietapp_a/userData/models/user_strings.dart';
 import 'package:dietapp_a/userData/models/user_welcome_model.dart';
 import 'package:dietapp_a/v_chat/constants/chat_const_variables.dart';
 import 'package:dietapp_a/v_chat/constants/chat_strings.dart';
-import 'package:dietapp_a/x_customWidgets/colors.dart';
 import 'package:dietapp_a/x_customWidgets/stream_builder_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -17,21 +16,17 @@ class ChatRoomAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 55,
-      color: primaryColor,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          IconButton(
-              onPressed: () => Get.back(),
-              icon: Icon(
-                MdiIcons.arrowLeft,
-                color: Colors.white,
-              )),
-          details(),
-        ],
-      ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        IconButton(
+            onPressed: () => Get.back(),
+            icon: const Icon(
+              MdiIcons.arrowLeft,
+              color: Colors.white,
+            )),
+        details(),
+      ],
     );
   }
 }
@@ -51,9 +46,9 @@ Widget ifChatOpen({required Widget elseW}) {
           }
         }
         return Obx(() => isChatPersonOnChat.value
-            ? Text(
+            ? const Text(
                 "on chat",
-                style: TextStyle(color: Colors.white60),
+                style: TextStyle(color: Colors.white60, fontSize: 14),
               )
             : elseW);
       });
@@ -77,7 +72,7 @@ Widget details() {
                 size: GFSize.SMALL,
                 backgroundImage: NetworkImage(uwm.photoURL!),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 12,
               ),
               Column(
@@ -86,13 +81,12 @@ Widget details() {
                 children: [
                   Text(
                     uwm.displayName,
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white, fontSize: 15),
                   ),
                   ifChatOpen(
                     elseW: Text(uwm.isActive ? "active" : "inactive",
-                        style: TextStyle(
-                          color: Colors.white60,
-                        )),
+                        style: const TextStyle(
+                            color: Colors.white60, fontSize: 14)),
                   ),
                 ],
               ),

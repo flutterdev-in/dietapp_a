@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
 import 'package:dietapp_a/my%20foods/screens/Add%20food/controllers/add_food_controller.dart';
 import 'package:dietapp_a/my%20foods/screens/Add%20food/controllers/browser_controllers.dart';
 import 'package:dietapp_a/my%20foods/screens/Add%20food/controllers/rxvariables_for_count_button.dart';
@@ -8,7 +9,7 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:metadata_fetch/metadata_fetch.dart';
 
 class InAppWebViewWidget extends StatelessWidget {
-  InAppWebViewWidget({Key? key}) : super(key: key);
+  const InAppWebViewWidget({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return InAppWebView(
@@ -35,16 +36,18 @@ class InAppWebViewWidget extends StatelessWidget {
             var data = await MetadataFetch.extract(longPressURL);
             title = data?.title ?? "";
           }
+          RefUrlMetadataModel? rumm0 = await rummfos.rummModel(longPressURL);
+
           FoodsCollectionModel fdcm = FoodsCollectionModel(
             fieldName: title,
             fieldTime: Timestamp.fromDate(DateTime.now()),
             isFolder: false,
-            imgURL: k?.src,
-            webURL: longPressURL,
+            notes: null,
+            rumm: rumm0,
           );
 
           List<String> ls = adfc.addedFoodList.value
-              .map((element) => element.webURL.toString())
+              .map((element) => element.rumm?.url.toString() ?? "")
               .toList();
 
           if (!ls.contains(longPressURL)) {

@@ -1,5 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -11,14 +13,14 @@ class URLavatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (webURL?.contains("youtube.com/watch?v=")??false) {
+    if (rummfos.isYtVideo(webURL)) {
       return Stack(
         children: [
           avatar(),
           Positioned(
             child: Container(
               color: Colors.white70,
-              child: Icon(
+              child: const Icon(
                 MdiIcons.youtube,
                 color: Colors.red,
                 size: 15,
@@ -29,8 +31,10 @@ class URLavatar extends StatelessWidget {
           )
         ],
       );
-    } else {
+    } else if (GetUtils.isURL(webURL ?? "")) {
       return avatar();
+    } else {
+      return const SizedBox();
     }
   }
 
@@ -42,8 +46,8 @@ class URLavatar extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(5),
         child: CachedNetworkImage(
-          imageUrl: imgURL??"",
-          errorWidget: (context, url, error) => Icon(MdiIcons.cloudAlert),
+          imageUrl: imgURL ?? "",
+          errorWidget: (context, url, error) => const Icon(MdiIcons.cloudAlert),
           height: double.infinity,
           width: double.infinity,
           fit: BoxFit.cover,

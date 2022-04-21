@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/Combined%20screen/_plan_creation_combined_screen.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/diet_plan_model.dart';
-import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/week_model.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/userData/models/user_strings.dart';
 import 'package:flutter/material.dart';
@@ -26,22 +25,9 @@ class ListDietPlansW extends StatelessWidget {
         DietPlanBasicInfoModel dpbim =
             DietPlanBasicInfoModel.fromMap(dietPlanMap);
         return GFListTile(
-          titleText: dpbim.planName,
+          title: Text(dpbim.planName),
           onTap: () async {
-            await snapshot.reference
-                .collection(wmfos.weeks)
-                .orderBy(wmfos.weekCreationTime, descending: false)
-                .limit(1)
-                .get()
-                .then((snapshot) async {
-              if (snapshot.docs.isNotEmpty) {
-                pcc.currentWeekDR.value = snapshot.docs.first.reference;
-                pcc.currentDayIndex.value = 0;
-                await pcc.getCurrentTimingDR();
-              }
-            });
-            pcc.currentPlanName.value = dpbim.planName;
-            pcc.currentPlanDRpath.value = snapshot.reference.path;
+            await pcc.getPlanRxValues(snapshot.reference, dpbim);
             pcc.isCombinedCreationScreen.value = true;
             Get.to(() => const PlanCreationCombinedScreen());
           },

@@ -2,11 +2,10 @@ import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/default_timing_model.dart';
 import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
 import 'package:dietapp_a/my%20foods/screens/Add%20food/constants/adf_const_variables.dart';
-import 'package:dietapp_a/my%20foods/screens/Add%20food/controllers/add_food_controller.dart';
 import 'package:dietapp_a/my%20foods/screens/Add%20food/controllers/browser_controllers.dart';
 import 'package:dietapp_a/my%20foods/screens/Add%20food/controllers/rxvariables_for_count_button.dart';
-import 'package:dietapp_a/my%20foods/screens/Add%20food/widgets/ab_count_button_adfd.dart';
 import 'package:dietapp_a/my%20foods/screens/Add%20food/widgets/a_textfield_adfd.dart';
+import 'package:dietapp_a/my%20foods/screens/Add%20food/widgets/ab_count_button_adfd.dart';
 import 'package:dietapp_a/my%20foods/screens/Add%20food/widgets/browser/b_web_view_adfd.dart';
 import 'package:dietapp_a/my%20foods/screens/Add%20food/widgets/browser/bb_menu_items_adfd.dart';
 import 'package:flutter/material.dart';
@@ -48,11 +47,11 @@ class AddFoodScreen extends StatelessWidget {
       titleSpacing: 5,
       title: Row(
         children: [
-          SizedBox(width: 5),
-          Expanded(child: TextFieldAdfd(), flex: 5),
-          SizedBox(width: 10),
+          const SizedBox(width: 5),
+          const Expanded(child: TextFieldAdfd(), flex: 5),
+          const SizedBox(width: 10),
           Obx(() => bc.isBrowserForRefURL.value ? forRefURL() : countButton()),
-          SizedBox(
+          const SizedBox(
             width: 40,
             child: MenuItemsWebBrowser(),
           ),
@@ -67,13 +66,16 @@ class AddFoodScreen extends StatelessWidget {
           Metadata? data = await MetadataFetch.extract(bc.currentURL.value);
           if (data != null) {
             bc.currentRefUrlMetadataModel.value = RefUrlMetadataModel(
-                url: data.url ?? bc.currentURL.value,
-                img: data.image,
-                title: data.title);
+              url: data.url ?? bc.currentURL.value,
+              img: data.image,
+              title: data.title,
+              isYoutubeVideo: rummfos.isYtVideo(data.url),
+              youtubeVideoLength: await rummfos.ytVideoLength(data.url),
+            );
             if (pcc.isCombinedCreationScreen.value) {
               await pcc.currentTimingDR.value.update({
-                dtmos.refUrlMetadata: bc.currentRefUrlMetadataModel.value
-                    .toMap()
+                dtmos.refUrlMetadata:
+                    bc.currentRefUrlMetadataModel.value.toMap()
               });
             } else {
               bc.currentRefURLimageURL.value = data.image ?? "";
@@ -81,13 +83,13 @@ class AddFoodScreen extends StatelessWidget {
           }
           Get.back();
         },
-        icon: Icon(MdiIcons.webPlus, color: Colors.black));
+        icon: const Icon(MdiIcons.webPlus, color: Colors.black));
   }
 
   Widget countButton() {
     return Obx(() {
       if (bc.functionButtonType.value == "getURL") {
-        return IconButton(onPressed: null, icon: Icon(MdiIcons.plus));
+        return const IconButton(onPressed: null, icon: Icon(MdiIcons.plus));
       } else if (countbvs.isItemAdded.value) {
         return SizedBox(
           width: 44,
@@ -122,16 +124,16 @@ class AddFoodScreen extends StatelessWidget {
 
   Widget textFieldPrefix() {
     return PopupMenuButton(
-      child: Icon(
+      child: const Icon(
         MdiIcons.menu,
         color: Colors.white,
       ),
       itemBuilder: (context) {
         return [
-          PopupMenuItem(child: Text("DietApp")),
-          PopupMenuItem(child: Text("Youtube")),
-          PopupMenuItem(child: Text("TimesFood")),
-          PopupMenuItem(child: Text("Google")),
+          const PopupMenuItem(child: Text("DietApp")),
+          const PopupMenuItem(child: Text("Youtube")),
+          const PopupMenuItem(child: Text("TimesFood")),
+          const PopupMenuItem(child: Text("Google")),
         ];
       },
     );

@@ -102,7 +102,7 @@ class MenuItemsPC extends StatelessWidget {
         .add(WeekModel(
                 weekCreationTime: Timestamp.fromDate(DateTime.now()),
                 notes: null,
-                refURL: null)
+                rumm: null)
             .toMap())
         .then((weekDR) async {
       pcc.currentWeekDR.value = weekDR;
@@ -114,7 +114,7 @@ class MenuItemsPC extends StatelessWidget {
             .collection(daymfos.days)
             .doc(dayIndex.toString())
             .set(
-                DayModel(dayIndex: dayIndex, notes: null, refURL: null).toMap())
+                DayModel(dayIndex: dayIndex, notes: null, rumm: null).toMap())
             .then(
           (value) async {
             List<DefaultTimingModel> listTimingsInFire =

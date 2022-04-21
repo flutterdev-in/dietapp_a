@@ -2,16 +2,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/Combined%20screen/_plan_creation_combined_screen.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/day_basic_info.dart';
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/default_timing_model.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/diet_plan_model.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/week_model.dart';
-import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/default_timing_model.dart';
 import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
 import 'package:dietapp_a/my%20foods/screens/Add%20food/add_food_sreen.dart';
 import 'package:dietapp_a/my%20foods/screens/Add%20food/controllers/browser_controllers.dart';
 import 'package:dietapp_a/x_customWidgets/alert_dialogue.dart';
 import 'package:dietapp_a/x_customWidgets/colors.dart';
 import 'package:dietapp_a/y_Firebase/fire_ref.dart';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -50,7 +49,7 @@ class PlanCreationScreen extends StatelessWidget {
                 await continueButton();
               }
             },
-            child: Text("Create"));
+            child: const Text("Create"));
       }),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
@@ -81,7 +80,7 @@ class PlanCreationScreen extends StatelessWidget {
                   maxLines: null,
                   autofocus: false,
                   keyboardType: TextInputType.multiline,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     contentPadding: EdgeInsets.all(7),
                     labelText: "Notes",
                   ),
@@ -92,7 +91,7 @@ class PlanCreationScreen extends StatelessWidget {
               ),
             ),
             refURL(),
-            SizedBox(height: 5),
+            const SizedBox(height: 5),
             timingsW(context),
           ],
         ),
@@ -107,13 +106,13 @@ class PlanCreationScreen extends StatelessWidget {
             child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text("  Ref URL"),
+            const Text("  Ref URL"),
             IconButton(
                 onPressed: () {
                   bc.isBrowserForRefURL.value = true;
-                  Get.to(AddFoodScreen());
+                  Get.to(const AddFoodScreen());
                 },
-                icon: Icon(MdiIcons.webPlus)),
+                icon: const Icon(MdiIcons.webPlus)),
           ],
         ));
       } else {
@@ -121,7 +120,7 @@ class PlanCreationScreen extends StatelessWidget {
           margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 0),
           avatar: Obx(
               () => bc.currentRefUrlMetadataModel.value == rummfos.constModel
-                  ? SizedBox()
+                  ? const SizedBox()
                   : GFAvatar(
                       shape: GFAvatarShape.standard,
                       size: GFSize.MEDIUM,
@@ -137,9 +136,9 @@ class PlanCreationScreen extends StatelessWidget {
           icon: IconButton(
               onPressed: () {
                 bc.isBrowserForRefURL.value = true;
-                Get.to(AddFoodScreen());
+                Get.to(const AddFoodScreen());
               },
-              icon: Icon(MdiIcons.webSync)),
+              icon: const Icon(MdiIcons.webSync)),
         );
       }
     });
@@ -152,7 +151,7 @@ class PlanCreationScreen extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("  Default timings"),
+              const Text("  Default timings"),
               IconButton(
                   onPressed: () {
                     FocusScope.of(context).unfocus();
@@ -167,7 +166,7 @@ class PlanCreationScreen extends StatelessWidget {
                   dtmos.foodTimingsListSort(listDefaultTimingModels.value);
               return ListView.builder(
                 shrinkWrap: true,
-                physics: ScrollPhysics(),
+                physics: const ScrollPhysics(),
                 itemCount: listDTMsorted.length,
                 itemBuilder: (context, index) {
                   DefaultTimingModel dftm = listDTMsorted[index];
@@ -243,7 +242,7 @@ class PlanCreationScreen extends StatelessWidget {
               maxLines: null,
               keyboardType: TextInputType.name,
               textInputAction: TextInputAction.done,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: "Timing name",
               ),
               onChanged: (value) {
@@ -252,11 +251,11 @@ class PlanCreationScreen extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(height: 30),
+        const SizedBox(height: 30),
         Row(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
+            const Padding(
+              padding: EdgeInsets.all(8.0),
               child: Icon(MdiIcons.clockTimeEightOutline, size: 30),
             ),
             SizedBox(
@@ -321,7 +320,7 @@ class PlanCreationScreen extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(height: 30),
+        const SizedBox(height: 30),
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: ElevatedButton(
@@ -344,7 +343,7 @@ class PlanCreationScreen extends StatelessWidget {
                   }
                 }
               },
-              child: Text("Add")),
+              child: const Text("Add")),
         )
       ],
     );
@@ -356,21 +355,16 @@ class PlanCreationScreen extends StatelessWidget {
     if (bc.currentURL.value != "https://m.youtube.com/") {
       refURL = bc.currentURL.value;
     }
-    List<Map<String, String>> lms = listDefaultTimingModels.value
-        .map((dt) => {
-              dtmos.timingName: dt.timingName,
-              dtmos.timingString: dt.timingString
-            })
-        .toList();
+
     await userDR
         .collection(dietPlans)
         .add(DietPlanBasicInfoModel(
                 planName: planName.value,
                 notes: notes.value,
                 planCreationTime: Timestamp.fromDate(DateTime.now()),
-                refURL: refURL,
-                defaultTimings: lms,
-                defaultTimings0: lms)
+                rumm: await rummfos.rummModel(refURL),
+                defaultTimings: listDefaultTimingModels.value,
+                defaultTimings0: listDefaultTimingModels.value)
             .toMap())
         .then(
       (planDocRef) async {
@@ -381,7 +375,7 @@ class PlanCreationScreen extends StatelessWidget {
             .add(WeekModel(
                     weekCreationTime: Timestamp.fromDate(DateTime.now()),
                     notes: null,
-                    refURL: null)
+                    rumm: null)
                 .toMap())
             .then((weekDR) async {
           pcc.currentPlanName.value = planName.value;
@@ -393,7 +387,7 @@ class PlanCreationScreen extends StatelessWidget {
             weekDR
                 .collection(daymfos.days)
                 .doc(dayIndex.toString())
-                .set(DayModel(dayIndex: dayIndex, notes: null, refURL: null)
+                .set(DayModel(dayIndex: dayIndex, notes: null, rumm: null)
                     .toMap())
                 .then(
               (value) async {

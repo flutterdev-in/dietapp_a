@@ -10,9 +10,8 @@ class BrowserController {
   TextEditingController tec = TextEditingController();
   Rx<String> currentURL = "https://m.youtube.com/".obs;
   Rx<String> currentRefURLimageURL = "".obs;
-  final currentRefUrlMetadataModel =
-      RefUrlMetadataModel(url: "https://m.youtube.com/", img: null, title: null)
-          .obs;
+  final currentRefUrlMetadataModel = rummfos.constModel.obs;
+      
   Rx<bool> isTextFieldTapped = false.obs;
   Rx<String> homeURL = "https://m.youtube.com/".obs;
   Rx<String> lastFavWebURL = "".obs;
