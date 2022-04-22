@@ -5,12 +5,15 @@ import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
 
 class DietPlanBasicInfoModel {
   String planName;
+
   Timestamp? planCreationTime;
   RefUrlMetadataModel? rumm;
   String? notes;
   List<DefaultTimingModel> defaultTimings;
   List<DefaultTimingModel> defaultTimings0;
   DocumentReference? docRef;
+
+  //
   DietPlanBasicInfoModel({
     required this.planName,
     required this.notes,
@@ -29,7 +32,8 @@ class DietPlanBasicInfoModel {
         dietpbims.notes: notes,
         rummfos.rumm: rumm?.toMap(),
         dietpbims.defaultTimings: defaultTimings.map((e) => e.toMap()).toList(),
-        dietpbims.defaultTimings0: defaultTimings0.map((e) => e.toMap()).toList(),
+        dietpbims.defaultTimings0:
+            defaultTimings0.map((e) => e.toMap()).toList(),
         dietpbims.docRef: docRef,
       }
     };

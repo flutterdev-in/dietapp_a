@@ -8,7 +8,7 @@ class DayModel {
   String? notes;
   RefUrlMetadataModel? rumm;
   DocumentReference? docRef;
-
+//
   DayModel({
     required this.dayIndex,
     required this.notes,

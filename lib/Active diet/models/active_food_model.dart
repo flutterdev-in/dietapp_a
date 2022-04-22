@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dietapp_a/Active%20diet/models/proof_pic_model.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
-import 'package:dietapp_a/v_chat/chat%20Room%20Screen/diet%20view/models/proof_pic_model.dart';
 
 class ActiveFoodModel {
   bool isPlanned;
@@ -29,15 +29,15 @@ class ActiveFoodModel {
   });
   Map<String, dynamic> toMap() {
     return {
-      fofafm.isPlanned: isPlanned,
-      fofafm.isTaken: isTaken,
+      adfos.isPlanned: isPlanned,
+      adfos.isTaken: isTaken,
       fofafm.takenTime: takenTime,
       unIndexed: {
         fofafm.foodName: foodName,
-        fofafm.plannedNotes: plannedNotes,
-        fofafm.takenNotes: takenNotes,
-        fofafm.prud: prud,
-        fofafm.trud: trud,
+        adfos.plannedNotes: plannedNotes,
+        adfos.takenNotes: takenNotes,
+        adfos.prud: prud,
+        adfos.trud: trud,
         fofafm.listProofPicMaps:
             listProofPicModels?.map((e) => e.toMap()).toList(),
         docRef0: docRef
@@ -47,14 +47,14 @@ class ActiveFoodModel {
 
   factory ActiveFoodModel.fromMap(Map<String, dynamic> docMap) {
     return ActiveFoodModel(
-      isPlanned: docMap[fofafm.isPlanned],
-      isTaken: docMap[fofafm.isTaken],
+      isPlanned: docMap[adfos.isPlanned],
+      isTaken: docMap[adfos.isTaken],
       takenTime: docMap[fofafm.takenTime],
       foodName: docMap[unIndexed][fofafm.foodName],
-      plannedNotes: docMap[unIndexed][fofafm.plannedNotes],
+      plannedNotes: docMap[unIndexed][adfos.plannedNotes],
       takenNotes: docMap[unIndexed][fofafm.foodName],
-      prud: docMap[unIndexed][fofafm.prud],
-      trud: docMap[unIndexed][fofafm.trud],
+      prud: rummfos.rummFromRummMap(docMap[unIndexed][adfos.prud]),
+      trud: rummfos.rummFromRummMap(docMap[unIndexed][adfos.trud]),
       docRef: docMap[unIndexed][docRef0],
       listProofPicModels: docMap[unIndexed][fofafm.listProofPicMaps]
           ?.map((e) => ProofPicsModel.fromMap(e))
@@ -66,13 +66,8 @@ class ActiveFoodModel {
 FinalObjectsForActiveFoodModel fofafm = FinalObjectsForActiveFoodModel();
 
 class FinalObjectsForActiveFoodModel {
-  final String isPlanned = "isPlanned";
-  final String isTaken = "isTaken";
   final String takenTime = "takenTime";
   final String foodName = "foodName";
-  final String plannedNotes = "plannedNotes";
-  final String takenNotes = "takenNotes";
-  final String prud = "prud";
-  final String trud = "trud";
+
   final String listProofPicMaps = "listProofPicMaps";
 }

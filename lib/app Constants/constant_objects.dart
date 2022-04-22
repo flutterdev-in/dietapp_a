@@ -9,3 +9,14 @@ const String unIndexed = "unIndexed";
 const String youtubeVideoIndentifyURL = "youtube.com/watch?v=";
 const String youtubeURL = "youtube.com";
 const String mYoutubeCom = "https://m.youtube.com/";
+
+ActiveDietFinalObjects adfos = ActiveDietFinalObjects();
+
+class ActiveDietFinalObjects {
+  final String prud = "prud"; // plannedRefUrlMetaData
+  final String trud = "trud"; // takenRefUrlMetaData
+  final String plannedNotes = "plannedNotes";
+  final String takenNotes = "takenNotes";
+  final String isPlanned = "isPlanned";
+  final String isTaken = "isTaken";
+}

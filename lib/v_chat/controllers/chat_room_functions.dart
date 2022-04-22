@@ -27,7 +27,7 @@ class ChatRoomFunctions {
         chatSC.selectedList.value;
     List<Map<String, dynamic>> finalList = selectedList.map((snapshot) {
       Map<String, dynamic> map = snapshot.data();
- 
+
       map[unIndexed][docRef0] = snapshot.reference;
       return map;
     }).toList();
