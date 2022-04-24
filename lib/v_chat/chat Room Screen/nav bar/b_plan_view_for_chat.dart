@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/src/list_extensions.dart';
-import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/day_basic_info.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/default_timing_model.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/diet_plan_model.dart';
@@ -20,15 +19,16 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 class PlanViewForChat extends StatelessWidget {
   PlanViewForChat({Key? key}) : super(key: key);
 
-  final currentPathCR = userDR.collection("dietPlansBeta").obs;
+  final currentPathCR = userDR.collection(dietpbims.dietPlansBeta).obs;
   final orderString = dietpbims.planCreationTime.obs;
   String title = "";
   String? subTitle;
   Widget? avatarW;
   int weekIndex = 0;
+  int dayIndex = 0;
   final listCR = RxList<QueryDocumentSnapshot<Map<String, dynamic>>>([]).obs;
   Rx<String> currentWeekName = "".obs;
-
+  Rx<String> currentDayName = "".obs;
   @override
   Widget build(BuildContext context) {
     listCR.value.clear();
@@ -50,10 +50,16 @@ class PlanViewForChat extends StatelessWidget {
                     .orderBy(orderString.value, descending: false),
                 itemBuilder: (context, snapshot) {
                   String weekNm = '';
-                  
+                  String dayNm = "";
+
                   getTitle(snapshot);
                   if (currentPathCR.value.id == wmfos.weeks) {
                     weekNm = title;
+                  } else if (currentPathCR.value.id == daymfos.days) {
+                    DayModel dm = DayModel.fromMap(snapshot.data());
+                    if (dm.dayCreatedTime != null) {
+                      dayNm = title;
+                    }
                   }
 
                   return GFListTile(
@@ -98,6 +104,8 @@ class PlanViewForChat extends StatelessWidget {
 
                       if (snapshot.reference.parent.id == wmfos.weeks) {
                         currentWeekName.value = weekNm;
+                      } else if (snapshot.reference.parent.id == daymfos.days) {
+                        currentDayName.value = dayNm;
                       }
                       onPressed(snapshot);
                     },
@@ -114,10 +122,18 @@ class PlanViewForChat extends StatelessWidget {
   void onPressed(QueryDocumentSnapshot<Map<String, dynamic>> snapshot) {
     String crs = snapshot.reference.parent.id;
 
-    weekIndex = 0;
-    if (crs == "dietPlansBeta") {
-      orderString.value = wmfos.weekIndex;
-      currentPathCR.value = snapshot.reference.collection(wmfos.weeks);
+    weekIndex = 1;
+    dayIndex = 1;
+    if (crs == dietpbims.dietPlansBeta) {
+      DietPlanBasicInfoModel dietpbm =
+          DietPlanBasicInfoModel.fromMap(snapshot.data());
+      if (dietpbm.isWeekWisePlan) {
+        orderString.value = wmfos.weekCreatedTime;
+        currentPathCR.value = snapshot.reference.collection(wmfos.weeks);
+      } else {
+        orderString.value = daymfos.dayCreatedTime;
+        currentPathCR.value = snapshot.reference.collection(daymfos.days);
+      }
     } else if (crs == wmfos.weeks) {
       orderString.value = daymfos.dayIndex;
       currentPathCR.value = snapshot.reference.collection(daymfos.days);
@@ -136,15 +152,21 @@ class PlanViewForChat extends StatelessWidget {
   void getTitle(QueryDocumentSnapshot<Map<String, dynamic>> snapshot) {
     String crs = snapshot.reference.parent.id;
     Map<String, dynamic> fcMap = snapshot.data();
-    if (crs == "dietPlansBeta") {
+    if (crs == dietpbims.dietPlansBeta) {
       DietPlanBasicInfoModel dietpbm = DietPlanBasicInfoModel.fromMap(fcMap);
       title = dietpbm.planName;
     } else if (crs == wmfos.weeks) {
-      title = pcc.weekName(weekIndex);
+      WeekModel wm = WeekModel.fromMap(fcMap);
+      title = wm.weekName ?? "Week $weekIndex";
       weekIndex++;
     } else if (crs == daymfos.days) {
       DayModel dm = DayModel.fromMap(fcMap);
-      title = daymfos.dayString(dm.dayIndex ?? 0);
+      if (dm.dayCreatedTime != null) {
+        title = dm.dayName ?? "day $dayIndex";
+        dayIndex++;
+      } else if (dm.dayIndex != null) {
+        title = daymfos.dayString(dm.dayIndex ?? 0);
+      }
     } else if (crs == dtmos.timings) {
       DefaultTimingModel dtm = DefaultTimingModel.fromMap(fcMap);
       title = dtm.timingName;
@@ -226,7 +248,11 @@ class PlanViewForChat extends StatelessWidget {
                 pathTitle = currentWeekName.value;
               } else if (crs == daymfos.days) {
                 DayModel dm = DayModel.fromMap(fcMap);
-                pathTitle = daymfos.dayString(dm.dayIndex ?? 0);
+                if (dm.dayIndex != null) {
+                  pathTitle = daymfos.dayString(dm.dayIndex ?? 0);
+                } else {
+                  pathTitle = dm.dayName ?? currentDayName.value;
+                }
               } else if (crs == dtmos.timings) {
                 DefaultTimingModel dtm = DefaultTimingModel.fromMap(fcMap);
                 pathTitle = dtm.timingName;

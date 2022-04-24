@@ -1,3 +1,6 @@
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/Combined%20screen/top%20rows/days_row_for_week.dart';
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/Combined%20screen/top%20rows/days_row_non_week.dart';
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/Combined%20screen/top%20rows/weeks_row.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/diet_plan_model.dart';
 import 'package:dietapp_a/Diet%20plans/c_diet_view/a_timings_view_pc.dart';
@@ -72,8 +75,11 @@ class DietPlanViewFromChat extends StatelessWidget {
         model.planName,
       )),
       body: Column(
-        children: const [
-          Expanded(
+        children: [
+          if (model.isWeekWisePlan) const WeeksRowForPlan(),
+          if (model.isWeekWisePlan) const DaysRowForWeek(),
+          if (model.isWeekWisePlan == false) const DaysRowNonWeek(),
+          const Expanded(
             child: TimingsViewPC(editingIconRequired: false),
           ),
         ],

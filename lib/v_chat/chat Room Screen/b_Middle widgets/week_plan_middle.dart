@@ -1,4 +1,5 @@
-import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/Combined%20screen/top%20rows/days_row_non_week.dart';
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/Combined%20screen/top%20rows/days_row_for_week.dart';
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/week_model.dart';
 import 'package:dietapp_a/Diet%20plans/c_diet_view/a_timings_view_pc.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/_common_top_widget_middle.dart';
@@ -44,7 +45,15 @@ class WeekPlanMiddle extends StatelessWidget {
                   ],
                 ),
                 onTap: () async {
-                  Get.to(() => WeekPlanViewFromChat(weekIndex: index));
+                  var weekDR = listModels[index].docRef;
+                  if (weekDR != null) {
+                    pcc.currentWeekDR.value = weekDR;
+                    pcc.currentDayDR.value =
+                        await pcc.getDayDRfromWeek(pcc.currentWeekDR.value);
+
+                    Get.to(() => WeekPlanViewFromChat(
+                        weekIndex: index, weekModel: listModels[index]));
+                  }
                 });
           },
         ),
@@ -54,20 +63,28 @@ class WeekPlanMiddle extends StatelessWidget {
 }
 
 class WeekPlanViewFromChat extends StatelessWidget {
+  final WeekModel weekModel;
   final int weekIndex;
-  const WeekPlanViewFromChat({Key? key, required this.weekIndex})
+  const WeekPlanViewFromChat(
+      {Key? key, required this.weekIndex, required this.weekModel})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    String? weekName;
+    if (weekModel.weekName != null) {
+      weekName = weekModel.weekName;
+    } else if (weekIndex > 0) {
+      weekName = (weekIndex + 1).toString();
+    }
     return Scaffold(
       appBar: AppBar(
           title: Text(
-        "Week plan (${weekIndex + 1})",
+        weekName == null ? "Week plan" : "Week plan ($weekName)",
       )),
       body: Column(
-        children: [
-         
+        children: const [
+          DaysRowForWeek(),
           Expanded(
             child: TimingsViewPC(editingIconRequired: false),
           ),

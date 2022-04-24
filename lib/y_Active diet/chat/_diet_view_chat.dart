@@ -1,3 +1,4 @@
+import 'package:dietapp_a/y_Active%20diet/chat/month_calander.dart';
 import 'package:flutter/material.dart';
 
 class DietViewChat extends StatelessWidget {
@@ -7,10 +8,11 @@ class DietViewChat extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        const MonthCalander(),
         ElevatedButton(
           onPressed: () {
             DateTime today = DateTime.now();
-            
+
             showDatePicker(
                 context: context,
                 currentDate: today,
@@ -24,11 +26,4 @@ class DietViewChat extends StatelessWidget {
       ],
     );
   }
-
-   
-
 }
-
-
-
-

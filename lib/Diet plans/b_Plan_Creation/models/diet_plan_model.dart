@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/default_timing_model.dart';
-import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/week_model.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
 
@@ -10,7 +9,6 @@ class DietPlanBasicInfoModel {
   Timestamp planCreationTime;
   RefUrlMetadataModel? rumm;
   String? notes;
-  List<WeekModel>? weekModels;
   List<DefaultTimingModel> defaultTimings;
   List<DefaultTimingModel> defaultTimings0;
   DocumentReference<Map<String, dynamic>>? docRef;
@@ -22,7 +20,6 @@ class DietPlanBasicInfoModel {
     required this.notes,
     required this.planCreationTime,
     required this.rumm,
-    required this.weekModels,
     required this.defaultTimings,
     required this.defaultTimings0,
     this.docRef,
@@ -37,7 +34,6 @@ class DietPlanBasicInfoModel {
     };
     Map<String, dynamic> nullChaeckValues = {
       dietpbims.notes: notes,
-      dietpbims.weekModels: weekModels?.map((e) => e.toMap()).toList(),
       rummfos.rumm: rumm?.toMap(),
       dietpbims.defaultTimings: defaultTimings.map((e) => e.toMap()).toList(),
       dietpbims.defaultTimings0: defaultTimings0.map((e) => e.toMap()).toList(),
@@ -60,9 +56,6 @@ class DietPlanBasicInfoModel {
       planCreationTime: mainPlanBasicMap[dietpbims.planCreationTime],
       notes: mainPlanBasicMap[unIndexed][dietpbims.notes],
       rumm: rummfos.rummFromRummMap(mainPlanBasicMap[unIndexed][rummfos.rumm]),
-      weekModels: dietpbims.listWeekModels(
-          mainPlanBasicMap[dietpbims.isWeekWisePlan] ?? false,
-          mainPlanBasicMap[unIndexed][dietpbims.weekModels]),
       defaultTimings: dietpbims
           .listDFTM(mainPlanBasicMap[unIndexed][dietpbims.defaultTimings]),
       defaultTimings0: dietpbims
@@ -81,7 +74,6 @@ class DietPlanBasicInfoModelStrings {
   final String planCreationTime = "planCreationTime";
   final String notes = "notes";
   final String refURL = "refURL";
-  final String weekModels = "weekModels";
   final String defaultTimings = "defaultTimings";
   final String defaultTimings0 = "defaultTimings0";
 
@@ -91,13 +83,5 @@ class DietPlanBasicInfoModelStrings {
     return list.map((e) {
       return DefaultTimingModel.fromMap(e);
     }).toList();
-  }
-
-  List<WeekModel>? listWeekModels(bool isWeekWisePlan0, List? list) {
-    if (list != null && isWeekWisePlan0) {
-      return list.map((e) {
-        return WeekModel.fromMap(e);
-      }).toList();
-    }
   }
 }

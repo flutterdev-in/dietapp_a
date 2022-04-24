@@ -4,15 +4,17 @@ import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
 import 'package:intl/intl.dart';
 
 class ActiveDayModel {
-  Timestamp dayDate;
+  String dayDate;
   String dayName;
   bool isPlanned;
+
   bool? isTaken;
   String? plannedNotes;
   String? takenNotes;
   RefUrlMetadataModel? prud;
   RefUrlMetadataModel? trud;
   DocumentReference<Map<String, dynamic>>? docRef;
+  DocumentReference<Map<String, dynamic>>? refPlanDR;
 
   //
   ActiveDayModel({
@@ -25,6 +27,7 @@ class ActiveDayModel {
     this.prud,
     this.trud,
     this.docRef,
+    this.refPlanDR,
   });
 
   Map<String, dynamic> toMap() {
@@ -41,6 +44,7 @@ class ActiveDayModel {
       adfos.prud: prud,
       adfos.trud: trud,
       docRef0: docRef,
+      admos.refPlanDR: refPlanDR,
     };
 
     nullChaeckValues.forEach((key, value) {
@@ -53,10 +57,9 @@ class ActiveDayModel {
   }
 
   factory ActiveDayModel.fromMap(Map docMap) {
-    Timestamp dayDate0 = docMap[admos.dayDate] ?? DateTime.now();
     return ActiveDayModel(
-      dayDate: dayDate0,
-      dayName: DateFormat("EEE").format(dayDate0.toDate()),
+      dayDate: docMap[admos.dayDate],
+      dayName: docMap[admos.dayDate],
       isPlanned: docMap[unIndexed][adfos.isPlanned],
       isTaken: docMap[unIndexed][adfos.isTaken],
       plannedNotes: docMap[unIndexed][adfos.plannedNotes],
@@ -64,6 +67,7 @@ class ActiveDayModel {
       prud: rummfos.rummFromRummMap(docMap[unIndexed][adfos.prud]),
       trud: rummfos.rummFromRummMap(docMap[unIndexed][adfos.trud]),
       docRef: docMap[unIndexed][docRef0],
+      refPlanDR: docMap[unIndexed][admos.refPlanDR],
     );
   }
 }
@@ -73,4 +77,10 @@ final ActiveDayModelObjects admos = ActiveDayModelObjects();
 class ActiveDayModelObjects {
   final String dayDate = "dayDate";
   final String dayName = "dayName";
+  final String refPlanDR = "refPlanDR";
+  final String activeDaysPlan = "activeDaysPlan";
+
+  String dayStringFromDate(DateTime date) {
+    return DateFormat("yyyyMMdd").format(date);
+  }
 }

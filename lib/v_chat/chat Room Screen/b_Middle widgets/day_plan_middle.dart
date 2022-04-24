@@ -28,6 +28,14 @@ class DayPlanMiddle extends StatelessWidget {
           itemCount: listDays.length,
           itemBuilder: (context, index) {
             DayModel dm = listDays[index];
+            String? dayName;
+            if (dm.dayIndex != null) {
+              dayName = daymfos.ls[dm.dayIndex ?? 0];
+            } else if (dm.dayName != null) {
+              dayName = dm.dayName!;
+            } else if (listDays.length != 1) {
+              dayName = (index + 1).toString();
+            }
 
             return InkWell(
               child: Row(
@@ -39,7 +47,7 @@ class DayPlanMiddle extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      "Day plan (${daymfos.ls[dm.dayIndex ?? 0]})",
+                      dayName == null ? "Day plan" : "Day plan ($dayName)",
                       style: const TextStyle(color: Colors.white),
                     ),
                   )
@@ -55,7 +63,10 @@ class DayPlanMiddle extends StatelessWidget {
                       .then((snapshot) async {
                     if (snapshot.docs.isNotEmpty) {
                       pcc.currentTimingDR.value = snapshot.docs.first.reference;
-                      Get.to(() => DayViewFromChat(dm: dm));
+                      Get.to(() => DayViewFromChat(
+                            dm: dm,
+                            dayName: dayName,
+                          ));
                     }
                   });
                 }
@@ -70,12 +81,17 @@ class DayPlanMiddle extends StatelessWidget {
 
 class DayViewFromChat extends StatelessWidget {
   final DayModel dm;
-  const DayViewFromChat({Key? key, required this.dm}) : super(key: key);
+  final String? dayName;
+  const DayViewFromChat({Key? key, required this.dm, required this.dayName})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Day plan (${daymfos.ls[dm.dayIndex ?? 0]})")),
+      appBar: AppBar(
+          title: Text(
+        dayName == null ? "Day plan" : "Day plan ($dayName)",
+      )),
       body: const TimingsViewPC(
         editingIconRequired: false,
       ),

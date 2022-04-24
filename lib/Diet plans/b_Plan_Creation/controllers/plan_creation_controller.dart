@@ -14,54 +14,54 @@ class PlanCreationController {
   Rx<String> currentPlanName = "".obs;
   Rx<String> currentPlanDRpath = "".obs;
   final currentPlanDR = userDR.obs;
-  Rx<int> currentWeekIndex = 1.obs;
-  Rx<int> currentDayIndex = 0.obs;
+  // Rx<int> currentWeekIndex = 1.obs;
+  // Rx<int> currentDayIndex = 0.obs;
   final currentDayDR = userDR.obs;
   final currentWeekDR = userDR.obs;
   final currentTimingDR = userDR.obs;
   final Rx<bool> isCombinedCreationScreen = false.obs;
   final listDaysDR = RxList<DocumentReference<Map<String, dynamic>>>([]).obs;
-  final weeksModelList = RxList<WeekModel>([]);
+  final listWeeksDR = RxList<DocumentReference<Map<String, dynamic>>>([]).obs;
+  // final weeksModelList = RxList<WeekModel>([]);
   final currentTimingFoodDRsList =
       RxList<DocumentReference<Map<String, dynamic>>>([]).obs;
 
   final Rx<bool> isPlanView = false.obs;
 
 ////
-  String weekName(int weekIndex) {
-    weekIndex++;
-    if (weekIndex == 1) {
-      return "1st Week";
-    } else if (weekIndex.toString().split("").last == "2") {
-      return "${weekIndex}nd Week";
-    } else if (weekIndex.toString().split("").last == "3") {
-      return "${weekIndex}rd Week";
-    } else {
-      return "${weekIndex}th Week";
-    }
-  }
 
-  Query<Map<String, dynamic>> weeksCRq() {
-    return FirebaseFirestore.instance
-        .doc(currentPlanDRpath.value)
-        .collection(wmfos.weeks);
-  }
 
-  Future<DocumentReference<Map<String, dynamic>>?> getDayDRfromWeekIndex(
-      {required DocumentReference<Map<String, dynamic>> planDR,
-      required int weekIndex}) async {
-    DocumentReference<Map<String, dynamic>>? docRef;
-    await planDR
-        .collection(daymfos.days)
-        .where(wmfos.weekIndex, isEqualTo: weekIndex)
-        .orderBy(daymfos.dayIndex, descending: false)
+
+  Future<DocumentReference<Map<String, dynamic>>> getWeekDRfromPlan(
+      DocumentReference<Map<String, dynamic>> planDR) async {
+    return await planDR
+        .collection(wmfos.weeks)
+        .orderBy(wmfos.weekCreatedTime, descending: false)
+        .limit(1)
         .get()
-        .then((qsnap) {
-      if (qsnap.docs.isNotEmpty) {
-        docRef = qsnap.docs.first.reference;
+        .then((snapshot) async {
+      if (snapshot.docs.isNotEmpty) {
+        return snapshot.docs.first.reference;
+      } else {
+        return userDR;
       }
     });
-    return docRef;
+  }
+
+  Future<DocumentReference<Map<String, dynamic>>> getDayDRfromWeek(
+      DocumentReference<Map<String, dynamic>> weekDR) async {
+    return await weekDR
+        .collection(daymfos.days)
+        .orderBy(daymfos.dayIndex, descending: false)
+        .limit(1)
+        .get()
+        .then((snapshot) async {
+      if (snapshot.docs.isNotEmpty) {
+        return snapshot.docs.first.reference;
+      } else {
+        return userDR;
+      }
+    });
   }
 
   Future<DocumentReference<Map<String, dynamic>>> getTimingDRfromDay(
@@ -115,16 +115,25 @@ class PlanCreationController {
       bool isWeekWisePlan) async {
     if (isWeekWisePlan) {
       await planDocRef
-          .collection(daymfos.days)
-          .where(wmfos.weekIndex, isEqualTo: 1)
-          .orderBy(daymfos.dayIndex, descending: false)
+          .collection(wmfos.weeks)
+          .orderBy(wmfos.weekCreatedTime, descending: false)
           .limit(1)
           .get()
-          .then((daySnap) async {
-        if (daySnap.docs.isNotEmpty) {
-          pcc.currentDayDR.value = daySnap.docs.first.reference;
-          pcc.currentTimingDR.value =
-              await pcc.getTimingDRfromDay(pcc.currentDayDR.value);
+          .then((weeksSnap) async {
+        if (weeksSnap.docs.isNotEmpty) {
+          pcc.currentWeekDR.value = weeksSnap.docs.first.reference;
+          pcc.currentWeekDR.value
+              .collection(daymfos.days)
+              .orderBy(daymfos.dayIndex, descending: false)
+              .limit(1)
+              .get()
+              .then((daySnap) async {
+            if (daySnap.docs.isNotEmpty) {
+              pcc.currentDayDR.value = daySnap.docs.first.reference;
+              pcc.currentTimingDR.value =
+                  await pcc.getTimingDRfromDay(pcc.currentDayDR.value);
+            }
+          });
         }
       });
     } else {

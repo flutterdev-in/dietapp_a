@@ -1,10 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/Combined%20screen/Menu%20buttons/menu_button_pc.dart';
-import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/Combined%20screen/info%20view/timing_info_view_pc.dart';
-import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/Combined%20screen/list%20view/timing_foods_listview.dart';
-import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/Combined%20screen/top%20rows/days_row_non_week.dart';
-import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/Combined%20screen/top%20rows/timings_row.dart';
-import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/Combined%20screen/top%20rows/weeks_row.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/diet_plan_model.dart';
 import 'package:dietapp_a/Diet%20plans/c_diet_view/diet_view_widget.dart';
@@ -13,8 +7,14 @@ import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
+import 'Menu buttons/menu_button_pc.dart';
 import 'bottom bar/food_add_bottom_buttons.dart';
+import 'info view/timing_info_view_pc.dart';
+import 'list view/timing_foods_listview.dart';
 import 'top rows/days_row_for_week.dart';
+import 'top rows/days_row_non_week.dart';
+import 'top rows/timings_row.dart';
+import 'top rows/weeks_row.dart';
 
 class PlanCreationCombinedScreen extends StatelessWidget {
   final bool isWeekWisePlan;

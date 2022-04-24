@@ -34,6 +34,7 @@ class ProofPicsModel {
 FinalObjectsForProofPicsModel fofppm = FinalObjectsForProofPicsModel();
 
 class FinalObjectsForProofPicsModel {
+  
   final String picTime = "picTime";
   final String picURL = "picURL";
   final String picNotes = "picNotes";

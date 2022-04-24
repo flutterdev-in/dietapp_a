@@ -73,7 +73,7 @@ dependencies:
   persistent_bottom_nav_bar: ^4.0.2
   bottom_sheet: ^1.0.5
   syncfusion_flutter_calendar: ^20.1.50
-  
+  table_calendar: ^3.0.5
 
 dev_dependencies:
   flutter_test:

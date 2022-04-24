@@ -31,7 +31,7 @@ class ChatRoomFunctions {
       map[unIndexed][docRef0] = snapshot.reference;
       return map;
     }).toList();
-
+    print(finalList);
     bool isSingle = selectedList.length == 1;
 
     String parent = selectedList.first.reference.parent.id;
@@ -56,16 +56,12 @@ class ChatRoomFunctions {
       }
     } else if (selectedList.first.reference.path
         .contains(chatTS.dietPlansBeta)) {
-      DietPlanBasicInfoModel dpbim =
-          DietPlanBasicInfoModel.fromMap(selectedList.first.data());
       if (parent == dietpbims.dietPlansBeta) {
         chatSC.chatType.value = chatTS.multiPlan;
+      } else if (parent == wmfos.weeks) {
+        chatSC.chatType.value = chatTS.multiWeek;
       } else if (parent == daymfos.days) {
-        if (parent == wmfos.weeks) {
-          chatSC.chatType.value = chatTS.multiWeek;
-        } else if (parent == daymfos.days) {
-          chatSC.chatType.value = chatTS.multiDay;
-        }
+        chatSC.chatType.value = chatTS.multiDay;
       } else if (parent == dtmos.timings) {
         chatSC.chatType.value = chatTS.multiTiming;
       } else if (parent == fmfpcfos.foods) {

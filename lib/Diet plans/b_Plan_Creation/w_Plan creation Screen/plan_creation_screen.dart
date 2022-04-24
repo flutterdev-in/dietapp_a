@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/Combined%20screen/_plan_creation_combined_screen.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/day_basic_info.dart';
@@ -392,17 +393,12 @@ class PlanCreationScreen extends StatelessWidget {
     if (bc.currentURL.value != "https://m.youtube.com/") {
       refURL = bc.currentURL.value;
     }
-    List<WeekModel>? weekModels;
-    if (isWeekPlan.value) {
-      weekModels = [WeekModel(weekIndex: 1)];
-    }
 
     await userDR
         .collection(dietPlans)
         .add(DietPlanBasicInfoModel(
                 planName: planName.value,
                 isWeekWisePlan: isWeekPlan.value,
-                weekModels: weekModels,
                 notes: notes.value,
                 planCreationTime: timestampNow,
                 rumm: await rummfos.rummModel(refURL),
@@ -410,7 +406,6 @@ class PlanCreationScreen extends StatelessWidget {
                 defaultTimings0: listDefaultTimingModels.value)
             .toMap())
         .then((planDocRef) async {
-      pcc.currentWeekIndex.value = 1;
       pcc.currentPlanDR.value = planDocRef;
       pcc.currentTimingDR.value = userDR;
       pcc.currentDayDR.value = userDR;
@@ -420,39 +415,46 @@ class PlanCreationScreen extends StatelessWidget {
       ));
 
       if (isWeekPlan.value) {
-        for (int dayIndex in daymfos.listDaysIndex) {
-          planDocRef
-              .collection(daymfos.days)
-              .add(DayModel(
-                dayCreatedTime: null,
-                weekIndex: 1,
-                dayIndex: dayIndex,
-              ).toMap())
-              .then(
-            (dayDR) async {
-              if (pcc.currentDayDR.value == userDR) {
-                pcc.currentDayDR.value = dayDR;
-              }
-              for (DefaultTimingModel dfm in listDefaultTimingModels.value) {
-                dayDR.collection(dtmos.timings).add(dfm.toMap()).then((tDR) {
-                  if (pcc.currentTimingDR.value == userDR) {
-                    pcc.currentTimingDR.value = tDR;
-                  }
-                });
-              }
-            },
-          );
-        }
+        pcc.currentWeekDR.value = userDR;
+        await planDocRef
+            .collection(wmfos.weeks)
+            .add(WeekModel(weekCreatedTime: Timestamp.fromDate(DateTime.now()))
+                .toMap())
+            .then((weekDR) async {
+          pcc.currentWeekDR.value = weekDR;
+          for (int dayIndex in daymfos.listDaysIndex) {
+            weekDR
+                .collection(daymfos.days)
+                .add(DayModel(
+                  dayCreatedTime: null,
+                  dayIndex: dayIndex,
+                ).toMap())
+                .then(
+              (dayDR) async {
+                if (pcc.currentDayDR.value == userDR) {
+                  pcc.currentDayDR.value = dayDR;
+                }
+                for (DefaultTimingModel dfm in listDefaultTimingModels.value) {
+                  dayDR.collection(dtmos.timings).add(dfm.toMap()).then((tDR) {
+                    if (pcc.currentTimingDR.value == userDR) {
+                      pcc.currentTimingDR.value = tDR;
+                    }
+                  });
+                }
+              },
+            );
+          }
+        });
       } else {
         planDocRef
             .collection(daymfos.days)
             .add(DayModel(
               dayCreatedTime: timestampNow,
-              weekIndex: null,
               dayIndex: null,
             ).toMap())
             .then(
           (dayDocRef) async {
+            pcc.currentDayDR.value = dayDocRef;
             for (DefaultTimingModel dfm in listDefaultTimingModels.value) {
               dayDocRef.collection(dtmos.timings).add(dfm.toMap()).then((tDR) {
                 if (pcc.currentTimingDR.value == userDR) {

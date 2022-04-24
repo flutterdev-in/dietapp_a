@@ -1,6 +1,5 @@
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/day_basic_info.dart';
-import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/week_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/firestore.dart';
 import 'package:get/get.dart';
@@ -18,9 +17,8 @@ class DaysRowForWeek extends StatelessWidget {
         return FirestoreListView<Map<String, dynamic>>(
           shrinkWrap: true,
           scrollDirection: Axis.horizontal,
-          query: pcc.currentPlanDR.value
+          query: pcc.currentWeekDR.value
               .collection(daymfos.days)
-              .where(wmfos.weekIndex, isEqualTo: pcc.currentWeekIndex.value)
               .orderBy(daymfos.dayIndex, descending: false),
           itemBuilder: (context, doc) {
             DayModel dm = DayModel.fromMap(doc.data());

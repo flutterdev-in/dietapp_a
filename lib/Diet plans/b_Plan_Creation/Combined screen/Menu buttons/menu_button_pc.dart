@@ -6,7 +6,6 @@ import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/default_timing_mod
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/diet_plan_model.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/food_model_for_plan_creation.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/week_model.dart';
-import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/y_Firebase/fire_ref.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -119,63 +118,49 @@ class MenuItemsPC extends StatelessWidget {
   }
 
   Future<void> addWeek() async {
-    await pcc.currentPlanDR.value.get().then((qs) async {
-      if (qs.data() != null) {
-        DietPlanBasicInfoModel dpbim =
-            DietPlanBasicInfoModel.fromMap(qs.data()!);
-        int weekIndexMax = 0;
-        if (dpbim.weekModels?.isNotEmpty ?? false) {
-          for (var wm in dpbim.weekModels!) {
-            if (weekIndexMax < wm.weekIndex) {
-              weekIndexMax = wm.weekIndex;
-            }
+    await pcc.currentPlanDR.value
+        .collection(wmfos.weeks)
+        .add(WeekModel(weekCreatedTime: Timestamp.fromDate(DateTime.now()))
+            .toMap())
+        .then((weekDR) {
+      pcc.currentWeekDR.value = weekDR;
+      pcc.currentTimingDR.value = userDR;
+      pcc.currentDayDR.value = userDR;
+      Get.back();
+      pcc.currentPlanDR.value.get().then((pDS) async {
+        if (pDS.data() != null) {
+          DietPlanBasicInfoModel dpbim =
+              DietPlanBasicInfoModel.fromMap(pDS.data()!);
+          for (int dayIndex in daymfos.listDaysIndex) {
+            weekDR
+                .collection(daymfos.days)
+                .add(DayModel(
+                  dayCreatedTime: null,
+                  dayIndex: dayIndex,
+                ).toMap())
+                .then(
+              (dayDR) async {
+                if (pcc.currentDayDR.value == userDR) {
+                  pcc.currentDayDR.value = dayDR;
+                }
+                for (DefaultTimingModel dfm in dpbim.defaultTimings0) {
+                  dayDR.collection(dtmos.timings).add(dfm.toMap()).then((tDR) {
+                    if (pcc.currentTimingDR.value == userDR) {
+                      pcc.currentTimingDR.value = tDR;
+                    }
+                  });
+                }
+              },
+            );
           }
         }
-
-        pcc.currentWeekIndex.value = weekIndexMax + 1;
-
-        List<WeekModel>? weekModels = dpbim.weekModels;
-        weekModels?.add(WeekModel(weekIndex: pcc.currentWeekIndex.value));
-        await pcc.currentPlanDR.value.update({
-          "$unIndexed.${dietpbims.weekModels}": FieldValue.arrayUnion([
-            WeekModel(weekIndex: pcc.currentWeekIndex.value).toMap(),
-          ]),
-        });
-
-        pcc.currentTimingDR.value = userDR;
-        pcc.currentDayDR.value = userDR;
-        Get.back();
-        for (int dayIndex in daymfos.listDaysIndex) {
-          pcc.currentPlanDR.value
-              .collection(daymfos.days)
-              .add(DayModel(
-                dayCreatedTime: null,
-                weekIndex: pcc.currentWeekIndex.value,
-                dayIndex: dayIndex,
-              ).toMap())
-              .then(
-            (dayDR) async {
-              if (pcc.currentDayDR.value == userDR) {
-                pcc.currentDayDR.value = dayDR;
-              }
-              for (DefaultTimingModel dfm in dpbim.defaultTimings0) {
-                dayDR.collection(dtmos.timings).add(dfm.toMap()).then((tDR) {
-                  if (pcc.currentTimingDR.value == userDR) {
-                    pcc.currentTimingDR.value = tDR;
-                  }
-                });
-              }
-            },
-          );
-        }
-      }
+      });
     });
   }
 
   Future<void> deleteWeek() async {
-    await pcc.currentPlanDR.value
+    await pcc.currentWeekDR.value
         .collection(daymfos.days)
-        .where(wmfos.weekIndex, isEqualTo: pcc.currentWeekIndex.value)
         .get()
         .then((qs) async {
       if (qs.docs.isNotEmpty) {
@@ -205,40 +190,12 @@ class MenuItemsPC extends StatelessWidget {
       }
     });
 
-    await pcc.currentPlanDR.value.get().then((qs) async {
-      if (qs.data() != null) {
-        DietPlanBasicInfoModel dpbim =
-            DietPlanBasicInfoModel.fromMap(qs.data()!);
-        List<WeekModel> listWeekModels = dpbim.weekModels!;
-        int index = 0;
-        int? weekIndex;
-        for (var weekModel in dpbim.weekModels!) {
-          if (weekModel.weekIndex == pcc.currentWeekIndex.value) {
-            weekIndex = index;
-            break;
-          }
-          index++;
-        }
-        if (weekIndex != null) {
-          listWeekModels.removeAt(weekIndex);
-          await pcc.currentPlanDR.value.update({
-            "$unIndexed.${dietpbims.weekModels}":
-                listWeekModels.map((e) => e.toMap()).toList(),
-          });
-        }
-        if (listWeekModels.isNotEmpty) {
-          pcc.currentWeekIndex.value = listWeekModels.first.weekIndex;
-        } else {
-          pcc.currentWeekIndex.value = 0;
-        }
-      }
-    });
-
-    pcc.currentDayDR.value = await pcc.getDayDRfromWeekIndex(
-            planDR: pcc.currentPlanDR.value,
-            weekIndex: pcc.currentWeekIndex.value) ??
-        userDR;
-
+    await pcc.currentWeekDR.value.delete();
+    pcc.listWeeksDR.value.remove(pcc.currentWeekDR.value);
+    pcc.currentWeekDR.value =
+        await pcc.getWeekDRfromPlan(pcc.currentPlanDR.value);
+    pcc.currentDayDR.value =
+        await pcc.getDayDRfromWeek((pcc.currentWeekDR.value));
     pcc.currentTimingDR.value =
         await pcc.getTimingDRfromDay(pcc.currentDayDR.value);
 
@@ -249,10 +206,9 @@ class MenuItemsPC extends StatelessWidget {
     await pcc.currentPlanDR.value
         .collection(daymfos.days)
         .add(DayModel(
-                dayCreatedTime: Timestamp.fromDate(DateTime.now()),
-                dayIndex: null,
-                weekIndex: null)
-            .toMap())
+          dayCreatedTime: Timestamp.fromDate(DateTime.now()),
+          dayIndex: null,
+        ).toMap())
         .then((dayDR) async {
       Get.back();
 
@@ -321,37 +277,51 @@ class MenuItemsPC extends StatelessWidget {
   }
 
   Future<void> deletePlan() async {
-    await pcc.currentPlanDR.value
-        .collection(daymfos.days)
-        .get()
-        .then((qs) async {
-      if (qs.docs.isNotEmpty) {
-        for (var dayQds in qs.docs) {
-          await dayQds.reference
-              .collection(dtmos.timings)
-              .get()
-              .then((qs) async {
-            if (qs.docs.isNotEmpty) {
-              for (var timingQds in qs.docs) {
-                await timingQds.reference
-                    .collection(fmfpcfos.foods)
-                    .get()
-                    .then((qs) async {
-                  if (qs.docs.isNotEmpty) {
-                    for (var dr in qs.docs) {
-                      await dr.reference.delete();
+    Future<void> deleteFromDays(
+        DocumentReference<Map<String, dynamic>> parentDR) async {
+      await parentDR.collection(daymfos.days).get().then((qs) async {
+        if (qs.docs.isNotEmpty) {
+          for (var dayQds in qs.docs) {
+            await dayQds.reference
+                .collection(dtmos.timings)
+                .get()
+                .then((qs) async {
+              if (qs.docs.isNotEmpty) {
+                for (var timingQds in qs.docs) {
+                  await timingQds.reference
+                      .collection(fmfpcfos.foods)
+                      .get()
+                      .then((qs) async {
+                    if (qs.docs.isNotEmpty) {
+                      for (var dr in qs.docs) {
+                        await dr.reference.delete();
+                      }
                     }
-                  }
-                });
-                await timingQds.reference.delete();
+                  });
+                  await timingQds.reference.delete();
+                }
               }
-            }
-          });
-          dayQds.reference.delete();
+            });
+            dayQds.reference.delete();
+          }
         }
-      }
-      Get.back();
-    });
+        Get.back();
+      });
+    }
+
+    if (isWeekWisePlan) {
+      pcc.currentPlanDR.value.collection(wmfos.weeks).get().then((wQS) async {
+        if (wQS.docs.isNotEmpty) {
+          for (var weekQds in wQS.docs) {
+            await deleteFromDays(weekQds.reference);
+            await weekQds.reference.delete();
+          }
+        }
+      });
+    } else {
+      await deleteFromDays(pcc.currentPlanDR.value);
+    }
+
     pcc.currentPlanDR.value.delete();
     pcc.currentPlanDR.value = userDR;
     Get.back();
