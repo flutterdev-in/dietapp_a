@@ -1,6 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/Combined%20screen/top%20rows/days_row.dart';
-import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/Combined%20screen/top%20rows/weeks_row.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/diet_plan_model.dart';
 import 'package:dietapp_a/Diet%20plans/c_diet_view/a_timings_view_pc.dart';
@@ -50,7 +47,7 @@ class DietPlansMiddle extends StatelessWidget {
               onTap: () async {
                 if (model.docRef != null) {
                   await pcc.getPlanRxValues(
-                      model.docRef!, model);
+                      model.docRef!, model.isWeekWisePlan);
                   pcc.isCombinedCreationScreen.value = false;
                   Get.to(() => DietPlanViewFromChat(model: model));
                 }
@@ -75,9 +72,7 @@ class DietPlanViewFromChat extends StatelessWidget {
         model.planName,
       )),
       body: Column(
-        children: [
-          weeksRow000PlanCreationCombinedScreen(),
-          daysRow000PlanCreationCombinedScreen(),
+        children: const [
           Expanded(
             child: TimingsViewPC(editingIconRequired: false),
           ),

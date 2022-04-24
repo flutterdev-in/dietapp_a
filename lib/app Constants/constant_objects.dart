@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 final String userUID = FirebaseAuth.instance.currentUser!.uid;
@@ -9,6 +10,7 @@ const String unIndexed = "unIndexed";
 const String youtubeVideoIndentifyURL = "youtube.com/watch?v=";
 const String youtubeURL = "youtube.com";
 const String mYoutubeCom = "https://m.youtube.com/";
+final Timestamp timestampNow = Timestamp.fromDate(DateTime.now());
 
 ActiveDietFinalObjects adfos = ActiveDietFinalObjects();
 

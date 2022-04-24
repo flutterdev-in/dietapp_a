@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
-import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/day_basic_info.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/default_timing_model.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/food_model_for_plan_creation.dart';
 import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
@@ -12,42 +11,25 @@ import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
 
 class TimingsViewPC extends StatelessWidget {
-  DocumentReference? dayDocRef;
   final bool editingIconRequired;
-  TimingsViewPC({Key? key, this.dayDocRef, this.editingIconRequired = true})
+  const TimingsViewPC({Key? key, this.editingIconRequired = true})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    if (dayDocRef == null) {
-      return Obx(
-        () => FirestoreListView<Map<String, dynamic>>(
+    return Obx(() => FirestoreListView<Map<String, dynamic>>(
           shrinkWrap: true,
-          query: pcc.currentWeekDR.value
-              .collection(daymfos.days)
-              .doc(pcc.currentDayIndex.value.toString())
+          query: pcc.currentDayDR.value
               .collection(dtmos.timings)
               .orderBy(dtmos.timingString, descending: false),
-          itemBuilder: (context, doc) {
-            return timingsView(doc);
+          itemBuilder: (context, qDocSnap) {
+            return timingsView(qDocSnap);
           },
-        ),
-      );
-    } else {
-      return FirestoreListView<Map<String, dynamic>>(
-        shrinkWrap: true,
-        query: dayDocRef!
-            .collection(dtmos.timings)
-            .orderBy(dtmos.timingString, descending: false),
-        itemBuilder: (context, doc) {
-          return timingsView(doc);
-        },
-      );
-    }
+        ));
   }
 
-  Widget timingsView(QueryDocumentSnapshot<Map<String, dynamic>> doc) {
-    DefaultTimingModel dtm = DefaultTimingModel.fromMap(doc.data());
+  Widget timingsView(QueryDocumentSnapshot<Map<String, dynamic>> qDocSnap) {
+    DefaultTimingModel dtm = DefaultTimingModel.fromMap(qDocSnap.data());
     RefUrlMetadataModel rumm = dtm.rumm ?? rummfos.constModel;
 
     return Card(
@@ -78,7 +60,7 @@ class TimingsViewPC extends StatelessWidget {
           FirestoreListView<Map<String, dynamic>>(
               shrinkWrap: true,
               physics: const ClampingScrollPhysics(),
-              query: doc.reference
+              query: qDocSnap.reference
                   .collection(fmfpcfos.foods)
                   .orderBy(fmfpcfos.foodAddedTime, descending: false),
               itemBuilder: (context, doc) {

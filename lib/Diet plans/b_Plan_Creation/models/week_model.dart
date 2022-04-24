@@ -1,41 +1,43 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
 
 class WeekModel {
-  Timestamp weekCreationTime;
+  int weekIndex;
   String? weekName;
-
   String? notes;
   RefUrlMetadataModel? rumm;
-  DocumentReference? docRef;
 
   WeekModel({
-    required this.weekCreationTime,
-    required this.notes,
-    this.rumm,
+    required this.weekIndex,
     this.weekName,
-    this.docRef,
+    this.notes,
+    this.rumm,
   });
 
   Map<String, dynamic> toMap() {
-    return {
-      wmfos.weekCreationTime: weekCreationTime,
-      wmfos.weekName: weekName,
-      unIndexed: {
-        wmfos.notes: notes,
-        rummfos.rumm: rumm?.toMap(),
-        wmfos.docRef: docRef,
-      }
+    Map<String, dynamic> returnMap = {
+      wmfos.weekIndex: weekIndex,
     };
+    Map<String, dynamic> nullChaeckValues = {
+      wmfos.weekName: weekName,
+      wmfos.notes: notes,
+      rummfos.rumm: rumm?.toMap(),
+    };
+
+    nullChaeckValues.forEach((key, value) {
+      if (value != null) {
+        returnMap[key] = value;
+      }
+    });
+
+    return returnMap;
   }
 
   factory WeekModel.fromMap(Map dataMap) {
     return WeekModel(
-      weekCreationTime: dataMap[wmfos.weekCreationTime],
-      notes: dataMap[unIndexed][wmfos.notes],
-      rumm: rummfos.rummFromRummMap(dataMap[unIndexed][rummfos.rumm]),
-      docRef: dataMap[unIndexed][wmfos.docRef],
+      weekIndex: dataMap[wmfos.weekIndex],
+      notes: dataMap[wmfos.notes],
+      rumm: rummfos.rummFromRummMap(dataMap[rummfos.rumm]),
     );
   }
 }
@@ -43,7 +45,7 @@ class WeekModel {
 final WeekModelFinalObjects wmfos = WeekModelFinalObjects();
 
 class WeekModelFinalObjects {
-  final String weekCreationTime = "weekCreationTime";
+  final String weekIndex = "weekIndex";
   final String weekName = "weekName";
   final String notes = "notes";
   final String refURL = "refURL";

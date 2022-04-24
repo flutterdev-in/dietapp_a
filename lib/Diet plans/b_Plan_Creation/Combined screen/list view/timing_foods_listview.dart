@@ -4,6 +4,7 @@ import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/food_model_for_plan_creation.dart';
 import 'package:dietapp_a/app%20Constants/url/url_avatar.dart';
 import 'package:dietapp_a/x_customWidgets/alert_dialogue.dart';
+import 'package:dietapp_a/y_Firebase/fire_ref.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/firestore.dart';
 import 'package:get/get.dart';
@@ -20,55 +21,60 @@ class FoodsListViewforPC extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
       child: Obx(() {
-        return FirestoreListView<Map<String, dynamic>>(
-          shrinkWrap: true,
-          physics: const ClampingScrollPhysics(),
-          scrollDirection: Axis.vertical,
-          query: pcc.currentTimingDR.value
-              .collection(fmfpcfos.foods)
-              .orderBy(fmfpcfos.foodAddedTime, descending: false),
-          itemBuilder: (context, doc) {
-            Map<String, dynamic> foodMap = doc.data();
-            FoodsModelForPlanCreation fm =
-                FoodsModelForPlanCreation.fromMap(foodMap);
+        
+        if (pcc.currentTimingDR.value == userDR) {
+          return const SizedBox();
+        } else {
+          return FirestoreListView<Map<String, dynamic>>(
+            shrinkWrap: true,
+            physics: const ClampingScrollPhysics(),
+            scrollDirection: Axis.vertical,
+            query: pcc.currentTimingDR.value
+                .collection(fmfpcfos.foods)
+                .orderBy(fmfpcfos.foodAddedTime, descending: false),
+            itemBuilder: (context, doc) {
+              Map<String, dynamic> foodMap = doc.data();
+              FoodsModelForPlanCreation fm =
+                  FoodsModelForPlanCreation.fromMap(foodMap);
 
-            return GFListTile(
-              padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-              margin: const EdgeInsets.symmetric(vertical: 3, horizontal: 0),
-              avatar: URLavatar(imgURL: fm.rumm?.img, webURL: fm.rumm?.url),
-              title: Text(
-                fm.foodName,
-                softWrap: true,
-                overflow: TextOverflow.ellipsis,
-                maxLines: 2,
-              ),
-              subTitle: (fm.notes == null || fm.notes == "")
-                  ? null
-                  : LimitedBox(
-                      maxHeight: 50,
-                      child: SingleChildScrollView(
-                        child: Text(fm.notes ?? "",
-                            softWrap: true,
-                            textScaleFactor: 0.9,
-                            style: const TextStyle(color: Colors.brown)),
+              return GFListTile(
+                padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
+                margin: const EdgeInsets.symmetric(vertical: 3, horizontal: 0),
+                avatar: URLavatar(imgURL: fm.rumm?.img, webURL: fm.rumm?.url),
+                title: Text(
+                  fm.foodName,
+                  softWrap: true,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
+                ),
+                subTitle: (fm.notes == null || fm.notes == "")
+                    ? null
+                    : LimitedBox(
+                        maxHeight: 50,
+                        child: SingleChildScrollView(
+                          child: Text(fm.notes ?? "",
+                              softWrap: true,
+                              textScaleFactor: 0.9,
+                              style: const TextStyle(color: Colors.brown)),
+                        ),
                       ),
-                    ),
-              onTap: () {
-                FocusScope.of(context).unfocus();
+                onTap: () {
+                  FocusScope.of(context).unfocus();
 
-                Get.to(URLviewerPC(rumm: fm.rumm));
-              },
-              icon: editIconRequired
-                  ? InkWell(
-                      child: const Icon(MdiIcons.playlistEdit),
-                      onTap: () {
-                        alertW(context, fm: fm, docRef: doc.reference);
-                      },
-                    )
-                  : null,
-            );
-          },
-        );
+                  Get.to(URLviewerPC(rumm: fm.rumm));
+                },
+                icon: editIconRequired
+                    ? InkWell(
+                        child: const Icon(MdiIcons.playlistEdit),
+                        onTap: () {
+                          alertW(context, fm: fm, docRef: doc.reference);
+                        },
+                      )
+                    : null,
+              );
+            },
+          );
+        }
       }),
     );
   }

@@ -50,7 +50,7 @@ class PlanViewForChat extends StatelessWidget {
                     .orderBy(orderString.value, descending: false),
                 itemBuilder: (context, snapshot) {
                   String weekNm = '';
-
+                  
                   getTitle(snapshot);
                   if (currentPathCR.value.id == wmfos.weeks) {
                     weekNm = title;
@@ -116,7 +116,7 @@ class PlanViewForChat extends StatelessWidget {
 
     weekIndex = 0;
     if (crs == "dietPlansBeta") {
-      orderString.value = wmfos.weekCreationTime;
+      orderString.value = wmfos.weekIndex;
       currentPathCR.value = snapshot.reference.collection(wmfos.weeks);
     } else if (crs == wmfos.weeks) {
       orderString.value = daymfos.dayIndex;
@@ -144,7 +144,7 @@ class PlanViewForChat extends StatelessWidget {
       weekIndex++;
     } else if (crs == daymfos.days) {
       DayModel dm = DayModel.fromMap(fcMap);
-      title = daymfos.dayString(dm.dayIndex);
+      title = daymfos.dayString(dm.dayIndex ?? 0);
     } else if (crs == dtmos.timings) {
       DefaultTimingModel dtm = DefaultTimingModel.fromMap(fcMap);
       title = dtm.timingName;
@@ -226,7 +226,7 @@ class PlanViewForChat extends StatelessWidget {
                 pathTitle = currentWeekName.value;
               } else if (crs == daymfos.days) {
                 DayModel dm = DayModel.fromMap(fcMap);
-                pathTitle = daymfos.dayString(dm.dayIndex);
+                pathTitle = daymfos.dayString(dm.dayIndex ?? 0);
               } else if (crs == dtmos.timings) {
                 DefaultTimingModel dtm = DefaultTimingModel.fromMap(fcMap);
                 pathTitle = dtm.timingName;

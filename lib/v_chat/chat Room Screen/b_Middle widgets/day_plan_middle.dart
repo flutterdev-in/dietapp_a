@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/day_basic_info.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/default_timing_model.dart';
@@ -40,7 +39,7 @@ class DayPlanMiddle extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      "Day plan (${daymfos.ls[dm.dayIndex]})",
+                      "Day plan (${daymfos.ls[dm.dayIndex ?? 0]})",
                       style: const TextStyle(color: Colors.white),
                     ),
                   )
@@ -76,9 +75,8 @@ class DayViewFromChat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Day plan (${daymfos.ls[dm.dayIndex]})")),
-      body: TimingsViewPC(
-        dayDocRef: dm.docRef!,
+      appBar: AppBar(title: Text("Day plan (${daymfos.ls[dm.dayIndex ?? 0]})")),
+      body: const TimingsViewPC(
         editingIconRequired: false,
       ),
     );

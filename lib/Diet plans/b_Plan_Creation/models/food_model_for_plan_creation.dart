@@ -6,7 +6,7 @@ class FoodsModelForPlanCreation {
   Timestamp foodAddedTime;
   String foodName;
   String? notes;
-  DocumentReference? docRef;
+  DocumentReference<Map<String, dynamic>>? docRef;
   RefUrlMetadataModel? rumm;
   FoodsModelForPlanCreation({
     required this.foodAddedTime,
@@ -17,15 +17,24 @@ class FoodsModelForPlanCreation {
   });
 
   Map<String, dynamic> toMap() {
-    return {
+    Map<String, dynamic> returnMap = {
       fmfpcfos.foodAddedTime: foodAddedTime,
       fmfpcfos.foodName: foodName,
-      unIndexed: {
-        rummfos.rumm: rumm?.toMap(),
-        fmfpcfos.notes: notes,
-        fmfpcfos.docRef: docRef,
-      }
+      unIndexed: {}
     };
+    Map<String, dynamic> nullChaeckValues = {
+      rummfos.rumm: rumm?.toMap(),
+      fmfpcfos.notes: notes,
+      fmfpcfos.docRef: docRef,
+    };
+
+    nullChaeckValues.forEach((key, value) {
+      if (value != null) {
+        returnMap[unIndexed][key] = value;
+      }
+    });
+
+    return returnMap;
   }
 
   factory FoodsModelForPlanCreation.fromMap(Map dataMap) {
@@ -33,7 +42,7 @@ class FoodsModelForPlanCreation {
       foodAddedTime: dataMap[fmfpcfos.foodAddedTime],
       foodName: dataMap[fmfpcfos.foodName] ?? "",
       notes: dataMap[unIndexed][fmfpcfos.notes],
-      rumm:rummfos.rummFromRummMap(dataMap[unIndexed][rummfos.rumm]) ,
+      rumm: rummfos.rummFromRummMap(dataMap[unIndexed][rummfos.rumm]),
       docRef: dataMap[unIndexed][fmfpcfos.docRef],
     );
   }

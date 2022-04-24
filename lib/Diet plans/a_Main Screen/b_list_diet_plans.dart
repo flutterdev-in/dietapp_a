@@ -27,9 +27,15 @@ class ListDietPlansW extends StatelessWidget {
         return GFListTile(
           title: Text(dpbim.planName),
           onTap: () async {
-            await pcc.getPlanRxValues(snapshot.reference, dpbim);
-            pcc.isCombinedCreationScreen.value = true;
-            Get.to(() => const PlanCreationCombinedScreen());
+            pcc.currentPlanDR.value = snapshot.reference;
+            await pcc
+                .getPlanRxValues(snapshot.reference, dpbim.isWeekWisePlan)
+                .then((value) {
+              pcc.isCombinedCreationScreen.value = true;
+              Get.to(() => PlanCreationCombinedScreen(
+                    isWeekWisePlan: dpbim.isWeekWisePlan,
+                  ));
+            });
           },
         );
       },

@@ -9,7 +9,7 @@ Stream<DocumentSnapshot> userDS0 =
 Stream<DocumentSnapshot> userDS =
     FirebaseFirestore.instance.collection(uss.users).doc(userUID).snapshots();
 
-final DocumentReference userDR =
+final DocumentReference<Map<String, dynamic>> userDR =
     FirebaseFirestore.instance.collection(uss.users).doc(userUID);
 
 final CollectionReference chatRoomC =

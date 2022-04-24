@@ -49,7 +49,6 @@ class TimingPlanMiddle extends StatelessWidget {
               onTap: () {
                 if (model.docRef != null) {
                   pcc.currentTimingDR.value = model.docRef!;
-
                   Get.to(() => TimingViewFromChat(dtm: model));
                 }
               },

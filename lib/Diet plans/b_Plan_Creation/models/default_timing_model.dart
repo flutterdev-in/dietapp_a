@@ -7,7 +7,7 @@ class DefaultTimingModel {
   String timingString;
   String? notes;
   RefUrlMetadataModel? rumm;
-  DocumentReference? docRef;
+  DocumentReference<Map<String, dynamic>>? docRef;
 
   //
   DefaultTimingModel({
@@ -19,15 +19,23 @@ class DefaultTimingModel {
   });
 
   Map<String, dynamic> toMap() {
-    return {
+    Map<String, dynamic> returnMap = {
       dtmos.timingName: timingName,
       dtmos.timingString: timingString,
-      unIndexed: {
-        dtmos.notes: notes,
-        rummfos.rumm: rumm?.toMap(),
-        dtmos.docRef: docRef,
-      }
+      unIndexed: {}
     };
+    Map<String, dynamic> nullChaeckValues = {
+      dtmos.notes: notes,
+      rummfos.rumm: rumm?.toMap(),
+      dtmos.docRef: docRef,
+    };
+    nullChaeckValues.forEach((key, value) {
+      if (value != null) {
+        returnMap[unIndexed][key] = value;
+      }
+    });
+
+    return returnMap;
   }
 
   factory DefaultTimingModel.fromMap(Map dataMap) {

@@ -1,10 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/Combined%20screen/_plan_creation_combined_screen.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/day_basic_info.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/default_timing_model.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/diet_plan_model.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/week_model.dart';
+import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
 import 'package:dietapp_a/my%20foods/screens/Add%20food/add_food_sreen.dart';
 import 'package:dietapp_a/my%20foods/screens/Add%20food/controllers/browser_controllers.dart';
@@ -19,7 +19,8 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 
 class PlanCreationScreen extends StatelessWidget {
   PlanCreationScreen({Key? key}) : super(key: key);
-  final Rx<String> planName = "".obs;
+  final Rx<bool> isWeekPlan = true.obs;
+  final Rx<String> planName = "Diet plan".obs;
   final Rx<String> notes = "".obs;
   final listDefaultTimingModels = RxList<DefaultTimingModel>([
     DefaultTimingModel(
@@ -92,6 +93,8 @@ class PlanCreationScreen extends StatelessWidget {
             ),
             refURL(),
             const SizedBox(height: 5),
+            planType(),
+            const Divider(thickness: 3),
             timingsW(context),
           ],
         ),
@@ -142,6 +145,40 @@ class PlanCreationScreen extends StatelessWidget {
         );
       }
     });
+  }
+
+  Widget planType() {
+    return Obx(() => Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Padding(
+              padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+              child: Text("Plan model"),
+            ),
+            GFButton(
+              onPressed: () {
+                if (isWeekPlan.value = false) {
+                  isWeekPlan.value = true;
+                }
+              },
+              child: const Text("Week wise"),
+              type: isWeekPlan.value
+                  ? GFButtonType.outline2x
+                  : GFButtonType.transparent,
+            ),
+            GFButton(
+              onPressed: () {
+                if (isWeekPlan.value = true) {
+                  isWeekPlan.value = false;
+                }
+              },
+              child: const Text("Day wise"),
+              type: isWeekPlan.value
+                  ? GFButtonType.transparent
+                  : GFButtonType.outline2x,
+            ),
+          ],
+        ));
   }
 
   Widget timingsW(BuildContext context) {
@@ -355,59 +392,77 @@ class PlanCreationScreen extends StatelessWidget {
     if (bc.currentURL.value != "https://m.youtube.com/") {
       refURL = bc.currentURL.value;
     }
+    List<WeekModel>? weekModels;
+    if (isWeekPlan.value) {
+      weekModels = [WeekModel(weekIndex: 1)];
+    }
 
     await userDR
         .collection(dietPlans)
         .add(DietPlanBasicInfoModel(
                 planName: planName.value,
+                isWeekWisePlan: isWeekPlan.value,
+                weekModels: weekModels,
                 notes: notes.value,
-                planCreationTime: Timestamp.fromDate(DateTime.now()),
+                planCreationTime: timestampNow,
                 rumm: await rummfos.rummModel(refURL),
                 defaultTimings: listDefaultTimingModels.value,
                 defaultTimings0: listDefaultTimingModels.value)
             .toMap())
-        .then(
-      (planDocRef) async {
-        pcc.currentPlanDRpath.value = planDocRef.path;
+        .then((planDocRef) async {
+      pcc.currentWeekIndex.value = 1;
+      pcc.currentPlanDR.value = planDocRef;
+      pcc.currentTimingDR.value = userDR;
+      pcc.currentDayDR.value = userDR;
+      Get.back();
+      Get.to(PlanCreationCombinedScreen(
+        isWeekWisePlan: isWeekPlan.value,
+      ));
 
-        await planDocRef
-            .collection(wmfos.weeks)
-            .add(WeekModel(
-                    weekCreationTime: Timestamp.fromDate(DateTime.now()),
-                    notes: null,
-                    rumm: null)
-                .toMap())
-            .then((weekDR) async {
-          pcc.currentPlanName.value = planName.value;
-          pcc.currentWeekDR.value = weekDR;
-          pcc.currentDayIndex.value = 0;
-          Get.back();
-          Get.to(const PlanCreationCombinedScreen());
-          for (int dayIndex in [0, 1, 2, 3, 4, 5, 6]) {
-            weekDR
-                .collection(daymfos.days)
-                .doc(dayIndex.toString())
-                .set(DayModel(dayIndex: dayIndex, notes: null, rumm: null)
-                    .toMap())
-                .then(
-              (value) async {
-                for (DefaultTimingModel dfm in listDefaultTimingModels.value) {
-                  weekDR
-                      .collection(daymfos.days)
-                      .doc(dayIndex.toString())
-                      .collection(dtmos.timings)
-                      .add(dfm.toMap())
-                      .then((tDR) {
-                    if (pcc.currentTimingDR.value == userDR) {
-                      pcc.currentTimingDR.value = tDR;
-                    }
-                  });
+      if (isWeekPlan.value) {
+        for (int dayIndex in daymfos.listDaysIndex) {
+          planDocRef
+              .collection(daymfos.days)
+              .add(DayModel(
+                dayCreatedTime: null,
+                weekIndex: 1,
+                dayIndex: dayIndex,
+              ).toMap())
+              .then(
+            (dayDR) async {
+              if (pcc.currentDayDR.value == userDR) {
+                pcc.currentDayDR.value = dayDR;
+              }
+              for (DefaultTimingModel dfm in listDefaultTimingModels.value) {
+                dayDR.collection(dtmos.timings).add(dfm.toMap()).then((tDR) {
+                  if (pcc.currentTimingDR.value == userDR) {
+                    pcc.currentTimingDR.value = tDR;
+                  }
+                });
+              }
+            },
+          );
+        }
+      } else {
+        planDocRef
+            .collection(daymfos.days)
+            .add(DayModel(
+              dayCreatedTime: timestampNow,
+              weekIndex: null,
+              dayIndex: null,
+            ).toMap())
+            .then(
+          (dayDocRef) async {
+            for (DefaultTimingModel dfm in listDefaultTimingModels.value) {
+              dayDocRef.collection(dtmos.timings).add(dfm.toMap()).then((tDR) {
+                if (pcc.currentTimingDR.value == userDR) {
+                  pcc.currentTimingDR.value = tDR;
                 }
-              },
-            );
-          }
-        });
-      },
-    );
+              });
+            }
+          },
+        );
+      }
+    });
   }
 }

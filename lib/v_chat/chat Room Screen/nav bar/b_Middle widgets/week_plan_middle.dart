@@ -1,5 +1,3 @@
-import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/Combined%20screen/top%20rows/days_row.dart';
-import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/week_model.dart';
 import 'package:dietapp_a/Diet%20plans/c_diet_view/a_timings_view_pc.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/_common_top_widget_middle.dart';
@@ -45,12 +43,7 @@ class WeekPlanMiddle extends StatelessWidget {
                   ],
                 ),
                 onTap: () async {
-                  if (listModels[index].docRef != null) {
-                    pcc.currentWeekDR.value = listModels[index].docRef!;
-                    await pcc.getCurrentTimingDR();
-
-                    Get.to(() => WeekPlanViewFromChat(weekIndex: index));
-                  }
+                  Get.to(() => WeekPlanViewFromChat(weekIndex: index));
                 });
           },
         ),
@@ -72,8 +65,7 @@ class WeekPlanViewFromChat extends StatelessWidget {
         "Week plan (${weekIndex + 1})",
       )),
       body: Column(
-        children: [
-          daysRow000PlanCreationCombinedScreen(),
+        children: const [
           Expanded(
             child: TimingsViewPC(editingIconRequired: false),
           ),

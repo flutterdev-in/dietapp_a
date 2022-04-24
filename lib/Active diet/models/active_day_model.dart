@@ -12,7 +12,7 @@ class ActiveDayModel {
   String? takenNotes;
   RefUrlMetadataModel? prud;
   RefUrlMetadataModel? trud;
-  DocumentReference? docRef;
+  DocumentReference<Map<String, dynamic>>? docRef;
 
   //
   ActiveDayModel({

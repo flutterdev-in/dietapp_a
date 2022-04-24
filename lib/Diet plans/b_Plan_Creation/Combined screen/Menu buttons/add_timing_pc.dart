@@ -1,29 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
-import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/day_basic_info.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/default_timing_model.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/diet_plan_model.dart';
-import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/food_model_for_plan_creation.dart';
 import 'package:dietapp_a/x_customWidgets/alert_dialogue.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 Future<void> addTimingPCalertW(BuildContext context) async {
-  List ldtm = [];
+  List<DefaultTimingModel> ldtm = [];
   List<String> listTimingsInFire = [];
-  await FirebaseFirestore.instance
-      .doc(pcc.currentPlanDRpath.value)
-      .get()
-      .then((docSnap) async {
+  await pcc.currentPlanDR.value.get().then((docSnap) async {
     if (docSnap.exists && docSnap.data() != null) {
       DietPlanBasicInfoModel dpbim =
           DietPlanBasicInfoModel.fromMap(docSnap.data()!);
       ldtm = dpbim.defaultTimings;
-      await pcc.currentWeekDR.value
-          .collection(daymfos.days)
-          .doc(pcc.currentDayIndex.value.toString())
+      await pcc.currentDayDR.value
           .collection(dtmos.timings)
           .get()
           .then((value) {
@@ -34,8 +26,9 @@ Future<void> addTimingPCalertW(BuildContext context) async {
       });
     }
   });
+
   List<String> listBt = ldtm.map((e) {
-    Map<String, dynamic> dm = e as Map<String, dynamic>;
+    Map<String, dynamic> dm = e.toMap();
     DefaultTimingModel dtm = DefaultTimingModel.fromMap(dm);
     if (listTimingsInFire.contains(dtm.timingString)) {
       return "00";
@@ -54,51 +47,59 @@ Future<void> addTimingPCalertW(BuildContext context) async {
     Rx<int> hour = 6.obs;
     Rx<int> mins = 30.obs;
     Rx<String> timingName = "".obs;
+
     alertDialogueW(
       context,
       body: Column(children: [
-        if (listBt.isNotEmpty) Text("Select timing"),
+        if (listBt.isNotEmpty) const Text("Select timing"),
         if (listBt.isNotEmpty)
           Column(
-            children: ldtm.map((e) {
-              Map<String, dynamic> dm = e as Map<String, dynamic>;
-              DefaultTimingModel dtm = DefaultTimingModel.fromMap(dm);
-              if (!listTimingsInFire.contains(dtm.timingString)) {
-                return InkWell(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 6, 0, 6),
-                    child: Row(
-                      children: [
-                        Expanded(child: Text(dtm.timingName), flex: 2),
-                        Expanded(
-                            child: Text(dtmos.displayTiming(dtm.timingString)),
-                            flex: 1)
-                      ],
-                    ),
-                  ),
-                  onTap: () async {
-                    FocusScope.of(context).unfocus();
-                    Get.back();
+            children: [
+              Column(
+                children: ldtm.map((e) {
+                  Map<String, dynamic> dm = e.toMap();
+                  DefaultTimingModel dtm = DefaultTimingModel.fromMap(dm);
+                  if (!listTimingsInFire.contains(dtm.timingString)) {
+                    return InkWell(
+                      child: Container(
+                        color: Colors.black12,
+                        padding: const EdgeInsets.fromLTRB(0, 6, 0, 6),
+                        child: Row(
+                          children: [
+                            const SizedBox(width: 10),
+                            Expanded(child: Text(dtm.timingName), flex: 2),
+                            Expanded(
+                                child:
+                                    Text(dtmos.displayTiming(dtm.timingString)),
+                                flex: 1)
+                          ],
+                        ),
+                      ),
+                      onTap: () async {
+                        FocusScope.of(context).unfocus();
+                        Get.back();
 
-                    if (!listTimingsInFire.contains(dtm.timingString)) {
-                      await pcc.currentWeekDR.value
-                          .collection(daymfos.days)
-                          .doc(pcc.currentDayIndex.toString())
-                          .collection(dtmos.timings)
-                          .add(DefaultTimingModel(
-                                  timingName: dtm.timingName,
-                                  timingString: dtm.timingString)
-                              .toMap())
-                          .then((value) async {
-                        pcc.currentTimingDR.value = value;
-                      });
-                    }
-                  },
-                );
-              } else {
-                return SizedBox();
-              }
-            }).toList(),
+                        if (!listTimingsInFire.contains(dtm.timingString)) {
+                          await pcc.currentDayDR.value
+                              .collection(dtmos.timings)
+                              .add(DefaultTimingModel(
+                                      timingName: dtm.timingName,
+                                      timingString: dtm.timingString)
+                                  .toMap())
+                              .then((docRef) async {
+                            pcc.currentTimingDR.value = docRef;
+                          });
+                        }
+                      },
+                    );
+                  } else {
+                    return const SizedBox();
+                  }
+                }).toList(),
+              ),
+              const Text("------- or Add timing --------",
+                  textScaleFactor: 0.9),
+            ],
           ),
         Column(
           children: [
@@ -111,7 +112,7 @@ Future<void> addTimingPCalertW(BuildContext context) async {
                   maxLines: null,
                   keyboardType: TextInputType.name,
                   textInputAction: TextInputAction.done,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: "Timing name",
                   ),
                   onChanged: (value) async {
@@ -120,38 +121,9 @@ Future<void> addTimingPCalertW(BuildContext context) async {
                 ),
               ),
             ),
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
             Row(
               children: [
-                ElevatedButton(
-                    onPressed: () async {
-                      String ts = dtmos.timingStringF(
-                          hour.value, mins.value, isAM.value);
-                      FocusScope.of(context).unfocus();
-                      Get.back();
-
-                      if (!listTimingsInFire.contains(ts)) {
-                        await pcc.currentWeekDR.value
-                            .collection(daymfos.days)
-                            .doc(pcc.currentDayIndex.toString())
-                            .collection(dtmos.timings)
-                            .add(DefaultTimingModel(
-                                    timingName: timingName.value,
-                                    timingString: ts)
-                                .toMap())
-                            .then((value) async {
-                          ldtm.add(DefaultTimingModel(
-                                  timingName: timingName.value,
-                                  timingString: ts)
-                              .toMap());
-                          await FirebaseFirestore.instance
-                              .doc(pcc.currentPlanDRpath.value)
-                              .update({dietpbims.defaultTimings: ldtm});
-                          pcc.currentTimingDR.value = value;
-                        });
-                      }
-                    },
-                    child: Text("Add")),
                 SizedBox(
                   height: 60,
                   width: 60,
@@ -215,9 +187,37 @@ Future<void> addTimingPCalertW(BuildContext context) async {
                         .toList(),
                   ),
                 ),
+                ElevatedButton(
+                    onPressed: () async {
+                      String ts = dtmos.timingStringF(
+                          hour.value, mins.value, isAM.value);
+                      FocusScope.of(context).unfocus();
+                      Get.back();
+
+                      if (!listTimingsInFire.contains(ts)) {
+                        await pcc.currentDayDR.value
+                            .collection(dtmos.timings)
+                            .add(DefaultTimingModel(
+                                    timingName: timingName.value,
+                                    timingString: ts)
+                                .toMap())
+                            .then((value) async {
+                          ldtm.add(DefaultTimingModel(
+                              timingName: timingName.value, timingString: ts));
+                          await FirebaseFirestore.instance
+                              .doc(pcc.currentPlanDRpath.value)
+                              .update({
+                            dietpbims.defaultTimings:
+                                ldtm.map((e) => e.toMap()).toList()
+                          });
+                          pcc.currentTimingDR.value = value;
+                        });
+                      }
+                    },
+                    child: const Text("Add")),
               ],
             ),
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
           ],
         ),
       ]),

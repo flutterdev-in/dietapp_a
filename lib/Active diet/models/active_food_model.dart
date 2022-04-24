@@ -13,7 +13,7 @@ class ActiveFoodModel {
   RefUrlMetadataModel? prud; // plannedRefUrlMetadataModel
   RefUrlMetadataModel? trud; // takenRefUrlMetadataModel
   List<ProofPicsModel>? listProofPicModels;
-  DocumentReference? docRef;
+  DocumentReference<Map<String, dynamic>>? docRef;
 
   ActiveFoodModel({
     required this.isPlanned,
@@ -28,21 +28,32 @@ class ActiveFoodModel {
     required this.docRef,
   });
   Map<String, dynamic> toMap() {
-    return {
+    Map<String, dynamic> returnMap = {
       adfos.isPlanned: isPlanned,
       adfos.isTaken: isTaken,
-      fofafm.takenTime: takenTime,
-      unIndexed: {
-        fofafm.foodName: foodName,
-        adfos.plannedNotes: plannedNotes,
-        adfos.takenNotes: takenNotes,
-        adfos.prud: prud,
-        adfos.trud: trud,
-        fofafm.listProofPicMaps:
-            listProofPicModels?.map((e) => e.toMap()).toList(),
-        docRef0: docRef
-      }
+      unIndexed: {}
     };
+    if (takenTime != null) {
+      returnMap[fofafm.takenTime] = takenTime;
+    }
+    Map<String, dynamic> nullChaeckValues = {
+      fofafm.foodName: foodName,
+      adfos.plannedNotes: plannedNotes,
+      adfos.takenNotes: takenNotes,
+      adfos.prud: prud,
+      adfos.trud: trud,
+      fofafm.listProofPicMaps:
+          listProofPicModels?.map((e) => e.toMap()).toList(),
+      docRef0: docRef
+    };
+
+    nullChaeckValues.forEach((key, value) {
+      if (value != null) {
+        returnMap[unIndexed][key] = value;
+      }
+    });
+
+    return returnMap;
   }
 
   factory ActiveFoodModel.fromMap(Map<String, dynamic> docMap) {

@@ -56,12 +56,16 @@ class ChatRoomFunctions {
       }
     } else if (selectedList.first.reference.path
         .contains(chatTS.dietPlansBeta)) {
+      DietPlanBasicInfoModel dpbim =
+          DietPlanBasicInfoModel.fromMap(selectedList.first.data());
       if (parent == dietpbims.dietPlansBeta) {
         chatSC.chatType.value = chatTS.multiPlan;
-      } else if (parent == wmfos.weeks) {
-        chatSC.chatType.value = chatTS.multiWeek;
       } else if (parent == daymfos.days) {
-        chatSC.chatType.value = chatTS.multiDay;
+        if (parent == wmfos.weeks) {
+          chatSC.chatType.value = chatTS.multiWeek;
+        } else if (parent == daymfos.days) {
+          chatSC.chatType.value = chatTS.multiDay;
+        }
       } else if (parent == dtmos.timings) {
         chatSC.chatType.value = chatTS.multiTiming;
       } else if (parent == fmfpcfos.foods) {
