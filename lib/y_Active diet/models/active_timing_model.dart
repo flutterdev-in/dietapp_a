@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 class ActiveTimingModel {
   String timingName;
   String timingString;
-  Timestamp timingDate;
+  DateTime timingDate;
   bool isPlanned;
   bool? isTaken;
   String? plannedNotes;
@@ -32,7 +32,7 @@ class ActiveTimingModel {
   Map<String, dynamic> toMap() {
     Map<String, dynamic> returnMap = {
       atmos.timingName: timingName,
-      atmos.timingDate: timingDate,
+      atmos.timingDate: Timestamp.fromDate(timingDate),
       unIndexed: {
         adfos.isPlanned: isPlanned,
       }
@@ -41,8 +41,8 @@ class ActiveTimingModel {
       adfos.isTaken: isTaken,
       adfos.plannedNotes: plannedNotes,
       adfos.takenNotes: takenNotes,
-      adfos.prud: prud,
-      adfos.trud: trud,
+      adfos.prud: prud?.toMap(),
+      adfos.trud: trud?.toMap(),
       docRef0: docRef,
     };
 
@@ -60,7 +60,7 @@ class ActiveTimingModel {
         Timestamp.fromDate(DateTime.now());
     return ActiveTimingModel(
       timingName: docMap[atmos.timingName] ?? "",
-      timingDate: timeDate,
+      timingDate: timeDate.toDate(),
       timingString: atmos.timingStringFromDateTime(timeDate),
       isPlanned: docMap[unIndexed][adfos.isPlanned],
       isTaken: docMap[unIndexed][adfos.isTaken],
@@ -77,7 +77,7 @@ final ActiveTimingModelObjects atmos = ActiveTimingModelObjects();
 
 class ActiveTimingModelObjects {
   final String timingName = "timingName";
-
+  final String timings = "timings";
   final String timingString = "timingString";
   final String timingDate = "timingDate";
 

@@ -4,8 +4,8 @@ import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
 import 'package:intl/intl.dart';
 
 class ActivePlanModel {
-  Timestamp planStartDate;
-  Timestamp lastPlanningDate;
+  DateTime planStartDate;
+  DateTime? lastPlanningDate;
   String planName;
   bool isPlanned;
   bool? isTaken;
@@ -31,13 +31,16 @@ class ActivePlanModel {
 
   Map<String, dynamic> toMap() {
     Map<String, dynamic> returnMap = {
-      apmos.planStartDate: planStartDate,
+      apmos.planStartDate: Timestamp.fromDate(planStartDate),
       apmos.planName: planName,
       unIndexed: {
         adfos.isPlanned: isPlanned,
       }
     };
     Map<String, dynamic> nullChaeckValues = {
+      apmos.lastPlanningDate: lastPlanningDate != null
+          ? Timestamp.fromDate(lastPlanningDate!)
+          : null,
       adfos.isTaken: isTaken,
       adfos.plannedNotes: plannedNotes,
       adfos.takenNotes: takenNotes,
@@ -57,9 +60,9 @@ class ActivePlanModel {
 
   factory ActivePlanModel.fromMap(Map docMap) {
     return ActivePlanModel(
-      planStartDate: docMap[apmos.planStartDate],
+      planStartDate: docMap[apmos.planStartDate].toDate(),
       planName: docMap[apmos.planName],
-      lastPlanningDate: docMap[unIndexed][apmos.lastPlanningDate],
+      lastPlanningDate: docMap[unIndexed][apmos.lastPlanningDate]?.toDate(),
       isPlanned: docMap[unIndexed][adfos.isPlanned],
       isTaken: docMap[unIndexed][adfos.isTaken],
       plannedNotes: docMap[unIndexed][adfos.plannedNotes],
@@ -77,6 +80,7 @@ class ActivePlanModelObjects {
   final String planStartDate = "planStartDate";
   final String lastPlanningDate = "lastPlanningDate";
   final String planName = "planName";
+  final String activeDietPlansInfo = "activeDietPlansInfo";
 
   String weekNameFromTimestamp(Timestamp weekStartDate0) {
     DateTime wsd = weekStartDate0.toDate();

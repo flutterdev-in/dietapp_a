@@ -3,6 +3,7 @@ import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/day_basic_info.dar
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/default_timing_model.dart';
 import 'package:dietapp_a/Diet%20plans/c_diet_view/a_timings_view_pc.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/_common_top_widget_middle.dart';
+import 'package:dietapp_a/y_Active%20diet/functions/activate_planned_data.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -89,9 +90,33 @@ class DayViewFromChat extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text(
-        dayName == null ? "Day plan" : "Day plan ($dayName)",
-      )),
+        title: Text(dayName == null ? "Day plan" : "Day plan ($dayName)"),
+        actions: [
+          TextButton(
+              onPressed: () async {
+                if (dm.docRef != null) {
+                  DateTime today = DateTime.now();
+
+                  DateTime? selectedDate = await showDatePicker(
+                    context: context,
+                    initialDate: today,
+                    firstDate: today,
+                    lastDate: today.add(const Duration(days: 60)),
+                  );
+                  if (selectedDate != null) {
+                    await activatePlannedData.singleDay(
+                        plannedDayDataMap: dm.toMap(),
+                        plannedDayDR: dm.docRef!,
+                        date: selectedDate);
+                  }
+                }
+              },
+              child: const Text(
+                "Activate",
+                style: TextStyle(color: Colors.white),
+              )),
+        ],
+      ),
       body: const TimingsViewPC(
         editingIconRequired: false,
       ),

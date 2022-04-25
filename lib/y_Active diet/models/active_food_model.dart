@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dietapp_a/y_Active%20diet/models/proof_pic_model.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
+import 'package:dietapp_a/y_Active%20diet/models/proof_pic_model.dart';
 
 class ActiveFoodModel {
   bool isPlanned;
   bool isTaken;
-  Timestamp? takenTime;
+  DateTime? takenTime;
   String? foodName;
   String? plannedNotes;
   String? takenNotes;
@@ -34,15 +34,15 @@ class ActiveFoodModel {
       unIndexed: {}
     };
     if (takenTime != null) {
-      returnMap[fofafm.takenTime] = takenTime;
+      returnMap[afmos.takenTime] = Timestamp.fromDate(takenTime!);
     }
     Map<String, dynamic> nullChaeckValues = {
-      fofafm.foodName: foodName,
+      afmos.foodName: foodName,
       adfos.plannedNotes: plannedNotes,
       adfos.takenNotes: takenNotes,
-      adfos.prud: prud,
-      adfos.trud: trud,
-      fofafm.listProofPicMaps:
+      adfos.prud: prud?.toMap(),
+      adfos.trud: trud?.toMap(),
+      afmos.listProofPicMaps:
           listProofPicModels?.map((e) => e.toMap()).toList(),
       docRef0: docRef
     };
@@ -60,25 +60,25 @@ class ActiveFoodModel {
     return ActiveFoodModel(
       isPlanned: docMap[adfos.isPlanned],
       isTaken: docMap[adfos.isTaken],
-      takenTime: docMap[fofafm.takenTime],
-      foodName: docMap[unIndexed][fofafm.foodName],
+      takenTime: docMap[afmos.takenTime]?.toDate(),
+      foodName: docMap[unIndexed][afmos.foodName],
       plannedNotes: docMap[unIndexed][adfos.plannedNotes],
-      takenNotes: docMap[unIndexed][fofafm.foodName],
+      takenNotes: docMap[unIndexed][afmos.foodName],
       prud: rummfos.rummFromRummMap(docMap[unIndexed][adfos.prud]),
       trud: rummfos.rummFromRummMap(docMap[unIndexed][adfos.trud]),
       docRef: docMap[unIndexed][docRef0],
-      listProofPicModels: docMap[unIndexed][fofafm.listProofPicMaps]
+      listProofPicModels: docMap[unIndexed][afmos.listProofPicMaps]
           ?.map((e) => ProofPicsModel.fromMap(e))
           .toList(),
     );
   }
 }
 
-FinalObjectsForActiveFoodModel fofafm = FinalObjectsForActiveFoodModel();
+ActiveFoodModelObjects afmos = ActiveFoodModelObjects();
 
-class FinalObjectsForActiveFoodModel {
+class ActiveFoodModelObjects {
   final String takenTime = "takenTime";
   final String foodName = "foodName";
-
+  final String foods = "foods";
   final String listProofPicMaps = "listProofPicMaps";
 }
