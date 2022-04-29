@@ -52,9 +52,7 @@ class PlanCreationCombinedScreen extends StatelessWidget {
         ],
       ),
       body: Obx(() => pcc.isPlanView.value
-          ? DietPlanViewW(
-              isWeekWisePlan: isWeekWisePlan,
-            )
+          ? DietPlanViewW(isWeekWisePlan: isWeekWisePlan)
           : Column(
               children: [
                 if (isWeekWisePlan) const WeeksRowForPlan(),

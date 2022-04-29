@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/Combined%20screen/Menu%20buttons/activate_plan_menu_items.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/Combined%20screen/Menu%20buttons/add_timing_pc.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/day_basic_info.dart';
@@ -95,6 +96,47 @@ class MenuItemsPC extends StatelessWidget {
                   await deletePlan();
                 },
                 child: const Text("Delete this diet plan      "),
+              ),
+            ),
+            PopupMenuItem(
+              child: TextButton(
+                onPressed: () async {
+                  Get.back();
+                  if (isWeekWisePlan) {
+                    activatePlanMenuItems.activateWeekPlan(context);
+                  } else {
+                    activatePlanMenuItems.activateDayPlan(context);
+                  }
+                },
+                child: const Text("Activate Plan      "),
+              ),
+            ),
+            if (isWeekWisePlan)
+              PopupMenuItem(
+                child: TextButton(
+                  onPressed: () async {
+                    Get.back();
+                    activatePlanMenuItems.activateThisWeek(context);
+                  },
+                  child: const Text("Activate This Week      "),
+                ),
+              ),
+            PopupMenuItem(
+              child: TextButton(
+                onPressed: () async {
+                  Get.back();
+                  activatePlanMenuItems.activateThisDay(context);
+                },
+                child: const Text("Activate This Day      "),
+              ),
+            ),
+            PopupMenuItem(
+              child: TextButton(
+                onPressed: () async {
+                  Get.back();
+                  activatePlanMenuItems.activateThisTiming(context);
+                },
+                child: const Text("Activate This Timing      "),
               ),
             ),
           ];

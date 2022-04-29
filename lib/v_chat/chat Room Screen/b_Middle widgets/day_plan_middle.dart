@@ -63,6 +63,7 @@ class DayPlanMiddle extends StatelessWidget {
                       .get()
                       .then((snapshot) async {
                     if (snapshot.docs.isNotEmpty) {
+                      pcc.currentDayDR.value = dm.docRef!;
                       pcc.currentTimingDR.value = snapshot.docs.first.reference;
                       Get.to(() => DayViewFromChat(
                             dm: dm,

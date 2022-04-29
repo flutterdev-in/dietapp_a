@@ -71,14 +71,14 @@ class DietPlanViewFromChat extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text(
-        model.planName,
-      )),
+        title: Text(model.planName),
+      ),
       body: Column(
         children: [
           if (model.isWeekWisePlan) const WeeksRowForPlan(),
-          if (model.isWeekWisePlan) const DaysRowForWeek(),
-          if (model.isWeekWisePlan == false) const DaysRowNonWeek(),
+          model.isWeekWisePlan
+              ? const DaysRowForWeek()
+              : const DaysRowNonWeek(),
           const Expanded(
             child: TimingsViewPC(editingIconRequired: false),
           ),

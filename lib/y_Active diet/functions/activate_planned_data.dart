@@ -32,7 +32,6 @@ class ActivatePlannedData {
             if (wQS.docs.isNotEmpty) {
               daysNos = await multiWeek(
                 startDate: startDate,
-                listPlannedWeekQDS: wQS.docs,
                 listPlannedWeekDRs: wQS.docs.map((e) => e.reference).toList(),
               );
             }
@@ -52,6 +51,7 @@ class ActivatePlannedData {
             }
           });
         }
+
         await userDR.collection(apmos.activeDietPlansInfo).add(amfpm
             .planModel(
                 dpm: DietPlanBasicInfoModel.fromMap(planDS.data()!),
@@ -63,21 +63,6 @@ class ActivatePlannedData {
   }
 
   //
-  Future<int> multiWeek({
-    required DateTime startDate,
-    required List<QueryDocumentSnapshot<Map<String, dynamic>>>?
-        listPlannedWeekQDS,
-    required List<DocumentReference<Map<String, dynamic>>> listPlannedWeekDRs,
-  }) async {
-    for (var plannedWeekDR in listPlannedWeekDRs) {
-      int index = listPlannedWeekDRs.indexOf(plannedWeekDR);
-      await singleWeek(
-        startDate: startDate.add(Duration(days: 7 * index)),
-        plannedWeekDR: plannedWeekDR,
-      );
-    }
-    return (listPlannedWeekQDS?.length ?? listPlannedWeekDRs.length) * 7;
-  }
 
   //
   Future<int> multiDay({
@@ -133,33 +118,50 @@ class ActivatePlannedData {
   }
 
 //
-  Future<void> multiFood({
-    required DocumentReference<Map<String, dynamic>> activeTimingDR,
-    required List<FoodsModelForPlanCreation> listPlannedFMs,
-  }) async {
-    for (var plannedFM in listPlannedFMs) {
-      await singleFood(activeTimingDR: activeTimingDR, plannedFM: plannedFM);
-    }
-  }
 
 //
   Future<void> singleWeek({
     required DateTime startDate,
     required DocumentReference<Map<String, dynamic>> plannedWeekDR,
   }) async {
-    await plannedWeekDR
+    var weekQuery = plannedWeekDR
         .collection(daymfos.days)
-        .orderBy(daymfos.dayIndex, descending: false)
-        .get()
-        .then((dqs) async {
-      for (var dQDS in dqs.docs) {
-        await singleDay(
-          plannedDayDataMap: dQDS.data(),
-          plannedDayDR: dQDS.reference,
-          date: startDate.add(Duration(days: dqs.docs.indexOf(dQDS))),
-        );
-      }
+        .orderBy(daymfos.dayIndex, descending: false);
+    //
+    if (startDate.weekday != DateTime.monday) {
+      weekQuery = plannedWeekDR
+          .collection(daymfos.days)
+          .where(daymfos.dayIndex, isGreaterThanOrEqualTo: startDate.weekday)
+          .orderBy(daymfos.dayIndex, descending: false);
+    }
+
+    await weekQuery.get().then((dqs) async {
+      await multiDay(
+          startDate: startDate,
+          listPlannedDayQDS: dqs.docs,
+          listPlannedDayDRs: dqs.docs.map((e) => e.reference).toList());
     });
+  }
+
+  //
+  Future<int> multiWeek({
+    required DateTime startDate,
+    required List<DocumentReference<Map<String, dynamic>>> listPlannedWeekDRs,
+  }) async {
+    int daysToMonday = 7 - startDate.weekday + 1;
+    var nextMonday = startDate.add(Duration(days: daysToMonday));
+
+    await singleWeek(
+        startDate: startDate, plannedWeekDR: listPlannedWeekDRs[0]);
+
+    for (var plannedWeekDR in listPlannedWeekDRs.sublist(1)) {
+      int index = listPlannedWeekDRs.indexOf(plannedWeekDR);
+      await singleWeek(
+        startDate: nextMonday.add(Duration(days: 7 * index)),
+        plannedWeekDR: plannedWeekDR,
+      );
+    }
+    return daysToMonday + (listPlannedWeekDRs.length - 1) * 7;
   }
 
 //
@@ -200,7 +202,6 @@ class ActivatePlannedData {
       });
     } else {
       await proceed(plannedDayDataMap);
-    
     }
   }
 
@@ -223,13 +224,13 @@ class ActivatePlannedData {
       await atmDR.set(atm.toMap(), SetOptions(merge: true)).then((value) async {
         await plannedTimingDR
             .collection(fmfpcfos.foods)
+            .orderBy(fmfpcfos.foodAddedTime, descending: false)
             .get()
             .then((fqs) async {
           if (fqs.docs.isNotEmpty) {
-            for (var fqd in fqs.docs) {
-              var pfm = FoodsModelForPlanCreation.fromMap(fqd.data());
-              await singleFood(activeTimingDR: atmDR, plannedFM: pfm);
-            }
+            await multiFood(
+                activeTimingDR: atmDR,
+                listPlannedFoodDataMap: fqs.docs.map((e) => e.data()).toList());
           }
         });
       });
@@ -249,9 +250,22 @@ class ActivatePlannedData {
 //
   Future<void> singleFood({
     required DocumentReference<Map<String, dynamic>> activeTimingDR,
-    required FoodsModelForPlanCreation plannedFM,
+    required Map<String, dynamic> plannedFoodDataMap,
   }) async {
-    var afm = amfpm.foodModel(plannedFM);
+    var afm =
+        amfpm.foodModel(FoodsModelForPlanCreation.fromMap(plannedFoodDataMap));
     await activeTimingDR.collection(afmos.foods).add(afm.toMap());
+  }
+
+  //
+  Future<void> multiFood({
+    required DocumentReference<Map<String, dynamic>> activeTimingDR,
+    required List<Map<String, dynamic>> listPlannedFoodDataMap,
+  }) async {
+    for (var plannedFoodDataMap in listPlannedFoodDataMap) {
+      await singleFood(
+          activeTimingDR: activeTimingDR,
+          plannedFoodDataMap: plannedFoodDataMap);
+    }
   }
 }

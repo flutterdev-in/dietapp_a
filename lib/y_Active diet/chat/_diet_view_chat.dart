@@ -7,22 +7,8 @@ class DietViewChat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: [
-        const MonthCalander(),
-        ElevatedButton(
-          onPressed: () {
-            DateTime today = DateTime.now();
-
-            showDatePicker(
-                context: context,
-                currentDate: today,
-                initialDate: today,
-                firstDate: today,
-                lastDate: today.add(const Duration(days: 60)),
-                confirmText: "Activate from\nthis date");
-          },
-          child: const Text("Date"),
-        )
+      children: const [
+        MonthCalander(),
       ],
     );
   }

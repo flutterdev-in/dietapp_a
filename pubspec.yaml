@@ -74,6 +74,8 @@ dependencies:
   bottom_sheet: ^1.0.5
   syncfusion_flutter_calendar: ^20.1.50
   table_calendar: ^3.0.5
+  
+  calendar_agenda: ^0.0.2+3
 
 dev_dependencies:
   flutter_test:

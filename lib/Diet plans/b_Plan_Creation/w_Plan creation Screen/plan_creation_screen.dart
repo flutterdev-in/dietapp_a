@@ -158,7 +158,7 @@ class PlanCreationScreen extends StatelessWidget {
             ),
             GFButton(
               onPressed: () {
-                if (isWeekPlan.value = false) {
+                if (isWeekPlan.value == false) {
                   isWeekPlan.value = true;
                 }
               },
@@ -169,14 +169,14 @@ class PlanCreationScreen extends StatelessWidget {
             ),
             GFButton(
               onPressed: () {
-                if (isWeekPlan.value = true) {
+                if (isWeekPlan.value == true) {
                   isWeekPlan.value = false;
                 }
               },
               child: const Text("Day wise"),
-              type: isWeekPlan.value
-                  ? GFButtonType.transparent
-                  : GFButtonType.outline2x,
+              type: !isWeekPlan.value
+                  ? GFButtonType.outline2x
+                  : GFButtonType.transparent,
             ),
           ],
         ));

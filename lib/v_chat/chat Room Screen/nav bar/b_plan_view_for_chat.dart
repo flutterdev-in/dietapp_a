@@ -219,6 +219,7 @@ class PlanViewForChat extends StatelessWidget {
       onTap: () {
         currentPathCR.value = userDR.collection("dietPlansBeta");
         orderString.value = dietpbims.planCreationTime;
+        chatSC.selectedList.value.clear();
         listCR.value.clear();
       },
     );
@@ -274,6 +275,7 @@ class PlanViewForChat extends StatelessWidget {
                     ),
                     onTap: () {
                       onPressed(snapshot);
+                      chatSC.selectedList.value.clear();
                       listCR.value.removeRange(index + 1, listCR.value.length);
                     },
                   ),
