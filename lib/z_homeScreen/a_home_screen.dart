@@ -5,7 +5,6 @@ import 'package:dietapp_a/y_Drawer/main_drawer.dart';
 import 'package:dietapp_a/z_homeScreen/app%20States/app_states.dart';
 import 'package:dietapp_a/z_homeScreen/controllers/welcome_controller.dart';
 import 'package:dietapp_a/z_homeScreen/widgets/a_drawe_icon.dart';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/components/drawer/gf_drawer.dart';
@@ -43,17 +42,17 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
         return false;
       },
       child: Scaffold(
-        drawer: GFDrawer(
+        drawer: const GFDrawer(
           child: MainDrawer(),
         ),
         appBar: AppBar(
           title: const Text("DietApp"),
-          actions: [
-            currentAppBarButton(),
-          ],
+          actions: const [],
           leading: const DrawerIcon(),
         ),
-        body: curretContainer(),
+        body:
+            // const ImagePickerW(),
+            curretContainer(),
         bottomNavigationBar: const BottomNavigationBarW(),
       ),
     );

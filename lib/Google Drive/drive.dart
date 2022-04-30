@@ -2,8 +2,6 @@ import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sig
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/drive/v3.dart' as gdrive;
-import 'package:googleapis_auth/auth_io.dart';
-import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -39,10 +37,14 @@ class DriveService {
     var drive = gdrive.DriveApi(client);
     int length = await file.length();
 
-    var kk = await drive.files.create(
-      gdrive.File(),
-      uploadMedia: gdrive.Media(file.openRead(), length),
-    );
+     await drive.files
+        .create(
+          gdrive.File(),
+          uploadMedia: gdrive.Media(file.openRead(), length),
+        )
+        .then((value) => print(value.linkShareMetadata));
+
+    
 
     Get.back();
     //

@@ -10,12 +10,12 @@ import 'package:dietapp_a/y_Active%20diet/models/active_timing_model.dart';
 ActiveModelFromPlannedModel amfpm = ActiveModelFromPlannedModel();
 
 class ActiveModelFromPlannedModel {
-
   //
   ActiveFoodModel foodModel(FoodsModelForPlanCreation pfm) {
     return ActiveFoodModel(
-        isPlanned: true,
+        foodTypeCamPlanUp: afmos.plan,
         isTaken: false,
+        foodAddedTime: pfm.foodAddedTime.toDate(),
         takenTime: null,
         foodName: pfm.foodName,
         plannedNotes: pfm.notes,
@@ -23,7 +23,7 @@ class ActiveModelFromPlannedModel {
         takenNotes: null,
         prud: pfm.rumm,
         trud: null,
-        listProofPicModels: null);
+        );
   }
 
   ActiveTimingModel timingModel({
@@ -43,7 +43,6 @@ class ActiveModelFromPlannedModel {
   ActiveDayModel dayModel({
     required DayModel pdm,
     required DateTime date,
-   
   }) {
     return ActiveDayModel(
       dayDate: date,
@@ -51,7 +50,6 @@ class ActiveModelFromPlannedModel {
       dayName: pdm.dayName,
       plannedNotes: pdm.notes,
       prud: pdm.rumm,
-     
     );
   }
 

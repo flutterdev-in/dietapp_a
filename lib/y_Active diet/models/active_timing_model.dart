@@ -32,6 +32,7 @@ class ActiveTimingModel {
   Map<String, dynamic> toMap() {
     Map<String, dynamic> returnMap = {
       atmos.timingName: timingName,
+      atmos.timingString: timingString,
       atmos.timingDate: Timestamp.fromDate(timingDate),
       unIndexed: {
         adfos.isPlanned: isPlanned,
@@ -61,7 +62,7 @@ class ActiveTimingModel {
     return ActiveTimingModel(
       timingName: docMap[atmos.timingName] ?? "",
       timingDate: timeDate.toDate(),
-      timingString: atmos.timingStringFromDateTime(timeDate),
+      timingString: docMap[atmos.timingString],
       isPlanned: docMap[unIndexed][adfos.isPlanned],
       isTaken: docMap[unIndexed][adfos.isTaken],
       plannedNotes: docMap[unIndexed][adfos.plannedNotes],
@@ -87,10 +88,21 @@ class ActiveTimingModelObjects {
     return s;
   }
 
+String timingFireStringFromDateTime(DateTime date) {
+    
+    String s = DateFormat("ahhmm").format(date).toLowerCase();
+    return s;
+  }
   Timestamp timeDateFromDayTime(DateTime dateTime, String timeString) {
     String dayString = DateFormat("yMd").format(dateTime);
     timeString = timeString.toUpperCase();
     DateTime dt = DateFormat('yMd h:mma').parse("$dayString $timeString");
     return Timestamp.fromDate(dt);
   }
+
+  var basicModel = ActiveTimingModel(
+      timingName: "BreakFast",
+      timingString: "am0830",
+      timingDate: dateNow,
+      isPlanned: true);
 }

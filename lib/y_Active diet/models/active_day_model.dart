@@ -8,7 +8,7 @@ class ActiveDayModel {
   DateTime dayDate;
   String? dayName;
   bool isPlanned;
-
+  
   bool? isTaken;
   String? plannedNotes;
   String? takenNotes;
