@@ -17,6 +17,7 @@ final Timestamp timestampNow = Timestamp.fromDate(DateTime.now());
 final DateTime dateNow = DateTime.now();
 final ImagePicker imagePicker = ImagePicker();
 final isLoading = false.obs;
+const String settings = "settings";
 
 double mdWidth(BuildContext context) {
   return MediaQuery.of(context).size.width;

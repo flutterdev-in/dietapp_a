@@ -23,20 +23,7 @@ class PlanCreationScreen extends StatelessWidget {
   final Rx<bool> isWeekPlan = true.obs;
   final Rx<String> planName = "Diet plan".obs;
   final Rx<String> notes = "".obs;
-  final listDefaultTimingModels = RxList<DefaultTimingModel>([
-    DefaultTimingModel(
-        timingName: "Breakfast", timingString: dtmos.timingStringF(8, 0, true)),
-    DefaultTimingModel(
-        timingName: "Morning snacks",
-        timingString: dtmos.timingStringF(10, 30, true)),
-    DefaultTimingModel(
-        timingName: "Lunch", timingString: dtmos.timingStringF(1, 30, false)),
-    DefaultTimingModel(
-        timingName: "Evening snacks",
-        timingString: dtmos.timingStringF(5, 30, false)),
-    DefaultTimingModel(
-        timingName: "Dinner", timingString: dtmos.timingStringF(9, 00, false)),
-  ]).obs;
+  final listDefaultTimingModels = dtmos.listDefaultTimingModels.obs;
 
   @override
   Widget build(BuildContext context) {

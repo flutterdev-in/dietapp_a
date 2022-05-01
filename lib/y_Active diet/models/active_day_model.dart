@@ -8,7 +8,7 @@ class ActiveDayModel {
   DateTime dayDate;
   String? dayName;
   bool isPlanned;
-  
+
   bool? isTaken;
   String? plannedNotes;
   String? takenNotes;
@@ -77,15 +77,19 @@ class ActiveDayModelObjects {
   final String dayName = "dayName";
   final String refPlanDR = "refPlanDR";
   final String activeDaysPlan = "activeDaysPlan";
-
+  final DateFormat dayFormat = DateFormat("yyyyMMdd");
   String dayStringFromDate(DateTime date) {
-    return DateFormat("yyyyMMdd").format(date);
+    return dayFormat.format(date);
   }
 
   //
   DocumentReference<Map<String, dynamic>> activeDayDR(DateTime date) {
     String dateString = dayStringFromDate(date);
-    
+
     return userDR.collection(admos.activeDaysPlan).doc(dateString);
+  }
+
+  DateTime dateFromDayDR(DocumentReference<Map<String, dynamic>> dayDR) {
+    return dayFormat.parse(dayDR.id);
   }
 }

@@ -28,12 +28,12 @@ class ActiveModelFromPlannedModel {
 
   ActiveTimingModel timingModel({
     required DefaultTimingModel dtm,
-    required DateTime date,
+ 
   }) {
     return ActiveTimingModel(
       timingName: dtm.timingName,
       timingString: dtm.timingString,
-      timingDate: date,
+     
       isPlanned: true,
       plannedNotes: dtm.notes,
       prud: dtm.rumm,

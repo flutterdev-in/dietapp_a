@@ -1,13 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/default_timing_model.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
+import 'package:dietapp_a/y_Active%20diet/functions/active_model_from_planned_model.dart';
+import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
 import 'package:intl/intl.dart';
 
 class ActiveTimingModel {
   String timingName;
   String timingString;
-  DateTime timingDate;
-  bool isPlanned;
+
+  bool? isPlanned;
   bool? isTaken;
   String? plannedNotes;
   String? takenNotes;
@@ -19,7 +22,6 @@ class ActiveTimingModel {
   ActiveTimingModel({
     required this.timingName,
     required this.timingString,
-    required this.timingDate,
     required this.isPlanned,
     this.isTaken,
     this.plannedNotes,
@@ -33,7 +35,6 @@ class ActiveTimingModel {
     Map<String, dynamic> returnMap = {
       atmos.timingName: timingName,
       atmos.timingString: timingString,
-      atmos.timingDate: Timestamp.fromDate(timingDate),
       unIndexed: {
         adfos.isPlanned: isPlanned,
       }
@@ -57,11 +58,8 @@ class ActiveTimingModel {
   }
 
   factory ActiveTimingModel.fromMap(Map docMap) {
-    Timestamp timeDate = docMap[unIndexed][atmos.timingDate] ??
-        Timestamp.fromDate(DateTime.now());
     return ActiveTimingModel(
       timingName: docMap[atmos.timingName] ?? "",
-      timingDate: timeDate.toDate(),
       timingString: docMap[atmos.timingString],
       isPlanned: docMap[unIndexed][adfos.isPlanned],
       isTaken: docMap[unIndexed][adfos.isTaken],
@@ -88,11 +86,11 @@ class ActiveTimingModelObjects {
     return s;
   }
 
-String timingFireStringFromDateTime(DateTime date) {
-    
+  String timingFireStringFromDateTime(DateTime date) {
     String s = DateFormat("ahhmm").format(date).toLowerCase();
     return s;
   }
+
   Timestamp timeDateFromDayTime(DateTime dateTime, String timeString) {
     String dayString = DateFormat("yMd").format(dateTime);
     timeString = timeString.toUpperCase();
@@ -101,8 +99,46 @@ String timingFireStringFromDateTime(DateTime date) {
   }
 
   var basicModel = ActiveTimingModel(
-      timingName: "BreakFast",
-      timingString: "am0830",
-      timingDate: dateNow,
-      isPlanned: true);
+      timingName: "BreakFast", timingString: "am0830", isPlanned: true);
+
+  Future<void> activateDefaultTimings(
+      DocumentReference<Map<String, dynamic>> dayDR) async {
+    await dayDR
+        .set(
+            ActiveDayModel(
+                    dayDate: DateTime.parse(dayDR.id),
+                    isPlanned: false,
+                    dayName: null)
+                .toMap(),
+            SetOptions(merge: true))
+        .then((value) async {
+      await dtmos.getDefaultTimings().then((listDTM) async {
+        for (var dtm in listDTM) {
+          await dayDR.set(
+              ActiveTimingModel(
+                      timingName: dtm.timingName,
+                      timingString: dtm.timingString,
+                      isPlanned: false)
+                  .toMap(),
+              SetOptions(merge: true));
+        }
+      });
+    });
+  }
+
+  Future<List<ActiveTimingModel>> getMergedActiveTimings(
+      List<ActiveTimingModel> listATM, bool isPlanned) async {
+    if (isPlanned) {
+      return listATM;
+    } else {
+      var listTimingStrings = listATM.map((e) => e.timingString).toList();
+      var listDTM = await dtmos.getDefaultTimings();
+      for (var i in listDTM) {
+        if (!listTimingStrings.contains(i.timingString)) {
+          listATM.add(amfpm.timingModel(dtm: i));
+        }
+      }
+      return listATM;
+    }
+  }
 }

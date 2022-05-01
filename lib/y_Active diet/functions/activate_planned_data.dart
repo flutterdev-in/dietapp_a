@@ -216,7 +216,7 @@ class ActivatePlannedData {
   }) async {
     Future<void> proceed(Map<String, dynamic> map) async {
       var dtm = DefaultTimingModel.fromMap(map);
-      var atm = amfpm.timingModel(dtm: dtm, date: date);
+      var atm = amfpm.timingModel(dtm: dtm);
       var atmDR = admos
           .activeDayDR(date)
           .collection(atmos.timings)

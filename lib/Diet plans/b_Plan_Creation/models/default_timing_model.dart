@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
+import 'package:dietapp_a/y_Firebase/fire_ref.dart';
 
 class DefaultTimingModel {
   String timingName;
@@ -58,6 +59,7 @@ class DefaultTimingModelObjects {
   String timings = "timings";
   final String notes = "notes";
   final String refUrlMetadata = "refUrlMetadata";
+  final String defaultTimings = "defaultTimings";
   String docRef = docRef0;
 
   List<DefaultTimingModel> foodTimingsListSort(
@@ -84,5 +86,40 @@ class DefaultTimingModelObjects {
         "." +
         timingString.substring(4) +
         timingString.substring(0, 2);
+  }
+
+  var listDefaultTimingModels = [
+    DefaultTimingModel(
+        timingName: "Breakfast", timingString: dtmos.timingStringF(8, 0, true)),
+    DefaultTimingModel(
+        timingName: "Morning snacks",
+        timingString: dtmos.timingStringF(10, 30, true)),
+    DefaultTimingModel(
+        timingName: "Lunch", timingString: dtmos.timingStringF(1, 30, false)),
+    DefaultTimingModel(
+        timingName: "Evening snacks",
+        timingString: dtmos.timingStringF(5, 30, false)),
+    DefaultTimingModel(
+        timingName: "Dinner", timingString: dtmos.timingStringF(9, 00, false)),
+  ];
+
+  Future<void> initiateDefaultTimingsToFire() async {
+    await userDR.collection(settings).doc(defaultTimings).set(
+      {unIndexed: listDefaultTimingModels.map((e) => e.toMap())},
+      SetOptions(merge: true),
+    );
+  }
+
+  Future<List<DefaultTimingModel>> getDefaultTimings() async {
+    var l =
+        await userDR.collection(settings).doc(defaultTimings).get().then((doc) {
+      if (doc.data() != null) {
+        List listMaps = doc.data()![unIndexed];
+        return listMaps.map((e) => DefaultTimingModel.fromMap(e)).toList();
+      } else {
+        return listDefaultTimingModels;
+      }
+    });
+    return l;
   }
 }
