@@ -12,8 +12,6 @@ import 'package:flutter_native_image/flutter_native_image.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:stamp_image/stamp_image.dart';
-import 'package:image/image.dart' as Im;
-import 'package:flutter_luban/flutter_luban.dart';
 
 Future<void> camPicPhotoUploadFunction(
   BuildContext context,
@@ -25,21 +23,10 @@ Future<void> camPicPhotoUploadFunction(
   )
       .then((photo) async {
     if (photo != null) {
+      var length0 = await photo.length();
+      print("Photo length in bytes =  ${length0 / 1000} KB ");
       isLoading.value = true;
-      CompressObject compressObject = CompressObject(
-        imageFile: io.File(photo.path), //image
-        path: photo.path, //compress to path
-        quality: 85, //first compress quality, default 80
-        step:
-            9, //compress quality step, The bigger the fast, Smaller is more accurate, default 6
-        mode: CompressMode.LARGE2SMALL, //default AUTO
-      );
-    await  Luban.compressImage(compressObject).then((compressedPath) async{
-        final storageRef = FirebaseStorage.instance.ref();
-      final String dateTimeString =
-          "${admos.dayStringFromDate(dateNow)}_${atmos.timingFireStringFromDateTime(dateNow)}";
-      final userSR =
-          storageRef.child("users").child(userUID).child("$dateTimeString.jpg");
+
       try {
         StampImage.create(
             context: context,
@@ -51,12 +38,29 @@ Future<void> camPicPhotoUploadFunction(
                 child: Text(
                   DateFormat("dd MMM yyyy (EEE) hh:mm a").format(dateNow),
                   textScaleFactor: 0.9,
-                  style: const TextStyle(color: Colors.white70),
+                  style: TextStyle(color: Colors.white),
                 ),
               ),
             ],
-            onSuccess: (waterFile) async =>
-                await userSR.putFile(waterFile).then((ts) async {
+            onSuccess: (waterFile) async {
+              var waterLength = await waterFile.length();
+              print("Water file length = ${waterLength / 1000} KB");
+
+              await FlutterNativeImage.compressImage(
+                photo.path,
+                targetHeight: 800,
+                targetWidth: 800,
+              ).then((compressedFile) async {
+                var compressedFileLength = await compressedFile.length();
+              print("Water file length = ${compressedFileLength / 1000} KB");
+                final storageRef = FirebaseStorage.instance.ref();
+                final String dateTimeString =
+                    "${admos.dayStringFromDate(dateNow)}_${atmos.timingFireStringFromDateTime(dateNow)}";
+                final userSR = storageRef
+                    .child("users")
+                    .child(userUID)
+                    .child("$dateTimeString.jpg");
+                await userSR.putFile(compressedFile).then((ts) async {
                   await Future.delayed(const Duration(seconds: 1));
 
                   await ts.ref.getDownloadURL().then((url) async {
@@ -98,13 +102,10 @@ Future<void> camPicPhotoUploadFunction(
                       });
                     });
                   });
-                }));
-      } catch (e) {
-        // ...
-      }
-      });
-      
-      
+                });
+              });
+            });
+      } catch (e) {}
     }
   });
 }
