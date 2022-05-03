@@ -1,55 +1,76 @@
-import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/controllers/fc_controller.dart';
-import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/foods_collection_strings.dart';
-import 'package:dietapp_a/w_bottomBar/rx_index_for_bottombar.dart';
+import 'package:dietapp_a/Diet%20plans/a_Main%20Screen/plan_screen.dart';
+import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/_foods_folder_main_screen.dart';
+import 'package:dietapp_a/settings/a_Profile/settings_screen.dart';
+import 'package:dietapp_a/v_chat/chat%20People%20View/chat_screen.dart';
+import 'package:dietapp_a/z_homeScreen/home_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
-class BottomNavigationBarW extends StatelessWidget {
-  const BottomNavigationBarW({Key? key}) : super(key: key);
+Rx<int> bottomBarindex = 0.obs;
+PersistentTabController bottomNavController =
+    PersistentTabController(initialIndex: 0);
+
+class BottomBarWithBody extends StatelessWidget {
+  const BottomBarWithBody({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return Obx(
-      () => SalomonBottomBar(
-        currentIndex: bottomBarindex.value,
-        onTap: (i) {
-          fcc.pathsListMaps.value.clear();
-          fcc.currentPathCR.value = fdcs.foodsCR0.path;
-
-          return bottomBarindex.value = i;
-        },
-        items: [
-          /// Home
-          SalomonBottomBarItem(
-            icon: Icon(Icons.home),
-            title: Text(""),
-            selectedColor: Colors.purple,
-          ),
-
-          /// Likes
-          SalomonBottomBarItem(
-            icon: FaIcon(FontAwesomeIcons.commentDots),
-            title: Text(""),
-            selectedColor: Colors.pink,
-          ),
-
-          /// Search
-          SalomonBottomBarItem(
-            icon: Icon(MdiIcons.clipboardTextOutline),
-            title: Text(""),
-            selectedColor: Colors.orange,
-          ),
-
-          /// Profile
-          SalomonBottomBarItem(
-            icon: Icon(MdiIcons.food),
-            title: Text(""),
-            selectedColor: Colors.teal,
-          ),
-        ],
-      ),
+    return PersistentTabView(
+      context,
+      controller: bottomNavController,
+      onItemSelected: (index) async {
+        bottomBarindex.value = index;
+      },
+      navBarStyle: NavBarStyle.simple,
+      screens: const [
+        HomeScreen(),
+        ChatScreen(),
+        PlanScreen(),
+        FoodCollectionScreen(),
+        SettingsScreen(),
+      ],
+      decoration: NavBarDecoration(
+          border: Border.all(color: Colors.black26, width: 0.45)),
+      items: [
+        PersistentBottomNavBarItem(
+          icon: const Icon(MdiIcons.home),
+          inactiveIcon: const Icon(MdiIcons.homeOutline),
+          title: ("Home"),
+          activeColorPrimary: CupertinoColors.activeBlue,
+          inactiveColorPrimary: CupertinoColors.systemGrey,
+        ),
+        PersistentBottomNavBarItem(
+          icon: const Icon(MdiIcons.chatProcessing),
+          inactiveIcon: const Icon(MdiIcons.chatProcessingOutline),
+          title: ("Diet Chat"),
+          activeColorPrimary: CupertinoColors.activeBlue,
+          inactiveColorPrimary: CupertinoColors.systemGrey,
+        ),
+        PersistentBottomNavBarItem(
+          icon: const Icon(MdiIcons.clipboardText),
+          inactiveIcon: const Icon(MdiIcons.clipboardTextOutline),
+          title: ("Diet Plan"),
+          activeColorPrimary: CupertinoColors.activeBlue,
+          inactiveColorPrimary: CupertinoColors.systemGrey,
+        ),
+        PersistentBottomNavBarItem(
+          icon: const Icon(MdiIcons.folderOpen),
+          inactiveIcon: const Icon(MdiIcons.folderOpenOutline),
+          title: ("Collection"),
+          activeColorPrimary: CupertinoColors.activeBlue,
+          inactiveColorPrimary: CupertinoColors.systemGrey,
+        ),
+        PersistentBottomNavBarItem(
+          icon: const Icon(MdiIcons.accountCog),
+          inactiveIcon: const Icon(MdiIcons.accountCogOutline),
+          title: ("Settings"),
+          activeColorPrimary: CupertinoColors.activeBlue,
+          inactiveColorPrimary: CupertinoColors.systemGrey,
+        ),
+      ],
     );
   }
 }

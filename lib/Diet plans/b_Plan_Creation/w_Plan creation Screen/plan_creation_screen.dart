@@ -10,7 +10,7 @@ import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
 import 'package:dietapp_a/my%20foods/screens/Add%20food/add_food_sreen.dart';
 import 'package:dietapp_a/my%20foods/screens/Add%20food/controllers/browser_controllers.dart';
 import 'package:dietapp_a/x_customWidgets/alert_dialogue.dart';
-import 'package:dietapp_a/x_customWidgets/colors.dart';
+import 'package:dietapp_a/app%20Constants/colors.dart';
 import 'package:dietapp_a/y_Firebase/fire_ref.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +23,7 @@ class PlanCreationScreen extends StatelessWidget {
   final Rx<bool> isWeekPlan = true.obs;
   final Rx<String> planName = "Diet plan".obs;
   final Rx<String> notes = "".obs;
-  final listDefaultTimingModels = dtmos.listDefaultTimingModels.obs;
+  final listDefaultTimingModels = listDefaultTimingModels0.obs;
 
   @override
   Widget build(BuildContext context) {

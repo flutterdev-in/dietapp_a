@@ -127,18 +127,32 @@ class ActiveTimingModelObjects {
   }
 
   Future<List<ActiveTimingModel>> getMergedActiveTimings(
-      List<ActiveTimingModel> listATM, bool isPlanned) async {
-    if (isPlanned) {
-      return listATM;
-    } else {
-      var listTimingStrings = listATM.map((e) => e.timingString).toList();
-      var listDTM = await dtmos.getDefaultTimings();
-      for (var i in listDTM) {
-        if (!listTimingStrings.contains(i.timingString)) {
-          listATM.add(amfpm.timingModel(dtm: i));
-        }
+      List<ActiveTimingModel> listATM,
+      DocumentReference<Map<String, dynamic>> activeDayDR) async {
+    await activeDayDR.get().then((ds) {
+      if (ds.exists && ds.data()!.isNotEmpty) {
+        var atm = ActiveTimingModel.fromMap(ds.data()!);
+
+        return atm.isPlanned ?? false;
+      } else {
+        return false;
       }
-      return listATM;
-    }
+    }).then((isPlanned) async {
+      if (isPlanned) {
+        return listATM;
+      } else {
+        var listTimingStrings = listATM.map((e) => e.timingString).toList();
+
+        await dtmos.getDefaultTimings().then((listDTM) {
+          for (var i in listDTM) {
+            if (!listTimingStrings.contains(i.timingString)) {
+              listATM.add(amfpm.timingModel(dtm: i));
+            }
+          }
+        });
+      }
+    });
+
+    return listATM;
   }
 }

@@ -1,23 +1,19 @@
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/functions/fc_back_button_function.dart';
 import 'package:dietapp_a/w_bottomBar/_bottom_navigation_bar.dart';
-import 'package:dietapp_a/w_bottomBar/rx_index_for_bottombar.dart';
-import 'package:dietapp_a/y_Drawer/main_drawer.dart';
 import 'package:dietapp_a/z_homeScreen/app%20States/app_states.dart';
 import 'package:dietapp_a/z_homeScreen/controllers/welcome_controller.dart';
-import 'package:dietapp_a/z_homeScreen/widgets/a_drawe_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:getwidget/components/drawer/gf_drawer.dart';
-import 'package:getwidget/getwidget.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+class ManinScreenManager extends StatefulWidget {
+  const ManinScreenManager({Key? key}) : super(key: key);
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<ManinScreenManager> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
+class _HomeScreenState extends State<ManinScreenManager>
+    with WidgetsBindingObserver {
   @override
   void initState() {
     WidgetsBinding.instance!.addObserver(this);
@@ -38,22 +34,13 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
       onWillPop: () async {
         if (bottomBarindex.value == 3) {
           fcBackButtonFunction();
+        } else if (bottomBarindex.value != 0) {
+          bottomNavController.jumpToTab(0);
         }
         return false;
       },
-      child: Scaffold(
-        drawer: const GFDrawer(
-          child: MainDrawer(),
-        ),
-        appBar: AppBar(
-          title: const Text("DietApp"),
-          actions: const [],
-          leading: const DrawerIcon(),
-        ),
-        body:
-            // const ImagePickerW(),
-            curretContainer(),
-        bottomNavigationBar: const BottomNavigationBarW(),
+      child: const Scaffold(
+        body: BottomBarWithBody(),
       ),
     );
   }

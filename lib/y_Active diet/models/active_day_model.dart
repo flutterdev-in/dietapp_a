@@ -58,7 +58,7 @@ class ActiveDayModel {
   factory ActiveDayModel.fromMap(Map docMap) {
     return ActiveDayModel(
       dayDate: docMap[admos.dayDate].toDate(),
-      dayName: docMap[admos.dayDate],
+      dayName: docMap[admos.dayName],
       isPlanned: docMap[unIndexed][adfos.isPlanned],
       isTaken: docMap[unIndexed][adfos.isTaken],
       plannedNotes: docMap[unIndexed][adfos.plannedNotes],

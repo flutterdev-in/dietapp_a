@@ -1,4 +1,4 @@
-import 'package:dietapp_a/z_homeScreen/a_home_screen.dart';
+import 'package:dietapp_a/main_screen_manager.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/auth.dart';
@@ -16,13 +16,12 @@ class AuthGate extends StatelessWidget {
           return const SignInScreen(
             providerConfigs: [
               GoogleProviderConfiguration(
-                clientId: '1:237115759240:android:2ce36ff5e9acc35bfc9d3d',
+                clientId: '1:237115759240:android:57b787e3a03aca69fc9d3d',
               ),
             ],
           );
         } else {
-         
-          return const HomeScreen();
+          return const ManinScreenManager();
         }
 
         // Render your application if authenticated

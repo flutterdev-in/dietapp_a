@@ -7,7 +7,8 @@ import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/controllers
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/models/food_collection_model.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/foods_collection_strings.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/views/widgets/top%20bars/fc_path_bar.dart';
-import 'package:dietapp_a/w_bottomBar/rx_index_for_bottombar.dart';
+import 'package:dietapp_a/w_bottomBar/_bottom_navigation_bar.dart';
+
 import 'package:dietapp_a/x_customWidgets/alert_dialogue.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';

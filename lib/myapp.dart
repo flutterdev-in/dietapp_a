@@ -1,5 +1,5 @@
+import 'package:dietapp_a/app%20Constants/colors.dart';
 import 'package:dietapp_a/auth_gate.dart';
-import 'package:dietapp_a/a_Testing%20purpose/sliver_test.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       themeMode: ThemeMode.light,
       theme: ThemeData(
-        colorScheme: ColorScheme.light(primary: Colors.deepPurple.shade800),
+        colorScheme: const ColorScheme.light(primary: primaryColor),
         primaryColor: Colors.deepPurple.shade800,
         primaryColorLight: Colors.deepPurple.shade800,
         // textTheme: Theme.of(context).textTheme.apply(),
@@ -26,8 +26,7 @@ class MyApp extends StatelessWidget {
       title: 'DietApp',
       // initialRoute: "/",
       // getPages: AppRoutes.routes,
-      home: 
-       const AuthGate(),
+      home: const AuthGate(),
     );
   }
 }

@@ -1,6 +1,6 @@
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/controllers/fc_controller.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/foods_collection_strings.dart';
-import 'package:dietapp_a/w_bottomBar/rx_index_for_bottombar.dart';
+import 'package:dietapp_a/w_bottomBar/_bottom_navigation_bar.dart';
 
 void fcBackButtonFunction() {
   if (fcc.currentPathCR.value != fdcs.foodsCR0.path) {

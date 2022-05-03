@@ -6,28 +6,32 @@ import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/views/widge
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class MyFoodsCollectionView extends StatelessWidget {
-  const MyFoodsCollectionView({Key? key}) : super(key: key);
+class FoodCollectionScreen extends StatelessWidget {
+  const FoodCollectionScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        const FoodsCollectionTopBar(),
-        const Expanded(child: FoodsCollectionListView()),
-       
-        Obx(() {
-          if (fcc.isCopyOrMoveStarted.value) {
-            return const PasteBarForFC();
-          } else if (fcc.isSelectionStarted.value ||
-              fcc.listSelectedItemsDRsForOperation.value.isNotEmpty) {
-            return const OnSelectedBottomBarForFoodCollection();
-          } else {
-            return const SizedBox();
-          }
-        }),
-      ],
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Foods Collection"),
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          const FoodsCollectionTopBar(),
+          const Expanded(child: FoodsCollectionListView()),
+          Obx(() {
+            if (fcc.isCopyOrMoveStarted.value) {
+              return const PasteBarForFC();
+            } else if (fcc.isSelectionStarted.value ||
+                fcc.listSelectedItemsDRsForOperation.value.isNotEmpty) {
+              return const OnSelectedBottomBarForFoodCollection();
+            } else {
+              return const SizedBox();
+            }
+          }),
+        ],
+      ),
     );
   }
 }

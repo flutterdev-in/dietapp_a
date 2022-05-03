@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/controllers/fc_controller.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/functions/fc_delete_copy_move_operations_function.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +18,7 @@ class PasteBarForFC extends StatelessWidget {
           TextButton(
             child: const Text(
               "Cancle",
-              style: TextStyle(color: Colors.black38),
+              // style: TextStyle(color: Colors.black38),
             ),
             onPressed: () {
               fcc.isCopyOrMoveStarted.value = false;
@@ -46,6 +45,8 @@ class PasteBarForFC extends StatelessWidget {
                 fcc.isCopyOrMoveStarted.value = false;
                 fcc.itemsSelectionCount.value = 0;
                 fcc.operationValue.value = 9;
+                fcc.isSelectionStarted.value = false;
+                fcc.listSelectedItemsDRsForOperation.value.clear();
               } else {
                 GFToast.showToast(
                   "Paste location cannot be the same path",
@@ -64,12 +65,11 @@ class PasteBarForFC extends StatelessWidget {
     if (fcc.currentPathCR.value == fcc.pathWhenCopyOrMovePressed.value) {
       isPathValid = false;
     } else {
-      fcc.listSelectedItemsDRsForOperation.value
-          .forEach((DocumentReference<Map<String, dynamic>> thisDR) {
+      for (var thisDR in fcc.listSelectedItemsDRsForOperation.value) {
         if (fcc.currentPathCR.value.contains(thisDR.path)) {
           isPathValid = false;
         }
-      });
+      }
     }
 
     return isPathValid;

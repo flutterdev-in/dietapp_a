@@ -1,8 +1,8 @@
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/a_chat_room_top.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_chat_room_middle.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/c_chat_room_bottom.dart';
-import 'package:dietapp_a/y_Active%20diet/chat/_diet_view_chat.dart';
 import 'package:dietapp_a/v_chat/controllers/chat_room_controller.dart';
+import 'package:dietapp_a/y_Active%20diet/chat/_diet_view_chat.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -20,7 +20,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen>
   @override
   void initState() {
     super.initState();
-    tabC = TabController(length: 2, vsync: this);
+    tabC = TabController(initialIndex: 1, length: 2, vsync: this);
   }
 
   @override
@@ -44,8 +44,8 @@ class _ChatRoomScreenState extends State<ChatRoomScreen>
             controller: tabC,
             indicatorColor: Colors.white70,
             tabs: const [
-              SizedBox(height: 30, child: Center(child: Text("Chat"))),
               SizedBox(height: 30, child: Center(child: Text("Diet"))),
+              SizedBox(height: 30, child: Center(child: Text("Chat"))),
             ],
             indicatorWeight: 2.5,
           ),
@@ -54,13 +54,13 @@ class _ChatRoomScreenState extends State<ChatRoomScreen>
       body: TabBarView(
         controller: tabC,
         children: [
+          const DietViewChat(),
           Column(
             children: [
               const ChatRoomMiddle(),
               ChatRoomBottom(),
             ],
           ),
-          const DietViewChat()
         ],
       ),
     ));

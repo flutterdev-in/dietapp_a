@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/default_timing_model.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/food_model_for_plan_creation.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
@@ -28,76 +27,44 @@ class TimingViewHomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Obx(() {
-        return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-            stream: apc.cuurentActiveDayDR.value
-                .collection(atmos.timings)
-                .orderBy(atmos.timingString)
-                .snapshots(),
-            builder: (context, snapshot) {
-              List<ActiveTimingModel> listTimings;
-              if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
-                listTimings = snapshot.data!.docs.map((e) {
-                  var atm = ActiveTimingModel.fromMap(e.data());
-                  atm.docRef = e.reference;
-                  return atm;
-                }).toList();
-              } else {
-                String timingStringF(int hour, int min, bool isAM) {
-                  String ampm = isAM == true ? "am" : "pm";
-                  String hours =
-                      hour > 9 ? hour.toString() : "0${hour.toString()}";
-                  String mins = min == 0 ? "00" : min.toString();
-                  return ampm + hours + mins;
+    return Obx(() => StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+        stream: apc.cuurentActiveDayDR.value
+            .collection(atmos.timings)
+            .orderBy(atmos.timingString)
+            .snapshots(),
+        builder: (context, snapshot) {
+          List<ActiveTimingModel> listTimings = [];
+          if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
+            listTimings = snapshot.data!.docs.map((e) {
+              var atm = ActiveTimingModel.fromMap(e.data());
+              atm.docRef = e.reference;
+              return atm;
+            }).toList();
+          }
+          return FutureBuilder<List<ActiveTimingModel>>(
+              future: atmos.getMergedActiveTimings(
+                  listTimings, apc.cuurentActiveDayDR.value),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  listTimings = snapshot.data!;
                 }
 
-                var listDefaultTimingModels = [
-                  DefaultTimingModel(
-                      timingName: "Breakfast",
-                      timingString: timingStringF(8, 0, true)),
-                  DefaultTimingModel(
-                      timingName: "Morning snacks",
-                      timingString: timingStringF(10, 30, true)),
-                  DefaultTimingModel(
-                      timingName: "Lunch",
-                      timingString: timingStringF(1, 30, false)),
-                  DefaultTimingModel(
-                      timingName: "Evening snacks",
-                      timingString: timingStringF(5, 30, false)),
-                  DefaultTimingModel(
-                      timingName: "Dinner",
-                      timingString: timingStringF(9, 00, false)),
-                ];
+                return Flexible(
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: listTimings.length,
+                    itemBuilder: (context, index) {
+                      ActiveTimingModel atm = listTimings[index];
+                      atm.docRef = apc.cuurentActiveDayDR.value
+                          .collection(atmos.timings)
+                          .doc(atm.timingString);
 
-                listTimings = listDefaultTimingModels.map((dtm) {
-                  ActiveTimingModel atm = ActiveTimingModel(
-                    timingName: dtm.timingName,
-                    timingString: dtm.timingString,
-                    isPlanned: false,
-                    plannedNotes: dtm.notes,
-                    prud: dtm.rumm,
-                  );
-
-                  atm.docRef = apc.cuurentActiveDayDR.value
-                      .collection(atmos.timings)
-                      .doc(atm.timingString);
-
-                  return atm;
-                }).toList();
-              }
-              return ListView.builder(
-                shrinkWrap: true,
-                itemCount: listTimings.length,
-                itemBuilder: (context, index) {
-                  ActiveTimingModel atm = listTimings[index];
-
-                  return timingsView(context, atm);
-                },
-              );
-            });
-      }),
-    );
+                      return timingsView(context, atm);
+                    },
+                  ),
+                );
+              });
+        }));
   }
 
   Widget timingsView(BuildContext context, ActiveTimingModel atm) {
@@ -132,6 +99,7 @@ class TimingViewHomeScreen extends StatelessWidget {
               ],
             ),
           ),
+          camPictures(atm),
           if (atm.prud != null)
             RefURLWidget(
               refUrlMetadataModel: rumm,
@@ -143,7 +111,6 @@ class TimingViewHomeScreen extends StatelessWidget {
               child: Text(atm.plannedNotes!),
               width: double.maxFinite,
             )),
-          camPictures(atm),
           FirestoreListView<Map<String, dynamic>>(
               shrinkWrap: true,
               physics: const ClampingScrollPhysics(),

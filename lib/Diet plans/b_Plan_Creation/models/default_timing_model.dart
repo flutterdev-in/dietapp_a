@@ -88,24 +88,9 @@ class DefaultTimingModelObjects {
         timingString.substring(0, 2);
   }
 
-  var listDefaultTimingModels = [
-    DefaultTimingModel(
-        timingName: "Breakfast", timingString: dtmos.timingStringF(8, 0, true)),
-    DefaultTimingModel(
-        timingName: "Morning snacks",
-        timingString: dtmos.timingStringF(10, 30, true)),
-    DefaultTimingModel(
-        timingName: "Lunch", timingString: dtmos.timingStringF(1, 30, false)),
-    DefaultTimingModel(
-        timingName: "Evening snacks",
-        timingString: dtmos.timingStringF(5, 30, false)),
-    DefaultTimingModel(
-        timingName: "Dinner", timingString: dtmos.timingStringF(9, 00, false)),
-  ];
-
   Future<void> initiateDefaultTimingsToFire() async {
     await userDR.collection(settings).doc(defaultTimings).set(
-      {unIndexed: listDefaultTimingModels.map((e) => e.toMap())},
+      {unIndexed: listDefaultTimingModels0.map((e) => e.toMap()).toList()},
       SetOptions(merge: true),
     );
   }
@@ -114,12 +99,27 @@ class DefaultTimingModelObjects {
     var l =
         await userDR.collection(settings).doc(defaultTimings).get().then((doc) {
       if (doc.data() != null) {
-        List listMaps = doc.data()![unIndexed];
-        return listMaps.map((e) => DefaultTimingModel.fromMap(e)).toList();
-      } else {
-        return listDefaultTimingModels;
+        List? listMaps = doc.data()![unIndexed];
+        if (listMaps != null) {
+          return listMaps.map((e) => DefaultTimingModel.fromMap(e)).toList();
+        }
       }
     });
-    return l;
+    return l ?? listDefaultTimingModels0;
   }
 }
+
+var listDefaultTimingModels0 = [
+  DefaultTimingModel(
+      timingName: "Breakfast", timingString: dtmos.timingStringF(8, 0, true)),
+  DefaultTimingModel(
+      timingName: "Morning snacks",
+      timingString: dtmos.timingStringF(10, 30, true)),
+  DefaultTimingModel(
+      timingName: "Lunch", timingString: dtmos.timingStringF(1, 30, false)),
+  DefaultTimingModel(
+      timingName: "Evening snacks",
+      timingString: dtmos.timingStringF(5, 30, false)),
+  DefaultTimingModel(
+      timingName: "Dinner", timingString: dtmos.timingStringF(9, 00, false)),
+];
