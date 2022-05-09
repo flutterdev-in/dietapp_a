@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/food_model_for_plan_creation.dart';
+import 'package:dietapp_a/app%20Constants/colors.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
 import 'package:dietapp_a/app%20Constants/url/ref_url_widget.dart';
@@ -10,6 +11,7 @@ import 'package:dietapp_a/y_Active%20diet/functions/cam_pic_photo_upload.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_food_model.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_timing_model.dart';
+import 'package:dietapp_a/z_homeScreen/widgets/a_timings_row_home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/firestore.dart';
 import 'package:get/get.dart';
@@ -41,6 +43,7 @@ class TimingViewHomeScreen extends StatelessWidget {
               return atm;
             }).toList();
           }
+
           return FutureBuilder<List<ActiveTimingModel>>(
               future: atmos.getMergedActiveTimings(
                   listTimings, apc.cuurentActiveDayDR.value),
@@ -74,31 +77,7 @@ class TimingViewHomeScreen extends StatelessWidget {
     return Card(
       child: Column(
         children: [
-          GFListTile(
-            padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
-            margin: const EdgeInsets.symmetric(vertical: 3, horizontal: 0),
-            color: Colors.yellow.shade100,
-            title: Text(
-              atm.timingName,
-              maxLines: 1,
-              style: const TextStyle(fontSize: 18, color: Colors.red),
-            ),
-            icon: Row(
-              children: [
-                if (apc.cuurentActiveDayDR.value.id ==
-                    admos.dayFormat.format(dateNow))
-                  IconButton(
-                      onPressed: () async {
-                        if (atm.docRef != null) {
-                          await camPicPhotoUploadFunction(context, atm.docRef!);
-                        }
-                      },
-                      icon: const Icon(MdiIcons.cameraPlus)),
-                IconButton(
-                    onPressed: () {}, icon: const Icon(MdiIcons.dotsVertical))
-              ],
-            ),
-          ),
+          TimingsRowHomeScreen(atm: atm),
           camPictures(atm),
           if (atm.prud != null)
             RefURLWidget(
@@ -168,32 +147,34 @@ class TimingViewHomeScreen extends StatelessWidget {
                 .toList();
 
             return SizedBox(
-              height: 100,
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  itemCount: listImgUrl.length,
-                  itemBuilder: (context, index) {
-                    var imgUrl = listImgUrl[index];
+              height: 116,
+              child: SingleChildScrollView(
+                child: Row(
+                  children: listImgUrl
+                      .map((imgUrl) => Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: InkWell(
+                                child: SizedBox(
+                                  height: 100,
+                                  width: 100,
+                                  child: ClipRRect(
+                                    child: CachedNetworkImage(
+                                      imageUrl: imgUrl,
+                                      errorWidget: (context, url, error) =>
+                                          const Text("data"),
+                                    ),
+                                  ),
+                                ),
+                                onTap: () {
+                                  Get.to(
+                                      () => ImageViewerScreen(imgUrl: imgUrl));
+                                }),
+                          ))
+                      .toList(),
+                ),
+              ),
 
-                    return InkWell(
-                        child: Container(
-                          color: Colors.amber,
-                          height: 100,
-                          width: 100,
-                          child: ClipRRect(
-                            child: CachedNetworkImage(
-                              imageUrl: imgUrl,
-                              errorWidget: (context, url, error) =>
-                                  const Text("data"),
-                            ),
-                          ),
-                        ),
-                        onTap: () {
-                          Get.to(() => ImageViewerScreen(
-                              listImgUrl: listImgUrl, initialIndex: index));
-                        });
-                  }),
+     
             );
           } else {
             return const SizedBox();

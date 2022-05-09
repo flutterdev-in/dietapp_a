@@ -39,6 +39,13 @@ class DefaultTimingModel {
     return returnMap;
   }
 
+  Map<String, dynamic> toMapOnly2() {
+    return {
+      dtmos.timingName: timingName,
+      dtmos.timingString: timingString,
+    };
+  }
+
   factory DefaultTimingModel.fromMap(Map dataMap) {
     return DefaultTimingModel(
       timingName: dataMap[dtmos.timingName],
@@ -46,6 +53,12 @@ class DefaultTimingModel {
       notes: dataMap[unIndexed][dtmos.notes],
       rumm: rummfos.rummFromRummMap(dataMap[unIndexed][rummfos.rumm]),
       docRef: dataMap[unIndexed][dtmos.docRef],
+    );
+  }
+  factory DefaultTimingModel.fromMapOnly2(Map dataMap) {
+    return DefaultTimingModel(
+      timingName: dataMap[dtmos.timingName],
+      timingString: dataMap[dtmos.timingString],
     );
   }
 }
@@ -100,11 +113,17 @@ class DefaultTimingModelObjects {
         await userDR.collection(settings).doc(defaultTimings).get().then((doc) {
       if (doc.data() != null) {
         List? listMaps = doc.data()![unIndexed];
+
         if (listMaps != null) {
-          return listMaps.map((e) => DefaultTimingModel.fromMap(e)).toList();
+          
+          return listMaps
+              .map((e) => DefaultTimingModel.fromMapOnly2(e))
+              .toList();
         }
       }
     });
+    
+
     return l ?? listDefaultTimingModels0;
   }
 }

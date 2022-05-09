@@ -8,43 +8,6 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:237115759240:android:6395659ae301c147fc9d3d",
-        "android_client_info": {
-          "package_name": "com.dietapp"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "237115759240-ibrn01vn4bprdsh9erk6ln7tnl49mq9n.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.dietapp",
-            "certificate_hash": "f15663d0988ce1914eb4aa465d140407ee2ba95f"
-          }
-        },
-        {
-          "client_id": "237115759240-hl7idkucv13gfh0uuejd6e831295snve.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCJHIlfiEKl_mtlQf0rkmVgA_sJwKJjawg"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "237115759240-hl7idkucv13gfh0uuejd6e831295snve.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
         "mobilesdk_app_id": "1:237115759240:android:57b787e3a03aca69fc9d3d",
         "android_client_info": {
           "package_name": "in.dietapp"
@@ -52,7 +15,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "237115759240-h6rk0n28j7onnj7h97649ibvr58bat9a.apps.googleusercontent.com",
+          "client_id": "237115759240-2j4fq1jie929t2ksp35gt32ee05bqjc3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "in.dietapp",
+            "certificate_hash": "afc5d9503d7450c4684d0e76cdb4f132dad41a64"
+          }
+        },
+        {
+          "client_id": "237115759240-4rom331hl9i9ulb891s1osmgj997484b.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "in.dietapp",

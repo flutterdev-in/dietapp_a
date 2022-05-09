@@ -1,7 +1,7 @@
 import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
 import 'package:dietapp_a/app%20Constants/url/url_avatar.dart';
-import 'package:dietapp_a/my%20foods/screens/Add%20food/add_food_sreen.dart';
-import 'package:dietapp_a/my%20foods/screens/Add%20food/controllers/browser_controllers.dart';
+import 'package:dietapp_a/x_Browser/_browser_main_screen.dart';
+import 'package:dietapp_a/x_Browser/controllers/browser_controllers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';

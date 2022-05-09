@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/default_timing_model.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/userData/models/user_strings.dart';
 import 'package:dietapp_a/userData/models/user_welcome_model.dart';
 import 'package:dietapp_a/v_chat/constants/chat_const_variables.dart';
 import 'package:dietapp_a/v_chat/constants/chat_strings.dart';
+import 'package:dietapp_a/y_Firebase/fire_ref.dart';
 import 'package:get/get.dart';
 
 class WelcomeController extends GetxController {
@@ -35,7 +37,13 @@ class WelcomeController extends GetxController {
         await FirebaseFirestore.instance
             .collection(uss.users)
             .doc(userUID)
-            .set(userWelcomeMap, SetOptions(merge: true));
+            .set(userWelcomeMap, SetOptions(merge: true))
+            .then((value) async {
+          await userDR.collection(settings).doc(dtmos. defaultTimings).set({
+            unIndexed:
+                listDefaultTimingModels0.map((e) => e.toMapOnly2()).toList()
+          }, SetOptions(merge: true));
+        });
       }
     });
   }
@@ -62,4 +70,6 @@ class WelcomeController extends GetxController {
       }
     });
   }
+
+  Future<void> createDefaultTimings() async {}
 }

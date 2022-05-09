@@ -1,9 +1,10 @@
+import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/hive%20Boxes/boxes.dart';
-import 'package:dietapp_a/my%20foods/screens/Add%20food/controllers/browser_controllers.dart';
+import 'package:dietapp_a/x_Browser/c_fav_web_pages.dart';
+import 'package:dietapp_a/x_Browser/controllers/browser_controllers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
-import 'package:getwidget/getwidget.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:metadata_fetch/metadata_fetch.dart';
 
@@ -14,6 +15,7 @@ class MenuButtons extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 40,
+      width: mdWidth(context) * 3 / 4,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -25,6 +27,7 @@ class MenuButtons extends StatelessWidget {
                 alignment: Alignment.centerLeft,
                 child: Icon(
                   MdiIcons.arrowBottomLeftBoldBoxOutline,
+                  color: Colors.black,
                 ),
               ),
             ),
@@ -39,6 +42,7 @@ class MenuButtons extends StatelessWidget {
               height: double.maxFinite,
               child: Icon(
                 MdiIcons.arrowRight,
+                color: Colors.black,
               ),
             ),
             onTap: () {
@@ -52,6 +56,7 @@ class MenuButtons extends StatelessWidget {
               height: double.maxFinite,
               child: Icon(
                 MdiIcons.refresh,
+                color: Colors.black,
               ),
             ),
             onTap: () {
@@ -70,6 +75,7 @@ class MenuButtons extends StatelessWidget {
                 }
                 return Icon(
                   isSameURL ? MdiIcons.heart : MdiIcons.cardsHeartOutline,
+                  color: Colors.black,
                   size: 20,
                 );
               }),
@@ -79,12 +85,18 @@ class MenuButtons extends StatelessWidget {
                 bc.lastFavWebURL.value = bc.currentURL.value;
                 Metadata? data =
                     await MetadataFetch.extract(bc.currentURL.value);
+                FavWebPagesModel(
+                    webURL: bc.currentURL.value,
+                    title: data?.title ?? "",
+                    imageURL: data?.image ?? "");
                 Map dataMap = {
                   "webURL": bc.currentURL.value,
                   "title": data?.title ?? "",
                   "imageURL": data?.image ?? ""
                 };
+
                 boxFavWebPages.add(dataMap);
+                rxFavWebPages.add(dataMap);
               }
             },
           ),
@@ -93,7 +105,8 @@ class MenuButtons extends StatelessWidget {
               width: 35,
               height: double.maxFinite,
               child: Icon(
-                MdiIcons.home,
+                MdiIcons.youtube,
+                color: Colors.red,
               ),
             ),
             onTap: () {

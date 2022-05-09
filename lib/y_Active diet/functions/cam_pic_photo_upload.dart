@@ -17,14 +17,10 @@ Future<void> camPicPhotoUploadFunction(
   BuildContext context,
   DocumentReference activeTimingDR,
 ) async {
-  await imagePicker
-      .pickImage(
-    source: ImageSource.camera,
-  )
-      .then((photo) async {
+  
+  await imagePicker.pickImage(source: ImageSource.camera).then((photo) async {
+    
     if (photo != null) {
-      var length0 = await photo.length();
-      print("Photo length in bytes =  ${length0 / 1000} KB ");
       isLoading.value = true;
 
       try {
@@ -38,21 +34,16 @@ Future<void> camPicPhotoUploadFunction(
                 child: Text(
                   DateFormat("dd MMM yyyy (EEE) hh:mm a").format(dateNow),
                   textScaleFactor: 0.9,
-                  style: TextStyle(color: Colors.white),
+                  style: const TextStyle(color: Colors.white),
                 ),
               ),
             ],
             onSuccess: (waterFile) async {
-              var waterLength = await waterFile.length();
-              print("Water file length = ${waterLength / 1000} KB");
-
               await FlutterNativeImage.compressImage(
                 photo.path,
                 targetHeight: 800,
                 targetWidth: 800,
               ).then((compressedFile) async {
-                var compressedFileLength = await compressedFile.length();
-              print("Water file length = ${compressedFileLength / 1000} KB");
                 final storageRef = FirebaseStorage.instance.ref();
                 final String dateTimeString =
                     "${admos.dayStringFromDate(dateNow)}_${atmos.timingFireStringFromDateTime(dateNow)}";
@@ -86,20 +77,6 @@ Future<void> camPicPhotoUploadFunction(
                         .add(afm.toMap())
                         .then((fmDR) async {
                       isLoading.value = false;
-
-                      await Future.delayed(const Duration(seconds: 5))
-                          .then((value) async {
-                        final compressedImgRef = storageRef
-                            .child("users")
-                            .child(userUID)
-                            .child("${dateTimeString}_800x800.jpg");
-
-                        await compressedImgRef
-                            .getDownloadURL()
-                            .then((compressedURL) async {
-                          fmDR.update({"unIndexed.trud.img": compressedURL});
-                        });
-                      });
                     });
                   });
                 });

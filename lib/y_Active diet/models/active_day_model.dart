@@ -36,6 +36,7 @@ class ActiveDayModel {
         adfos.isPlanned: isPlanned,
       }
     };
+
     Map<String, dynamic> nullChaeckValues = {
       admos.dayName: dayName,
       adfos.isTaken: isTaken,
@@ -55,7 +56,17 @@ class ActiveDayModel {
     return returnMap;
   }
 
+  Map<String, dynamic> toMapOnly2() {
+    return {
+      admos.dayDate: Timestamp.fromDate(dayDate),
+      unIndexed: {
+        adfos.isPlanned: isPlanned,
+      }
+    };
+  }
+
   factory ActiveDayModel.fromMap(Map docMap) {
+    
     return ActiveDayModel(
       dayDate: docMap[admos.dayDate].toDate(),
       dayName: docMap[admos.dayName],

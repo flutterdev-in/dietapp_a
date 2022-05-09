@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/default_timing_model.dart';
+import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
 import 'package:dietapp_a/app%20Constants/url/ref_url_widget.dart';
 import 'package:dietapp_a/x_customWidgets/alert_dialogue.dart';
@@ -117,7 +118,7 @@ class TimingInfoViewPC extends StatelessWidget {
                     Get.back();
 
                     await pcc.currentTimingDR.value
-                        .update({dtmos.notes: rxNotes.value});
+                        .update({"$unIndexed.${dtmos.notes}" : rxNotes.value});
                   },
                   child: const Text("Update")),
             ],

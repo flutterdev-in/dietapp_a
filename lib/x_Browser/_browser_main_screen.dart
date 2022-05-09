@@ -2,12 +2,12 @@ import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/default_timing_model.dart';
 import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
 import 'package:dietapp_a/my%20foods/screens/Add%20food/constants/adf_const_variables.dart';
-import 'package:dietapp_a/my%20foods/screens/Add%20food/controllers/browser_controllers.dart';
-import 'package:dietapp_a/my%20foods/screens/Add%20food/controllers/rxvariables_for_count_button.dart';
-import 'package:dietapp_a/my%20foods/screens/Add%20food/widgets/a_textfield_adfd.dart';
-import 'package:dietapp_a/my%20foods/screens/Add%20food/widgets/ab_count_button_adfd.dart';
-import 'package:dietapp_a/my%20foods/screens/Add%20food/widgets/browser/b_web_view_adfd.dart';
-import 'package:dietapp_a/my%20foods/screens/Add%20food/widgets/browser/bb_menu_items_adfd.dart';
+import 'package:dietapp_a/x_Browser/controllers/browser_controllers.dart';
+import 'package:dietapp_a/x_Browser/controllers/rxvariables_for_count_button.dart';
+import 'package:dietapp_a/x_Browser/a_textfield_adfd.dart';
+import 'package:dietapp_a/x_Browser/ab_count_button_adfd.dart';
+import 'package:dietapp_a/x_Browser/b_web_view_adfd.dart';
+import 'package:dietapp_a/x_Browser/bb_menu_items_adfd.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
@@ -22,6 +22,7 @@ class AddFoodScreen extends StatelessWidget {
     return WillPopScope(
       onWillPop: () async {
         if (bc.currentURL.value != "https://m.youtube.com/") {
+          FocusScope.of(context).unfocus();
           bc.wvc?.goBack();
           return false;
         } else {
@@ -48,7 +49,7 @@ class AddFoodScreen extends StatelessWidget {
       title: Row(
         children: [
           const SizedBox(width: 5),
-          const Expanded(child: TextFieldAdfd(), flex: 5),
+          const Expanded(child: TextFieldForBrowser(), flex: 5),
           const SizedBox(width: 10),
           Obx(() => bc.isBrowserForRefURL.value ? forRefURL() : countButton()),
           const SizedBox(

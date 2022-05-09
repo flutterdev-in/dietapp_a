@@ -1,4 +1,4 @@
-import 'package:dietapp_a/my%20foods/screens/Add%20food/add_food_sreen.dart';
+import 'package:dietapp_a/x_Browser/_browser_main_screen.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/controllers/fc_controller.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/foods_collection_strings.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/views/widgets/top%20bars/a_add_folder_for_foods.dart';
