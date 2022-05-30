@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/userData/models/user_strings.dart';
 import 'package:dietapp_a/userData/models/user_welcome_model.dart';
+import 'package:dietapp_a/v_chat/chat%20person%20profile%20view/chat_person_profile_view_screen.dart';
 import 'package:dietapp_a/v_chat/constants/chat_const_variables.dart';
 import 'package:dietapp_a/v_chat/constants/chat_strings.dart';
 import 'package:dietapp_a/x_customWidgets/stream_builder_functions.dart';
@@ -65,32 +66,38 @@ Widget details() {
         if (data is Map) {
           UserWelcomeModel uwm = UserWelcomeModel.fromMap(data);
 
-          return Row(
-            children: [
-              GFAvatar(
-                maxRadius: 18,
-                size: GFSize.SMALL,
-                backgroundImage: NetworkImage(uwm.photoURL!),
-              ),
-              const SizedBox(
-                width: 12,
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    uwm.displayName,
-                    style: const TextStyle(color: Colors.white, fontSize: 15),
-                  ),
-                  ifChatOpen(
-                    elseW: Text(uwm.isActive ? "active" : "inactive",
-                        style: const TextStyle(
-                            color: Colors.white60, fontSize: 14)),
-                  ),
-                ],
-              ),
-            ],
+          return InkWell(
+            child: Row(
+              children: [
+                GFAvatar(
+                  maxRadius: 18,
+                  size: GFSize.SMALL,
+                  backgroundImage: NetworkImage(uwm.photoURL!),
+                ),
+                const SizedBox(
+                  width: 12,
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      uwm.displayName,
+                      style: const TextStyle(color: Colors.white, fontSize: 15),
+                    ),
+                    ifChatOpen(
+                      elseW: Text(uwm.isActive ? "active" : "inactive",
+                          style: const TextStyle(
+                              color: Colors.white60, fontSize: 14)),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            onTap: () {
+              Get.to(() => ChatPersonProfileViewScreen(
+                  chatPersonUID: thisChatPersonUID.value));
+            },
           );
         }
         return Container();

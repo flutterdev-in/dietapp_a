@@ -1,6 +1,8 @@
+import 'package:dietapp_a/assets/assets.dart';
 import 'package:dietapp_a/main_screen_manager.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -15,15 +17,6 @@ class AuthGate extends StatelessWidget {
         // User is not signed in
         if (!snapshot.hasData) {
           return const LoginView();
-
-          // const SignInScreen(
-          //   providerConfigs: [
-          //     GoogleProviderConfiguration(
-          //       clientId: '1:237115759240:android:57b787e3a03aca69fc9d3d',
-          //     ),
-          //   ],
-          //   showAuthActionSwitch: false,
-          // );
         } else {
           return const ManinScreenManager();
         }
@@ -41,26 +34,28 @@ class LoginView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Container(
-          margin: const EdgeInsets.only(left: 16, right: 16),
-          child: ConstrainedBox(
-            constraints: BoxConstraints.tightFor(width: context.width),
-            child: ElevatedButton(
-              child: const Text(
-                "Sign In with Google",
-                style: TextStyle(fontSize: 18, color: Colors.black),
-              ),
-              onPressed: () {
-                login();
-              },
+        child: InkWell(
+          child: Card(
+            margin: const EdgeInsets.only(left: 16, right: 16),
+            child: Row(
+              children: [
+                SvgPicture.asset(Assets().googleIcon),
+                const Text(
+                  "  Continue with Google",
+                  style: TextStyle(fontSize: 18, color: Colors.black),
+                ),
+              ],
             ),
           ),
+          onTap: () async {
+            await login();
+          },
         ),
       ),
     );
   }
 
-  void login() async {
+  Future<void> login() async {
     final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
     final GoogleSignIn googleSignIn = GoogleSignIn();
 
@@ -83,28 +78,3 @@ class LoginView extends StatelessWidget {
     }
   }
 }
-
-// class LoginController extends GetxController {
-//   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-//   final GoogleSignIn googleSignIn = GoogleSignIn();
-
-//   void login() async {
-//     GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
-
-//     try {
-//       GoogleSignInAuthentication googleSignInAuthentication =
-//           await googleSignInAccount!.authentication;
-
-//       OAuthCredential oAuthCredential = GoogleAuthProvider.credential(
-//         accessToken: googleSignInAuthentication.accessToken,
-//         idToken: googleSignInAuthentication.idToken,
-//       );
-
-//       await firebaseAuth.signInWithCredential(oAuthCredential);
-
-//       Get.back();
-//     } catch (error) {
-//       Get.snackbar("Error", "$error");
-//     }
-//   }
-// }

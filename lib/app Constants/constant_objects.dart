@@ -18,7 +18,9 @@ final DateTime dateNow = DateTime.now();
 final ImagePicker imagePicker = ImagePicker();
 final isLoading = false.obs;
 const String settings = "settings";
-
+const String users = "Users";
+final CollectionReference<Map<String, dynamic>> usersCollection =
+    FirebaseFirestore.instance.collection(users);
 
 double mdWidth(BuildContext context) {
   return MediaQuery.of(context).size.width;

@@ -43,9 +43,9 @@ class ChatRoomTile extends StatelessWidget {
                 backgroundImage: NetworkImage(uwm.photoURL!),
                 size: GFSize.SMALL,
               ),
-              subTitle: Text(
-                crm.lastChatType == crs.string ? crm.lastChatString : "",
-              ),
+              subTitle: crm.lastChatType == crs.string
+                  ? Text(crm.lastChatString)
+                  : null,
               onTap: () {
                 Get.to(() {
                   thisChatDocID.value = crm.chatDocID;
@@ -56,7 +56,7 @@ class ChatRoomTile extends StatelessWidget {
                 }, opaque: false, transition: Transition.leftToRightWithFade);
               },
             );
-          } 
+          }
           return data;
         });
   }

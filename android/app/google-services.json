@@ -15,19 +15,19 @@
       },
       "oauth_client": [
         {
-          "client_id": "237115759240-2j4fq1jie929t2ksp35gt32ee05bqjc3.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "in.dietapp",
-            "certificate_hash": "afc5d9503d7450c4684d0e76cdb4f132dad41a64"
-          }
-        },
-        {
           "client_id": "237115759240-4rom331hl9i9ulb891s1osmgj997484b.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "in.dietapp",
             "certificate_hash": "f15663d0988ce1914eb4aa465d140407ee2ba95f"
+          }
+        },
+        {
+          "client_id": "237115759240-a239ehg1cmqo06dplbi8gc3j4edse5gg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "in.dietapp",
+            "certificate_hash": "afc5d9503d7450c4684d0e76cdb4f132dad41a64"
           }
         },
         {

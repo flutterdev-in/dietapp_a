@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
 
       // initialBinding: HomeBinding(),
       title: 'DietApp',
-      // initialRoute: "/",
+      // initialRoute: "/",.
       // getPages: AppRoutes.routes,
       home:
           // const MyHomePage0(),
@@ -39,7 +39,7 @@ class MyHomePage0 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size md = MediaQuery.of(context).size;
+   
     return SafeArea(
       child: Scaffold(
         body: Container(
