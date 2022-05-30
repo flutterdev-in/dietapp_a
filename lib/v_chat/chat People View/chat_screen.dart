@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/v_chat/chat%20People%20View/chat_person_tile.dart';
+import 'package:dietapp_a/v_chat/chat%20Search/chat_search_button.dart';
 import 'package:dietapp_a/v_chat/constants/chat_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/firestore.dart';
@@ -11,7 +12,12 @@ class ChatScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: const Text("Diet Chat"),
+        actions: [
+          chatSearchButton,
+        ],
+      ),
       body: Container(
         color: Colors.white,
         child: FirestoreListView<Map<String, dynamic>>(

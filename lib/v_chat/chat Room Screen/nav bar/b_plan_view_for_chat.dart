@@ -8,7 +8,7 @@ import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/week_model.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/controllers/fc_controller.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/c_chat_room_bottom.dart';
 import 'package:dietapp_a/v_chat/controllers/chat_room_controller.dart';
-import 'package:dietapp_a/y_Firebase/fire_ref.dart';
+import 'package:dietapp_a/app%20Constants/fire_ref.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutterfire_ui/firestore.dart';
@@ -226,7 +226,7 @@ class PlanViewForChat extends StatelessWidget {
     Widget scrollPaths() {
       ScrollController _controller = ScrollController();
 
-      SchedulerBinding.instance!.addPostFrameCallback((_) {
+      SchedulerBinding.instance.addPostFrameCallback((_) {
         _controller.jumpTo(_controller.position.maxScrollExtent);
       });
       return Expanded(

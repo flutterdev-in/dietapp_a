@@ -1,6 +1,6 @@
 import 'package:dietapp_a/Diet%20plans/a_Main%20Screen/plan_screen.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/_foods_folder_main_screen.dart';
-import 'package:dietapp_a/settings/a_Profile/settings_screen.dart';
+import 'package:dietapp_a/settings/settings_screen.dart';
 import 'package:dietapp_a/v_chat/chat%20People%20View/chat_screen.dart';
 import 'package:dietapp_a/z_homeScreen/home_screen.dart';
 import 'package:flutter/cupertino.dart';

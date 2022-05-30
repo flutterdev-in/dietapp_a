@@ -7,7 +7,7 @@ import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/default_timing_mod
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/diet_plan_model.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/food_model_for_plan_creation.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/week_model.dart';
-import 'package:dietapp_a/y_Firebase/fire_ref.dart';
+import 'package:dietapp_a/app%20Constants/fire_ref.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';

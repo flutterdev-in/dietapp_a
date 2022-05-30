@@ -5,7 +5,7 @@ import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
 import 'package:dietapp_a/app%20Constants/url/ref_url_widget.dart';
 import 'package:dietapp_a/x_customWidgets/alert_dialogue.dart';
-import 'package:dietapp_a/y_Firebase/fire_ref.dart';
+import 'package:dietapp_a/app%20Constants/fire_ref.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';

@@ -5,7 +5,7 @@ import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/diet_plan_model.da
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/food_model_for_plan_creation.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/week_model.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/models/food_collection_model.dart';
-import 'package:dietapp_a/y_Firebase/fire_ref.dart';
+import 'package:dietapp_a/app%20Constants/fire_ref.dart';
 import 'package:get/get.dart';
 
 PlanCreationController pcc = Get.put(PlanCreationController());

@@ -58,7 +58,7 @@ class ScrollPaths extends StatelessWidget {
   Widget build(BuildContext context) {
     ScrollController _controller = ScrollController();
 
-    SchedulerBinding.instance!.addPostFrameCallback((_) {
+    SchedulerBinding.instance.addPostFrameCallback((_) {
       _controller.jumpTo(_controller.position.maxScrollExtent);
     });
     return Expanded(

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
-import 'package:dietapp_a/y_Firebase/fire_ref.dart';
+import 'package:dietapp_a/app%20Constants/fire_ref.dart';
 import 'package:get/get.dart';
 
 import '../models/active_timing_model.dart';

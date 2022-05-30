@@ -28,19 +28,24 @@ class ChatPersonProfileViewScreen extends StatelessWidget {
 
   Widget profile(UserWelcomeModel uwm) {
     return Center(
-      child: Column(
-        children: [
-          GFAvatar(
-            backgroundColor: Colors.transparent,
-            size: 100,
-            child: uwm.photoURL != null
-                ? CachedNetworkImage(imageUrl: uwm.photoURL!)
-                : null,
-          ),
-          Text(uwm.displayName, textScaleFactor: 1.1),
-          Text(uwm.userID),
-          Text(uwm.bioData),
-        ],
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            GFAvatar(
+              backgroundColor: Colors.transparent,
+              size: 100,
+              child: uwm.photoURL != null
+                  ? CachedNetworkImage(imageUrl: uwm.photoURL!)
+                  : null,
+            ),
+            Text("Profile Name  :  " + uwm.displayName, textScaleFactor: 1.1),
+            Text("User ID  :  " + uwm.userID),
+            const SizedBox(height: 20),
+            Text("Bio  :  " + uwm.bioData),
+          ],
+        ),
       ),
     );
   }

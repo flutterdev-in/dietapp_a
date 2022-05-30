@@ -9,7 +9,7 @@ import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_food_model.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_plan_model.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_timing_model.dart';
-import 'package:dietapp_a/y_Firebase/fire_ref.dart';
+import 'package:dietapp_a/app%20Constants/fire_ref.dart';
 
 ActivatePlannedData activatePlannedData = ActivatePlannedData();
 

@@ -5,13 +5,13 @@ import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/day_basic_info.dar
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/default_timing_model.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/diet_plan_model.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/week_model.dart';
+import 'package:dietapp_a/app%20Constants/colors.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
+import 'package:dietapp_a/app%20Constants/fire_ref.dart';
 import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
 import 'package:dietapp_a/x_Browser/_browser_main_screen.dart';
 import 'package:dietapp_a/x_Browser/controllers/browser_controllers.dart';
 import 'package:dietapp_a/x_customWidgets/alert_dialogue.dart';
-import 'package:dietapp_a/app%20Constants/colors.dart';
-import 'package:dietapp_a/y_Firebase/fire_ref.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -30,16 +30,14 @@ class PlanCreationScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text("Create Plan")),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Obx(() {
-        bool isEmpty = planName.value.isEmpty;
-        return ElevatedButton(
+      floatingActionButton: ElevatedButton(
             onPressed: () async {
               if (planName.value.isNotEmpty) {
                 await continueButton();
               }
             },
-            child: const Text("Create"));
-      }),
+            child: const Text("Create"))
+    ,
       body: Padding(
         padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
         child: ListView(
@@ -233,7 +231,7 @@ class PlanCreationScreen extends StatelessWidget {
                             onTap: () async {
                               await Future.delayed(
                                   const Duration(milliseconds: 200));
-                              listDefaultTimingModels.value.remove(dftm);
+                              listDefaultTimingModels.remove(dftm);
                             },
                           ),
                         ],

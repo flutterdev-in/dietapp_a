@@ -48,6 +48,9 @@ class _ChatRoomScreenState extends State<ChatRoomScreen>
               SizedBox(height: 30, child: Center(child: Text("Chat"))),
             ],
             indicatorWeight: 2.5,
+            onTap: (index) {
+              FocusScope.of(context).unfocus();
+            },
           ),
         ),
       ),
