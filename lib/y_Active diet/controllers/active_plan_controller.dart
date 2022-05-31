@@ -15,13 +15,6 @@ class ActivePlanController extends GetxController {
   final currentTimingString = "am0830".obs;
   final currentActiveTimingDR = userDR.obs;
 
-  @override
-  void onInit() async {
-    await getCurrentActiveTimingModels(admos.activeDayDR(dateNow));
-
-    super.onInit();
-  }
-
   //
   DateTime dateDiffer(DateTime date, bool increase,
       {int differ = 1, String ymd = "m"}) {

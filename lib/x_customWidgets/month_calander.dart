@@ -1,4 +1,3 @@
-import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/y_Active%20diet/controllers/active_plan_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -6,10 +5,18 @@ import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-import '../models/active_day_model.dart';
+import '../y_Active diet/models/active_day_model.dart';
 
 class MonthCalander extends StatelessWidget {
-  const MonthCalander({Key? key}) : super(key: key);
+  final Future<void> Function() onCurrentCalanderPressed;
+  final Future<void> Function(DateTime, DateTime) onDaySelected;
+  final DateTime currentDay;
+  const MonthCalander(
+      {Key? key,
+      required this.currentDay,
+      required this.onDaySelected,
+      required this.onCurrentCalanderPressed})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,15 +25,14 @@ class MonthCalander extends StatelessWidget {
     final today = DateTime.now();
 
     return Obx(() => TableCalendar<ActiveDayModel>(
-        focusedDay: apc.dt.value,
+        focusedDay: currentDay,
         firstDay: apc.dateDiffer(today, false, ymd: "y", differ: 1),
         lastDay: apc.dateDiffer(today, true, ymd: "y", differ: 1),
         startingDayOfWeek: StartingDayOfWeek.monday,
-        currentDay: apc.dt.value,
+        currentDay: currentDay,
         formatAnimationCurve: Curves.slowMiddle,
         pageJumpingEnabled: true,
         calendarFormat: cf.value,
-        onPageChanged: (focusedDay) {},
         availableCalendarFormats: const {
           CalendarFormat.month: 'Month',
           CalendarFormat.week: 'Week'
@@ -44,10 +50,7 @@ class MonthCalander extends StatelessWidget {
             selectedDecoration: BoxDecoration(
                 color: Color.fromARGB(119, 1, 20, 2), shape: BoxShape.circle)),
         onDaySelected: (selectedDate, focusedDate) async {
-          apc.dt.value = focusedDate;
-
-          apc.cuurentActiveDayDR.value = admos.activeDayDR(focusedDate);
-          // await apc.getCurrentActiveTimingModels(apc.cuurentActiveDayDR.value);
+          onDaySelected(selectedDate, focusedDate); //
         },
         calendarBuilders: CalendarBuilders(headerTitleBuilder: ((context, day) {
           String dayString = DateFormat("MMM yyyy").format(day);
@@ -58,11 +61,7 @@ class MonthCalander extends StatelessWidget {
               IconButton(
                 icon: const Icon(MdiIcons.calendar),
                 onPressed: () async {
-                  apc.dt.value = dateNow.add(const Duration(days: 1));
-                  apc.dt.value = dateNow;
-                  apc.cuurentActiveDayDR.value = admos.activeDayDR(dateNow);
-                  await apc.getCurrentActiveTimingModels(
-                      apc.cuurentActiveDayDR.value);
+                  onCurrentCalanderPressed();
                 },
               ),
             ],

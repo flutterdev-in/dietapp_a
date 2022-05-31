@@ -132,7 +132,6 @@ class ActiveTimingModelObjects {
     await activeDayDR.get().then((ds) async {
       if (ds.exists && ds.data() != null) {
         var adm = ActiveDayModel.fromMap(ds.data()!);
-    
 
         return adm.isPlanned;
       } else {

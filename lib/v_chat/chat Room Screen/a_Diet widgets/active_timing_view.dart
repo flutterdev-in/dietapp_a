@@ -10,8 +10,8 @@ import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-import '../controllers/active_plan_controller.dart';
-import '../models/active_timing_model.dart';
+import '../../../y_Active diet/controllers/active_plan_controller.dart';
+import '../../../y_Active diet/models/active_timing_model.dart';
 
 class ActiveTimingsView extends StatelessWidget {
   final bool editingIconRequired;
