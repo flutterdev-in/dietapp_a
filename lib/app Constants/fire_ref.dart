@@ -22,3 +22,6 @@ DocumentReference<Map<String, dynamic>> fireDR(String docPath) {
 
 final DocumentReference<Map<String, dynamic>> defaultTimingsDR =
     userDR.collection(settings).doc(dtmos.defaultTimings);
+
+final DocumentReference<Map<String, dynamic>> dietViewMembersDR =
+    userDR.collection(settings).doc("dietViewMembers");

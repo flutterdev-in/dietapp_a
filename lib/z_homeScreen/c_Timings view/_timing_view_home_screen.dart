@@ -21,7 +21,7 @@ class TimingViewHomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() => StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-        stream: apc.cuurentActiveDayDR.value
+        stream: apc.currentActiveDayDR.value
             .collection(atmos.timings)
             .orderBy(atmos.timingString)
             .snapshots(),
@@ -37,7 +37,7 @@ class TimingViewHomeScreen extends StatelessWidget {
 
           return FutureBuilder<List<ActiveTimingModel>>(
               future: atmos.getMergedActiveTimings(
-                  listTimings, apc.cuurentActiveDayDR.value),
+                  listTimings, apc.currentActiveDayDR.value),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   listTimings = snapshot.data!;
@@ -49,7 +49,7 @@ class TimingViewHomeScreen extends StatelessWidget {
                     itemCount: listTimings.length,
                     itemBuilder: (context, index) {
                       ActiveTimingModel atm = listTimings[index];
-                      atm.docRef = apc.cuurentActiveDayDR.value
+                      atm.docRef = apc.currentActiveDayDR.value
                           .collection(atmos.timings)
                           .doc(atm.timingString);
 

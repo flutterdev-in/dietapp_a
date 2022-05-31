@@ -21,7 +21,7 @@ class FoodsListTimingsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     int dayDiffer =
-        DateTime.parse(apc.cuurentActiveDayDR.value.id).compareTo(dateNow);
+        DateTime.parse(apc.currentActiveDayDR.value.id).compareTo(dateNow);
     return FirestoreListView<Map<String, dynamic>>(
         shrinkWrap: true,
         physics: const ClampingScrollPhysics(),

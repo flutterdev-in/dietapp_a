@@ -14,7 +14,7 @@ class DayUrlNotesViewHS extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() => StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-        stream: apc.cuurentActiveDayDR.value.snapshots(),
+        stream: apc.currentActiveDayDR.value.snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasData && snapshot.data!.data() != null) {
             var dm = ActiveDayModel.fromMap(snapshot.data!.data()!);

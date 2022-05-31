@@ -1,11 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
-
+import 'package:dietapp_a/app%20Constants/fire_ref.dart';
 import 'package:dietapp_a/v_chat/constants/chat_const_variables.dart';
 import 'package:dietapp_a/v_chat/constants/chat_strings.dart';
-
+import 'package:dietapp_a/v_chat/diet%20Room%20Screen/_diet_room_controller.dart';
 import 'package:dietapp_a/v_chat/models/message_model.dart';
-import 'package:dietapp_a/app%20Constants/fire_ref.dart';
 import 'package:get/get.dart';
 
 ChatScreenController chatSC = ChatScreenController();
@@ -18,6 +17,7 @@ class ChatScreenController extends GetxController {
   final Rx<String> chatType = chatTS.stringOnly.obs;
   @override
   void onInit() async {
+    drc.calendarDate.value = dateNow;
     await updateFire(
       isThisChatOpen: true,
     );
@@ -26,6 +26,7 @@ class ChatScreenController extends GetxController {
 
   @override
   void onClose() async {
+    drc.calendarDate.value = dateNow;
     await updateFire(
       isThisChatOpen: false,
     );

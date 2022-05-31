@@ -2,12 +2,14 @@ import 'package:dietapp_a/v_chat/chat%20Room%20Screen/a_chat_room_top.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_chat_room_middle.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/c_chat_room_bottom.dart';
 import 'package:dietapp_a/v_chat/controllers/chat_room_controller.dart';
-import 'package:dietapp_a/v_chat/chat%20Room%20Screen/a_Diet%20widgets/_diet_view_chat.dart';
+import 'package:dietapp_a/v_chat/diet%20Room%20Screen/_diet_view_chat.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ChatRoomScreen extends StatefulWidget {
-  const ChatRoomScreen({Key? key}) : super(key: key);
+  
+  const ChatRoomScreen({Key? key, })
+      : super(key: key);
 
   @override
   State<ChatRoomScreen> createState() => _ChatRoomScreenState();
@@ -57,7 +59,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen>
       body: TabBarView(
         controller: tabC,
         children: [
-          const DietViewChat(),
+          DietViewChat(),
           Column(
             children: [
               const ChatRoomMiddle(),

@@ -62,13 +62,13 @@ class HomeScreen extends StatelessWidget {
         onDaySelected: (selectedDate, focusedDate) async {
           apc.dt.value = focusedDate;
 
-          apc.cuurentActiveDayDR.value = admos.activeDayDR(focusedDate);
+          apc.currentActiveDayDR.value = admos.activeDayDR(focusedDate);
           //   // await apc.getCurrentActiveTimingModels(apc.cuurentActiveDayDR.value);
         },
         onCurrentCalanderPressed: () async {
           apc.dt.value = dateNow.add(const Duration(days: 1));
           apc.dt.value = dateNow;
-          apc.cuurentActiveDayDR.value = admos.activeDayDR(dateNow);
+          apc.currentActiveDayDR.value = admos.activeDayDR(dateNow);
           //   // await apc.getCurrentActiveTimingModels(
           //   //     apc.cuurentActiveDayDR.value);
         });
