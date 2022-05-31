@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/firestore.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../controllers/active_plan_controller.dart';
 import '../models/active_timing_model.dart';
@@ -19,11 +20,13 @@ class ActiveTimingsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => ListView.builder(
+    return Obx(() => FirestoreListView<Map<String, dynamic>>(
           shrinkWrap: true,
-          itemCount: apc.listCurrentActiveTimingModel.length,
-          itemBuilder: (context, index) {
-            ActiveTimingModel atm = apc.listCurrentActiveTimingModel[index];
+          query: apc.cuurentActiveDayDR.value
+              .collection(atmos.timings)
+              .orderBy(atmos.timingString),
+          itemBuilder: (context, qDS) {
+            ActiveTimingModel atm = ActiveTimingModel.fromMap(qDS.data());
 
             return timingsView(atm);
           },
@@ -61,16 +64,24 @@ class ActiveTimingsView extends StatelessWidget {
           FirestoreListView<Map<String, dynamic>>(
               shrinkWrap: true,
               physics: const ClampingScrollPhysics(),
-              query: atm.docRef!.collection(fmfpcfos.foods),
+              query: apc.cuurentActiveDayDR.value
+                  .collection(atmos.timings)
+                  .doc(atm.timingString)
+                  .collection(fmfpcfos.foods),
               itemBuilder: (context, doc) {
                 ActiveFoodModel fm = ActiveFoodModel.fromMap(doc.data());
-              
+
                 return GFListTile(
                   padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
                   margin:
                       const EdgeInsets.symmetric(vertical: 3, horizontal: 0),
-                  avatar: URLavatar(imgURL: fm.prud?.img, webURL: fm.prud?.url),
+                  avatar: URLavatar(
+                      imgURL: fm.prud?.img ?? fm.trud?.img,
+                      webURL: fm.prud?.url ?? fm.trud?.url),
                   title: Text(fm.foodName, maxLines: 1),
+                  icon: Icon(fm.isTaken
+                      ? MdiIcons.checkDecagram
+                      : MdiIcons.progressClock),
                   subTitleText:
                       (fm.plannedNotes == null || fm.plannedNotes == "")
                           ? null

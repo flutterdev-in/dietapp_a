@@ -4,9 +4,10 @@ import 'package:dietapp_a/userData/models/user_strings.dart';
 import 'package:dietapp_a/userData/models/user_welcome_model.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/_chat_room_screen.dart';
 import 'package:dietapp_a/v_chat/constants/chat_const_variables.dart';
-import 'package:dietapp_a/v_chat/constants/chat_strings.dart';
 import 'package:dietapp_a/v_chat/models/chat_room_model.dart';
 import 'package:dietapp_a/x_customWidgets/stream_builder_functions.dart';
+import 'package:dietapp_a/y_Active%20diet/controllers/active_plan_controller.dart';
+import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
@@ -43,10 +44,11 @@ class ChatRoomTile extends StatelessWidget {
                 backgroundImage: NetworkImage(uwm.photoURL!),
                 size: GFSize.SMALL,
               ),
-              subTitle: crm.lastChatType == crs.string
+              subTitle: crm.lastChatString.isNotEmpty
                   ? Text(crm.lastChatString)
                   : null,
               onTap: () {
+                apc.cuurentActiveDayDR.value = admos.activeDayDR(dateNow);
                 Get.to(() {
                   thisChatDocID.value = crm.chatDocID;
                   thisChatPersonUID.value = crm.chatMembers[0] == userUID

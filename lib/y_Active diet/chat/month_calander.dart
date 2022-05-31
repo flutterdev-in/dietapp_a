@@ -47,7 +47,7 @@ class MonthCalander extends StatelessWidget {
           apc.dt.value = focusedDate;
 
           apc.cuurentActiveDayDR.value = admos.activeDayDR(focusedDate);
-          await apc.getCurrentActiveTimingModels(apc.cuurentActiveDayDR.value);
+          // await apc.getCurrentActiveTimingModels(apc.cuurentActiveDayDR.value);
         },
         calendarBuilders: CalendarBuilders(headerTitleBuilder: ((context, day) {
           String dayString = DateFormat("MMM yyyy").format(day);

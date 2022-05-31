@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
-import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
 import 'package:dietapp_a/app%20Constants/fire_ref.dart';
+import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
 import 'package:get/get.dart';
 
 import '../models/active_timing_model.dart';
@@ -13,11 +13,12 @@ class ActivePlanController extends GetxController {
   final cuurentActiveDayDR = admos.activeDayDR(dateNow).obs;
   final listCurrentActiveTimingModel = RxList<ActiveTimingModel>([]);
   final currentTimingString = "am0830".obs;
+  final currentActiveTimingDR = userDR.obs;
 
   @override
   void onInit() async {
     await getCurrentActiveTimingModels(admos.activeDayDR(dateNow));
-    
+
     super.onInit();
   }
 

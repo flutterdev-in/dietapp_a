@@ -3,7 +3,7 @@ import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
 
 class ActiveFoodModel {
-  String foodTypeCamPlanUp;
+  String foodTypeCamPlanUp;  // Up = updated from homescreen
   bool isTaken;
   DateTime? foodAddedTime;
   DateTime? takenTime;
