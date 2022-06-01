@@ -26,9 +26,7 @@ class ChatRoomTile extends StatelessWidget {
     return StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection(uss.users)
-            .doc(crm.chatMembers[0] == userUID
-                ? crm.chatMembers[1]
-                : crm.chatMembers[0])
+            .doc(crm.chatPersonUID)
             .snapshots(),
         builder: (c, AsyncSnapshot<DocumentSnapshot> d) {
           var data = docStreamReturn(c, d, widType: "tile");
@@ -44,17 +42,16 @@ class ChatRoomTile extends StatelessWidget {
                 backgroundImage: NetworkImage(uwm.photoURL!),
                 size: GFSize.SMALL,
               ),
-              subTitle: crm.lastChatString.isNotEmpty
-                  ? Text(crm.lastChatString)
+              subTitle: (crm.lastChatModel?.chatString != null)
+                  ? Text(crm.lastChatModel!.chatString!)
                   : null,
-              onTap: () {
+              onTap: () async {
                 apc.currentActiveDayDR.value = admos.activeDayDR(dateNow);
                 Get.to(() {
-                  thisChatDocID.value = crm.chatDocID;
-                  thisChatPersonUID.value = crm.chatMembers[0] == userUID
-                      ? crm.chatMembers[1]
-                      : crm.chatMembers[0];
-                  return const ChatRoomScreen();
+                  thisChatDocID.value = crm.chatDR.id;
+                  thisChatPersonUID.value = crm.chatPersonUID;
+
+                  return ChatRoomScreen(crm);
                 }, opaque: false, transition: Transition.leftToRightWithFade);
               },
             );

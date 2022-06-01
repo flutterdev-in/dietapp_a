@@ -3,9 +3,10 @@ import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/nav%20bar/a_colllecton_view_navbar.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/nav%20bar/b_plan_view_for_chat.dart';
 import 'package:dietapp_a/v_chat/constants/chat_const_variables.dart';
-import 'package:dietapp_a/v_chat/constants/chat_strings.dart';
+
 import 'package:dietapp_a/v_chat/controllers/chat_room_controller.dart';
 import 'package:dietapp_a/v_chat/controllers/chat_room_functions.dart';
+import 'package:dietapp_a/v_chat/models/chat_room_model.dart';
 import 'package:dietapp_a/v_chat/models/message_model.dart';
 import 'package:dietapp_a/x_customWidgets/bottom_sheet_widget.dart';
 import 'package:flutter/material.dart';
@@ -110,9 +111,9 @@ class ChatRoomBottom extends StatelessWidget {
 
                         await docRf.update(
                           {
-                            mms.senderSentTime:
+                            mmos.senderSentTime:
                                 Timestamp.fromDate(DateTime.now()),
-                            "$unIndexed.${mms.recieverSeenTime}":
+                            "$unIndexed.${mmos.recieverSeenTime}":
                                 isChatPersonOnChat.value
                                     ? Timestamp.fromDate(DateTime.now())
                                     : null,

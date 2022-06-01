@@ -15,7 +15,8 @@ import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/web_foo
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/week_plan_middle.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/youtube_video_widget.dart';
 import 'package:dietapp_a/v_chat/constants/chat_const_variables.dart';
-import 'package:dietapp_a/v_chat/constants/chat_strings.dart';
+import 'package:dietapp_a/v_chat/models/chat_room_model.dart';
+
 import 'package:dietapp_a/v_chat/models/message_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/firestore.dart';
@@ -38,7 +39,7 @@ class ChatRoomMiddle extends StatelessWidget {
               .collection(crs.chatRooms)
               .doc(thisChatDocID.value)
               .collection(crs.chats)
-              .orderBy(mms.senderSentTime, descending: true),
+              .orderBy(mmos.senderSentTime, descending: true),
 
           // .orderBy(gs.lastChatTime, descending: true),
           itemBuilder: (context, snapshot) {

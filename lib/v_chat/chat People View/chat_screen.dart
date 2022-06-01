@@ -2,7 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/v_chat/chat%20People%20View/chat_person_tile.dart';
 import 'package:dietapp_a/v_chat/chat%20Search/chat_search_button.dart';
-import 'package:dietapp_a/v_chat/constants/chat_strings.dart';
+import 'package:dietapp_a/v_chat/models/chat_room_model.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/firestore.dart';
 

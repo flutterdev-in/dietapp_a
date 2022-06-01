@@ -37,12 +37,16 @@ class MonthCalander extends StatelessWidget {
           CalendarFormat.month: 'Month',
           CalendarFormat.week: 'Week'
         },
+        rowHeight: 35.0,
         onFormatChanged: (format) {
           cf.value = format;
         },
-        headerStyle: const HeaderStyle(),
+        headerStyle: const HeaderStyle(
+          headerPadding: EdgeInsets.symmetric(vertical: 0.0),
+        ),
         calendarStyle: const CalendarStyle(
             // isTodayHighlighted: true,
+            // cellMargin: EdgeInsets.all(0.0),
             selectedTextStyle: TextStyle(
                 color: Color.fromARGB(255, 137, 31, 31), fontSize: 16.0),
             todayDecoration: BoxDecoration(

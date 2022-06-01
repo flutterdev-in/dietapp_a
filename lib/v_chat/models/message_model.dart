@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
-import 'package:dietapp_a/v_chat/constants/chat_strings.dart';
 import 'package:dietapp_a/app%20Constants/fire_ref.dart';
 
 class MessageModel {
@@ -27,29 +26,29 @@ class MessageModel {
 
   Map<String, dynamic> toMap() {
     return {
-      mms.senderSentTime: senderSentTime,
+      mmos.senderSentTime: senderSentTime,
       unIndexed: {
-        mms.docRef: docRef,
-        mms.chatSentBy: chatSentBy,
-        mms.chatRecdBy: chatRecdBy,
-        mms.recieverSeenTime: recieverSeenTime,
-        mms.chatString: chatString,
-        mms.chatType: chatType,
-        mms.listDocMaps: listDocMaps,
+        mmos.docRef: docRef,
+        mmos.chatSentBy: chatSentBy,
+        mmos.chatRecdBy: chatRecdBy,
+        mmos.recieverSeenTime: recieverSeenTime,
+        mmos.chatString: chatString,
+        mmos.chatType: chatType,
+        mmos.listDocMaps: listDocMaps,
       }
     };
   }
 
   factory MessageModel.fromMap(Map messageMap) {
     return MessageModel(
-      docRef: messageMap[unIndexed][mms.docRef],
-      chatSentBy: messageMap[unIndexed][mms.chatSentBy],
-      chatRecdBy: messageMap[unIndexed][mms.chatRecdBy],
-      senderSentTime: messageMap[mms.senderSentTime],
-      recieverSeenTime: messageMap[unIndexed][mms.recieverSeenTime],
-      chatString: messageMap[unIndexed][mms.chatString],
-      chatType: messageMap[unIndexed][mms.chatType],
-      listDocMaps: messageMap[unIndexed][mms.listDocMaps],
+      docRef: messageMap[unIndexed][mmos.docRef],
+      chatSentBy: messageMap[unIndexed][mmos.chatSentBy],
+      chatRecdBy: messageMap[unIndexed][mmos.chatRecdBy],
+      senderSentTime: messageMap[mmos.senderSentTime],
+      recieverSeenTime: messageMap[unIndexed][mmos.recieverSeenTime],
+      chatString: messageMap[unIndexed][mmos.chatString],
+      chatType: messageMap[unIndexed][mmos.chatType],
+      listDocMaps: messageMap[unIndexed][mmos.listDocMaps],
     );
   }
 }
@@ -57,6 +56,18 @@ class MessageModel {
 MessageModelObjects mmos = MessageModelObjects();
 
 class MessageModelObjects {
+  String docID = "docID";
+  String docRef = docRef0;
+  String chatSentBy = "chatSentBy";
+  String chatRecdBy = "chatRecdBy";
+  String isChatUploaded = "isChatUploaded";
+  String senderSentTime = "senderSentTime";
+  String isChatString = "isChatString";
+  String chatString = "chatString";
+  String chatMap = "chatMap";
+  String recieverSeenTime = "recieverSeenTime";
+  final String chatType = "chatType";
+  final String listDocMaps = "listDocMaps";
   final String collection = "collection";
   final String dietPlan = "dietPlan";
   final String dietPlansBeta = "dietPlansBeta";

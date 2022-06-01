@@ -3,7 +3,7 @@ import 'package:dietapp_a/userData/models/user_strings.dart';
 import 'package:dietapp_a/userData/models/user_welcome_model.dart';
 import 'package:dietapp_a/v_chat/chat%20person%20profile%20view/chat_person_profile_view_screen.dart';
 import 'package:dietapp_a/v_chat/constants/chat_const_variables.dart';
-import 'package:dietapp_a/v_chat/constants/chat_strings.dart';
+import 'package:dietapp_a/v_chat/models/chat_room_model.dart';
 import 'package:dietapp_a/x_customWidgets/stream_builder_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

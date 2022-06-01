@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
-import 'package:dietapp_a/v_chat/constants/chat_strings.dart';
+
+import 'package:dietapp_a/v_chat/models/chat_room_model.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 
@@ -10,6 +12,9 @@ String userOwnChatDocID = "${userUID}_$userUID";
 Rx<bool> isChatPersonOnChat = false.obs;
 Rx<String> thisChatPersonUID = userOwnChatDocID.obs;
 Rx<String> thisChatDocID = userUID.obs;
+
+
+
 
 // String getCatPersonUID() {
 //   return cbox.get(crs.thisChatPersonUID) ?? userUID;
