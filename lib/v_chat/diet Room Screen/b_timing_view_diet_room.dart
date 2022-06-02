@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/default_timing_model.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/food_model_for_plan_creation.dart';
 import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
 import 'package:dietapp_a/app%20Constants/url/ref_url_widget.dart';
@@ -16,10 +15,9 @@ import '_diet_room_controller.dart';
 
 class TimingsViewDietRoom extends StatelessWidget {
   final bool editingIconRequired;
-  final String roleVCMO;
+
   const TimingsViewDietRoom({
     Key? key,
-    required this.roleVCMO,
     this.editingIconRequired = true,
   }) : super(key: key);
 
@@ -68,10 +66,10 @@ class TimingsViewDietRoom extends StatelessWidget {
             color: Colors.yellow.shade100,
             title: Text(
               atm.timingName,
+              textScaleFactor: 1.2,
               maxLines: 1,
-              style: const TextStyle(fontSize: 18, color: Colors.red),
+              style: const TextStyle(color: Colors.red),
             ),
-            icon: Text(dtmos.displayTiming(atm.timingString)),
           ),
           if (atm.prud != null)
             RefURLWidget(
@@ -102,9 +100,7 @@ class TimingsViewDietRoom extends StatelessWidget {
                       imgURL: fm.prud?.img ?? fm.trud?.img,
                       webURL: fm.prud?.url ?? fm.trud?.url),
                   title: Text(fm.foodName, maxLines: 1),
-                  icon: Icon(fm.isTaken
-                      ? MdiIcons.checkDecagram
-                      : MdiIcons.progressClock),
+                  icon: fm.isTaken ? const Icon(MdiIcons.accountCheck) : null,
                   subTitleText:
                       (fm.plannedNotes == null || fm.plannedNotes == "")
                           ? null

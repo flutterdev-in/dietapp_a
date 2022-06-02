@@ -38,6 +38,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen>
   @override
   Widget build(BuildContext context) {
     Get.put(ChatScreenController());
+
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
@@ -63,7 +64,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen>
       body: TabBarView(
         controller: tabC,
         children: [
-          const DietViewChat(),
+          DietViewChat(widget.crm),
           Column(
             children: [
               const ChatRoomMiddle(),
@@ -72,6 +73,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen>
           ),
         ],
       ),
+     
     ));
   }
 }

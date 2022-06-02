@@ -5,6 +5,6 @@ import 'package:get/get.dart';
 DietRoomController drc = DietRoomController();
 
 class DietRoomController {
-  final calendarDate = dateNow.obs;
-  final currentDayDR = admos.activeDayDR(dateNow).obs;
+  final calendarDate = DateTime.now().obs;
+  final currentDayDR = admos.activeDayDR(DateTime.now()).obs;
 }

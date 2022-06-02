@@ -8,15 +8,21 @@ class ImageViewerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: Colors.black87,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
       ),
       body: Container(
-        color: Colors.black87,
+        color: Colors.black,
         child: Center(
-          child: CachedNetworkImage(
-            imageUrl: imgUrl,
-            errorWidget: (context, url, error) => const Text("data"),
+          child: InteractiveViewer(
+            clipBehavior: Clip.none,
+            child: CachedNetworkImage(
+              imageUrl: imgUrl,
+              errorWidget: (context, url, error) => const Text("data"),
+              fit: BoxFit.fitHeight,
+            ),
           ),
         ),
       ),

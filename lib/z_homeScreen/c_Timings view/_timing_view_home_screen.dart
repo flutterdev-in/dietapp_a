@@ -1,10 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
 import 'package:dietapp_a/app%20Constants/url/ref_url_widget.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_food_model.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_timing_model.dart';
 import 'package:dietapp_a/z_homeScreen/c_Timings%20view/a_timings_row_home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutterfire_ui/firestore.dart';
 import 'package:get/get.dart';
 
 import '../../y_Active diet/controllers/active_plan_controller.dart';
@@ -20,44 +20,16 @@ class TimingViewHomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-        stream: apc.currentActiveDayDR.value
+    return Obx(() => FirestoreListView<Map<String, dynamic>>(
+        shrinkWrap: true,
+        query: apc.currentActiveDayDR.value
             .collection(atmos.timings)
-            .orderBy(atmos.timingString)
-            .snapshots(),
-        builder: (context, snapshot) {
-          List<ActiveTimingModel> listTimings = [];
-          if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
-            listTimings = snapshot.data!.docs.map((e) {
-              var atm = ActiveTimingModel.fromMap(e.data());
-              atm.docRef = e.reference;
-              return atm;
-            }).toList();
-          }
+            .orderBy(atmos.timingString),
+        itemBuilder: (context, qDS) {
+          var atm = ActiveTimingModel.fromMap(qDS.data());
+          atm.docRef = qDS.reference;
 
-          return FutureBuilder<List<ActiveTimingModel>>(
-              future: atmos.getMergedActiveTimings(
-                  listTimings, apc.currentActiveDayDR.value),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  listTimings = snapshot.data!;
-                }
-
-                return Flexible(
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: listTimings.length,
-                    itemBuilder: (context, index) {
-                      ActiveTimingModel atm = listTimings[index];
-                      atm.docRef = apc.currentActiveDayDR.value
-                          .collection(atmos.timings)
-                          .doc(atm.timingString);
-
-                      return timingsView(context, atm);
-                    },
-                  ),
-                );
-              });
+          return timingsView(context, atm);
         }));
   }
 

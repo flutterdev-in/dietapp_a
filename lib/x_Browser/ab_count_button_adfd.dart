@@ -180,8 +180,8 @@ class CountButtonAdfdW extends StatelessWidget {
                               ActiveFoodModel(
                                       foodTypeCamPlanUp: afmos.up,
                                       isTaken: true,
-                                      foodAddedTime: dateNow,
-                                      takenTime: dateNow,
+                                      foodAddedTime: DateTime.now(),
+                                      takenTime: DateTime.now(),
                                       foodName: fcm.fieldName,
                                       plannedNotes: fcm.notes,
                                       takenNotes: null,

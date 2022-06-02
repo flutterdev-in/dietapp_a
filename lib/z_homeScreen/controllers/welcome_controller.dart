@@ -6,6 +6,7 @@ import 'package:dietapp_a/userData/models/user_strings.dart';
 import 'package:dietapp_a/userData/models/user_welcome_model.dart';
 import 'package:dietapp_a/v_chat/constants/chat_const_variables.dart';
 import 'package:dietapp_a/v_chat/models/chat_room_model.dart';
+import 'package:dietapp_a/y_Active%20diet/models/active_timing_model.dart';
 import 'package:get/get.dart';
 
 class WelcomeController extends GetxController {
@@ -13,7 +14,7 @@ class WelcomeController extends GetxController {
   void onInit() async {
     await createUserDoc();
     await createChatDoc();
-
+    await atmos.checkAndSetDefaultTimings(DateTime.now());
     super.onInit();
   }
 
@@ -57,7 +58,7 @@ class WelcomeController extends GetxController {
       if (!docSnap.exists) {
         var chatRoomModel = ChatRoomModel(
             chatMembers: [userUID, userUID],
-            lastChatTime: dateNow,
+            lastChatTime: DateTime.now(),
             lastChatSentBy: userUID,
             lastChatRecdBy: userUID,
             userModel: ChatMemberModel(

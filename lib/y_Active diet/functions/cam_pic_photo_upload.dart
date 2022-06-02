@@ -17,72 +17,70 @@ Future<void> camPicPhotoUploadFunction(
   BuildContext context,
   DocumentReference activeTimingDR,
 ) async {
-  
   await imagePicker.pickImage(source: ImageSource.camera).then((photo) async {
-    
     if (photo != null) {
       isLoading.value = true;
 
-      try {
-        StampImage.create(
-            context: context,
-            image: io.File(photo.path),
-            children: [
-              Positioned(
-                left: 10,
-                bottom: 10,
-                child: Text(
-                  DateFormat("dd MMM yyyy (EEE) hh:mm a").format(dateNow),
-                  textScaleFactor: 0.9,
-                  style: const TextStyle(color: Colors.white),
-                ),
+      StampImage.create(
+          context: context,
+          image: io.File(photo.path),
+          saveFile: true,
+          children: [
+            Positioned(
+              left: 10,
+              bottom: 10,
+              child: Text(
+                DateFormat("dd MMM yyyy (EEE) hh:mm a").format(DateTime.now()),
+                textScaleFactor: 0.9,
+                style: const TextStyle(color: Colors.white),
               ),
-            ],
-            onSuccess: (waterFile) async {
-              await FlutterNativeImage.compressImage(
-                photo.path,
-                targetHeight: 800,
-                targetWidth: 800,
-              ).then((compressedFile) async {
-                final storageRef = FirebaseStorage.instance.ref();
-                final String dateTimeString =
-                    "${admos.dayStringFromDate(dateNow)}_${atmos.timingFireStringFromDateTime(dateNow)}";
-                final userSR = storageRef
-                    .child("users")
-                    .child(userUID)
-                    .child("$dateTimeString.jpg");
-                await userSR.putFile(compressedFile).then((ts) async {
-                  await Future.delayed(const Duration(seconds: 1));
+            ),
+          ],
+          onSuccess: (waterFile) async {
+            await FlutterNativeImage.compressImage(
+              photo.path,
+              targetHeight: 800,
+              targetWidth: 800,
+            ).then((compressedFile) async {
+              final storageRef = FirebaseStorage.instance.ref();
+              final String dateTimeString =
+                  "${admos.dayStringFromDate(DateTime.now())}_${atmos.timingFireStringFromDateTime(DateTime.now())}";
+              final userSR = storageRef
+                  .child("users")
+                  .child(userUID)
+                  .child("$dateTimeString.jpg");
+              await userSR.putFile(compressedFile).then((ts) async {
+                await Future.delayed(const Duration(seconds: 1));
 
-                  await ts.ref.getDownloadURL().then((url) async {
-                    ActiveFoodModel afm = ActiveFoodModel(
-                        foodTypeCamPlanUp: afmos.cam,
-                        isTaken: true,
-                        foodAddedTime: dateNow,
-                        takenTime: dateNow,
-                        foodName: dateTimeString,
-                        plannedNotes: null,
-                        takenNotes: null,
-                        prud: null,
-                        trud: RefUrlMetadataModel(
-                            url: "",
-                            img: url,
-                            title: dateTimeString,
-                            isYoutubeVideo: false,
-                            youtubeVideoLength: null),
-                        docRef: null);
+                await ts.ref.getDownloadURL().then((url) async {
+                  ActiveFoodModel afm = ActiveFoodModel(
+                      foodTypeCamPlanUp: afmos.cam,
+                      isTaken: true,
+                      foodAddedTime: DateTime.now(),
+                      takenTime: DateTime.now(),
+                      foodName: dateTimeString,
+                      plannedNotes: null,
+                      takenNotes: null,
+                      prud: null,
+                      trud: RefUrlMetadataModel(
+                          url: "",
+                          img: url,
+                          title: dateTimeString,
+                          isYoutubeVideo: false,
+                          youtubeVideoLength: null),
+                      docRef: null);
 
-                    await activeTimingDR
-                        .collection(afmos.foods)
-                        .add(afm.toMap())
-                        .then((fmDR) async {
-                      isLoading.value = false;
-                    });
-                  });
+                  await activeTimingDR
+                      .collection(afmos.foods)
+                      .add(afm.toMap())
+                      .then((fmDR) async {});
                 });
               });
+            }).whenComplete(() {
+              isLoading.value = false;
             });
-      } catch (e) {}
+            isLoading.value = false;
+          });
     }
   });
 }

@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
+import 'package:dietapp_a/v_chat/chat%20Room%20Screen/functions/chat_room_functions.dart';
+import 'package:dietapp_a/v_chat/chat%20Room%20Screen/functions/chat_room_send_functions.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/nav%20bar/a_colllecton_view_navbar.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/nav%20bar/b_plan_view_for_chat.dart';
 import 'package:dietapp_a/v_chat/constants/chat_const_variables.dart';
-
 import 'package:dietapp_a/v_chat/controllers/chat_room_controller.dart';
-import 'package:dietapp_a/v_chat/controllers/chat_room_functions.dart';
 import 'package:dietapp_a/v_chat/models/chat_room_model.dart';
 import 'package:dietapp_a/v_chat/models/message_model.dart';
 import 'package:dietapp_a/x_customWidgets/bottom_sheet_widget.dart';
@@ -107,7 +107,9 @@ class ChatRoomBottom extends StatelessWidget {
                             ).toMap(),
                           )
                           .then((docRf) async {
-                        Navigator.pop(context);
+                        if (chatType != chatTS.stringOnly) {
+                          Navigator.pop(context);
+                        }
 
                         await docRf.update(
                           {
@@ -120,9 +122,19 @@ class ChatRoomBottom extends StatelessWidget {
                             "$unIndexed.$docRef0": docRf
                           },
                         );
+
+                        ChatRoomSendFunctions().updateChatDocAfterSend(
+                            chatRoomDR: FirebaseFirestore.instance
+                                .collection(crs.chatRooms)
+                                .doc(thisChatDocID.value),
+                            lastChatDR: docRf,
+                       
+                            lastChatSentBy: userUID,
+                            lastChatRecdBy: thisChatPersonUID.value);
                       });
 
                       chatSC.chatType.value = chatTS.stringOnly;
+                      chatSC.selectedList.value.clear();
                     }
                   },
                 ),

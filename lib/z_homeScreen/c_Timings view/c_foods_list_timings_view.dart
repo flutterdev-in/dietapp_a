@@ -21,7 +21,7 @@ class FoodsListTimingsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     int dayDiffer =
-        DateTime.parse(apc.currentActiveDayDR.value.id).compareTo(dateNow);
+        DateTime.parse(apc.currentActiveDayDR.value.id).compareTo(DateTime.now());
     return FirestoreListView<Map<String, dynamic>>(
         shrinkWrap: true,
         physics: const ClampingScrollPhysics(),
@@ -49,7 +49,7 @@ class FoodsListTimingsView extends StatelessWidget {
                         await fdoc.reference.update({
                           adfos.isTaken: !fm.isTaken,
                           afmos.takenTime:
-                              fm.isTaken ? null : Timestamp.fromDate(dateNow),
+                              fm.isTaken ? null : Timestamp.fromDate(DateTime.now()),
                         });
                       },
                       icon: Icon(fm.isTaken

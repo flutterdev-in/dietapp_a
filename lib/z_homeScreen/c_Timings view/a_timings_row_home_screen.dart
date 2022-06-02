@@ -30,7 +30,7 @@ class TimingsRowHomeScreen extends StatelessWidget {
       icon: Row(
         children: [
           if (apc.currentActiveDayDR.value.id ==
-              admos.dayFormat.format(dateNow))
+              admos.dayFormat.format(DateTime.now()))
             IconButton(
                 onPressed: () async {
                   if (atm.docRef != null) {

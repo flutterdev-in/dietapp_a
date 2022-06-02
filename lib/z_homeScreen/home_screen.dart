@@ -1,13 +1,17 @@
+import 'dart:developer';
+
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/dartUtilities/day_string_from_date.dart';
 import 'package:dietapp_a/x_customWidgets/month_calander.dart';
 import 'package:dietapp_a/y_Active%20diet/controllers/active_plan_controller.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
-import 'package:dietapp_a/z_homeScreen/c_Timings%20view/_timing_view_home_screen.dart';
+import 'package:dietapp_a/y_Active%20diet/models/active_timing_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+
+import 'c_Timings view/_timing_view_home_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -42,7 +46,7 @@ class HomeScreen extends StatelessWidget {
                     ? monthCalander()
                     : const SizedBox()),
               ),
-              const TimingViewHomeScreen(),
+              const Expanded(child: TimingViewHomeScreen()),
             ],
           ),
           Obx(() => isLoading.value
@@ -60,17 +64,16 @@ class HomeScreen extends StatelessWidget {
     return MonthCalander(
         currentDay: apc.dt.value,
         onDaySelected: (selectedDate, focusedDate) async {
+          log("dfgfdgg");
           apc.dt.value = focusedDate;
 
           apc.currentActiveDayDR.value = admos.activeDayDR(focusedDate);
-          //   // await apc.getCurrentActiveTimingModels(apc.cuurentActiveDayDR.value);
+          await atmos.checkAndSetDefaultTimings(focusedDate);
         },
         onCurrentCalanderPressed: () async {
-          apc.dt.value = dateNow.add(const Duration(days: 1));
-          apc.dt.value = dateNow;
-          apc.currentActiveDayDR.value = admos.activeDayDR(dateNow);
-          //   // await apc.getCurrentActiveTimingModels(
-          //   //     apc.cuurentActiveDayDR.value);
+          apc.dt.value = DateTime.now().add(const Duration(days: 1));
+          apc.dt.value = DateTime.now();
+          apc.currentActiveDayDR.value = admos.activeDayDR(DateTime.now());
         });
   }
 }

@@ -17,7 +17,7 @@ class ChatScreenController extends GetxController {
   final Rx<String> chatType = chatTS.stringOnly.obs;
   @override
   void onInit() async {
-    drc.calendarDate.value = dateNow;
+    drc.calendarDate.value = DateTime.now();
     await updateFire(
       isThisChatOpen: true,
     );
@@ -26,7 +26,7 @@ class ChatScreenController extends GetxController {
 
   @override
   void onClose() async {
-    drc.calendarDate.value = dateNow;
+    drc.calendarDate.value = DateTime.now();
     await updateFire(
       isThisChatOpen: false,
     );

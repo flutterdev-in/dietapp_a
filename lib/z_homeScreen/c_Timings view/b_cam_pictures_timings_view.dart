@@ -1,7 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:collection/collection.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/food_model_for_plan_creation.dart';
-import 'package:dietapp_a/x_customWidgets/image_viewer_screen.dart';
+import 'package:dietapp_a/x_customWidgets/multi_image_viewer_screen.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_food_model.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_timing_model.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,9 @@ class CamPicturesTimingsView extends StatelessWidget {
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
+            var listAFM = snapshot.data!.docs
+                .map((e) => ActiveFoodModel.fromMap(e.data()))
+                .toList();
             var listImgUrl = snapshot.data!.docs
                 .map((e) => ActiveFoodModel.fromMap(e.data()).trud!.img!)
                 .toList();
@@ -29,8 +33,8 @@ class CamPicturesTimingsView extends StatelessWidget {
               height: 116,
               child: SingleChildScrollView(
                 child: Row(
-                  children: listImgUrl
-                      .map((imgUrl) => Padding(
+                  children: listAFM
+                      .mapIndexed((index, afm) => Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: InkWell(
                                 child: SizedBox(
@@ -38,15 +42,16 @@ class CamPicturesTimingsView extends StatelessWidget {
                                   width: 100,
                                   child: ClipRRect(
                                     child: CachedNetworkImage(
-                                      imageUrl: imgUrl,
+                                      imageUrl: afm.trud!.img!,
                                       errorWidget: (context, url, error) =>
                                           const Text("data"),
                                     ),
                                   ),
                                 ),
                                 onTap: () {
-                                  Get.to(
-                                      () => ImageViewerScreen(imgUrl: imgUrl));
+                                  Get.to(() => MultiImageViewerScreen(
+                                      listAFM: listAFM, initialIndex: index));
+                                  // ImageViewerScreen(imgUrl: imgUrl));
                                 }),
                           ))
                       .toList(),

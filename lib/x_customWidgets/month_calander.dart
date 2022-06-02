@@ -10,13 +10,19 @@ import '../y_Active diet/models/active_day_model.dart';
 class MonthCalander extends StatelessWidget {
   final Future<void> Function() onCurrentCalanderPressed;
   final Future<void> Function(DateTime, DateTime) onDaySelected;
+  final Future<void> Function(DateTime, DateTime)? onDayLongPressed;
   final DateTime currentDay;
-  const MonthCalander(
-      {Key? key,
-      required this.currentDay,
-      required this.onDaySelected,
-      required this.onCurrentCalanderPressed})
-      : super(key: key);
+  final int startDays;
+  final int endDays;
+  const MonthCalander({
+    Key? key,
+    required this.currentDay,
+    required this.onDaySelected,
+    required this.onCurrentCalanderPressed,
+    this.onDayLongPressed,
+    this.startDays = 60,
+    this.endDays = 15,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +32,8 @@ class MonthCalander extends StatelessWidget {
 
     return Obx(() => TableCalendar<ActiveDayModel>(
         focusedDay: currentDay,
-        firstDay: apc.dateDiffer(today, false, ymd: "y", differ: 1),
-        lastDay: apc.dateDiffer(today, true, ymd: "y", differ: 1),
+        firstDay: apc.dateDiffer(today, false, ymd: "d", differ: startDays),
+        lastDay: apc.dateDiffer(today, true, ymd: "d", differ: endDays),
         startingDayOfWeek: StartingDayOfWeek.monday,
         currentDay: currentDay,
         formatAnimationCurve: Curves.slowMiddle,
@@ -55,6 +61,12 @@ class MonthCalander extends StatelessWidget {
                 color: Color.fromARGB(119, 1, 20, 2), shape: BoxShape.circle)),
         onDaySelected: (selectedDate, focusedDate) async {
           onDaySelected(selectedDate, focusedDate); //
+        },
+        onDayLongPressed: (selectedDate, focusedDate) async {
+          onDaySelected(selectedDate, focusedDate);
+          if (onDayLongPressed != null) {
+            onDayLongPressed!(selectedDate, focusedDate);
+          }
         },
         calendarBuilders: CalendarBuilders(headerTitleBuilder: ((context, day) {
           String dayString = DateFormat("MMM yyyy").format(day);

@@ -50,7 +50,7 @@ class ChatRoomModel {
     var lastChatMap = chatRoomModelMap[unIndexed][crs.lastChatModel];
     return ChatRoomModel(
       chatMembers: chatMembers0,
-      lastChatTime: chatRoomModelMap[crs.lastChatTime]?.toDate() ?? dateNow,
+      lastChatTime: chatRoomModelMap[crs.lastChatTime]?.toDate() ?? DateTime.now(),
       lastChatSentBy:
           chatRoomModelMap[unIndexed][crs.lastChatSentBy] ?? userUID,
       lastChatRecdBy:
@@ -133,7 +133,7 @@ class ChatRoomStrings {
       if (!ds.exists || ds.data() != null) {
         var crm = ChatRoomModel(
             chatMembers: [userUID, chatPersonUID],
-            lastChatTime: dateNow,
+            lastChatTime: DateTime.now(),
             lastChatSentBy: userUID,
             lastChatRecdBy: chatPersonUID,
             userModel: ChatMemberModel(

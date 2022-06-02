@@ -101,6 +101,19 @@ class ActiveTimingModelObjects {
   var basicModel = ActiveTimingModel(
       timingName: "BreakFast", timingString: "am0830", isPlanned: true);
 
+      //
+  Future<void> setDefaultTimings(
+      DocumentReference<Map<String, dynamic>> activeDayDR) async {
+    await dtmos.getDefaultTimings().then((listDTMs) async {
+      for (var i in listDTMs) {
+        await activeDayDR
+            .collection(atmos.timings)
+            .doc(i.timingString)
+            .set(amfpm.timingModel(dtm: i).toMap());
+      }
+    });
+  }
+
   Future<void> activateDefaultTimings(
       DocumentReference<Map<String, dynamic>> dayDR) async {
     await dayDR
@@ -126,15 +139,10 @@ class ActiveTimingModelObjects {
     });
   }
 
-  Future<List<ActiveTimingModel>> getMergedActiveTimings(
-      List<ActiveTimingModel> listATM,
-      DocumentReference<Map<String, dynamic>> activeDayDR) async {
+  Future<void> checkAndSetDefaultTimings(DateTime dayDate) async {
+    var activeDayDR = admos.activeDayDR(dayDate);
     await activeDayDR.get().then((ds) async {
-      if (ds.exists && ds.data() != null) {
-        var adm = ActiveDayModel.fromMap(ds.data()!);
-
-        return adm.isPlanned;
-      } else {
+      if (!ds.exists || ds.data() == null) {
         await activeDayDR
             .set(
                 ActiveDayModel(
@@ -144,31 +152,19 @@ class ActiveTimingModelObjects {
                     .toMapOnly2(),
                 SetOptions(merge: true))
             .then((value) async {
-          for (var i in listDefaultTimingModels0) {
-            await activeDayDR
-                .collection(timings)
-                .doc(i.timingString)
-                .set(amfpm.timingModel(dtm: i).toMap());
-          }
+          await setDefaultTimings(activeDayDR);
         });
-        return false;
-      }
-    }).then((isPlanned) async {
-      if (isPlanned) {
-        return listATM;
       } else {
-        var listTimingStrings = listATM.map((e) => e.timingString).toList();
-
-        await dtmos.getDefaultTimings().then((listDTM) {
-          for (var i in listDTM) {
-            if (!listTimingStrings.contains(i.timingString)) {
-              listATM.add(amfpm.timingModel(dtm: i));
-            }
+        await activeDayDR
+            .collection(atmos.timings)
+            .limit(1)
+            .get()
+            .then((qs) async {
+          if (qs.docs.isEmpty) {
+            await setDefaultTimings(activeDayDR);
           }
         });
       }
     });
-
-    return listATM;
   }
 }

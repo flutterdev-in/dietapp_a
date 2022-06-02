@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dietapp_a/app%20Constants/fire_ref.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -15,7 +14,7 @@ const String youtubeVideoIndentifyURL = "youtube.com/watch?v=";
 const String youtubeURL = "youtube.com";
 const String mYoutubeCom = "https://m.youtube.com/";
 final Timestamp timestampNow = Timestamp.fromDate(DateTime.now());
-final DateTime dateNow = DateTime.now();
+
 final ImagePicker imagePicker = ImagePicker();
 final isLoading = false.obs;
 const String settings = "settings";
