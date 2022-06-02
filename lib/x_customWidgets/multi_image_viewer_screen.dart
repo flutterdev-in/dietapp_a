@@ -52,6 +52,7 @@ class _MultiImageViewerScreenState extends State<MultiImageViewerScreen> {
         }),
       ),
       body: Stack(
+        alignment: Alignment.bottomCenter,
         children: [
           PhotoViewGallery.builder(
             pageController: widget.pageController,
@@ -59,6 +60,7 @@ class _MultiImageViewerScreenState extends State<MultiImageViewerScreen> {
             builder: (context, index) {
               var afm = widget.listAFM[index];
               return PhotoViewGalleryPageOptions(
+                  initialScale: PhotoViewComputedScale.contained,
                   minScale: PhotoViewComputedScale.contained * 0.2,
                   maxScale: PhotoViewComputedScale.contained * 2,
                   imageProvider: CachedNetworkImageProvider(afm.trud!.img!));
@@ -67,6 +69,18 @@ class _MultiImageViewerScreenState extends State<MultiImageViewerScreen> {
               rxIndex.value = index;
             },
           ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 150),
+            child: Obx(() {
+              var afm = widget.listAFM[rxIndex.value];
+              var time =
+                  DateFormat("hh:mm a").format(afm.takenTime ?? DateTime.now());
+              return Text(
+                "Image ${rxIndex.value + 1}/${widget.listAFM.length} ($time)",
+                style: const TextStyle(color: Colors.white),
+              );
+            }),
+          )
         ],
       ),
     );
