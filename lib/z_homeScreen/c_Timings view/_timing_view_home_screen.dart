@@ -18,48 +18,56 @@ import 'c_foods_list_timings_view.dart';
 //
 class TimingViewHomeScreen extends StatelessWidget {
   final bool editingIconRequired;
+  final bool? isDayExists;
 
-  const TimingViewHomeScreen({Key? key, this.editingIconRequired = true})
-      : super(key: key);
+  const TimingViewHomeScreen({
+    Key? key,
+    required this.isDayExists,
+    this.editingIconRequired = true,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => FirestoreListView<Map<String, dynamic>>(
-        shrinkWrap: true,
-        query: apc.currentActiveDayDR.value
-            .collection(atmos.timings)
-            .orderBy(atmos.timingString),
-        itemBuilder: (context, qDS) {
-          var atm = ActiveTimingModel.fromMap(qDS.data());
-          atm.docRef = qDS.reference;
+    if (isDayExists == true) {
+      return Obx(() => FirestoreListView<Map<String, dynamic>>(
+          shrinkWrap: true,
+          query: apc.currentActiveDayDR.value
+              .collection(atmos.timings)
+              .orderBy(atmos.timingString),
+          itemBuilder: (context, qDS) {
+            var atm = ActiveTimingModel.fromMap(qDS.data());
+            atm.docRef = qDS.reference;
 
-          return Card(
-            child: Column(
-              children: [
-                TimingsRowHomeScreen(atm: atm),
-                CamPicturesTimingsView(atm: atm),
-                if (atm.prud != null)
-                  RefURLWidget(
-                    refUrlMetadataModel: atm.prud ?? rummfos.constModel,
-                    editingIconRequired: editingIconRequired,
-                  ),
-                if (atm.plannedNotes != null && atm.plannedNotes != "")
-                  Card(
-                      child: SizedBox(
-                    child: Text(atm.plannedNotes!),
-                    width: double.maxFinite,
-                  )),
-                if (atm.takenNotes != null && atm.takenNotes != "")
-                  takenNotes(context, atm),
-                Container(
-                    color: Colors.green.shade50,
-                    child: FoodsListTimingsView(
-                        atm: atm, foodTypePlanUp: afmos.up)),
-                FoodsListTimingsView(atm: atm, foodTypePlanUp: afmos.plan),
-              ],
-            ),
-          );
-        }));
+            return Card(
+              child: Column(
+                children: [
+                  TimingsRowHomeScreen(atm: atm),
+                  CamPicturesTimingsView(atm: atm),
+                  if (atm.prud != null)
+                    RefURLWidget(
+                      refUrlMetadataModel: atm.prud ?? rummfos.constModel,
+                      editingIconRequired: editingIconRequired,
+                    ),
+                  if (atm.plannedNotes != null && atm.plannedNotes != "")
+                    Card(
+                        child: SizedBox(
+                      child: Text(atm.plannedNotes!),
+                      width: double.maxFinite,
+                    )),
+                  if (atm.takenNotes != null && atm.takenNotes != "")
+                    takenNotes(context, atm),
+                  Container(
+                      color: Colors.green.shade50,
+                      child: FoodsListTimingsView(
+                          atm: atm, foodTypePlanUp: afmos.up)),
+                  FoodsListTimingsView(atm: atm, foodTypePlanUp: afmos.plan),
+                ],
+              ),
+            );
+          }));
+    } else {
+      return const Text("To be update");
+    }
   }
 
   Widget takenNotes(BuildContext context, ActiveTimingModel atm) {

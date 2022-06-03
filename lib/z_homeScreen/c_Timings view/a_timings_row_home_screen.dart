@@ -3,7 +3,6 @@ import 'package:dietapp_a/y_Active%20diet/controllers/active_plan_controller.dar
 import 'package:dietapp_a/y_Active%20diet/functions/cam_pic_photo_upload.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_timing_model.dart';
-import 'package:dietapp_a/z_homeScreen/c_Timings%20view/ab_timing_row_popup_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -26,20 +25,28 @@ class TimingsRowHomeScreen extends StatelessWidget {
         maxLines: 1,
         style: const TextStyle(fontSize: 18, color: primaryColor),
       ),
-      icon: Row(
-        children: [
-          if (apc.currentActiveDayDR.value.id ==
+      icon: (apc.currentActiveDayDR.value.id ==
               admos.dayFormat.format(DateTime.now()))
-            IconButton(
-                onPressed: () async {
-                  if (atm.docRef != null) {
-                    await camPicPhotoUploadFunction(context, atm.docRef!);
-                  }
-                },
-                icon: const Icon(MdiIcons.cameraPlus)),
-          MenuItemsTimingViewHS(atm),
-        ],
-      ),
+          ? Row(
+              children: [
+                IconButton(
+                    onPressed: () async {
+                      await camPicPhotoUploadFunction(context, atm.docRef!);
+                    },
+                    icon: const Icon(MdiIcons.cameraPlus)),
+                IconButton(
+                    onPressed: () async {
+                      if (atm.docRef != null) {
+                        await camPicPhotoUploadFunction(context, atm.docRef!);
+                      }
+                    },
+                    icon: Icon(atm.takenNotes == null
+                        ? MdiIcons.textBoxPlusOutline
+                        : MdiIcons.playlistEdit)),
+                // MenuItemsTimingViewHS(atm),
+              ],
+            )
+          : null,
     );
   }
 }
