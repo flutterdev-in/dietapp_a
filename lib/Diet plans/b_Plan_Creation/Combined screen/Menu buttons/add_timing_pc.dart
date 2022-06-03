@@ -48,7 +48,7 @@ Future<void> addTimingPCalertW(BuildContext context) async {
     Rx<int> mins = 30.obs;
     Rx<String> timingName = "".obs;
 
-    alertDialogueW(
+    alertDialogW(
       context,
       body: Column(children: [
         if (listBt.isNotEmpty) const Text("Select timing"),

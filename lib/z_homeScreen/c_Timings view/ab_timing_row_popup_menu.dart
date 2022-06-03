@@ -1,15 +1,19 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/x_Browser/_browser_main_screen.dart';
+import 'package:dietapp_a/x_customWidgets/alert_dialogue.dart';
 import 'package:dietapp_a/y_Active%20diet/controllers/active_plan_controller.dart';
 import 'package:dietapp_a/y_Active%20diet/functions/delete_active_entries.dart';
+import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
+import 'package:dietapp_a/y_Active%20diet/models/active_timing_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:getwidget/getwidget.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class MenuItemsTimingViewHS extends StatelessWidget {
-  final DocumentReference<Map<String, dynamic>> thisTimingDR;
-  const MenuItemsTimingViewHS({Key? key, required this.thisTimingDR})
-      : super(key: key);
+  final ActiveTimingModel atm;
+
+  const MenuItemsTimingViewHS(this.atm, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,12 +24,47 @@ class MenuItemsTimingViewHS extends StatelessWidget {
         color: Colors.white,
         child: const Icon(MdiIcons.dotsVertical),
         itemBuilder: (context) {
+          var todayString = admos.dayStringFromDate(DateTime.now());
+          var selectedDate = DateTime.parse(apc.currentActiveDayDR.value.id);
+
+          var isBefore = selectedDate.isBefore(DateTime.now());
+          var difference = selectedDate.difference(DateTime.now());
           return [
             PopupMenuItem(
               child: TextButton(
                 onPressed: () async {
+                  await Future.delayed(const Duration(milliseconds: 100));
                   Navigator.pop(context);
-                  apc.currentActiveTimingDR.value = thisTimingDR;
+                  addNotes(context, isForPlanned: true);
+                },
+                child: SizedBox(
+                    width: double.maxFinite,
+                    child: Text(atm.plannedNotes == null
+                        ? "Add planned notes"
+                        : "Edit planned notes")),
+              ),
+            ),
+            if ((todayString == apc.currentActiveDayDR.value.id) ||
+                (isBefore && difference.inDays < 7))
+              PopupMenuItem(
+                child: TextButton(
+                  onPressed: () async {
+                    await Future.delayed(const Duration(milliseconds: 100));
+                    Navigator.pop(context);
+                    addNotes(context, isForPlanned: false);
+                  },
+                  child: SizedBox(
+                      width: double.maxFinite,
+                      child: Text(atm.takenNotes == null
+                          ? "Add taken notes"
+                          : "Edit taken notes")),
+                ),
+              ),
+            PopupMenuItem(
+              child: TextButton(
+                onPressed: () async {
+                  Navigator.pop(context);
+                  apc.currentActiveTimingDR.value = atm.docRef!;
                   Get.to(() => const AddFoodScreen());
                 },
                 child: const Text("Add Foods from Web"),
@@ -46,7 +85,7 @@ class MenuItemsTimingViewHS extends StatelessWidget {
             PopupMenuItem(
               child: TextButton(
                 onPressed: () async {
-                  await deleteActiveEntries.deleteActiveTiming(thisTimingDR);
+                  await deleteActiveEntries.deleteActiveTiming(atm.docRef!);
                   Navigator.pop(context);
                 },
                 child: const Text("Delete this timing"),
@@ -56,5 +95,43 @@ class MenuItemsTimingViewHS extends StatelessWidget {
         },
       ),
     );
+  }
+
+  void addNotes(BuildContext context, {required bool isForPlanned}) {
+    var tc = TextEditingController();
+    if (isForPlanned && atm.plannedNotes != null) {
+      tc.text = atm.plannedNotes!;
+    } else if (!isForPlanned && atm.takenNotes != null) {
+      tc.text = atm.takenNotes!;
+    }
+    alertDialogW(context,
+        body: Column(
+          children: [
+            Container(
+              constraints: const BoxConstraints(
+                maxHeight: 150,
+              ),
+              child: TextField(
+                autofocus: true,
+                maxLines: null,
+                controller: tc,
+                decoration:
+                    InputDecoration(hintText: "${atm.timingName} notes"),
+              ),
+            ),
+            GFButton(
+                onPressed: () async {
+                  FocusScope.of(context).unfocus();
+                  Get.back();
+
+                  if (tc.text.isNotEmpty) {
+                    atm.docRef!.update({
+                      "$unIndexed.${adfos.takenNotes}": tc.text,
+                    });
+                  }
+                },
+                child: const Text("Add")),
+          ],
+        ));
   }
 }

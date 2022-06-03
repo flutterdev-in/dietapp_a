@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-alertDialogueW(
+alertDialogW(
   BuildContext context, {
   EdgeInsets insetPadding = const EdgeInsets.all(10),
   EdgeInsetsGeometry contentPadding =
@@ -8,9 +8,10 @@ alertDialogueW(
   bool scrollable = true,
   MainAxisAlignment? actionsAlignment = MainAxisAlignment.start,
   required Widget body,
+  bool barrierDismissible = true,
 }) {
   showDialog(
-    barrierDismissible: false,
+    barrierDismissible: barrierDismissible,
     context: context,
     builder: (context) => AlertDialog(
       insetPadding: insetPadding,

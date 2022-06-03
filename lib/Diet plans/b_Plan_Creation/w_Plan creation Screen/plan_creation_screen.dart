@@ -31,13 +31,12 @@ class PlanCreationScreen extends StatelessWidget {
       appBar: AppBar(title: const Text("Create Plan")),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: ElevatedButton(
-            onPressed: () async {
-              if (planName.value.isNotEmpty) {
-                await continueButton();
-              }
-            },
-            child: const Text("Create"))
-    ,
+          onPressed: () async {
+            if (planName.value.isNotEmpty) {
+              await continueButton();
+            }
+          },
+          child: const Text("Create")),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
         child: ListView(
@@ -178,7 +177,7 @@ class PlanCreationScreen extends StatelessWidget {
               IconButton(
                   onPressed: () {
                     FocusScope.of(context).unfocus();
-                    alertDialogueW(context, body: alertBodyW(context));
+                    alertDialogW(context, body: alertBodyW(context));
                   },
                   icon: const Icon(MdiIcons.plus)),
             ],

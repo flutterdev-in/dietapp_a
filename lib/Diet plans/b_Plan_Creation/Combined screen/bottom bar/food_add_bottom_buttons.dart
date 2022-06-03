@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/Combined%20screen/bottom%20bar/a1_foods_pick_from_folder_screen.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
-import 'package:dietapp_a/x_Browser/_browser_main_screen.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/controllers/fc_controller.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/models/food_collection_model.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/views/foods_collection_listview.dart';
+import 'package:dietapp_a/x_Browser/_browser_main_screen.dart';
 import 'package:dietapp_a/x_customWidgets/alert_dialogue.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -44,7 +44,7 @@ class FoodAddButtons extends StatelessWidget {
   }
 
   Future<void> foodsAddFromFolder(BuildContext context) async {
-    alertDialogueW(context,
+    alertDialogW(context,
         body: const SizedBox(
           height: 300,
           child: Expanded(child: FoodsCollectionListView()),
@@ -54,7 +54,7 @@ class FoodAddButtons extends StatelessWidget {
   void manualAddFood(BuildContext context) {
     Rx<String> name = "".obs;
     Rx<String> notes = "".obs;
-    alertDialogueW(context,
+    alertDialogW(context,
         body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(

@@ -20,7 +20,7 @@ class ActivatePlanMenuItems {
       }
     }
 
-    alertDialogueW(context,
+    alertDialogW(context,
         body: Column(
           children: [
             const Padding(
@@ -68,7 +68,7 @@ class ActivatePlanMenuItems {
       }
     }
 
-    alertDialogueW(context,
+    alertDialogW(context,
         body: Column(
           children: [
             const Padding(

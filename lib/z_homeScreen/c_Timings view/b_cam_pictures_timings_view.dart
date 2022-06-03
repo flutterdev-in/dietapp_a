@@ -1,12 +1,14 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/food_model_for_plan_creation.dart';
+import 'package:dietapp_a/app%20Constants/constant_objects.dart';
+import 'package:dietapp_a/x_customWidgets/alert_dialogue.dart';
 import 'package:dietapp_a/x_customWidgets/multi_image_viewer_screen.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_food_model.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_timing_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:getwidget/getwidget.dart';
 import 'package:intl/intl.dart';
 
 class CamPicturesTimingsView extends StatelessWidget {
@@ -30,7 +32,7 @@ class CamPicturesTimingsView extends StatelessWidget {
             }).toList();
 
             return SizedBox(
-              height: 116,
+              height: 100,
               child: Align(
                 alignment: Alignment.topLeft,
                 child: ListView.builder(
@@ -42,7 +44,7 @@ class CamPicturesTimingsView extends StatelessWidget {
                       var time = DateFormat("hh:mm a")
                           .format(afm.takenTime ?? DateTime.now());
                       return Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(5.0),
                         child: InkWell(
                           child: SizedBox(
                             height: 90,
@@ -81,30 +83,46 @@ class CamPicturesTimingsView extends StatelessWidget {
                                 listAFM: listAFM, initialIndex: index));
                           },
                           onLongPress: () {
-                            AwesomeDialog(
-                              context: context,
-                              customHeader: ClipRRect(
-                                borderRadius: BorderRadius.circular(10),
-                                child: CachedNetworkImage(
-                                  imageUrl: afm.trud!.img!,
-                                  errorWidget: (context, url, error) =>
-                                      const Text("data"),
-                                  fit: BoxFit.fitHeight,
-                                ),
-                              ),
-                              dialogType: DialogType.WARNING,
-                              title: 'Remove this image',
-                              showCloseIcon: true,
-                              btnCancelColor: Colors.green,
-                              btnOkColor: Colors.red,
-                              btnOkText: "Remove",
-                              btnCancelOnPress: () {},
-                              btnOkOnPress: () async {
-                                await Future.delayed(
-                                    const Duration(milliseconds: 500));
-                                await afm.docRef!.delete();
-                              },
-                            ).show();
+                            alertDialogW(context,
+                                barrierDismissible: true,
+                                insetPadding: EdgeInsets.fromLTRB(
+                                    mdWidth(context) * 1 / 6,
+                                    0,
+                                    mdWidth(context) * 1 / 6,
+                                    0),
+                                body: Column(
+                                  children: [
+                                    CachedNetworkImage(
+                                      imageUrl: afm.trud!.img!,
+                                      errorWidget: (context, url, error) =>
+                                          const Text("data"),
+                                    ),
+                                    const SizedBox(height: 20),
+                                    const Text("Remove this image"),
+                                    const SizedBox(height: 20),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        GFButton(
+                                            color: Colors.green,
+                                            onPressed: () {
+                                              Get.back();
+                                            },
+                                            child: const Text("Cancle")),
+                                        GFButton(
+                                            color: Colors.red,
+                                            onPressed: () async {
+                                              Get.back();
+                                              await Future.delayed(
+                                                  const Duration(seconds: 1));
+                                              afm.docRef!.delete();
+                                            },
+                                            child: const Text("Remove")),
+                                      ],
+                                    )
+                                  ],
+                                ));
                           },
                         ),
                       );

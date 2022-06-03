@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
-import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/app%20Constants/fire_ref.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/controllers/fc_controller.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/models/food_collection_model.dart';
@@ -33,7 +32,7 @@ class CountButtonAdfdW extends StatelessWidget {
             textScaleFactor: 1.3,
           )),
       onPressed: () {
-        alertDialogueW(
+        alertDialogW(
           context,
           contentPadding: const EdgeInsets.fromLTRB(8.0, 10.0, 8.0, 10.0),
           body: Obx(

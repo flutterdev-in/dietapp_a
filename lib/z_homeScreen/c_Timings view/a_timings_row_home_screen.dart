@@ -1,5 +1,4 @@
 import 'package:dietapp_a/app%20Constants/colors.dart';
-import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/y_Active%20diet/controllers/active_plan_controller.dart';
 import 'package:dietapp_a/y_Active%20diet/functions/cam_pic_photo_upload.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
@@ -19,8 +18,8 @@ class TimingsRowHomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GFListTile(
-      padding: const EdgeInsets.fromLTRB(0, 3, 0, 3),
-      margin: const EdgeInsets.symmetric(vertical: 1, horizontal: 0),
+      padding: const EdgeInsets.all(0),
+      margin: const EdgeInsets.all(0),
       color: const Color.fromARGB(22, 139, 53, 201),
       title: Text(
         atm.timingName,
@@ -38,7 +37,7 @@ class TimingsRowHomeScreen extends StatelessWidget {
                   }
                 },
                 icon: const Icon(MdiIcons.cameraPlus)),
-          MenuItemsTimingViewHS(thisTimingDR: atm.docRef!),
+          MenuItemsTimingViewHS(atm),
         ],
       ),
     );

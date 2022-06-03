@@ -2,10 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/default_timing_model.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
+import 'package:dietapp_a/app%20Constants/fire_ref.dart';
 import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
 import 'package:dietapp_a/app%20Constants/url/ref_url_widget.dart';
 import 'package:dietapp_a/x_customWidgets/alert_dialogue.dart';
-import 'package:dietapp_a/app%20Constants/fire_ref.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -78,7 +78,7 @@ class TimingInfoViewPC extends StatelessWidget {
 
   void notesEdit(BuildContext context, String notes) {
     Rx<String> rxNotes = notes.obs;
-    alertDialogueW(
+    alertDialogW(
       context,
       body: Column(
         children: [
@@ -118,7 +118,7 @@ class TimingInfoViewPC extends StatelessWidget {
                     Get.back();
 
                     await pcc.currentTimingDR.value
-                        .update({"$unIndexed.${dtmos.notes}" : rxNotes.value});
+                        .update({"$unIndexed.${dtmos.notes}": rxNotes.value});
                   },
                   child: const Text("Update")),
             ],

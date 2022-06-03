@@ -83,6 +83,7 @@ dependencies:
   calendar_agenda: ^0.0.2+3
   stamp_image: ^0.0.2
   flutter_spinkit: ^5.1.0
+  expandable_text: 
   
     
 dev_dependencies:

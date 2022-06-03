@@ -26,7 +26,6 @@ class DefaultTimingsSettingsScreen extends StatelessWidget {
             } else if (snapshot.hasError || !snapshot.hasData) {
               return const Center(child: Text("Error while fetching data"));
             } else {
-              
               var timingsDocMap = snapshot.data!.data() ?? {};
               List listTimingsMap = timingsDocMap[unIndexed] ?? [];
 
@@ -44,7 +43,7 @@ class DefaultTimingsSettingsScreen extends StatelessWidget {
                     child: ElevatedButton(
                         onPressed: () {
                           FocusScope.of(context).unfocus();
-                          alertDialogueW(context,
+                          alertDialogW(context,
                               body:
                                   alertBodyW(context, listDefaultTimingModel));
                         },

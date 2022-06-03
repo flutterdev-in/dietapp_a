@@ -2,9 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/Combined%20screen/list%20view/url_viewer_pc.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/food_model_for_plan_creation.dart';
+import 'package:dietapp_a/app%20Constants/fire_ref.dart';
 import 'package:dietapp_a/app%20Constants/url/url_avatar.dart';
 import 'package:dietapp_a/x_customWidgets/alert_dialogue.dart';
-import 'package:dietapp_a/app%20Constants/fire_ref.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/firestore.dart';
 import 'package:get/get.dart';
@@ -21,7 +21,6 @@ class FoodsListViewforPC extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
       child: Obx(() {
-        
         if (pcc.currentTimingDR.value == userDR) {
           return const SizedBox();
         } else {
@@ -85,7 +84,7 @@ class FoodsListViewforPC extends StatelessWidget {
     Rx<String> tcName = "".obs;
     Rx<String> tcNotes = "".obs;
 
-    alertDialogueW(
+    alertDialogW(
       context,
       contentPadding: const EdgeInsets.fromLTRB(8.0, 10.0, 8.0, 10.0),
       body: WillPopScope(
