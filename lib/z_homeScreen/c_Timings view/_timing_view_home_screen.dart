@@ -18,7 +18,7 @@ import 'c_foods_list_timings_view.dart';
 //
 class TimingViewHomeScreen extends StatelessWidget {
   final bool editingIconRequired;
-  final bool? isDayExists;
+  final bool isDayExists;
 
   const TimingViewHomeScreen({
     Key? key,
@@ -28,7 +28,7 @@ class TimingViewHomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (isDayExists == true) {
+    if (isDayExists) {
       return Obx(() => FirestoreListView<Map<String, dynamic>>(
           shrinkWrap: true,
           query: apc.currentActiveDayDR.value
@@ -66,8 +66,39 @@ class TimingViewHomeScreen extends StatelessWidget {
             );
           }));
     } else {
-      return const Text("To be update");
+      return dayNotExistsW();
     }
+  }
+
+  Widget dayNotExistsW() {
+    var todayString = admos.dayStringFromDate(DateTime.now());
+    var today = DateTime.parse(todayString);
+
+    var selectedDate = DateTime.parse(apc.currentActiveDayDR.value.id);
+
+    var isBefore = selectedDate.isBefore(today);
+
+    var isAfter = true;
+    if (todayString != apc.currentActiveDayDR.value.id && isBefore) {
+      isAfter = false;
+    }
+    return Center(
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+                "Diet not ${isAfter ? 'planned' : 'recorded'} for this day"),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: GFButton(
+                onPressed: () {},
+                child: Text(isAfter ? "Plan now" : "Make a note")),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget takenNotes(BuildContext context, ActiveTimingModel atm) {

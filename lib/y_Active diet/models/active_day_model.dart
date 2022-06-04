@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
-import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
 import 'package:dietapp_a/app%20Constants/fire_ref.dart';
+import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
 import 'package:intl/intl.dart';
 
 class ActiveDayModel {
@@ -66,7 +66,6 @@ class ActiveDayModel {
   }
 
   factory ActiveDayModel.fromMap(Map docMap) {
-    
     return ActiveDayModel(
       dayDate: docMap[admos.dayDate].toDate(),
       dayName: docMap[admos.dayName],
@@ -104,10 +103,6 @@ class ActiveDayModelObjects {
 
   //
   DateTime dateFromDayDR(DocumentReference<Map<String, dynamic>> dayDR) {
-    return dayFormat.parse(dayDR.id);
+    return DateTime.parse(dayDR.id);
   }
-
-  
-
-
 }

@@ -6,6 +6,7 @@ import 'package:dietapp_a/userData/models/user_strings.dart';
 import 'package:dietapp_a/userData/models/user_welcome_model.dart';
 import 'package:dietapp_a/v_chat/constants/chat_const_variables.dart';
 import 'package:dietapp_a/v_chat/models/chat_room_model.dart';
+import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_timing_model.dart';
 import 'package:get/get.dart';
 
@@ -81,5 +82,11 @@ class WelcomeController extends GetxController {
     });
   }
 
-  Future<void> createDefaultTimings() async {}
+  Future<void> createDefaultTimings() async {
+
+  }
+
+  
 }
+
+
