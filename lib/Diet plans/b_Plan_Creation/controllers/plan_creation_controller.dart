@@ -4,8 +4,10 @@ import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/default_timing_mod
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/diet_plan_model.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/food_model_for_plan_creation.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/week_model.dart';
-import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/models/food_collection_model.dart';
 import 'package:dietapp_a/app%20Constants/fire_ref.dart';
+import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/models/food_collection_model.dart';
+import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
+import 'package:dietapp_a/y_Active%20diet/models/active_food_model.dart';
 import 'package:get/get.dart';
 
 PlanCreationController pcc = Get.put(PlanCreationController());
@@ -29,8 +31,6 @@ class PlanCreationController {
   final Rx<bool> isPlanView = false.obs;
 
 ////
-
-
 
   Future<DocumentReference<Map<String, dynamic>>> getWeekDRfromPlan(
       DocumentReference<Map<String, dynamic>> planDR) async {
@@ -81,34 +81,50 @@ class PlanCreationController {
   }
 
   Future<void> addFoods(FoodsCollectionModel fcm) async {
-    await pcc.currentTimingDR.value.collection(fmfpcfos.foods).add(
-        FoodsModelForPlanCreation(
-                foodAddedTime: Timestamp.fromDate(DateTime.now()),
-                foodName: fcm.fieldName,
-                notes: fcm.notes,
-                rumm: fcm.rumm)
-            .toMap());
+    if (pcc.currentDayDR.value.parent.id == admos.activeDaysPlan) {
+      await pcc.currentTimingDR.value.collection(afmos.foods).add(
+          ActiveFoodModel(
+                  foodTypeCamPlanUp: afmos.plan,
+                  isTaken: false,
+                  foodAddedTime: DateTime.now(),
+                  takenTime: null,
+                  foodName: fcm.fieldName,
+                  plannedNotes: fcm.notes,
+                  takenNotes: null,
+                  prud: fcm.rumm,
+                  trud: null,
+                  docRef: null)
+              .toMap());
+    } else {
+      await pcc.currentTimingDR.value.collection(fmfpcfos.foods).add(
+          FoodsModelForPlanCreation(
+                  foodAddedTime: Timestamp.fromDate(DateTime.now()),
+                  foodName: fcm.fieldName,
+                  notes: fcm.notes,
+                  rumm: fcm.rumm)
+              .toMap());
+    }
   }
 
-  Future<List<DefaultTimingModel>> getDefaultTimings(
-      {required bool isWantGross}) async {
-    List<DefaultTimingModel> listTimingsInFire = [];
-    await FirebaseFirestore.instance
-        .doc(currentPlanDRpath.value)
-        .get()
-        .then((docSnap) async {
-      if (docSnap.exists && docSnap.data() != null) {
-        DietPlanBasicInfoModel dpbim =
-            DietPlanBasicInfoModel.fromMap(docSnap.data()!);
-        if (isWantGross) {
-          listTimingsInFire = dpbim.defaultTimings;
-        } else {
-          listTimingsInFire = dpbim.defaultTimings0;
-        }
-      }
-    });
-    return listTimingsInFire;
-  }
+  // Future<List<DefaultTimingModel>> getDefaultTimings(
+  //     {required bool isWantGross}) async {
+  //   List<DefaultTimingModel> listTimingsInFire = [];
+  //   await FirebaseFirestore.instance
+  //       .doc(currentPlanDRpath.value)
+  //       .get()
+  //       .then((docSnap) async {
+  //     if (docSnap.exists && docSnap.data() != null) {
+  //       DietPlanBasicInfoModel dpbim =
+  //           DietPlanBasicInfoModel.fromMap(docSnap.data()!);
+  //       if (isWantGross) {
+  //         listTimingsInFire = dpbim.planDefaulTimings;
+  //       } else {
+  //         listTimingsInFire = dpbim.defaultTimings0;
+  //       }
+  //     }
+  //   });
+  //   return listTimingsInFire;
+  // }
 
   Future<void> getPlanRxValues(
       DocumentReference<Map<String, dynamic>> planDocRef,

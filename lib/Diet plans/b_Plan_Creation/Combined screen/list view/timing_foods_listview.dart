@@ -1,10 +1,12 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/Combined%20screen/list%20view/url_viewer_pc.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/food_model_for_plan_creation.dart';
+import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/app%20Constants/fire_ref.dart';
 import 'package:dietapp_a/app%20Constants/url/url_avatar.dart';
 import 'package:dietapp_a/x_customWidgets/alert_dialogue.dart';
+import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
+import 'package:dietapp_a/y_Active%20diet/models/active_food_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/firestore.dart';
 import 'package:get/get.dart';
@@ -33,8 +35,13 @@ class FoodsListViewforPC extends StatelessWidget {
                 .orderBy(fmfpcfos.foodAddedTime, descending: false),
             itemBuilder: (context, doc) {
               Map<String, dynamic> foodMap = doc.data();
-              FoodsModelForPlanCreation fm =
-                  FoodsModelForPlanCreation.fromMap(foodMap);
+              FoodsModelForPlanCreation fm;
+              if (pcc.currentDayDR.value.parent.id == admos.activeDaysPlan) {
+                fm = fmfpcfos.fmfpcFromAFM(ActiveFoodModel.fromMap(foodMap));
+              } else {
+                fm = FoodsModelForPlanCreation.fromMap(foodMap);
+              }
+              fm.docRef = doc.reference;
 
               return GFListTile(
                 padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
@@ -66,7 +73,7 @@ class FoodsListViewforPC extends StatelessWidget {
                     ? InkWell(
                         child: const Icon(MdiIcons.playlistEdit),
                         onTap: () {
-                          alertW(context, fm: fm, docRef: doc.reference);
+                          alertW(context, fm: fm);
                         },
                       )
                     : null,
@@ -78,9 +85,10 @@ class FoodsListViewforPC extends StatelessWidget {
     );
   }
 
-  void alertW(BuildContext context,
-      {required FoodsModelForPlanCreation fm,
-      required DocumentReference<Map<String, dynamic>> docRef}) {
+  void alertW(
+    BuildContext context, {
+    required FoodsModelForPlanCreation fm,
+  }) {
     Rx<String> tcName = "".obs;
     Rx<String> tcNotes = "".obs;
 
@@ -144,7 +152,7 @@ class FoodsListViewforPC extends StatelessWidget {
                   onPressed: () async {
                     Get.back();
                     await Future.delayed(const Duration(seconds: 1));
-                    await docRef.delete();
+                    await fm.docRef!.delete();
                   },
                 ),
                 ElevatedButton(
@@ -156,10 +164,18 @@ class FoodsListViewforPC extends StatelessWidget {
                           tcNotes.value.isEmpty ? fm.notes : tcNotes.value;
                       Get.back();
                       await Future.delayed(const Duration(seconds: 1));
-                      await docRef.update({
-                        fmfpcfos.foodName: name,
-                        fmfpcfos.notes: notes,
-                      });
+                      if (pcc.currentDayDR.value.parent.id ==
+                          admos.activeDaysPlan) {
+                        await fm.docRef!.update({
+                          afmos.foodName: name,
+                          "$unIndexed.${adfos.plannedNotes}": notes,
+                        });
+                      } else {
+                        await fm.docRef!.update({
+                          fmfpcfos.foodName: name,
+                          "$unIndexed.${fmfpcfos.notes}": notes,
+                        });
+                      }
                     }),
                 const SizedBox(width: 1),
               ],

@@ -9,8 +9,7 @@ class DietPlanBasicInfoModel {
   Timestamp planCreationTime;
   RefUrlMetadataModel? rumm;
   String? notes;
-  List<DefaultTimingModel> defaultTimings;
-  List<DefaultTimingModel> defaultTimings0;
+  List<DefaultTimingModel> planDefaulTimings;
   DocumentReference<Map<String, dynamic>>? docRef;
 
   //
@@ -20,8 +19,7 @@ class DietPlanBasicInfoModel {
     required this.notes,
     required this.planCreationTime,
     required this.rumm,
-    required this.defaultTimings,
-    required this.defaultTimings0,
+    required this.planDefaulTimings,
     this.docRef,
   });
 
@@ -35,8 +33,8 @@ class DietPlanBasicInfoModel {
     Map<String, dynamic> nullChaeckValues = {
       dietpbims.notes: notes,
       rummfos.rumm: rumm?.toMap(),
-      dietpbims.defaultTimings: defaultTimings.map((e) => e.toMap()).toList(),
-      dietpbims.defaultTimings0: defaultTimings0.map((e) => e.toMap()).toList(),
+      dietpbims.planDefaultTimings:
+          planDefaulTimings.map((e) => e.toMap()).toList(),
       dietpbims.docRef: docRef,
     };
 
@@ -56,10 +54,8 @@ class DietPlanBasicInfoModel {
       planCreationTime: mainPlanBasicMap[dietpbims.planCreationTime],
       notes: mainPlanBasicMap[unIndexed][dietpbims.notes],
       rumm: rummfos.rummFromRummMap(mainPlanBasicMap[unIndexed][rummfos.rumm]),
-      defaultTimings: dietpbims
-          .listDFTM(mainPlanBasicMap[unIndexed][dietpbims.defaultTimings]),
-      defaultTimings0: dietpbims
-          .listDFTM(mainPlanBasicMap[unIndexed][dietpbims.defaultTimings0]),
+      planDefaulTimings: dietpbims
+          .listDFTM(mainPlanBasicMap[unIndexed][dietpbims.planDefaultTimings]),
       docRef: mainPlanBasicMap[unIndexed][dietpbims.docRef],
     );
   }
@@ -74,8 +70,7 @@ class DietPlanBasicInfoModelStrings {
   final String planCreationTime = "planCreationTime";
   final String notes = "notes";
   final String refURL = "refURL";
-  final String defaultTimings = "defaultTimings";
-  final String defaultTimings0 = "defaultTimings0";
+  final String planDefaultTimings = "planDefaultTimings";
 
   String docRef = docRef0;
 

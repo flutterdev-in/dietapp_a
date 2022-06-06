@@ -6,6 +6,8 @@ import 'package:dietapp_a/app%20Constants/fire_ref.dart';
 import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
 import 'package:dietapp_a/app%20Constants/url/ref_url_widget.dart';
 import 'package:dietapp_a/x_customWidgets/alert_dialogue.dart';
+import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
+import 'package:dietapp_a/y_Active%20diet/models/active_timing_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -22,13 +24,21 @@ class TimingInfoViewPC extends StatelessWidget {
         if (pcc.currentTimingDR.value == userDR) {
           return const SizedBox();
         } else {
-          return StreamBuilder<DocumentSnapshot>(
+          return StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
             stream: pcc.currentTimingDR.value.snapshots(),
             builder: (context, snapshot) {
               if (snapshot.hasData && snapshot.data!.exists) {
                 Map<String, dynamic> dataMap =
                     snapshot.data!.data() as Map<String, dynamic>;
-                DefaultTimingModel dtm = DefaultTimingModel.fromMap(dataMap);
+
+                DefaultTimingModel dtm;
+                if (pcc.currentDayDR.value.parent.id == admos.activeDaysPlan) {
+                  dtm = dtmos.dtmFromATM(ActiveTimingModel.fromMap(dataMap));
+                } else {
+                  dtm = DefaultTimingModel.fromMap(dataMap);
+                }
+                dtm.docRef = snapshot.data!.reference;
+
                 String notes = dtm.notes ?? "";
                 RefUrlMetadataModel rumm = dtm.rumm ?? rummfos.constModel;
                 return Column(
@@ -39,7 +49,9 @@ class TimingInfoViewPC extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
-                              child: RefURLWidget(refUrlMetadataModel: rumm),
+                              child: 
+                              // Text(snapshot.data!.data().toString()),
+                              RefURLWidget(refUrlMetadataModel: rumm),
                               color: Colors.deepOrange.shade50),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -116,9 +128,14 @@ class TimingInfoViewPC extends StatelessWidget {
                   onPressed: () async {
                     FocusScope.of(context).unfocus();
                     Get.back();
-
-                    await pcc.currentTimingDR.value
-                        .update({"$unIndexed.${dtmos.notes}": rxNotes.value});
+                    if (pcc.currentDayDR.value.parent.id ==
+                        admos.activeDaysPlan) {
+                      await pcc.currentTimingDR.value.update(
+                          {"$unIndexed.${adfos.plannedNotes}": rxNotes.value});
+                    } else {
+                      await pcc.currentTimingDR.value
+                          .update({"$unIndexed.${dtmos.notes}": rxNotes.value});
+                    }
                   },
                   child: const Text("Update")),
             ],

@@ -14,7 +14,10 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 
 class MenuItemsPC extends StatelessWidget {
   final bool isWeekWisePlan;
-  const MenuItemsPC({Key? key, required this.isWeekWisePlan}) : super(key: key);
+  final bool isForActivePlan;
+  const MenuItemsPC(
+      {Key? key, required this.isForActivePlan, required this.isWeekWisePlan})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -40,12 +43,12 @@ class MenuItemsPC extends StatelessWidget {
               child: TextButton(
                 onPressed: () async {
                   Get.back();
-                  await addTimingPCalertW(context);
+                  await addTimingPCalertW(context, isForActivePlan);
                 },
                 child: const Text("Add timing               "),
               ),
             ),
-            if (isWeekWisePlan)
+            if (isWeekWisePlan && !isForActivePlan)
               PopupMenuItem(
                 child: TextButton(
                   onPressed: () async {
@@ -54,7 +57,7 @@ class MenuItemsPC extends StatelessWidget {
                   child: const Text("Add Week               "),
                 ),
               ),
-            if (isWeekWisePlan)
+            if (isWeekWisePlan && !isForActivePlan)
               PopupMenuItem(
                 child: TextButton(
                   onPressed: () async {
@@ -63,16 +66,15 @@ class MenuItemsPC extends StatelessWidget {
                   child: const Text("Delete this Week           "),
                 ),
               ),
-            if (isWeekWisePlan)
-              PopupMenuItem(
-                child: TextButton(
-                  onPressed: () async {
-                    await clearDay();
-                  },
-                  child: const Text("Clear this Day           "),
-                ),
+            PopupMenuItem(
+              child: TextButton(
+                onPressed: () async {
+                  await clearDay();
+                },
+                child: const Text("Clear this Day           "),
               ),
-            if (isWeekWisePlan == false)
+            ),
+            if (!isWeekWisePlan && !isForActivePlan)
               PopupMenuItem(
                 child: TextButton(
                   onPressed: () async {
@@ -81,7 +83,7 @@ class MenuItemsPC extends StatelessWidget {
                   child: const Text("Add Day           "),
                 ),
               ),
-            if (isWeekWisePlan == false)
+            if (!isWeekWisePlan && !isForActivePlan)
               PopupMenuItem(
                 child: TextButton(
                   onPressed: () async {
@@ -90,28 +92,30 @@ class MenuItemsPC extends StatelessWidget {
                   child: const Text("Delete this Day           "),
                 ),
               ),
-            PopupMenuItem(
-              child: TextButton(
-                onPressed: () async {
-                  await deletePlan();
-                },
-                child: const Text("Delete this diet plan      "),
+            if (!isForActivePlan)
+              PopupMenuItem(
+                child: TextButton(
+                  onPressed: () async {
+                    await deletePlan();
+                  },
+                  child: const Text("Delete this diet plan      "),
+                ),
               ),
-            ),
-            PopupMenuItem(
-              child: TextButton(
-                onPressed: () async {
-                  Get.back();
-                  if (isWeekWisePlan) {
-                    activatePlanMenuItems.activateWeekPlan(context);
-                  } else {
-                    activatePlanMenuItems.activateDayPlan(context);
-                  }
-                },
-                child: const Text("Activate Plan      "),
+            if (!isForActivePlan)
+              PopupMenuItem(
+                child: TextButton(
+                  onPressed: () async {
+                    Get.back();
+                    if (isWeekWisePlan) {
+                      activatePlanMenuItems.activateWeekPlan(context);
+                    } else {
+                      activatePlanMenuItems.activateDayPlan(context);
+                    }
+                  },
+                  child: const Text("Activate Plan      "),
+                ),
               ),
-            ),
-            if (isWeekWisePlan)
+            if (isWeekWisePlan && !isForActivePlan)
               PopupMenuItem(
                 child: TextButton(
                   onPressed: () async {
@@ -121,24 +125,26 @@ class MenuItemsPC extends StatelessWidget {
                   child: const Text("Activate This Week      "),
                 ),
               ),
-            PopupMenuItem(
-              child: TextButton(
-                onPressed: () async {
-                  Get.back();
-                  activatePlanMenuItems.activateThisDay(context);
-                },
-                child: const Text("Activate This Day      "),
+            if (!isForActivePlan)
+              PopupMenuItem(
+                child: TextButton(
+                  onPressed: () async {
+                    Get.back();
+                    activatePlanMenuItems.activateThisDay(context);
+                  },
+                  child: const Text("Activate This Day      "),
+                ),
               ),
-            ),
-            PopupMenuItem(
-              child: TextButton(
-                onPressed: () async {
-                  Get.back();
-                  activatePlanMenuItems.activateThisTiming(context);
-                },
-                child: const Text("Activate This Timing      "),
+            if (!isForActivePlan)
+              PopupMenuItem(
+                child: TextButton(
+                  onPressed: () async {
+                    Get.back();
+                    activatePlanMenuItems.activateThisTiming(context);
+                  },
+                  child: const Text("Activate This Timing      "),
+                ),
               ),
-            ),
           ];
         },
       ),
@@ -146,17 +152,19 @@ class MenuItemsPC extends StatelessWidget {
   }
 
   Future<void> deleteThisTiming() async {
-    await pcc.currentTimingDR.value
-        .collection(fmfpcfos.foods)
-        .get()
-        .then((qs) async {
-      if (qs.docs.isNotEmpty) {
-        for (var dr in qs.docs.toList()) {
-          await dr.reference.delete();
+    if (pcc.currentTimingDR.value != userDR) {
+      await pcc.currentTimingDR.value
+          .collection(fmfpcfos.foods)
+          .get()
+          .then((qs) async {
+        if (qs.docs.isNotEmpty) {
+          for (var dr in qs.docs.toList()) {
+            await dr.reference.delete();
+          }
         }
-      }
-    });
-    await pcc.currentTimingDR.value.delete();
+      });
+      await pcc.currentTimingDR.value.delete();
+    }
   }
 
   Future<void> addWeek() async {
@@ -185,7 +193,7 @@ class MenuItemsPC extends StatelessWidget {
                 if (pcc.currentDayDR.value == userDR) {
                   pcc.currentDayDR.value = dayDR;
                 }
-                for (DefaultTimingModel dfm in dpbim.defaultTimings0) {
+                for (DefaultTimingModel dfm in dpbim.planDefaulTimings) {
                   dayDR.collection(dtmos.timings).add(dfm.toMap()).then((tDR) {
                     if (pcc.currentTimingDR.value == userDR) {
                       pcc.currentTimingDR.value = tDR;
@@ -260,7 +268,7 @@ class MenuItemsPC extends StatelessWidget {
           DietPlanBasicInfoModel dpbim =
               DietPlanBasicInfoModel.fromMap(planDS.data()!);
           pcc.currentTimingDR.value = userDR;
-          for (var tm in dpbim.defaultTimings0) {
+          for (var tm in dpbim.planDefaulTimings) {
             pcc.currentDayDR.value
                 .collection(dtmos.timings)
                 .add(tm.toMap())

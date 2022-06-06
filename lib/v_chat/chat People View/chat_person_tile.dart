@@ -46,7 +46,7 @@ class ChatRoomTile extends StatelessWidget {
                   ? Text(crm.lastChatModel!.chatString!)
                   : null,
               onTap: () async {
-                apc.currentActiveDayDR.value = admos.activeDayDR(DateTime.now());
+                apc.currentActiveDayDR.value = admos.activeDayDR(DateTime.now(),userUID);
                 Get.to(() {
                   thisChatDocID.value = crm.chatDR.id;
                   thisChatPersonUID.value = crm.chatPersonUID;

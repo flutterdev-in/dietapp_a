@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
+import 'package:dietapp_a/y_Active%20diet/models/active_food_model.dart';
 
 class FoodsModelForPlanCreation {
   Timestamp foodAddedTime;
@@ -60,4 +61,14 @@ class FoodsModelForPlanCreationFinalObjects {
   String docRef = docRef0;
   //
   final String foods = "foods";
+
+  FoodsModelForPlanCreation fmfpcFromAFM(ActiveFoodModel afm) {
+    return FoodsModelForPlanCreation(
+      foodAddedTime: Timestamp.fromDate(afm.foodAddedTime ?? DateTime.now()),
+      foodName: afm.foodName,
+      notes: afm.plannedNotes,
+      rumm: afm.prud,
+      docRef: afm.docRef,
+    );
+  }
 }

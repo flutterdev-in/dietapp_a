@@ -4,3 +4,4 @@ import 'package:get/get.dart';
 
 var mapDateADM = RxMap<DateTime, List<ActiveDayModel>>({}).obs;
 var currentWeekString = dayWeekFunctions.weekString(DateTime.now()).obs;
+

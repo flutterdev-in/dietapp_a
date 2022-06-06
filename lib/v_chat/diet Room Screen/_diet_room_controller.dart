@@ -6,5 +6,5 @@ DietRoomController drc = DietRoomController();
 
 class DietRoomController {
   final calendarDate = DateTime.now().obs;
-  final currentDayDR = admos.activeDayDR(DateTime.now()).obs;
+  final currentDayDR = admos.activeDayDR(DateTime.now(),userUID).obs;
 }

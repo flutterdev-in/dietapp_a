@@ -140,7 +140,7 @@ class ActiveTimingModelObjects {
   }
 
   Future<void> checkAndSetDefaultTimings(DateTime dayDate) async {
-    var activeDayDR = admos.activeDayDR(dayDate);
+    var activeDayDR = admos.activeDayDR(dayDate,userUID);
     await activeDayDR.get().then((ds) async {
       if (!ds.exists || ds.data() == null) {
         await activeDayDR

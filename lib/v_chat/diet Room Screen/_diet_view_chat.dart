@@ -45,14 +45,17 @@ class DietViewChat extends StatelessWidget {
   Widget monthCalander() {
     return Obx(() => MonthCalander(
         currentDay: drc.calendarDate.value,
+        personUID: userUID,
         onDaySelected: (selectedDate, focusedDate) async {
           drc.calendarDate.value = focusedDate;
-          drc.currentDayDR.value = admos.activeDayDR(focusedDate);
+          drc.currentDayDR.value =
+              admos.activeDayDR(focusedDate, crm.chatPersonUID);
         },
         onCurrentCalanderPressed: () async {
           drc.calendarDate.value = DateTime.now().add(const Duration(days: 1));
           drc.calendarDate.value = DateTime.now();
-          drc.currentDayDR.value = admos.activeDayDR(DateTime.now());
+          drc.currentDayDR.value =
+              admos.activeDayDR(DateTime.now(), crm.chatPersonUID);
         }));
   }
 }

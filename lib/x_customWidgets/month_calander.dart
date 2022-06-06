@@ -16,11 +16,13 @@ class MonthCalander extends StatelessWidget {
   final DateTime currentDay;
   final int startDays;
   final int endDays;
+  final String personUID;
   const MonthCalander({
     Key? key,
     required this.currentDay,
     required this.onDaySelected,
     required this.onCurrentCalanderPressed,
+    required this.personUID,
     this.onDayLongPressed,
     this.startDays = 60,
     this.endDays = 15,
@@ -34,7 +36,7 @@ class MonthCalander extends StatelessWidget {
 
     return Obx(() {
       mapDateADM.value;
-      return TableCalendar<ActiveDayModel>(
+      return TableCalendar(
           focusedDay: currentDay,
           firstDay: apc.dateDiffer(today, false, ymd: "d", differ: startDays),
           lastDay: apc.dateDiffer(today, true, ymd: "d", differ: endDays),
@@ -55,9 +57,6 @@ class MonthCalander extends StatelessWidget {
             headerPadding: EdgeInsets.symmetric(vertical: 0.0),
           ),
           calendarStyle: const CalendarStyle(
-              // isTodayHighlighted: true,
-              // cellMargin: EdgeInsets.all(0.0),
-
               selectedTextStyle: TextStyle(
                   color: Color.fromARGB(255, 137, 31, 31), fontSize: 16.0),
               todayDecoration: BoxDecoration(
@@ -75,10 +74,11 @@ class MonthCalander extends StatelessWidget {
               onDayLongPressed!(selectedDate, focusedDate);
             }
           },
-          calendarBuilders:
-              CalendarBuilders(markerBuilder: (context, day, events) {
+          calendarBuilders: CalendarBuilders(
+              //
+              markerBuilder: (context, day, events) {
             return StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-                stream: admos.activeDayDR(day).snapshots(),
+                stream: admos.activeDayDR(day, personUID).snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData && snapshot.data!.data() != null) {
                     return const Text(".", textScaleFactor: 3);

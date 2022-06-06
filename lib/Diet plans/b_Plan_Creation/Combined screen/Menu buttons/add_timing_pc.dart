@@ -3,33 +3,37 @@ import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/default_timing_model.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/diet_plan_model.dart';
 import 'package:dietapp_a/x_customWidgets/alert_dialogue.dart';
+import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
+import 'package:dietapp_a/y_Active%20diet/models/active_timing_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-Future<void> addTimingPCalertW(BuildContext context) async {
+Future<void> addTimingPCalertW(
+    BuildContext context, bool isForActivePlan) async {
   List<DefaultTimingModel> ldtm = [];
   List<String> listTimingsInFire = [];
-  await pcc.currentPlanDR.value.get().then((docSnap) async {
-    if (docSnap.exists && docSnap.data() != null) {
-      DietPlanBasicInfoModel dpbim =
-          DietPlanBasicInfoModel.fromMap(docSnap.data()!);
-      ldtm = dpbim.defaultTimings;
-      await pcc.currentDayDR.value
-          .collection(dtmos.timings)
-          .get()
-          .then((value) {
-        listTimingsInFire = value.docs.map((e) {
-          Map<String, dynamic> map = e.data();
-          return map[dtmos.timingString].toString();
-        }).toList();
-      });
-    }
+  if (isForActivePlan) {
+    await dtmos.getDefaultTimings().then((value) {
+      ldtm = value;
+    });
+  } else {
+    await pcc.currentPlanDR.value.get().then((docSnap) async {
+      if (docSnap.exists && docSnap.data() != null) {
+        DietPlanBasicInfoModel dpbim =
+            DietPlanBasicInfoModel.fromMap(docSnap.data()!);
+        ldtm = dpbim.planDefaulTimings;
+      }
+    });
+  }
+  await pcc.currentDayDR.value.collection(dtmos.timings).get().then((value) {
+    listTimingsInFire = value.docs.map((e) {
+      Map<String, dynamic> map = e.data();
+      return map[dtmos.timingString].toString();
+    }).toList();
   });
 
-  List<String> listBt = ldtm.map((e) {
-    Map<String, dynamic> dm = e.toMap();
-    DefaultTimingModel dtm = DefaultTimingModel.fromMap(dm);
+  List<String> listBt = ldtm.map((dtm) {
     if (listTimingsInFire.contains(dtm.timingString)) {
       return "00";
     } else {
@@ -82,10 +86,16 @@ Future<void> addTimingPCalertW(BuildContext context) async {
                         if (!listTimingsInFire.contains(dtm.timingString)) {
                           await pcc.currentDayDR.value
                               .collection(dtmos.timings)
-                              .add(DefaultTimingModel(
-                                      timingName: dtm.timingName,
-                                      timingString: dtm.timingString)
-                                  .toMap())
+                              .add(isForActivePlan
+                                  ? ActiveTimingModel(
+                                          timingName: dtm.timingName,
+                                          timingString: dtm.timingString,
+                                          isPlanned: true)
+                                      .toMap()
+                                  : DefaultTimingModel(
+                                          timingName: dtm.timingName,
+                                          timingString: dtm.timingString)
+                                      .toMap())
                               .then((docRef) async {
                             pcc.currentTimingDR.value = docRef;
                           });
@@ -195,21 +205,49 @@ Future<void> addTimingPCalertW(BuildContext context) async {
                       Get.back();
 
                       if (!listTimingsInFire.contains(ts)) {
+                        if (isForActivePlan) {
+                          await pcc.currentDayDR.value
+                              .get()
+                              .then((dayDS) async {
+                            if (!dayDS.exists || dayDS.data() == null) {
+                              await pcc.currentDayDR.value.set(
+                                ActiveDayModel(
+                                        dayDate: admos.dateFromDayDR(
+                                            pcc.currentDayDR.value),
+                                        isPlanned: true,
+                                        dayName: null)
+                                    .toMap(),
+                                SetOptions(merge: true),
+                              );
+                            }
+                          });
+                        }
+
                         await pcc.currentDayDR.value
                             .collection(dtmos.timings)
-                            .add(DefaultTimingModel(
-                                    timingName: timingName.value,
-                                    timingString: ts)
-                                .toMap())
+                            .add(isForActivePlan
+                                ? ActiveTimingModel(
+                                        timingName: timingName.value,
+                                        timingString: ts,
+                                        isPlanned: true)
+                                    .toMap()
+                                : DefaultTimingModel(
+                                        timingName: timingName.value,
+                                        timingString: ts)
+                                    .toMap())
                             .then((value) async {
-                          ldtm.add(DefaultTimingModel(
-                              timingName: timingName.value, timingString: ts));
-                          await FirebaseFirestore.instance
-                              .doc(pcc.currentPlanDRpath.value)
-                              .update({
-                            dietpbims.defaultTimings:
-                                ldtm.map((e) => e.toMap()).toList()
-                          });
+                          if (!isForActivePlan) {
+                            ldtm.add(DefaultTimingModel(
+                                timingName: timingName.value,
+                                timingString: ts));
+                            await FirebaseFirestore.instance
+                                .doc(pcc.currentPlanDRpath.value)
+                                .update({
+                              dietpbims.planDefaultTimings:
+                                  ldtm.map((e) => e.toMap()).toList()
+                            });
+                          }
+
                           pcc.currentTimingDR.value = value;
                         });
                       }

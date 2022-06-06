@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
-import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
 import 'package:dietapp_a/app%20Constants/fire_ref.dart';
+import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
+import 'package:dietapp_a/y_Active%20diet/models/active_timing_model.dart';
 
 class DefaultTimingModel {
   String timingName;
@@ -107,7 +108,7 @@ class DefaultTimingModelObjects {
       SetOptions(merge: true),
     );
   }
-
+  //
   Future<List<DefaultTimingModel>> getDefaultTimings() async {
     var l =
         await userDR.collection(settings).doc(defaultTimings).get().then((doc) {
@@ -115,16 +116,24 @@ class DefaultTimingModelObjects {
         List? listMaps = doc.data()![unIndexed];
 
         if (listMaps != null) {
-          
           return listMaps
               .map((e) => DefaultTimingModel.fromMapOnly2(e))
               .toList();
         }
       }
     });
-    
 
-    return l ?? listDefaultTimingModels0;
+    return foodTimingsListSort(l ?? listDefaultTimingModels0);
+  }
+
+  DefaultTimingModel dtmFromATM(ActiveTimingModel atm) {
+    return DefaultTimingModel(
+      timingName: atm.timingName,
+      timingString: atm.timingString,
+      notes: atm.plannedNotes,
+      rumm: atm.prud,
+      docRef: atm.docRef,
+    );
   }
 }
 

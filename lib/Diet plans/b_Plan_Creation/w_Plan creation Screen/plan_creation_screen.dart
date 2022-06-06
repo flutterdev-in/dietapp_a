@@ -19,11 +19,13 @@ import 'package:getwidget/getwidget.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class PlanCreationScreen extends StatelessWidget {
-  PlanCreationScreen({Key? key}) : super(key: key);
+  final List<DefaultTimingModel> listDefaultTimingModels00;
+  PlanCreationScreen(this.listDefaultTimingModels00, {Key? key})
+      : super(key: key);
   final Rx<bool> isWeekPlan = true.obs;
   final Rx<String> planName = "Diet plan".obs;
   final Rx<String> notes = "".obs;
-  final listDefaultTimingModels = listDefaultTimingModels0.obs;
+  var listDefaultTimingModels = RxList<DefaultTimingModel>([]).obs;
 
   @override
   Widget build(BuildContext context) {
@@ -167,6 +169,8 @@ class PlanCreationScreen extends StatelessWidget {
   }
 
   Widget timingsW(BuildContext context) {
+    listDefaultTimingModels.value.addAll(listDefaultTimingModels00);
+
     return Card(
       child: Column(
         children: [
@@ -230,7 +234,7 @@ class PlanCreationScreen extends StatelessWidget {
                             onTap: () async {
                               await Future.delayed(
                                   const Duration(milliseconds: 200));
-                              listDefaultTimingModels.remove(dftm);
+                              listDefaultTimingModels.value.remove(dftm);
                             },
                           ),
                         ],
@@ -386,8 +390,8 @@ class PlanCreationScreen extends StatelessWidget {
                 notes: notes.value,
                 planCreationTime: timestampNow,
                 rumm: await rummfos.rummModel(refURL),
-                defaultTimings: listDefaultTimingModels.value,
-                defaultTimings0: listDefaultTimingModels.value)
+                planDefaulTimings: listDefaultTimingModels.value,
+               )
             .toMap())
         .then((planDocRef) async {
       pcc.currentPlanDR.value = planDocRef;

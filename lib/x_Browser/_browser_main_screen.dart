@@ -1,13 +1,14 @@
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
-import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/default_timing_model.dart';
+import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
 import 'package:dietapp_a/my%20foods/screens/Add%20food/constants/adf_const_variables.dart';
-import 'package:dietapp_a/x_Browser/controllers/browser_controllers.dart';
-import 'package:dietapp_a/x_Browser/controllers/rxvariables_for_count_button.dart';
 import 'package:dietapp_a/x_Browser/a_textfield_adfd.dart';
 import 'package:dietapp_a/x_Browser/ab_count_button_adfd.dart';
 import 'package:dietapp_a/x_Browser/b_web_view_adfd.dart';
 import 'package:dietapp_a/x_Browser/bb_menu_items_adfd.dart';
+import 'package:dietapp_a/x_Browser/controllers/browser_controllers.dart';
+import 'package:dietapp_a/x_Browser/controllers/rxvariables_for_count_button.dart';
+import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
@@ -32,7 +33,7 @@ class AddFoodScreen extends StatelessWidget {
       child: Scaffold(
         appBar: appBarW(context),
         body: Column(
-          children: [
+          children: const [
             Expanded(child: InAppWebViewWidget()),
           ],
         ),
@@ -74,10 +75,17 @@ class AddFoodScreen extends StatelessWidget {
               youtubeVideoLength: await rummfos.ytVideoLength(data.url),
             );
             if (pcc.isCombinedCreationScreen.value) {
-              await pcc.currentTimingDR.value.update({
-                dtmos.refUrlMetadata:
-                    bc.currentRefUrlMetadataModel.value.toMap()
-              });
+              if (pcc.currentDayDR.value.parent.id == admos.activeDaysPlan) {
+                await pcc.currentTimingDR.value.update({
+                  "$unIndexed.${adfos.prud}":
+                      bc.currentRefUrlMetadataModel.value.toMap()
+                });
+              } else {
+                await pcc.currentTimingDR.value.update({
+                  "$unIndexed.${rummfos.rumm}":
+                      bc.currentRefUrlMetadataModel.value.toMap()
+                });
+              }
             } else {
               bc.currentRefURLimageURL.value = data.image ?? "";
             }

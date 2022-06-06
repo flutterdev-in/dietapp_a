@@ -10,7 +10,7 @@ ActivePlanController apc = ActivePlanController();
 
 class ActivePlanController extends GetxController {
   final dt = DateTime.now().obs;
-  final currentActiveDayDR = admos.activeDayDR(DateTime.now()).obs;
+  final currentActiveDayDR = admos.activeDayDR(DateTime.now(),userUID).obs;
   final listCurrentActiveTimingModel = RxList<ActiveTimingModel>([]);
   final currentTimingString = "am0830".obs;
   final currentActiveTimingDR = userDR.obs;

@@ -1,10 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/colors.dart';
-import 'package:dietapp_a/app%20Constants/fire_ref.dart';
+import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/dartUtilities/day_string_from_date.dart';
-import 'package:dietapp_a/dartUtilities/day_weeks_functions.dart';
 import 'package:dietapp_a/x_customWidgets/month_calander.dart';
-import 'package:dietapp_a/y_Active%20diet/controllers/active_days_.dart';
 import 'package:dietapp_a/y_Active%20diet/controllers/active_plan_controller.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
 import 'package:flutter/material.dart';
@@ -40,31 +38,6 @@ class HomeScreen extends StatelessWidget {
                   ),
                   onTap: () async {
                     isCalendarEnabled.value = !isCalendarEnabled.value;
-                    if (isCalendarEnabled.value && mapDateADM.value.isEmpty) {
-                      var currentDate =
-                          admos.dateFromDayDR(apc.currentActiveDayDR.value);
-                      var sed = dayWeekFunctions.weekStartEndDates(currentDate);
-
-                      await userDR
-                          .collection(admos.activeDaysPlan)
-                          .where(admos.dayDate,
-                              isLessThanOrEqualTo: sed.endDate)
-                          .where(admos.dayDate,
-                              isGreaterThanOrEqualTo: sed.startDate)
-                          .limit(7)
-                          .get()
-                          .then((qs) {
-                        if (qs.docs.isNotEmpty) {
-                          mapDateADM.value.clear();
-                          for (var qds in qs.docs) {
-                            var date = admos.dateFromDayDR(qds.reference);
-                            mapDateADM.value.addAll({
-                              date: [ActiveDayModel.fromMap(qds.data())]
-                            });
-                          }
-                        }
-                      });
-                    }
                   },
                 ),
               ],
@@ -88,13 +61,16 @@ class HomeScreen extends StatelessWidget {
         onDaySelected: (selectedDate, focusedDate) async {
           apc.dt.value = focusedDate;
 
-          apc.currentActiveDayDR.value = admos.activeDayDR(focusedDate);
+          apc.currentActiveDayDR.value =
+              admos.activeDayDR(focusedDate, userUID);
           // await atmos.checkAndSetDefaultTimings(focusedDate);
         },
+        personUID: userUID,
         onCurrentCalanderPressed: () async {
           apc.dt.value = DateTime.now().add(const Duration(days: 1));
           apc.dt.value = DateTime.now();
-          apc.currentActiveDayDR.value = admos.activeDayDR(DateTime.now());
+          apc.currentActiveDayDR.value =
+              admos.activeDayDR(DateTime.now(), userUID);
         });
   }
 

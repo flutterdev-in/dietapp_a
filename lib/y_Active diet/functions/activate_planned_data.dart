@@ -4,12 +4,13 @@ import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/default_timing_mod
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/diet_plan_model.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/food_model_for_plan_creation.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/week_model.dart';
+import 'package:dietapp_a/app%20Constants/constant_objects.dart';
+import 'package:dietapp_a/app%20Constants/fire_ref.dart';
 import 'package:dietapp_a/y_Active%20diet/functions/active_model_from_planned_model.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_food_model.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_plan_model.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_timing_model.dart';
-import 'package:dietapp_a/app%20Constants/fire_ref.dart';
 
 ActivatePlannedData activatePlannedData = ActivatePlannedData();
 
@@ -178,7 +179,7 @@ class ActivatePlannedData {
       );
 
       await admos
-          .activeDayDR(date)
+          .activeDayDR(date,userUID)
           .set(adm.toMap(), SetOptions(merge: true))
           .then((value) async {
         await plannedDayDR.collection(dtmos.timings).get().then((tqs) async {
@@ -218,7 +219,7 @@ class ActivatePlannedData {
       var dtm = DefaultTimingModel.fromMap(map);
       var atm = amfpm.timingModel(dtm: dtm);
       var atmDR = admos
-          .activeDayDR(date)
+          .activeDayDR(date, userUID)
           .collection(atmos.timings)
           .doc(atm.timingString);
       await atmDR.set(atm.toMap(), SetOptions(merge: true)).then((value) async {

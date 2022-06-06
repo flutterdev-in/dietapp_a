@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
-import 'package:dietapp_a/app%20Constants/fire_ref.dart';
 import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
 import 'package:intl/intl.dart';
 
@@ -95,14 +94,23 @@ class ActiveDayModelObjects {
   }
 
   //
-  DocumentReference<Map<String, dynamic>> activeDayDR(DateTime date) {
+  DocumentReference<Map<String, dynamic>> activeDayDR(
+      DateTime date, String personUID) {
     String dateString = dayStringFromDate(date);
-
-    return userDR.collection(admos.activeDaysPlan).doc(dateString);
+    return FirebaseFirestore.instance
+        .collection(users)
+        .doc(personUID)
+        .collection(admos.activeDaysPlan)
+        .doc(dateString);
   }
 
   //
   DateTime dateFromDayDR(DocumentReference<Map<String, dynamic>> dayDR) {
     return DateTime.parse(dayDR.id);
+  }
+
+  //
+  DateTime dateZeroTime(DateTime date) {
+    return DateTime(date.year, date.month, date.day);
   }
 }

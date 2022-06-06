@@ -11,6 +11,7 @@ import 'package:dietapp_a/x_Browser/controllers/browser_controllers.dart';
 import 'package:dietapp_a/x_Browser/controllers/rxvariables_for_count_button.dart';
 import 'package:dietapp_a/x_customWidgets/alert_dialogue.dart';
 import 'package:dietapp_a/y_Active%20diet/controllers/active_plan_controller.dart';
+import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_food_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -36,7 +37,7 @@ class CountButtonAdfdW extends StatelessWidget {
           context,
           contentPadding: const EdgeInsets.fromLTRB(8.0, 10.0, 8.0, 10.0),
           body: Obx(
-            () => rxIndex % 1 != 0 ? listViewSelected() : editFoodDetailes(),
+            () => rxIndex % 1 != 0 ? listViewSelected() : editFoodDetails(),
           ),
         );
       },
@@ -171,24 +172,29 @@ class CountButtonAdfdW extends StatelessWidget {
                         FirebaseFirestore.instance
                             .collection(fcc.currentPathCR.value)
                             .add(fcm.toMap());
-                      } else if (bottomBarindex.value == 0 &&
-                          apc.currentActiveTimingDR.value != userDR) {
-                        apc.currentActiveTimingDR.value
-                            .collection(afmos.foods)
-                            .add(
-                              ActiveFoodModel(
-                                      foodTypeCamPlanUp: afmos.up,
-                                      isTaken: true,
-                                      foodAddedTime: DateTime.now(),
-                                      takenTime: DateTime.now(),
-                                      foodName: fcm.fieldName,
-                                      plannedNotes: fcm.notes,
-                                      takenNotes: null,
-                                      prud: null,
-                                      trud: fcm.rumm,
-                                      docRef: null)
-                                  .toMap(),
-                            );
+                      } else if (bottomBarindex.value == 0) {
+                        var afm = ActiveFoodModel(
+                            foodTypeCamPlanUp: afmos.up,
+                            isTaken: true,
+                            foodAddedTime: DateTime.now(),
+                            takenTime: DateTime.now(),
+                            foodName: fcm.fieldName,
+                            plannedNotes: fcm.notes,
+                            takenNotes: null,
+                            prud: null,
+                            trud: fcm.rumm,
+                            docRef: null);
+                        if (apc.currentActiveTimingDR.value != userDR) {
+                          apc.currentActiveTimingDR.value
+                              .collection(afmos.foods)
+                              .add(afm.toMap());
+                        }
+                        if (pcc.currentDayDR.value.parent.id ==
+                            admos.activeDaysPlan) {
+                          pcc.currentTimingDR.value
+                              .collection(afmos.foods)
+                              .add(afm.toMap());
+                        } else {}
                       }
                     }
                     await Future.delayed(const Duration(milliseconds: 900));
@@ -209,7 +215,7 @@ class CountButtonAdfdW extends StatelessWidget {
     );
   }
 
-  Widget editFoodDetailes() {
+  Widget editFoodDetails() {
     FoodsCollectionModel fdcm = adfc.addedFoodList.value[rxIndex.value.toInt()];
     TextEditingController tcName = TextEditingController();
     TextEditingController tcNotes = TextEditingController();
