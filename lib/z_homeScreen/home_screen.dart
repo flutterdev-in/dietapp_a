@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/Combined%20screen/_plan_creation_combined_screen.dart';
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
 import 'package:dietapp_a/app%20Constants/colors.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/dartUtilities/day_string_from_date.dart';
@@ -82,6 +84,7 @@ class HomeScreen extends StatelessWidget {
 
     var isBefore = selectedDate.isBefore(today);
     var difference = selectedDate.difference(today);
+    var isAfter = (todayString != apc.currentActiveDayDR.value.id && !isBefore);
 
     bool isEdit = false;
     if (todayString == apc.currentActiveDayDR.value.id || !isBefore) {
@@ -95,7 +98,21 @@ class HomeScreen extends StatelessWidget {
           backgroundColor: secondaryColor,
           mini: true,
           child: const Icon(MdiIcons.clipboardEditOutline),
-          onPressed: () {});
+          onPressed: () async {
+            if (!isBefore) {
+              pcc.currentDayDR.value = apc.currentActiveDayDR.value;
+
+              pcc.isCombinedCreationScreen.value = true;
+              Get.to(() => const PlanCreationCombinedScreen(
+                    isWeekWisePlan: false,
+                    isForActivePlan: true,
+                    isForSingleDayActive: true,
+                  ));
+
+              pcc.currentTimingDR.value =
+                  await pcc.getTimingDRfromDay(pcc.currentDayDR.value);
+            }
+          });
     } else {
       return null;
     }

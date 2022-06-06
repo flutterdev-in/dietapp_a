@@ -174,15 +174,15 @@ class CountButtonAdfdW extends StatelessWidget {
                             .add(fcm.toMap());
                       } else if (bottomBarindex.value == 0) {
                         var afm = ActiveFoodModel(
-                            foodTypeCamPlanUp: afmos.up,
-                            isTaken: true,
+                            foodTypeCamPlanUp: afmos.plan,
+                            isTaken: false,
                             foodAddedTime: DateTime.now(),
-                            takenTime: DateTime.now(),
+                            takenTime: null,
                             foodName: fcm.fieldName,
                             plannedNotes: fcm.notes,
                             takenNotes: null,
-                            prud: null,
-                            trud: fcm.rumm,
+                            prud: fcm.rumm,
+                            trud: null,
                             docRef: null);
                         if (apc.currentActiveTimingDR.value != userDR) {
                           apc.currentActiveTimingDR.value
@@ -194,7 +194,7 @@ class CountButtonAdfdW extends StatelessWidget {
                           pcc.currentTimingDR.value
                               .collection(afmos.foods)
                               .add(afm.toMap());
-                        } else {}
+                        }
                       }
                     }
                     await Future.delayed(const Duration(milliseconds: 900));

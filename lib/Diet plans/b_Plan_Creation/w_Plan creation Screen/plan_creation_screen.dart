@@ -399,6 +399,7 @@ class PlanCreationScreen extends StatelessWidget {
       pcc.currentDayDR.value = userDR;
       Get.back();
       Get.to(PlanCreationCombinedScreen(
+        isForActivePlan: false,
         isWeekWisePlan: isWeekPlan.value,
       ));
 

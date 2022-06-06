@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/diet_plan_model.dart';
 import 'package:dietapp_a/Diet%20plans/c_diet_view/diet_view_widget.dart';
+import 'package:dietapp_a/y_Active%20diet/models/active_timing_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
@@ -19,11 +20,13 @@ import 'top rows/weeks_row.dart';
 class PlanCreationCombinedScreen extends StatelessWidget {
   final bool isWeekWisePlan;
   final bool isForActivePlan;
+  final bool isForSingleDayActive;
 
   const PlanCreationCombinedScreen({
     Key? key,
-    this.isForActivePlan = false,
+    required this.isForActivePlan,
     required this.isWeekWisePlan,
+    this.isForSingleDayActive = false,
   }) : super(key: key);
 
   @override
@@ -52,7 +55,7 @@ class PlanCreationCombinedScreen extends StatelessWidget {
                   // Get.to(() => DietPlanViewScreen());
                 },
                 child: Obx(() => Text(
-                      pcc.isPlanView.value ? "Edit" : "View",
+                      pcc.isPlanView.value ? "Edit\nmode" : "View\nmode",
                       style: const TextStyle(color: Colors.white),
                     ))),
             MenuItemsPC(
@@ -62,7 +65,10 @@ class PlanCreationCombinedScreen extends StatelessWidget {
         ),
         body: Obx(
           () => pcc.isPlanView.value
-              ? DietPlanViewW(isWeekWisePlan: isWeekWisePlan)
+              ? DietPlanViewW(
+                  isForActivePlan: isForActivePlan,
+                  isForSingleDayActive: isForSingleDayActive,
+                  isWeekWisePlan: isWeekWisePlan)
               : isForActivePlan
                   ? forActive()
                   : forNonActive(),
@@ -76,7 +82,7 @@ class PlanCreationCombinedScreen extends StatelessWidget {
           if (snapshot.hasData && snapshot.data!.exists) {
             return Column(
               children: [
-                const DaysRowForActivePlan(),
+                DaysRowForActivePlan(isForSingleDayActive),
                 const TimingsRow000PlanCreationCombinedScreen(),
                 Expanded(
                   child: ListView(
@@ -92,9 +98,27 @@ class PlanCreationCombinedScreen extends StatelessWidget {
             );
           } else {
             return Column(
-              children: const [
-                DaysRowForActivePlan(),
-                Text("Diet not planned for this day"),
+              children: [
+                DaysRowForActivePlan(isForSingleDayActive),
+                Column(
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text("Diet not planned for this day"),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: GFButton(
+                          onPressed: () async {
+                            await atmos
+                                .activateDefaultTimings(pcc.currentDayDR.value);
+                            pcc.currentTimingDR.value = await pcc
+                                .getTimingDRfromDay(pcc.currentDayDR.value);
+                          },
+                          child: const Text("Plan now")),
+                    ),
+                  ],
+                ),
               ],
             );
           }

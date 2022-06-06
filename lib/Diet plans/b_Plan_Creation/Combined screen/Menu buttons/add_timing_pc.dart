@@ -84,6 +84,23 @@ Future<void> addTimingPCalertW(
                         Get.back();
 
                         if (!listTimingsInFire.contains(dtm.timingString)) {
+                          if (isForActivePlan) {
+                            await pcc.currentDayDR.value
+                                .get()
+                                .then((dayDS) async {
+                              if (!dayDS.exists || dayDS.data() == null) {
+                                await pcc.currentDayDR.value.set(
+                                  ActiveDayModel(
+                                          dayDate: admos.dateFromDayDR(
+                                              pcc.currentDayDR.value),
+                                          isPlanned: true,
+                                          dayName: null)
+                                      .toMap(),
+                                  SetOptions(merge: true),
+                                );
+                              }
+                            });
+                          }
                           await pcc.currentDayDR.value
                               .collection(dtmos.timings)
                               .add(isForActivePlan

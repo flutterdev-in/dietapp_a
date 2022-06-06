@@ -324,6 +324,10 @@ class MenuItemsPC extends StatelessWidget {
         await dr.reference.delete();
       }
     });
+
+    if (isForActivePlan) {
+      await pcc.currentDayDR.value.delete();
+    }
   }
 
   Future<void> deletePlan() async {

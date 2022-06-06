@@ -1,3 +1,5 @@
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/Combined%20screen/_plan_creation_combined_screen.dart';
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
 import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
 import 'package:dietapp_a/app%20Constants/url/ref_url_widget.dart';
 import 'package:dietapp_a/x_customWidgets/alert_dialogue.dart';
@@ -93,7 +95,21 @@ class TimingViewHomeScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: GFButton(
-                onPressed: () {},
+                onPressed: () async {
+                  if (isAfter) {
+                    pcc.currentDayDR.value = apc.currentActiveDayDR.value;
+
+                    pcc.isCombinedCreationScreen.value = true;
+                    Get.to(() => const PlanCreationCombinedScreen(
+                          isWeekWisePlan: false,
+                          isForActivePlan: true,
+                          isForSingleDayActive: true,
+                        ));
+                    await atmos.activateDefaultTimings(pcc.currentDayDR.value);
+                    pcc.currentTimingDR.value =
+                        await pcc.getTimingDRfromDay(pcc.currentDayDR.value);
+                  }
+                },
                 child: Text(isAfter ? "Plan now" : "Make a note")),
           ),
         ],

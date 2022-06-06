@@ -101,7 +101,7 @@ class ActiveTimingModelObjects {
   var basicModel = ActiveTimingModel(
       timingName: "BreakFast", timingString: "am0830", isPlanned: true);
 
-      //
+  //
   Future<void> setDefaultTimings(
       DocumentReference<Map<String, dynamic>> activeDayDR) async {
     await dtmos.getDefaultTimings().then((listDTMs) async {
@@ -109,7 +109,7 @@ class ActiveTimingModelObjects {
         await activeDayDR
             .collection(atmos.timings)
             .doc(i.timingString)
-            .set(amfpm.timingModel(dtm: i).toMap());
+            .set(amfpm.timingModel(dtm: i).toMap(), SetOptions(merge: true));
       }
     });
   }
@@ -125,22 +125,12 @@ class ActiveTimingModelObjects {
                 .toMap(),
             SetOptions(merge: true))
         .then((value) async {
-      await dtmos.getDefaultTimings().then((listDTM) async {
-        for (var dtm in listDTM) {
-          await dayDR.set(
-              ActiveTimingModel(
-                      timingName: dtm.timingName,
-                      timingString: dtm.timingString,
-                      isPlanned: false)
-                  .toMap(),
-              SetOptions(merge: true));
-        }
-      });
+      await setDefaultTimings(dayDR);
     });
   }
 
   Future<void> checkAndSetDefaultTimings(DateTime dayDate) async {
-    var activeDayDR = admos.activeDayDR(dayDate,userUID);
+    var activeDayDR = admos.activeDayDR(dayDate, userUID);
     await activeDayDR.get().then((ds) async {
       if (!ds.exists || ds.data() == null) {
         await activeDayDR

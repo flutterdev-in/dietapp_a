@@ -79,6 +79,7 @@ class ListDietPlansW extends StatelessWidget {
                 pcc.isCombinedCreationScreen.value = true;
                 Get.to(() => PlanCreationCombinedScreen(
                       isWeekWisePlan: dpbim.isWeekWisePlan,
+                      isForActivePlan: false,
                     ));
               });
             },
