@@ -10,24 +10,18 @@ class ActiveTimingModel {
   String timingName;
   String timingString;
 
-  bool? isPlanned;
-  bool? isTaken;
-  String? plannedNotes;
-  String? takenNotes;
-  RefUrlMetadataModel? prud;
-  RefUrlMetadataModel? trud;
+  String? notes;
+
+  RefUrlMetadataModel? rumm;
+
   DocumentReference<Map<String, dynamic>>? docRef;
 
   //
   ActiveTimingModel({
     required this.timingName,
     required this.timingString,
-    required this.isPlanned,
-    this.isTaken,
-    this.plannedNotes,
-    this.takenNotes,
-    this.prud,
-    this.trud,
+    this.notes,
+    this.rumm,
     this.docRef,
   });
 
@@ -35,16 +29,11 @@ class ActiveTimingModel {
     Map<String, dynamic> returnMap = {
       atmos.timingName: timingName,
       atmos.timingString: timingString,
-      unIndexed: {
-        adfos.isPlanned: isPlanned,
-      }
+      unIndexed: {}
     };
     Map<String, dynamic> nullChaeckValues = {
-      adfos.isTaken: isTaken,
-      adfos.plannedNotes: plannedNotes,
-      adfos.takenNotes: takenNotes,
-      adfos.prud: prud?.toMap(),
-      adfos.trud: trud?.toMap(),
+      notes0: notes,
+      rummfos.rumm: rumm?.toMap(),
       docRef0: docRef,
     };
 
@@ -61,12 +50,8 @@ class ActiveTimingModel {
     return ActiveTimingModel(
       timingName: docMap[atmos.timingName] ?? "",
       timingString: docMap[atmos.timingString],
-      isPlanned: docMap[unIndexed][adfos.isPlanned],
-      isTaken: docMap[unIndexed][adfos.isTaken],
-      plannedNotes: docMap[unIndexed][adfos.plannedNotes],
-      takenNotes: docMap[unIndexed][adfos.takenNotes],
-      prud: rummfos.rummFromRummMap(docMap[unIndexed][adfos.prud]),
-      trud: rummfos.rummFromRummMap(docMap[unIndexed][adfos.trud]),
+      notes: docMap[notes0],
+      rumm: rummfos.rummFromRummMap(docMap[unIndexed][rummfos.rumm]),
       docRef: docMap[unIndexed][docRef0],
     );
   }
@@ -98,8 +83,8 @@ class ActiveTimingModelObjects {
     return Timestamp.fromDate(dt);
   }
 
-  var basicModel = ActiveTimingModel(
-      timingName: "BreakFast", timingString: "am0830", isPlanned: true);
+  var basicModel =
+      ActiveTimingModel(timingName: "BreakFast", timingString: "am0830");
 
   //
   Future<void> setDefaultTimings(
@@ -120,8 +105,8 @@ class ActiveTimingModelObjects {
         .set(
             ActiveDayModel(
                     dayDate: DateTime.parse(dayDR.id),
-                    isPlanned: false,
-                    dayName: null)
+                    
+                    )
                 .toMap(),
             SetOptions(merge: true))
         .then((value) async {
@@ -137,9 +122,8 @@ class ActiveTimingModelObjects {
             .set(
                 ActiveDayModel(
                         dayDate: DateTime.parse(activeDayDR.id),
-                        isPlanned: false,
-                        dayName: activeDayDR.id)
-                    .toMapOnly2(),
+                        )
+                    .toMapOnlyDate(),
                 SetOptions(merge: true))
             .then((value) async {
           await setDefaultTimings(activeDayDR);

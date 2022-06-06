@@ -91,11 +91,9 @@ Future<void> addTimingPCalertW(
                               if (!dayDS.exists || dayDS.data() == null) {
                                 await pcc.currentDayDR.value.set(
                                   ActiveDayModel(
-                                          dayDate: admos.dateFromDayDR(
-                                              pcc.currentDayDR.value),
-                                          isPlanned: true,
-                                          dayName: null)
-                                      .toMap(),
+                                    dayDate: admos
+                                        .dateFromDayDR(pcc.currentDayDR.value),
+                                  ).toMap(),
                                   SetOptions(merge: true),
                                 );
                               }
@@ -105,10 +103,9 @@ Future<void> addTimingPCalertW(
                               .collection(dtmos.timings)
                               .add(isForActivePlan
                                   ? ActiveTimingModel(
-                                          timingName: dtm.timingName,
-                                          timingString: dtm.timingString,
-                                          isPlanned: true)
-                                      .toMap()
+                                      timingName: dtm.timingName,
+                                      timingString: dtm.timingString,
+                                    ).toMap()
                                   : DefaultTimingModel(
                                           timingName: dtm.timingName,
                                           timingString: dtm.timingString)
@@ -229,11 +226,9 @@ Future<void> addTimingPCalertW(
                             if (!dayDS.exists || dayDS.data() == null) {
                               await pcc.currentDayDR.value.set(
                                 ActiveDayModel(
-                                        dayDate: admos.dateFromDayDR(
-                                            pcc.currentDayDR.value),
-                                        isPlanned: true,
-                                        dayName: null)
-                                    .toMap(),
+                                  dayDate: admos
+                                      .dateFromDayDR(pcc.currentDayDR.value),
+                                ).toMap(),
                                 SetOptions(merge: true),
                               );
                             }
@@ -244,10 +239,9 @@ Future<void> addTimingPCalertW(
                             .collection(dtmos.timings)
                             .add(isForActivePlan
                                 ? ActiveTimingModel(
-                                        timingName: timingName.value,
-                                        timingString: ts,
-                                        isPlanned: true)
-                                    .toMap()
+                                    timingName: timingName.value,
+                                    timingString: ts,
+                                  ).toMap()
                                 : DefaultTimingModel(
                                         timingName: timingName.value,
                                         timingString: ts)

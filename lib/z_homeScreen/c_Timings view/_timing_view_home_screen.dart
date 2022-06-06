@@ -5,7 +5,6 @@ import 'package:dietapp_a/app%20Constants/url/ref_url_widget.dart';
 import 'package:dietapp_a/x_customWidgets/alert_dialogue.dart';
 import 'package:dietapp_a/y_Active%20diet/controllers/active_plan_controller.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
-import 'package:dietapp_a/y_Active%20diet/models/active_food_model.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_timing_model.dart';
 import 'package:dietapp_a/z_homeScreen/c_Timings%20view/a_timings_row_home_screen.dart';
 import 'package:expandable_text/expandable_text.dart';
@@ -45,24 +44,17 @@ class TimingViewHomeScreen extends StatelessWidget {
                 children: [
                   TimingsRowHomeScreen(atm: atm),
                   CamPicturesTimingsView(atm: atm),
-                  if (atm.prud != null)
+                  if (atm.rumm != null)
                     RefURLWidget(
-                      refUrlMetadataModel: atm.prud ?? rummfos.constModel,
+                      refUrlMetadataModel: atm.rumm ?? rummfos.constModel,
                       editingIconRequired: editingIconRequired,
                     ),
-                  if (atm.plannedNotes != null && atm.plannedNotes != "")
-                    Card(
-                        child: SizedBox(
-                      child: Text(atm.plannedNotes!),
-                      width: double.maxFinite,
-                    )),
-                  if (atm.takenNotes != null && atm.takenNotes != "")
+                  if (atm.notes != null && atm.notes != "")
                     takenNotes(context, atm),
                   Container(
                       color: Colors.green.shade50,
-                      child: FoodsListTimingsView(
-                          atm: atm, foodTypePlanUp: afmos.up)),
-                  FoodsListTimingsView(atm: atm, foodTypePlanUp: afmos.plan),
+                      child: FoodsListTimingsView(atm: atm, isCamFood: true)),
+                  FoodsListTimingsView(atm: atm, isCamFood: false),
                 ],
               ),
             );
@@ -163,7 +155,7 @@ class TimingViewHomeScreen extends StatelessWidget {
                 },
               ),
               ExpandableText(
-                atm.takenNotes!,
+                atm.notes!,
                 expandOnTextTap: true,
                 collapseOnTextTap: true,
                 maxLines: 2,

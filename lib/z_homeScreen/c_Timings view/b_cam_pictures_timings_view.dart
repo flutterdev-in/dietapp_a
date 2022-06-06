@@ -20,7 +20,7 @@ class CamPicturesTimingsView extends StatelessWidget {
     return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
         stream: atm.docRef!
             .collection(fmfpcfos.foods)
-            .where(afmos.foodTypeCamPlanUp, isEqualTo: afmos.cam)
+            .where(afmos.isCamFood, isEqualTo: true)
             .orderBy(afmos.foodAddedTime)
             .snapshots(),
         builder: (context, snapshot) {
@@ -55,7 +55,7 @@ class CamPicturesTimingsView extends StatelessWidget {
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(5),
                                   child: CachedNetworkImage(
-                                    imageUrl: afm.trud!.img!,
+                                    imageUrl: afm.rumm!.img!,
                                     errorWidget: (context, url, error) =>
                                         const Text("data"),
                                   ),
@@ -93,7 +93,7 @@ class CamPicturesTimingsView extends StatelessWidget {
                                 body: Column(
                                   children: [
                                     CachedNetworkImage(
-                                      imageUrl: afm.trud!.img!,
+                                      imageUrl: afm.rumm!.img!,
                                       errorWidget: (context, url, error) =>
                                           const Text("data"),
                                     ),
@@ -128,55 +128,6 @@ class CamPicturesTimingsView extends StatelessWidget {
                       );
                     }),
               ),
-              // child: SingleChildScrollView(
-              //   child: Row(
-              //     children: listAFM.mapIndexed((index, afm) {
-              //       var time = DateFormat("hh:mm a")
-              //           .format(afm.takenTime ?? DateTime.now());
-              //       return Padding(
-              //         padding: const EdgeInsets.all(8.0),
-              //         child: InkWell(
-              //             child: SizedBox(
-              //               height: 100,
-              //               width: 100,
-              //               child: Stack(
-              //                 alignment: Alignment.bottomRight,
-              //                 children: [
-              //                   ClipRRect(
-              //                     borderRadius: BorderRadius.circular(5),
-              //                     child: CachedNetworkImage(
-              //                       imageUrl: afm.trud!.img!,
-              //                       errorWidget: (context, url, error) =>
-              //                           const Text("data"),
-              //                     ),
-              //                   ),
-              //                   Padding(
-              //                     padding: const EdgeInsets.all(1.0),
-              //                     child: Container(
-              //                       color: Colors.black,
-              //                       child: Padding(
-              //                         padding: const EdgeInsets.all(1.0),
-              //                         child: Text(
-              //                           time,
-              //                           textScaleFactor: 0.8,
-              //                           style: const TextStyle(
-              //                               color: Colors.white),
-              //                         ),
-              //                       ),
-              //                     ),
-              //                   )
-              //                 ],
-              //               ),
-              //             ),
-              //             onTap: () {
-              //               Get.to(() => MultiImageViewerScreen(
-              //                   listAFM: listAFM, initialIndex: index));
-              //               // ImageViewerScreen(imgUrl: imgUrl));
-              //             }),
-              //       );
-              //     }).toList(),
-              //   ),
-              // ),
             );
           } else {
             return const SizedBox();

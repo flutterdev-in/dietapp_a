@@ -66,8 +66,8 @@ class FoodsModelForPlanCreationFinalObjects {
     return FoodsModelForPlanCreation(
       foodAddedTime: Timestamp.fromDate(afm.foodAddedTime ?? DateTime.now()),
       foodName: afm.foodName,
-      notes: afm.plannedNotes ?? afm.takenNotes,
-      rumm: afm.prud ?? afm.trud,
+      notes: afm.notes ,
+      rumm: afm.rumm ,
       docRef: afm.docRef,
     );
   }

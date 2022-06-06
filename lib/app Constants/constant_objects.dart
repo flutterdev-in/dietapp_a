@@ -15,6 +15,9 @@ const String youtubeURL = "youtube.com";
 const String mYoutubeCom = "https://m.youtube.com/";
 final Timestamp timestampNow = Timestamp.fromDate(DateTime.now());
 
+//
+const notes0 = "notes";
+
 final ImagePicker imagePicker = ImagePicker();
 final isLoading = false.obs;
 const String settings = "settings";

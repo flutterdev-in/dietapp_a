@@ -63,7 +63,7 @@ class _MultiImageViewerScreenState extends State<MultiImageViewerScreen> {
                   initialScale: PhotoViewComputedScale.contained,
                   minScale: PhotoViewComputedScale.contained * 0.2,
                   maxScale: PhotoViewComputedScale.contained * 2,
-                  imageProvider: CachedNetworkImageProvider(afm.trud!.img!));
+                  imageProvider: CachedNetworkImageProvider(afm.rumm!.img!));
             },
             onPageChanged: (index) {
               rxIndex.value = index;

@@ -21,15 +21,15 @@ class DayUrlNotesViewHS extends StatelessWidget {
 
             return Column(
               children: [
-                if (dm.prud != null)
+                if (dm.rumm != null)
                   GFListTile(
                     avatar:
-                        URLavatar(imgURL: dm.prud?.img, webURL: dm.prud?.url),
+                        URLavatar(imgURL: dm.rumm?.img, webURL: dm.rumm?.url),
                   ),
-                if (dm.plannedNotes != null)
+                if (dm.notes != null)
                   ExpandablePanel(
-                      collapsed: Text(dm.plannedNotes!, maxLines: 1),
-                      expanded: Text(dm.plannedNotes!)),
+                      collapsed: Text(dm.notes!, maxLines: 1),
+                      expanded: Text(dm.notes!)),
               ],
             );
           } else {

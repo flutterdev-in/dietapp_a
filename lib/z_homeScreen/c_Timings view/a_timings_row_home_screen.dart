@@ -40,7 +40,7 @@ class TimingsRowHomeScreen extends StatelessWidget {
                         await camPicPhotoUploadFunction(context, atm.docRef!);
                       }
                     },
-                    icon: Icon(atm.takenNotes == null
+                    icon: Icon(atm.notes == null
                         ? MdiIcons.textBoxPlusOutline
                         : MdiIcons.playlistEdit)),
                 // MenuItemsTimingViewHS(atm),

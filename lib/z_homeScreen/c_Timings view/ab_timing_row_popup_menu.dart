@@ -39,7 +39,7 @@ class MenuItemsTimingViewHS extends StatelessWidget {
                 },
                 child: SizedBox(
                     width: double.maxFinite,
-                    child: Text(atm.plannedNotes == null
+                    child: Text(atm.notes == null
                         ? "Add planned notes"
                         : "Edit planned notes")),
               ),
@@ -55,7 +55,7 @@ class MenuItemsTimingViewHS extends StatelessWidget {
                   },
                   child: SizedBox(
                       width: double.maxFinite,
-                      child: Text(atm.takenNotes == null
+                      child: Text(atm.notes == null
                           ? "Add taken notes"
                           : "Edit taken notes")),
                 ),
@@ -99,10 +99,10 @@ class MenuItemsTimingViewHS extends StatelessWidget {
 
   void addNotes(BuildContext context, {required bool isForPlanned}) {
     var tc = TextEditingController();
-    if (isForPlanned && atm.plannedNotes != null) {
-      tc.text = atm.plannedNotes!;
-    } else if (!isForPlanned && atm.takenNotes != null) {
-      tc.text = atm.takenNotes!;
+    if (isForPlanned && atm.notes != null) {
+      tc.text = atm.notes!;
+    } else if (!isForPlanned && atm.notes != null) {
+      tc.text = atm.notes!;
     }
     alertDialogW(context,
         body: Column(

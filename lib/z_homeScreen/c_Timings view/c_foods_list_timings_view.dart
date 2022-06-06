@@ -13,9 +13,9 @@ import '../../y_Active diet/controllers/active_plan_controller.dart';
 
 class FoodsListTimingsView extends StatelessWidget {
   final ActiveTimingModel atm;
-  final String foodTypePlanUp;
+  final bool isCamFood;
   const FoodsListTimingsView(
-      {Key? key, required this.atm, required this.foodTypePlanUp})
+      {Key? key, required this.atm, required this.isCamFood})
       : super(key: key);
 
   @override
@@ -27,7 +27,7 @@ class FoodsListTimingsView extends StatelessWidget {
         physics: const ClampingScrollPhysics(),
         query: atm.docRef!
             .collection(fmfpcfos.foods)
-            .where(afmos.foodTypeCamPlanUp, isEqualTo: foodTypePlanUp),
+            .where(afmos.isCamFood, isEqualTo: isCamFood),
         itemBuilder: (context, fdoc) {
           ActiveFoodModel fm = ActiveFoodModel.fromMap(fdoc.data());
 
@@ -35,12 +35,12 @@ class FoodsListTimingsView extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(5, 5, 0, 0),
             margin: const EdgeInsets.symmetric(vertical: 3, horizontal: 0),
             avatar: URLavatar(
-                imgURL: fm.trud?.img ?? fm.prud?.img,
-                webURL: fm.trud?.url ?? fm.prud?.url),
+                imgURL: fm.rumm?.img,
+                webURL: fm.rumm?.url),
             title: Text(fm.foodName, maxLines: 2),
-            subTitleText: (fm.plannedNotes == null || fm.plannedNotes == "")
+            subTitleText: (fm.notes == null || fm.notes == "")
                 ? null
-                : fm.plannedNotes,
+                : fm.notes,
             icon: Row(
               children: [
                 if (dayDiffer < 1 && dayDiffer > -8)

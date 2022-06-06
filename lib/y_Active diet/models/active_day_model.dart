@@ -5,44 +5,27 @@ import 'package:intl/intl.dart';
 
 class ActiveDayModel {
   DateTime dayDate;
-  String? dayName;
-  bool isPlanned;
-
-  bool? isTaken;
-  String? plannedNotes;
-  String? takenNotes;
-  RefUrlMetadataModel? prud;
-  RefUrlMetadataModel? trud;
+  String? notes;
+  RefUrlMetadataModel? rumm;
   DocumentReference<Map<String, dynamic>>? docRef;
 
   //
   ActiveDayModel({
     required this.dayDate,
-    required this.isPlanned,
-    required this.dayName,
-    this.isTaken,
-    this.plannedNotes,
-    this.takenNotes,
-    this.prud,
-    this.trud,
+     this.notes,
+     this.rumm,
     this.docRef,
   });
 
   Map<String, dynamic> toMap() {
     Map<String, dynamic> returnMap = {
       admos.dayDate: Timestamp.fromDate(dayDate),
-      unIndexed: {
-        adfos.isPlanned: isPlanned,
-      }
+      unIndexed: {}
     };
 
     Map<String, dynamic> nullChaeckValues = {
-      admos.dayName: dayName,
-      adfos.isTaken: isTaken,
-      adfos.plannedNotes: plannedNotes,
-      adfos.takenNotes: takenNotes,
-      adfos.prud: prud?.toMap(),
-      adfos.trud: trud?.toMap(),
+      notes0: notes,
+      rummfos.rumm: rumm?.toMap(),
       docRef0: docRef,
     };
 
@@ -55,25 +38,17 @@ class ActiveDayModel {
     return returnMap;
   }
 
-  Map<String, dynamic> toMapOnly2() {
+  Map<String, dynamic> toMapOnlyDate() {
     return {
       admos.dayDate: Timestamp.fromDate(dayDate),
-      unIndexed: {
-        adfos.isPlanned: isPlanned,
-      }
     };
   }
 
   factory ActiveDayModel.fromMap(Map docMap) {
     return ActiveDayModel(
       dayDate: docMap[admos.dayDate].toDate(),
-      dayName: docMap[admos.dayName],
-      isPlanned: docMap[unIndexed][adfos.isPlanned],
-      isTaken: docMap[unIndexed][adfos.isTaken],
-      plannedNotes: docMap[unIndexed][adfos.plannedNotes],
-      takenNotes: docMap[unIndexed][adfos.takenNotes],
-      prud: rummfos.rummFromRummMap(docMap[unIndexed][adfos.prud]),
-      trud: rummfos.rummFromRummMap(docMap[unIndexed][adfos.trud]),
+      notes: docMap[notes0],
+      rumm: rummfos.rummFromRummMap(docMap[unIndexed][rummfos.rumm]),
       docRef: docMap[unIndexed][docRef0],
     );
   }
@@ -83,8 +58,6 @@ final ActiveDayModelObjects admos = ActiveDayModelObjects();
 
 class ActiveDayModelObjects {
   final String dayDate = "dayDate";
-  final String dayName = "dayName";
-  final String refPlanDR = "refPlanDR";
   final String activeDaysPlan = "activeDaysPlan";
   final DateFormat dayFormat = DateFormat("yyyyMMdd");
 

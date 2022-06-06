@@ -84,15 +84,15 @@ class PlanCreationController {
     if (pcc.currentDayDR.value.parent.id == admos.activeDaysPlan) {
       await pcc.currentTimingDR.value.collection(afmos.foods).add(
           ActiveFoodModel(
-                  foodTypeCamPlanUp: afmos.plan,
+                  isCamFood: false,
                   isTaken: false,
                   foodAddedTime: DateTime.now(),
                   takenTime: null,
                   foodName: fcm.fieldName,
-                  plannedNotes: fcm.notes,
-                  takenNotes: null,
-                  prud: fcm.rumm,
-                  trud: null,
+                  notes: fcm.notes,
+             
+                  rumm: fcm.rumm,
+                
                   docRef: null)
               .toMap());
     } else {

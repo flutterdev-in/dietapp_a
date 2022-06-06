@@ -55,7 +55,7 @@ class TimingsViewDietRoom extends StatelessWidget {
   }
 
   Widget timingsView(ActiveTimingModel atm) {
-    RefUrlMetadataModel rumm = atm.prud ?? rummfos.constModel;
+    RefUrlMetadataModel rumm = atm.rumm ?? rummfos.constModel;
 
     return Card(
       child: Column(
@@ -71,15 +71,15 @@ class TimingsViewDietRoom extends StatelessWidget {
               style: const TextStyle(color: Colors.red),
             ),
           ),
-          if (atm.prud != null)
+          if (atm.rumm != null)
             RefURLWidget(
               refUrlMetadataModel: rumm,
               editingIconRequired: editingIconRequired,
             ),
-          if (atm.plannedNotes != null && atm.plannedNotes != "")
+          if (atm.notes != null && atm.notes != "")
             Card(
                 child: SizedBox(
-              child: Text(atm.plannedNotes!),
+              child: Text(atm.notes!),
               width: double.maxFinite,
             )),
           FirestoreListView<Map<String, dynamic>>(
@@ -97,14 +97,14 @@ class TimingsViewDietRoom extends StatelessWidget {
                   margin:
                       const EdgeInsets.symmetric(vertical: 3, horizontal: 0),
                   avatar: URLavatar(
-                      imgURL: fm.prud?.img ?? fm.trud?.img,
-                      webURL: fm.prud?.url ?? fm.trud?.url),
+                      imgURL: fm.rumm?.img,
+                      webURL: fm.rumm?.url ),
                   title: Text(fm.foodName, maxLines: 1),
                   icon: fm.isTaken ? const Icon(MdiIcons.accountCheck) : null,
                   subTitleText:
-                      (fm.plannedNotes == null || fm.plannedNotes == "")
+                      (fm.notes == null || fm.notes == "")
                           ? null
-                          : fm.plannedNotes,
+                          : fm.notes,
                 );
               }),
         ],

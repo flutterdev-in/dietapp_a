@@ -130,9 +130,9 @@ class DefaultTimingModelObjects {
     return DefaultTimingModel(
       timingName: atm.timingName,
       timingString: atm.timingString,
-      notes: atm.plannedNotes,
-      rumm: atm.prud,
-      docRef: atm.docRef,
+      notes: atm.notes,
+      rumm: atm.rumm,
+      docRef: null,
     );
   }
 }

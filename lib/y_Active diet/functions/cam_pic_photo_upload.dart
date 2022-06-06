@@ -35,15 +35,15 @@ Future<void> camPicPhotoUploadFunction(
 
           await ts.ref.getDownloadURL().then((url) async {
             ActiveFoodModel afm = ActiveFoodModel(
-                foodTypeCamPlanUp: afmos.cam,
+              isCamFood: true,
                 isTaken: true,
                 foodAddedTime: DateTime.now(),
                 takenTime: DateTime.now(),
                 foodName: dateTimeString,
-                plannedNotes: null,
-                takenNotes: null,
-                prud: null,
-                trud: RefUrlMetadataModel(
+              
+                notes: null,
+       
+                rumm: RefUrlMetadataModel(
                     url: "",
                     img: url,
                     title: dateTimeString,
