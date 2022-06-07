@@ -4,7 +4,7 @@ import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
 
 class ActiveFoodModel {
   bool isCamFood;
-  bool isTaken;
+
   String foodName;
   DateTime? foodAddedTime;
   DateTime? takenTime;
@@ -16,7 +16,6 @@ class ActiveFoodModel {
 
   ActiveFoodModel({
     required this.isCamFood,
-    required this.isTaken,
     required this.foodAddedTime,
     required this.takenTime,
     required this.foodName,
@@ -27,7 +26,6 @@ class ActiveFoodModel {
   Map<String, dynamic> toMap() {
     Map<String, dynamic> returnMap = {
       afmos.isCamFood: isCamFood,
-      adfos.isTaken: isTaken,
       afmos.foodAddedTime: foodAddedTime?.millisecondsSinceEpoch,
       afmos.foodName: foodName,
       unIndexed: {}
@@ -53,7 +51,6 @@ class ActiveFoodModel {
   factory ActiveFoodModel.fromMap(Map<String, dynamic> docMap) {
     return ActiveFoodModel(
       isCamFood: docMap[afmos.isCamFood],
-      isTaken: docMap[adfos.isTaken],
       foodAddedTime:
           DateTime.fromMillisecondsSinceEpoch(docMap[afmos.foodAddedTime]),
       takenTime: docMap[afmos.takenTime]?.toDate(),

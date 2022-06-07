@@ -12,7 +12,6 @@ class ActiveModelFromPlannedModel {
   ActiveFoodModel foodModel(FoodsModelForPlanCreation pfm) {
     return ActiveFoodModel(
       isCamFood: false,
-      isTaken: false,
       foodAddedTime: pfm.foodAddedTime.toDate(),
       takenTime: null,
       foodName: pfm.foodName,

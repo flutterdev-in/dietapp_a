@@ -50,7 +50,7 @@ class ActiveTimingModel {
     return ActiveTimingModel(
       timingName: docMap[atmos.timingName] ?? "",
       timingString: docMap[atmos.timingString],
-      notes: docMap[notes0],
+      notes: docMap[unIndexed][notes0],
       rumm: rummfos.rummFromRummMap(docMap[unIndexed][rummfos.rumm]),
       docRef: docMap[unIndexed][docRef0],
     );
@@ -104,10 +104,8 @@ class ActiveTimingModelObjects {
     await dayDR
         .set(
             ActiveDayModel(
-                    dayDate: DateTime.parse(dayDR.id),
-                    
-                    )
-                .toMap(),
+              dayDate: DateTime.parse(dayDR.id),
+            ).toMap(),
             SetOptions(merge: true))
         .then((value) async {
       await setDefaultTimings(dayDR);
@@ -121,9 +119,8 @@ class ActiveTimingModelObjects {
         await activeDayDR
             .set(
                 ActiveDayModel(
-                        dayDate: DateTime.parse(activeDayDR.id),
-                        )
-                    .toMapOnlyDate(),
+                  dayDate: DateTime.parse(activeDayDR.id),
+                ).toMap(),
                 SetOptions(merge: true))
             .then((value) async {
           await setDefaultTimings(activeDayDR);

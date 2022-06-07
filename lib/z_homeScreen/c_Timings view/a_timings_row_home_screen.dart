@@ -1,9 +1,12 @@
 import 'package:dietapp_a/app%20Constants/colors.dart';
+import 'package:dietapp_a/app%20Constants/constant_objects.dart';
+import 'package:dietapp_a/x_customWidgets/alert_dialogue.dart';
 import 'package:dietapp_a/y_Active%20diet/controllers/active_plan_controller.dart';
 import 'package:dietapp_a/y_Active%20diet/functions/cam_pic_photo_upload.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_timing_model.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -35,18 +38,30 @@ class TimingsRowHomeScreen extends StatelessWidget {
                     },
                     icon: const Icon(MdiIcons.cameraPlus)),
                 IconButton(
-                    onPressed: () async {
+                    onPressed: () {
                       if (atm.docRef != null) {
-                        await camPicPhotoUploadFunction(context, atm.docRef!);
+                        notes(context, atm);
                       }
                     },
                     icon: Icon(atm.notes == null
                         ? MdiIcons.textBoxPlusOutline
                         : MdiIcons.playlistEdit)),
-                // MenuItemsTimingViewHS(atm),
               ],
             )
           : null,
+    );
+  }
+
+  void notes(BuildContext context, ActiveTimingModel atm) {
+    textFieldAlertW(
+      context,
+      text: atm.notes,
+      lableText: atm.timingName + " notes",
+      confirmText: atm.notes == null ? "Add" : "Update",
+      onPressedConfirm: (text) async {
+        Get.back();
+        atm.docRef!.update({"$unIndexed.$notes0": text});
+      },
     );
   }
 }

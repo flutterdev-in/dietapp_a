@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/userData/models/user_strings.dart';
@@ -39,14 +40,17 @@ class ChatRoomTile extends StatelessWidget {
                 uwm.displayName,
               ),
               avatar: GFAvatar(
-                backgroundImage: NetworkImage(uwm.photoURL!),
+                backgroundImage: CachedNetworkImageProvider(
+                  uwm.photoURL!,
+                ),
                 size: GFSize.SMALL,
               ),
               subTitle: (crm.lastChatModel?.chatString != null)
                   ? Text(crm.lastChatModel!.chatString!)
                   : null,
               onTap: () async {
-                apc.currentActiveDayDR.value = admos.activeDayDR(DateTime.now(),userUID);
+                apc.currentActiveDayDR.value =
+                    admos.activeDayDR(DateTime.now(), userUID);
                 Get.to(() {
                   thisChatDocID.value = crm.chatDR.id;
                   thisChatPersonUID.value = crm.chatPersonUID;

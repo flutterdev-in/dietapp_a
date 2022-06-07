@@ -8,6 +8,7 @@ import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/diet_plan_model.da
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/food_model_for_plan_creation.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/week_model.dart';
 import 'package:dietapp_a/app%20Constants/fire_ref.dart';
+import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -29,6 +30,15 @@ class MenuItemsPC extends StatelessWidget {
         child: const Icon(MdiIcons.dotsVertical, color: Colors.white),
         itemBuilder: (context) {
           return [
+            PopupMenuItem(
+              child: TextButton(
+                onPressed: () async {
+                  Get.back();
+                  await addTimingPCalertW(context, isForActivePlan);
+                },
+                child: const Text("Add timing               "),
+              ),
+            ),
             if (!pcc.isPlanView.value)
               PopupMenuItem(
                 child: TextButton(
@@ -39,15 +49,6 @@ class MenuItemsPC extends StatelessWidget {
                   child: const Text("Delete this timing"),
                 ),
               ),
-            PopupMenuItem(
-              child: TextButton(
-                onPressed: () async {
-                  Get.back();
-                  await addTimingPCalertW(context, isForActivePlan);
-                },
-                child: const Text("Add timing               "),
-              ),
-            ),
             if (isWeekWisePlan && !isForActivePlan)
               PopupMenuItem(
                 child: TextButton(
@@ -66,14 +67,6 @@ class MenuItemsPC extends StatelessWidget {
                   child: const Text("Delete this Week           "),
                 ),
               ),
-            PopupMenuItem(
-              child: TextButton(
-                onPressed: () async {
-                  await clearDay();
-                },
-                child: const Text("Clear this Day           "),
-              ),
-            ),
             if (!isWeekWisePlan && !isForActivePlan)
               PopupMenuItem(
                 child: TextButton(
@@ -83,6 +76,38 @@ class MenuItemsPC extends StatelessWidget {
                   child: const Text("Add Day           "),
                 ),
               ),
+            PopupMenuItem(
+              child: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+                  stream: pcc.currentDayDR.value.snapshots(),
+                  builder: (context, snapshot) {
+                    String? notes;
+                    if (snapshot.hasData && snapshot.data!.data() != null) {
+                      if (pcc.currentDayDR.value.parent.id ==
+                          admos.activeDaysPlan) {
+                        var dm = ActiveDayModel.fromMap(snapshot.data!.data()!);
+                        notes = dm.notes;
+                      } else {
+                        var dm = DayModel.fromMap(snapshot.data!.data()!);
+                        notes = dm.notes;
+                      }
+                    }
+                    return TextButton(
+                      onPressed: () async {
+                        dayNotes(notes);
+                      },
+                      child: Text(
+                          "${notes != null ? 'Edit day notes' : 'Add day notes'}        "),
+                    );
+                  }),
+            ),
+            PopupMenuItem(
+              child: TextButton(
+                onPressed: () async {
+                  await clearDay();
+                },
+                child: const Text("Clear this Day           "),
+              ),
+            ),
             if (!isWeekWisePlan && !isForActivePlan)
               PopupMenuItem(
                 child: TextButton(
@@ -281,6 +306,10 @@ class MenuItemsPC extends StatelessWidget {
         }
       });
     });
+  }
+
+  void dayNotes(String? notes) {
+    
   }
 
   Future<void> deleteDay() async {

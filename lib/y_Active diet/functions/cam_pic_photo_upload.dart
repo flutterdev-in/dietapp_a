@@ -35,14 +35,11 @@ Future<void> camPicPhotoUploadFunction(
 
           await ts.ref.getDownloadURL().then((url) async {
             ActiveFoodModel afm = ActiveFoodModel(
-              isCamFood: true,
-                isTaken: true,
+                isCamFood: true,
                 foodAddedTime: DateTime.now(),
                 takenTime: DateTime.now(),
                 foodName: dateTimeString,
-              
                 notes: null,
-       
                 rumm: RefUrlMetadataModel(
                     url: "",
                     img: url,
@@ -60,22 +57,6 @@ Future<void> camPicPhotoUploadFunction(
       }).whenComplete(() {
         isLoading.value = false;
       });
-      // StampImage.create(
-      //     context: context,
-      //     image: io.File(photo.path),
-      //     saveFile: true,
-      //     children: [
-      //       Positioned(
-      //         left: 10,
-      //         bottom: 10,
-      //         child: Text(
-      //           DateFormat("dd MMM yyyy (EEE) hh:mm a").format(DateTime.now()),
-      //           textScaleFactor: 0.9,
-      //           style: const TextStyle(color: Colors.white),
-      //         ),
-      //       ),
-      //     ],
-      //     onSuccess: (waterFile) async {});
     }
   });
 }

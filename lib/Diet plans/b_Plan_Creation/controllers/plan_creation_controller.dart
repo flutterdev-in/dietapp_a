@@ -85,7 +85,7 @@ class PlanCreationController {
       await pcc.currentTimingDR.value.collection(afmos.foods).add(
           ActiveFoodModel(
                   isCamFood: false,
-                  isTaken: false,
+                 
                   foodAddedTime: DateTime.now(),
                   takenTime: null,
                   foodName: fcm.fieldName,

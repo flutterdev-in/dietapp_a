@@ -12,8 +12,8 @@ class ActiveDayModel {
   //
   ActiveDayModel({
     required this.dayDate,
-     this.notes,
-     this.rumm,
+    this.notes,
+    this.rumm,
     this.docRef,
   });
 
@@ -38,17 +38,13 @@ class ActiveDayModel {
     return returnMap;
   }
 
-  Map<String, dynamic> toMapOnlyDate() {
-    return {
-      admos.dayDate: Timestamp.fromDate(dayDate),
-    };
-  }
+ 
 
   factory ActiveDayModel.fromMap(Map docMap) {
     return ActiveDayModel(
       dayDate: docMap[admos.dayDate].toDate(),
       notes: docMap[notes0],
-      rumm: rummfos.rummFromRummMap(docMap[unIndexed][rummfos.rumm]),
+      rumm: rummfos.rummFromRummMap(docMap[unIndexed]?[rummfos.rumm] ?? ""),
       docRef: docMap[unIndexed][docRef0],
     );
   }

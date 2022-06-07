@@ -7,6 +7,7 @@ import 'package:dietapp_a/app%20Constants/url/url_avatar.dart';
 import 'package:dietapp_a/x_customWidgets/alert_dialogue.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_food_model.dart';
+import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/firestore.dart';
 import 'package:get/get.dart';
@@ -55,13 +56,12 @@ class FoodsListViewforPC extends StatelessWidget {
                 ),
                 subTitle: (fm.notes == null || fm.notes == "")
                     ? null
-                    : LimitedBox(
-                        maxHeight: 50,
-                        child: SingleChildScrollView(
-                          child: Text(fm.notes ?? "",
-                              softWrap: true,
-                              textScaleFactor: 0.9,
-                              style: const TextStyle(color: Colors.brown)),
+                    : ExpandableText(
+                        fm.notes ?? "",
+                        expandText: "more",
+                        collapseText: "show less",
+                        style: TextStyle(
+                          color: Colors.brown.shade400,
                         ),
                       ),
                 onTap: () {
@@ -168,12 +168,12 @@ class FoodsListViewforPC extends StatelessWidget {
                           admos.activeDaysPlan) {
                         await fm.docRef!.update({
                           afmos.foodName: name,
-                          "$unIndexed.${adfos.plannedNotes}": notes,
+                          "$unIndexed.$notes0": notes,
                         });
                       } else {
                         await fm.docRef!.update({
                           fmfpcfos.foodName: name,
-                          "$unIndexed.${fmfpcfos.notes}": notes,
+                          "$unIndexed.$notes": notes,
                         });
                       }
                     }),

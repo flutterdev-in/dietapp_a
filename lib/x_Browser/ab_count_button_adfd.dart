@@ -175,12 +175,10 @@ class CountButtonAdfdW extends StatelessWidget {
                       } else if (bottomBarindex.value == 0) {
                         var afm = ActiveFoodModel(
                             isCamFood: false,
-                            isTaken: false,
                             foodAddedTime: DateTime.now(),
                             takenTime: null,
                             foodName: fcm.fieldName,
                             notes: fcm.notes,
-                          
                             rumm: null,
                             docRef: null);
                         if (apc.currentActiveTimingDR.value != userDR) {

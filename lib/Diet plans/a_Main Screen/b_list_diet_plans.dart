@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/Combined%20screen/_plan_creation_combined_screen.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
@@ -6,6 +7,7 @@ import 'package:dietapp_a/app%20Constants/colors.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/app%20Constants/fire_ref.dart';
 import 'package:dietapp_a/userData/models/user_strings.dart';
+import 'package:dietapp_a/userData/models/user_welcome_model.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/firestore.dart';
@@ -28,10 +30,24 @@ class ListDietPlansW extends StatelessWidget {
 
   Widget activeDietPlan() {
     return GFListTile(
-        avatar: const GFAvatar(
-          size: GFSize.MEDIUM,
-          child: Icon(MdiIcons.clipboardAccountOutline, size: 30),
-        ),
+        avatar: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+            stream: userDR.snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData && snapshot.data!.data() != null) {
+                var uwm = UserWelcomeModel.fromMap(snapshot.data!.data()!);
+                if (uwm.photoURL != null) {
+                  return GFAvatar(
+                    size: GFSize.MEDIUM,
+                    backgroundImage: CachedNetworkImageProvider(
+                      uwm.photoURL!,
+                    ),
+                  );
+                }
+              }
+              return const GFAvatar(
+                  size: GFSize.MEDIUM,
+                  child: Icon(MdiIcons.clipboardAccountOutline, size: 30));
+            }),
         titleText: "My active diet plan",
         onTap: () async {
           pcc.currentPlanDR.value = userDR;

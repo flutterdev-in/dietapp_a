@@ -96,15 +96,13 @@ class TimingsViewDietRoom extends StatelessWidget {
                   padding: const EdgeInsets.fromLTRB(5, 5, 0, 0),
                   margin:
                       const EdgeInsets.symmetric(vertical: 3, horizontal: 0),
-                  avatar: URLavatar(
-                      imgURL: fm.rumm?.img,
-                      webURL: fm.rumm?.url ),
+                  avatar: URLavatar(imgURL: fm.rumm?.img, webURL: fm.rumm?.url),
                   title: Text(fm.foodName, maxLines: 1),
-                  icon: fm.isTaken ? const Icon(MdiIcons.accountCheck) : null,
+                  icon: fm.takenTime != null
+                      ? const Icon(MdiIcons.accountCheck)
+                      : null,
                   subTitleText:
-                      (fm.notes == null || fm.notes == "")
-                          ? null
-                          : fm.notes,
+                      (fm.notes == null || fm.notes == "") ? null : fm.notes,
                 );
               }),
         ],

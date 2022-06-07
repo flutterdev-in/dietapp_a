@@ -44,14 +44,21 @@ class HomeScreen extends StatelessWidget {
                 ),
               ],
             ),
-            body: Column(
+            body: Stack(
               children: [
-                Obx(() => isCalendarEnabled.value
-                    ? monthCalander()
-                    : const SizedBox()),
-                Expanded(child: TimingViewHomeScreen(isDayExists: isDayExists)),
+                Column(
+                  children: [
+                    Obx(() => isCalendarEnabled.value
+                        ? monthCalander()
+                        : const SizedBox()),
+                    Expanded(
+                        child: TimingViewHomeScreen(isDayExists: isDayExists)),
+                  ],
+                ),
               ],
             ),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerDocked,
             floatingActionButton: floatingButton(isDayExists),
           );
         }));
@@ -99,19 +106,16 @@ class HomeScreen extends StatelessWidget {
           mini: true,
           child: const Icon(MdiIcons.clipboardEditOutline),
           onPressed: () async {
-            if (!isBefore) {
-              pcc.currentDayDR.value = apc.currentActiveDayDR.value;
+            pcc.currentDayDR.value = apc.currentActiveDayDR.value;
+            pcc.isCombinedCreationScreen.value = true;
+            Get.to(() => const PlanCreationCombinedScreen(
+                  isWeekWisePlan: false,
+                  isForActivePlan: true,
+                  isForSingleDayActive: true,
+                ));
 
-              pcc.isCombinedCreationScreen.value = true;
-              Get.to(() => const PlanCreationCombinedScreen(
-                    isWeekWisePlan: false,
-                    isForActivePlan: true,
-                    isForSingleDayActive: true,
-                  ));
-
-              pcc.currentTimingDR.value =
-                  await pcc.getTimingDRfromDay(pcc.currentDayDR.value);
-            }
+            pcc.currentTimingDR.value =
+                await pcc.getTimingDRfromDay(pcc.currentDayDR.value);
           });
     } else {
       return null;

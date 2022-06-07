@@ -126,7 +126,7 @@ class MenuItemsTimingViewHS extends StatelessWidget {
 
                   if (tc.text.isNotEmpty) {
                     atm.docRef!.update({
-                      "$unIndexed.${adfos.takenNotes}": tc.text,
+                      "$unIndexed.$notes0": tc.text,
                     });
                   }
                 },

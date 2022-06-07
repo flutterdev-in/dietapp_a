@@ -1,8 +1,9 @@
 import 'package:dietapp_a/Diet%20plans/a_Main%20Screen/plan_screen.dart';
+import 'package:dietapp_a/app%20Constants/colors.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/_foods_folder_main_screen.dart';
 import 'package:dietapp_a/settings/settings_screen.dart';
 import 'package:dietapp_a/v_chat/chat%20People%20View/chat_screen.dart';
-import 'package:dietapp_a/z_homeScreen/home_screen.dart';
+import 'package:dietapp_a/z_homeScreen/_home_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -39,35 +40,35 @@ class BottomBarWithBody extends StatelessWidget {
           icon: const Icon(MdiIcons.home),
           inactiveIcon: const Icon(MdiIcons.homeOutline),
           title: ("Home"),
-          activeColorPrimary: CupertinoColors.activeBlue,
+          activeColorPrimary: primaryColor,
           inactiveColorPrimary: CupertinoColors.systemGrey,
         ),
         PersistentBottomNavBarItem(
           icon: const Icon(MdiIcons.chatProcessing),
           inactiveIcon: const Icon(MdiIcons.chatProcessingOutline),
           title: ("Diet Chat"),
-          activeColorPrimary: CupertinoColors.activeBlue,
+          activeColorPrimary: primaryColor,
           inactiveColorPrimary: CupertinoColors.systemGrey,
         ),
         PersistentBottomNavBarItem(
           icon: const Icon(MdiIcons.clipboardText),
           inactiveIcon: const Icon(MdiIcons.clipboardTextOutline),
           title: ("Diet Plan"),
-          activeColorPrimary: CupertinoColors.activeBlue,
+          activeColorPrimary: primaryColor,
           inactiveColorPrimary: CupertinoColors.systemGrey,
         ),
         PersistentBottomNavBarItem(
           icon: const Icon(MdiIcons.folderOpen),
           inactiveIcon: const Icon(MdiIcons.folderOpenOutline),
           title: ("Collection"),
-          activeColorPrimary: CupertinoColors.activeBlue,
+          activeColorPrimary: primaryColor,
           inactiveColorPrimary: CupertinoColors.systemGrey,
         ),
         PersistentBottomNavBarItem(
           icon: const Icon(MdiIcons.accountCog),
           inactiveIcon: const Icon(MdiIcons.accountCogOutline),
           title: ("Settings"),
-          activeColorPrimary: CupertinoColors.activeBlue,
+          activeColorPrimary: primaryColor,
           inactiveColorPrimary: CupertinoColors.systemGrey,
         ),
       ],

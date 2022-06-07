@@ -77,7 +77,7 @@ class AddFoodScreen extends StatelessWidget {
             if (pcc.isCombinedCreationScreen.value) {
               if (pcc.currentDayDR.value.parent.id == admos.activeDaysPlan) {
                 await pcc.currentTimingDR.value.update({
-                  "$unIndexed.${adfos.prud}":
+                  "$unIndexed.${rummfos.rumm}":
                       bc.currentRefUrlMetadataModel.value.toMap()
                 });
               } else {

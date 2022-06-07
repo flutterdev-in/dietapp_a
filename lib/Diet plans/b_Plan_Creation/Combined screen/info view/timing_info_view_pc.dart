@@ -49,15 +49,15 @@ class TimingInfoViewPC extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
-                              child: 
-                              // Text(snapshot.data!.data().toString()),
-                              RefURLWidget(refUrlMetadataModel: rumm),
+                              child:
+                                  // Text(snapshot.data!.data().toString()),
+                                  RefURLWidget(refUrlMetadataModel: rumm),
                               color: Colors.deepOrange.shade50),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               const Text(
-                                "Timing notes",
+                                " Timing notes",
                                 style: TextStyle(color: Colors.orange),
                               ),
                               if (editingIconRequired)
@@ -130,11 +130,11 @@ class TimingInfoViewPC extends StatelessWidget {
                     Get.back();
                     if (pcc.currentDayDR.value.parent.id ==
                         admos.activeDaysPlan) {
-                      await pcc.currentTimingDR.value.update(
-                          {"$unIndexed.${adfos.plannedNotes}": rxNotes.value});
+                      await pcc.currentTimingDR.value
+                          .update({"$unIndexed.$notes0": rxNotes.value});
                     } else {
                       await pcc.currentTimingDR.value
-                          .update({"$unIndexed.${dtmos.notes}": rxNotes.value});
+                          .update({"$unIndexed.$notes0": rxNotes.value});
                     }
                   },
                   child: const Text("Update")),
