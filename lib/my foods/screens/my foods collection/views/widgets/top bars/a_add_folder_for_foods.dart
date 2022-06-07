@@ -42,7 +42,7 @@ void addFolderForFoods(BuildContext context) async {
                     .collection(fcc.currentPathCR.value)
                     .add(FoodsCollectionModel(
                       fieldName: tc.text,
-                      fieldTime: Timestamp.fromDate(DateTime.now()),
+                      fieldTime: DateTime.now(),
                       isFolder: true,
                       rumm: null,
                       notes: null,

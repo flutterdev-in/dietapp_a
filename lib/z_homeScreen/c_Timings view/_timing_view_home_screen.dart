@@ -3,6 +3,7 @@ import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation
 import 'package:dietapp_a/app%20Constants/colors.dart';
 import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
 import 'package:dietapp_a/app%20Constants/url/ref_url_widget.dart';
+import 'package:dietapp_a/x_customWidgets/alert_dialogue.dart';
 import 'package:dietapp_a/x_customWidgets/expandable_text.dart';
 import 'package:dietapp_a/y_Active%20diet/controllers/active_plan_controller.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
@@ -12,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/firestore.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:intl/intl.dart';
 
 import 'b_cam_pictures_timings_view.dart';
 import 'c_foods_list_timings_view.dart';
@@ -32,6 +34,7 @@ class TimingViewHomeScreen extends StatelessWidget {
     if (isDayExists) {
       return Obx(() => FirestoreListView<Map<String, dynamic>>(
           shrinkWrap: true,
+          physics: const ClampingScrollPhysics(),
           query: apc.currentActiveDayDR.value
               .collection(atmos.timings)
               .orderBy(atmos.timingString),
@@ -56,11 +59,11 @@ class TimingViewHomeScreen extends StatelessWidget {
             );
           }));
     } else {
-      return dayNotExistsW();
+      return dayNotExistsW(context);
     }
   }
 
-  Widget dayNotExistsW() {
+  Widget dayNotExistsW(BuildContext context) {
     var todayString = admos.dayStringFromDate(DateTime.now());
     var today = DateTime.parse(todayString);
 
@@ -97,6 +100,18 @@ class TimingViewHomeScreen extends StatelessWidget {
                     await atmos.activateDefaultTimings(pcc.currentDayDR.value);
                     pcc.currentTimingDR.value =
                         await pcc.getTimingDRfromDay(pcc.currentDayDR.value);
+                  } else if (isBefore) {
+                    textFieldAlertW(context,
+                        lableText: DateFormat("dd MMM yyyy (EEEE)")
+                                .format(selectedDate) +
+                            " notes",
+                        text: null, onPressedConfirm: (text) async {
+                      FocusScope.of(context).unfocus();
+                      Get.back();
+                      apc.currentActiveDayDR.value.set(
+                          ActiveDayModel(dayDate: selectedDate, notes: text)
+                              .toMap());
+                    });
                   }
                 },
                 child: Text(isAfter ? "Plan now" : "Make a note")),

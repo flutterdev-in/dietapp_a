@@ -1,10 +1,11 @@
-import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/foods_collection_strings.dart';
+import 'package:collection/collection.dart';
+import 'package:dietapp_a/app%20Constants/colors.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/controllers/fc_controller.dart';
+import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/foods_collection_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:collection/collection.dart';
 
 class FcPathBar extends StatelessWidget {
   final String? homePath;
@@ -13,7 +14,7 @@ class FcPathBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.green.shade100,
+      color: secondaryColor,
       height: 40,
       child: Align(
         alignment: Alignment.centerLeft,
@@ -21,7 +22,7 @@ class FcPathBar extends StatelessWidget {
           if (fcc.pathsListMaps.value.isNotEmpty) {
             return Row(children: [
               homeButton(),
-              ScrollPaths(),
+              const ScrollPaths(),
             ]);
           } else {
             return homeButton();
@@ -55,6 +56,7 @@ class FcPathBar extends StatelessWidget {
 class ScrollPaths extends StatelessWidget {
   const ScrollPaths({Key? key}) : super(key: key);
 
+  @override
   Widget build(BuildContext context) {
     ScrollController _controller = ScrollController();
 

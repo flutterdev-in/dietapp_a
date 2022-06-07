@@ -12,7 +12,7 @@ class ActiveModelFromPlannedModel {
   ActiveFoodModel foodModel(FoodsModelForPlanCreation pfm) {
     return ActiveFoodModel(
       isCamFood: false,
-      foodAddedTime: pfm.foodAddedTime.toDate(),
+      foodAddedTime: pfm.foodAddedTime,
       takenTime: null,
       foodName: pfm.foodName,
       notes: pfm.notes,

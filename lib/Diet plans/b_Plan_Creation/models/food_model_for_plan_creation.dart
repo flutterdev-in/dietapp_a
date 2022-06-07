@@ -4,7 +4,7 @@ import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_food_model.dart';
 
 class FoodsModelForPlanCreation {
-  Timestamp foodAddedTime;
+  DateTime foodAddedTime;
   String foodName;
   String? notes;
   DocumentReference<Map<String, dynamic>>? docRef;
@@ -19,7 +19,8 @@ class FoodsModelForPlanCreation {
 
   Map<String, dynamic> toMap() {
     Map<String, dynamic> returnMap = {
-      fmfpcfos.foodAddedTime: foodAddedTime,
+      fmfpcfos.foodAddedTime:
+          Timestamp.fromDate(foodAddedTime).millisecondsSinceEpoch,
       fmfpcfos.foodName: foodName,
       unIndexed: {}
     };
@@ -40,7 +41,9 @@ class FoodsModelForPlanCreation {
 
   factory FoodsModelForPlanCreation.fromMap(Map dataMap) {
     return FoodsModelForPlanCreation(
-      foodAddedTime: dataMap[fmfpcfos.foodAddedTime],
+      foodAddedTime:
+          Timestamp.fromMillisecondsSinceEpoch(dataMap[fmfpcfos.foodAddedTime])
+              .toDate(),
       foodName: dataMap[fmfpcfos.foodName] ?? "",
       notes: dataMap[unIndexed][fmfpcfos.notes],
       rumm: rummfos.rummFromRummMap(dataMap[unIndexed][rummfos.rumm]),
@@ -64,10 +67,10 @@ class FoodsModelForPlanCreationFinalObjects {
 
   FoodsModelForPlanCreation fmfpcFromAFM(ActiveFoodModel afm) {
     return FoodsModelForPlanCreation(
-      foodAddedTime: Timestamp.fromDate(afm.foodAddedTime ?? DateTime.now()),
+      foodAddedTime: afm.foodAddedTime ?? DateTime.now(),
       foodName: afm.foodName,
-      notes: afm.notes ,
-      rumm: afm.rumm ,
+      notes: afm.notes,
+      rumm: afm.rumm,
       docRef: afm.docRef,
     );
   }

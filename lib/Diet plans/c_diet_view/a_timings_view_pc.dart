@@ -2,9 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/default_timing_model.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/food_model_for_plan_creation.dart';
+import 'package:dietapp_a/app%20Constants/colors.dart';
 import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
 import 'package:dietapp_a/app%20Constants/url/ref_url_widget.dart';
 import 'package:dietapp_a/app%20Constants/url/url_avatar.dart';
+import 'package:dietapp_a/x_customWidgets/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/firestore.dart';
 import 'package:get/get.dart';
@@ -38,11 +40,11 @@ class TimingsViewPC extends StatelessWidget {
           GFListTile(
             padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
             margin: const EdgeInsets.symmetric(vertical: 3, horizontal: 0),
-            color: Colors.yellow.shade100,
+            color: secondaryColor,
             title: Text(
               dtm.timingName,
-              maxLines: 1,
-              style: const TextStyle(fontSize: 18, color: Colors.red),
+              maxLines: 2,
+              style: const TextStyle(fontSize: 18),
             ),
             icon: Text(dtmos.displayTiming(dtm.timingString)),
           ),
@@ -53,10 +55,11 @@ class TimingsViewPC extends StatelessWidget {
             ),
           if (dtm.notes != null && dtm.notes != "")
             Card(
-                child: SizedBox(
-              child: Text(dtm.notes!),
-              width: double.maxFinite,
-            )),
+              child: expText(
+                dtm.notes,
+                fontSize: 13,
+              ),
+            ),
           FirestoreListView<Map<String, dynamic>>(
               shrinkWrap: true,
               physics: const ClampingScrollPhysics(),
@@ -72,8 +75,12 @@ class TimingsViewPC extends StatelessWidget {
                       const EdgeInsets.symmetric(vertical: 3, horizontal: 0),
                   avatar: URLavatar(imgURL: fm.rumm?.img, webURL: fm.rumm?.url),
                   title: Text(fm.foodName, maxLines: 1),
-                  subTitleText:
-                      (fm.notes == null || fm.notes == "") ? null : fm.notes,
+                  subTitle: expText(
+                    fm.notes,
+                    fontSize: 13,
+                  ),
+                  // subTitleText:
+                  //     (fm.notes == null || fm.notes == "") ? null : fm.notes,
                 );
               }),
         ],

@@ -43,7 +43,7 @@ class ActiveDayModel {
   factory ActiveDayModel.fromMap(Map docMap) {
     return ActiveDayModel(
       dayDate: docMap[admos.dayDate].toDate(),
-      notes: docMap[notes0],
+      notes: docMap[unIndexed][notes0],
       rumm: rummfos.rummFromRummMap(docMap[unIndexed]?[rummfos.rumm] ?? ""),
       docRef: docMap[unIndexed][docRef0],
     );

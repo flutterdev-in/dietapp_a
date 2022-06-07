@@ -89,7 +89,7 @@ class TextFieldForBrowser extends StatelessWidget {
               Metadata? data = await MetadataFetch.extract(bc.currentURL.value);
               FoodsCollectionModel fdcm = FoodsCollectionModel(
                 fieldName: data?.title ?? "",
-                fieldTime: Timestamp.fromDate(DateTime.now()),
+                fieldTime: DateTime.now(),
                 isFolder: false,
                 rumm: await rummfos.rummModel(bc.currentURL.value,
                     metaData: data),

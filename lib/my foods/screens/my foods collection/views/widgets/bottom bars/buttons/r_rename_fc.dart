@@ -41,7 +41,7 @@ class FCitemEditButton extends StatelessWidget {
     // Values only for initialisation
     FoodsCollectionModel fdcm = FoodsCollectionModel(
       fieldName: "",
-      fieldTime: Timestamp.fromDate(DateTime.now()),
+      fieldTime: DateTime.now(),
       isFolder: true,
       rumm: null,
       notes: null,

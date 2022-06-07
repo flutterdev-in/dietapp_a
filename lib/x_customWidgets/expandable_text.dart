@@ -8,20 +8,23 @@ Widget? expText(
   bool expandOnTextTap = false,
   bool collapseOnTextTap = true,
 }) {
-  final Color expandableTextColor = Colors.cyan.shade700;
+  Color expandableTextColor = Colors.brown.shade700;
   return (text == null || text.isEmpty)
       ? null
-      : ExpandableText(
-          text,
-          expandOnTextTap: expandOnTextTap,
-          collapseOnTextTap: collapseOnTextTap,
-          animation: true,
-          animationDuration: const Duration(milliseconds: 700),
-          expandText: "more",
-          collapseText: "show less",
-          style: TextStyle(
-            color: textColor ?? expandableTextColor,
-            fontSize: fontSize,
+      : Align(
+          alignment: Alignment.topLeft,
+          child: ExpandableText(
+            text,
+            expandOnTextTap: expandOnTextTap,
+            collapseOnTextTap: collapseOnTextTap,
+            animation: true,
+            animationDuration: const Duration(milliseconds: 700),
+            expandText: "more",
+            collapseText: "show less",
+            style: TextStyle(
+              color: textColor ?? expandableTextColor,
+              fontSize: fontSize,
+            ),
           ),
         );
 }

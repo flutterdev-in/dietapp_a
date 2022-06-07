@@ -1,3 +1,4 @@
+import 'package:dietapp_a/app%20Constants/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
@@ -66,14 +67,17 @@ textFieldAlertW(BuildContext context,
                   Get.back();
                 },
                 child: const Text("Cancle"),
+                color: primaryColor,
               ),
               GFButton(
                 onPressed: () {
+                  FocusScope.of(context).unfocus();
                   if (tc.text.isNotEmpty) {
                     onPressedConfirm(tc.text);
                   }
                 },
                 child: Text(confirmText),
+                color: primaryColor,
               )
             ],
           ),

@@ -5,7 +5,7 @@ import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/foo
 
 class FoodsCollectionModel {
   String fieldName;
-  Timestamp fieldTime;
+  DateTime fieldTime;
   bool isFolder;
   String? notes;
   RefUrlMetadataModel? rumm;
@@ -23,7 +23,7 @@ class FoodsCollectionModel {
     return isFolder
         ? {
             fdcs.fieldName: fieldName,
-            fdcs.fieldTime: fieldTime,
+            fdcs.fieldTime: Timestamp.fromDate(fieldTime),
             fdcs.isFolder: isFolder,
             unIndexed: {
               fdcs.notes: notes,
@@ -32,7 +32,7 @@ class FoodsCollectionModel {
           }
         : {
             fdcs.fieldName: fieldName,
-            fdcs.fieldTime: fieldTime,
+            fdcs.fieldTime: Timestamp.fromDate(fieldTime),
             fdcs.isFolder: isFolder,
             unIndexed: {
               fdcs.notes: notes,
@@ -44,11 +44,10 @@ class FoodsCollectionModel {
   factory FoodsCollectionModel.fromMap(Map dataMap) {
     return FoodsCollectionModel(
       fieldName: dataMap[fdcs.fieldName],
-      fieldTime: dataMap[fdcs.fieldTime],
+      fieldTime: dataMap[fdcs.fieldTime].toDate(),
       isFolder: dataMap[fdcs.isFolder] ?? false,
       notes: dataMap[unIndexed][fdcs.notes],
-      rumm: rummfos
-          .rummFromRummMap(dataMap[unIndexed][rummfos.rumm]),
+      rumm: rummfos.rummFromRummMap(dataMap[unIndexed][rummfos.rumm]),
       docRef: dataMap[unIndexed][fdcs.docRef],
     );
   }

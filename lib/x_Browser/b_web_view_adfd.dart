@@ -1,9 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
+import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/models/food_collection_model.dart';
 import 'package:dietapp_a/x_Browser/controllers/add_food_controller.dart';
 import 'package:dietapp_a/x_Browser/controllers/browser_controllers.dart';
 import 'package:dietapp_a/x_Browser/controllers/rxvariables_for_count_button.dart';
-import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/models/food_collection_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:metadata_fetch/metadata_fetch.dart';
@@ -40,7 +39,7 @@ class InAppWebViewWidget extends StatelessWidget {
 
           FoodsCollectionModel fdcm = FoodsCollectionModel(
             fieldName: title,
-            fieldTime: Timestamp.fromDate(DateTime.now()),
+            fieldTime: DateTime.now(),
             isFolder: false,
             notes: null,
             rumm: rumm0,
