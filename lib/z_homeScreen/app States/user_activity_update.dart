@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/fire_ref.dart';
-import 'package:flutter/material.dart';
 import 'package:dietapp_a/userData/models/user_strings.dart';
+import 'package:flutter/material.dart';
 
-Future<void> fireActivity(AppLifecycleState state) async {
+Future<void> userActivityUpdate(AppLifecycleState state) async {
   Map<String, dynamic> activityMap;
   Timestamp ts = Timestamp.fromDate(DateTime.now());
 
@@ -13,7 +13,7 @@ Future<void> fireActivity(AppLifecycleState state) async {
       "${uss.userActivity}.${uss.activeAt}": ts,
     };
     await userDR.update(activityMap);
-  }else{
+  } else {
     activityMap = {
       "${uss.userActivity}.${uss.isActive}": false,
       "${uss.userActivity}.${uss.inactiveAt}": ts,

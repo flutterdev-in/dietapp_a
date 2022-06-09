@@ -40,17 +40,18 @@ class ChatRoomModel {
     };
   }
 
-  factory ChatRoomModel.fromMap(Map chatRoomModelMap) {
+  factory ChatRoomModel.fromMap(Map<String, dynamic> chatRoomModelMap) {
     List chatMembers0 = chatRoomModelMap[crs.chatMembers] ?? [userUID, userUID];
     String chatPersonUID0 = chatMembers0[0];
     if (chatPersonUID0 == userUID) {
-      chatPersonUID0 = chatMembers0[0];
+      chatPersonUID0 = chatMembers0[1];
     }
 
     var lastChatMap = chatRoomModelMap[unIndexed][crs.lastChatModel];
     return ChatRoomModel(
       chatMembers: chatMembers0,
-      lastChatTime: chatRoomModelMap[crs.lastChatTime]?.toDate() ?? DateTime.now(),
+      lastChatTime:
+          chatRoomModelMap[crs.lastChatTime]?.toDate() ?? DateTime.now(),
       lastChatSentBy:
           chatRoomModelMap[unIndexed][crs.lastChatSentBy] ?? userUID,
       lastChatRecdBy:
@@ -71,19 +72,35 @@ class ChatMemberModel {
   bool isChatAllowed;
   bool isDietAllowed;
   bool isThisChatOpen;
+  DateTime? chatRequestSendTime;
+
+  DateTime? dietRequestSendTime;
 
   ChatMemberModel({
     required this.isChatAllowed,
     required this.isDietAllowed,
     required this.isThisChatOpen,
+    this.chatRequestSendTime,
+    this.dietRequestSendTime,
   });
 
   Map<String, dynamic> toMap() {
-    return {
+    Map<String, dynamic> returnMap = {
       crs.isChatAllowed: isChatAllowed,
       crs.isDietAllowed: isDietAllowed,
       crs.isThisChatOpen: isThisChatOpen,
     };
+    Map<String, dynamic> nullChaeckValues = {
+      crs.chatRequestSendTime: chatRequestSendTime,
+      crs.dietRequestSendTime: dietRequestSendTime,
+    };
+
+    nullChaeckValues.forEach((key, value) {
+      if (value != null) {
+        returnMap.addAll({key: value});
+      }
+    });
+    return returnMap;
   }
 
   factory ChatMemberModel.fromMap(Map chatMemberModelMap) {
@@ -91,6 +108,10 @@ class ChatMemberModel {
       isChatAllowed: chatMemberModelMap[crs.isChatAllowed] ?? false,
       isDietAllowed: chatMemberModelMap[crs.isDietAllowed] ?? false,
       isThisChatOpen: chatMemberModelMap[crs.isThisChatOpen] ?? false,
+      chatRequestSendTime:
+          chatMemberModelMap[crs.chatRequestSendTime]?.toDate(),
+      dietRequestSendTime:
+          chatMemberModelMap[crs.dietRequestSendTime]?.toDate(),
     );
   }
 }
@@ -104,10 +125,16 @@ class ChatRoomStrings {
   String lastChatRecdBy = "lastChatRecdBy";
   String lastChatTime = "lastChatTime";
 
+  //
   String isChatAllowed = "isChatAllowed";
   String isDietAllowed = "isDietAllowed";
   String isThisChatOpen = "isThisChatOpen";
   String lastChatModel = "lastChatModel";
+  //
+  String chatRequestSendTime = "chatRequestSendTime";
+
+  String dietRequestSendTime = "dietRequestSendTime";
+
   //FireStrings
 
   final String chatRooms = "chatRooms";
@@ -130,7 +157,7 @@ class ChatRoomStrings {
   Future<ChatRoomModel> chatRoomModelFromChatPersonUID(
       String chatPersonUID) async {
     return await chatDRf([userUID, chatPersonUID]).get().then((ds) async {
-      if (!ds.exists || ds.data() != null) {
+      if (!ds.exists || ds.data() == null) {
         var crm = ChatRoomModel(
             chatMembers: [userUID, chatPersonUID],
             lastChatTime: DateTime.now(),
@@ -146,7 +173,7 @@ class ChatRoomStrings {
                 isThisChatOpen: false),
             lastChatModel: null,
             chatDR: chatDRf([userUID, chatPersonUID]),
-            chatPersonUID: userUID);
+            chatPersonUID: chatPersonUID);
 
         await chatDRf([userUID, chatPersonUID])
             .set(crm.toMap(), SetOptions(merge: true));
@@ -155,5 +182,10 @@ class ChatRoomStrings {
         return ChatRoomModel.fromMap(ds.data()!);
       }
     });
+  }
+
+  String chatPersonUIDfromDocID(String docID) {
+    List<String> l = docID.split("_");
+    return l[0] == userUID ? l[1] : l[0];
   }
 }

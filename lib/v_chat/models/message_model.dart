@@ -101,4 +101,5 @@ class ChatTypesStrings {
   final multiDay = "multiDay";
   final multiWeek = "multiWeek";
   final multiPlan = "multiPlan";
+  final viewRequest = "viewRequest";
 }

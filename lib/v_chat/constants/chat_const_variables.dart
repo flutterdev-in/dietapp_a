@@ -10,7 +10,6 @@ Box cbox = Hive.box(crs.chatBox);
 String userOwnChatDocID = "${userUID}_$userUID";
 
 Rx<bool> isChatPersonOnChat = false.obs;
-Rx<String> thisChatPersonUID = userOwnChatDocID.obs;
 Rx<String> thisChatDocID = userUID.obs;
 
 

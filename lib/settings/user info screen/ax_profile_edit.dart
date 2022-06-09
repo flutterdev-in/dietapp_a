@@ -1,16 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dietapp_a/app%20Constants/colors.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
+import 'package:dietapp_a/app%20Constants/fire_ref.dart';
 import 'package:dietapp_a/assets/assets.dart';
 import 'package:dietapp_a/settings/user%20info%20screen/axx_userid_edit_screen.dart';
 import 'package:dietapp_a/userData/models/user_strings.dart';
 import 'package:dietapp_a/userData/models/user_welcome_model.dart';
 import 'package:dietapp_a/x_customWidgets/stream_builder_functions.dart';
-import 'package:dietapp_a/app%20Constants/fire_ref.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class ProfileEdit extends StatelessWidget {
   const ProfileEdit({Key? key}) : super(key: key);
@@ -26,7 +28,7 @@ class ProfileEdit extends StatelessWidget {
           var data = docStreamReturn(c, d, widType: "");
           if (data is Map) {
             UserWelcomeModel uwm = UserWelcomeModel.fromMap(data);
-            Rx<String> rxName = "${uwm.displayName}".obs;
+            Rx<String> rxName = uwm.displayName.obs;
             Rx<String> rxBio = uwm.bioData.obs;
 
             Widget name() {
@@ -47,6 +49,7 @@ class ProfileEdit extends StatelessWidget {
                     } else {
                       rxName.value = value;
                     }
+                    return null;
                   },
                   decoration: const InputDecoration(
                       icon: Icon(FontAwesomeIcons.fileSignature),
@@ -89,18 +92,16 @@ class ProfileEdit extends StatelessWidget {
                 avatar: const Icon(
                   Icons.person_search,
                   size: 30,
-                  color: Colors.blue,
+                  color: primaryColor,
                 ),
-                titleText: uwm.userID,
-                icon: GFButton(
-                  child: const Text(
-                    "Change",
-                    textScaleFactor: 1.2,
-                  ),
-                  type: GFButtonType.outline,
+                titleText: "@" + uwm.userID,
+                icon: IconButton(
+                  icon: const Icon(MdiIcons.circleEditOutline),
+                  color: primaryColor,
                   onPressed: () {
-                    Get.to(() => const ProfileIdEdit(),
-                        arguments: [uwm.userID, userGoogleEmail]);
+                    Get.to(
+                      () => ProfileIdEdit(uwm.userID),
+                    );
                   },
                 ),
               );

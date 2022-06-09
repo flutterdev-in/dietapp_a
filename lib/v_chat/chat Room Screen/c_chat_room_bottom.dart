@@ -15,8 +15,10 @@ import 'package:getwidget/getwidget.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class ChatRoomBottom extends StatelessWidget {
-  bool isSuffixButtonsRequired;
-  ChatRoomBottom({
+  final bool isSuffixButtonsRequired;
+
+  const ChatRoomBottom(
+     {
     Key? key,
     this.isSuffixButtonsRequired = true,
   }) : super(key: key);
@@ -98,7 +100,8 @@ class ChatRoomBottom extends StatelessWidget {
                           .add(
                             MessageModel(
                               chatSentBy: userUID,
-                              chatRecdBy: thisChatPersonUID.value,
+                              chatRecdBy: crs
+                                  .chatPersonUIDfromDocID(thisChatDocID.value),
                               chatString: tcText,
                               senderSentTime:
                                   Timestamp.fromDate(DateTime.now()),
@@ -128,9 +131,9 @@ class ChatRoomBottom extends StatelessWidget {
                                 .collection(crs.chatRooms)
                                 .doc(thisChatDocID.value),
                             lastChatDR: docRf,
-                       
                             lastChatSentBy: userUID,
-                            lastChatRecdBy: thisChatPersonUID.value);
+                            lastChatRecdBy: crs
+                                .chatPersonUIDfromDocID(thisChatDocID.value));
                       });
 
                       chatSC.chatType.value = chatTS.stringOnly;

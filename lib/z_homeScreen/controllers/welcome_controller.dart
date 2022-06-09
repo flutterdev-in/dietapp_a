@@ -6,7 +6,6 @@ import 'package:dietapp_a/userData/models/user_strings.dart';
 import 'package:dietapp_a/userData/models/user_welcome_model.dart';
 import 'package:dietapp_a/v_chat/constants/chat_const_variables.dart';
 import 'package:dietapp_a/v_chat/models/chat_room_model.dart';
-import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_timing_model.dart';
 import 'package:get/get.dart';
 
@@ -26,10 +25,8 @@ class WelcomeController extends GetxController {
         .get()
         .then((DocumentSnapshot documentSnapshot) async {
       if (!documentSnapshot.exists) {
-        String userID0 = "@${userGoogleEmail.replaceAll("@gmail.com", "")}";
+        String userID0 = userGoogleEmail.replaceAll("@gmail.com", "");
         var userWelcomeMap = UserWelcomeModel(
-          firebaseUID: currentUser!.uid,
-          googleEmail: currentUser!.email ?? "guestuser@guest.com",
           userID: userID0,
           photoURL: currentUser!.photoURL,
           displayName: currentUser!.displayName ?? "Anonymous User",
@@ -82,11 +79,5 @@ class WelcomeController extends GetxController {
     });
   }
 
-  Future<void> createDefaultTimings() async {
-
-  }
-
-  
+  Future<void> createDefaultTimings() async {}
 }
-
-

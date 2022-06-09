@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
+import 'package:dietapp_a/hive%20Boxes/boxes.dart';
 import 'package:dietapp_a/userData/models/user_strings.dart';
 import 'package:dietapp_a/userData/models/user_welcome_model.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/_chat_room_screen.dart';
@@ -14,16 +15,14 @@ import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
 
 class ChatRoomTile extends StatelessWidget {
-  final Map<String, dynamic> chatRoomMap;
-
-  const ChatRoomTile({
-    required this.chatRoomMap,
+  final ChatRoomModel crm;
+  const ChatRoomTile(
+    this.crm, {
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    ChatRoomModel crm = ChatRoomModel.fromMap(chatRoomMap);
     return StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection(uss.users)
@@ -53,9 +52,13 @@ class ChatRoomTile extends StatelessWidget {
                     admos.activeDayDR(DateTime.now(), userUID);
                 Get.to(() {
                   thisChatDocID.value = crm.chatDR.id;
-                  thisChatPersonUID.value = crm.chatPersonUID;
 
-                  return ChatRoomScreen(crm);
+                  var isChat = boxIndexes.get(crm.chatPersonUID) ?? false;
+                  if (isChat == false) {
+                    return ChatRoomScreen(crm, isChat: false);
+                  } else {
+                    return ChatRoomScreen(crm);
+                  }
                 }, opaque: false, transition: Transition.leftToRightWithFade);
               },
             );

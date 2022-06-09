@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/userData/models/user_strings.dart';
 
 class UserWelcomeModel {
-  String firebaseUID;
-  String googleEmail;
+  String? firebaseUID;
+
   String userID;
   String? photoURL;
   String displayName;
@@ -15,8 +15,7 @@ class UserWelcomeModel {
   Timestamp inactiveAt;
 
   UserWelcomeModel({
-    required this.firebaseUID,
-    required this.googleEmail,
+    this.firebaseUID,
     required this.userID,
     required this.photoURL,
     required this.displayName,
@@ -28,9 +27,7 @@ class UserWelcomeModel {
 
   Map<String, dynamic> toMap() {
     return {
-      uss.firebaseUID: firebaseUID,
       uss.userID: userID,
-      uss.googleEmail: googleEmail,
       uss.profileData: {
         uss.photoURL: photoURL,
         uss.displayName: displayName,
@@ -46,9 +43,10 @@ class UserWelcomeModel {
 
   factory UserWelcomeModel.fromMap(Map userDocMap) {
     return UserWelcomeModel(
-      firebaseUID: userDocMap[uss.firebaseUID],
+      firebaseUID: null,
+
       userID: userDocMap[uss.userID],
-      googleEmail: userDocMap[uss.googleEmail],
+
       //
       photoURL: userDocMap[uss.profileData][uss.photoURL],
       displayName: userDocMap[uss.profileData][uss.displayName],

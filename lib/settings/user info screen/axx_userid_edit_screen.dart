@@ -1,57 +1,57 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/app%20Constants/fire_ref.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:getwidget/getwidget.dart';
-import 'dart:async';
-
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 class ProfileIdEdit extends StatelessWidget {
-  const ProfileIdEdit({Key? key}) : super(key: key);
+  final String userID;
+
+  const ProfileIdEdit(this.userID, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final Connectivity connectivity = Connectivity();
-    List args = Get.arguments;
-    String originalID0 = args[1].replaceAll("@gmail.com", "");
-    String currentID0 = args[0].replaceAll("@", "");
+    String originalID0 = currentUser!.email!.replaceAll("@gmail.com", "");
+    String currentID0 = userID;
     String originalID = "@$originalID0";
     Rx<String> rxID = "@$currentID0".obs;
     Rx<String> rxValid = "".obs;
 
     Widget textField() {
       TextEditingController tc = TextEditingController();
-      tc.text = args[0].replaceAll("@", "");
+      tc.text = userID;
       tc.selection =
           TextSelection.fromPosition(TextPosition(offset: tc.text.length));
 
       Widget validatorIcon() {
         if (rxValid.value == "current") {
-          return Text("");
+          return const Text("");
         } else if (rxValid.value == "original") {
-          return Icon(
+          return const Icon(
             Icons.done_all,
           );
         } else if (rxValid.value == "<8" || rxValid.value == "inValid") {
-          return Icon(
+          return const Icon(
             Icons.cancel,
           );
         } else if (rxValid.value == ">=8") {
-          return Icon(
+          return const Icon(
             Icons.close,
           );
         } else if (rxValid.value == "CheckConnectivity") {
-          return Icon(
+          return const Icon(
             Icons.change_circle,
           );
         } else if (rxValid.value == "timeout" || rxValid.value == "offline") {
-          return Icon(
+          return const Icon(
             Icons.signal_cellular_nodata,
           );
         } else if (rxValid.value == "Connecting to Fire") {
-          return GFAvatar(
+          return const GFAvatar(
             child: GFLoader(
               loaderstrokeWidth: 3,
             ),
@@ -59,13 +59,13 @@ class ProfileIdEdit extends StatelessWidget {
             size: GFSize.SMALL,
           );
         } else if (rxValid.value == "taken") {
-          return Text("taken");
+          return const Text("taken");
         } else if (rxValid.value == "available") {
-          return Icon(
+          return const Icon(
             Icons.check_circle,
           );
         } else {
-          return Text("");
+          return const Text("");
         }
       }
 
@@ -99,7 +99,7 @@ class ProfileIdEdit extends StatelessWidget {
               InternetConnectionStatus isConnected =
                   await InternetConnectionChecker().connectionStatus;
               stopwatch.stop();
-              if (stopwatch.elapsed > Duration(seconds: 2)) {
+              if (stopwatch.elapsed > const Duration(seconds: 2)) {
                 rxValid.value = "timeout";
               }
               if (isConnected == InternetConnectionStatus.connected) {
@@ -108,25 +108,23 @@ class ProfileIdEdit extends StatelessWidget {
                 Stopwatch stopwatch3 = Stopwatch()..start();
                 await FirebaseFirestore.instance
                     .collection('Users')
-                    .where('userID', isEqualTo: "@$value")
+                    .where('userID', isEqualTo: value)
                     .limit(1)
                     .get()
                     .then((qs) {
                   stopwatch3.stop();
-                  if (stopwatch3.elapsed > Duration(seconds: 2)) {
+                  if (stopwatch3.elapsed > const Duration(seconds: 2)) {
                     rxValid.value = "timeout";
-                  } else if (qs.docs.length == 0) {
+                  } else if (qs.docs.isEmpty) {
                     rxValid.value = "available";
                     rxID.value = value;
                   } else {
                     rxValid.value = "taken";
                   }
                 });
-              } else {
-              
-              }
+              } else {}
               stopwatch2.stop();
-              if (stopwatch2.elapsed > Duration(seconds: 2)) {
+              if (stopwatch2.elapsed > const Duration(seconds: 2)) {
                 rxValid.value = "timeout";
               } else {
                 rxValid.value == "inValid";
@@ -135,19 +133,11 @@ class ProfileIdEdit extends StatelessWidget {
           }
         },
         decoration: InputDecoration(
-          icon: SizedBox(
-            width: 50,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Icon(
-                  Icons.person_search,
-                  size: 30,
-                  color: Colors.blue,
-                ),
-                Text("@")
-              ],
-            ),
+          prefixText: "@",
+          icon: const Icon(
+            Icons.person_search,
+            size: 30,
+            color: Colors.blue,
           ),
           suffixIcon: Obx(() => validatorIcon()),
         ),
@@ -159,16 +149,16 @@ class ProfileIdEdit extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: RichText(
             text: TextSpan(children: [
-          TextSpan(
+          const TextSpan(
               text: "*    Your original Profile ID ",
               style: TextStyle(color: Colors.black)),
           TextSpan(
               text: originalID,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
               )),
-          TextSpan(
+          const TextSpan(
             text: " is always available to you to change back any time.",
             style: TextStyle(color: Colors.black),
           ),
@@ -177,8 +167,8 @@ class ProfileIdEdit extends StatelessWidget {
     }
 
     Widget validationText() {
-      return Padding(
-        padding: const EdgeInsets.all(8.0),
+      return const Padding(
+        padding: EdgeInsets.all(8.0),
         child: Text(
             "*    New Profile ID should be in alphanumeric and must contain atleast one special character {  _  -  !  *  ~  } and atmost two special characters."),
       );
@@ -225,9 +215,7 @@ class ProfileIdEdit extends StatelessWidget {
       }
 
       Future<void> onpress() async {
-      
         if (rxValid.value == "original" || rxValid.value == "available") {
-         
           rxB.value = "started";
           Stopwatch stopwatch3 = Stopwatch()..start();
           await FirebaseFirestore.instance
@@ -262,7 +250,6 @@ class ProfileIdEdit extends StatelessWidget {
             }
           });
         } else {
-       
           rxB.value = "invalid";
           Get.snackbar(
             "Something went wrong",
@@ -288,16 +275,16 @@ class ProfileIdEdit extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Profile ID'),
+          title: const Text('Profile ID'),
           actions: [appBarSaveIcon()],
         ),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               textField(),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               richText(),
               validationText(),
             ],

@@ -15,6 +15,7 @@ class ChatScreenController extends GetxController {
       RxList<QueryDocumentSnapshot<Map<String, dynamic>>>([]).obs;
   final Rx<String> tcText = "".obs;
   final Rx<String> chatType = chatTS.stringOnly.obs;
+  
   @override
   void onInit() async {
     drc.calendarDate.value = DateTime.now();
@@ -37,10 +38,10 @@ class ChatScreenController extends GetxController {
     required bool isThisChatOpen,
   }) async {
     //1
-    Map<String, dynamic> map = {
-      userUID: {crs.isThisChatOpen: isThisChatOpen}
-    };
-    await chatRoomCR.doc(thisChatDocID.value).update(map);
+    String chatPersonUID = crs.chatPersonUIDfromDocID(thisChatDocID.value);
+
+    await chatRoomCR.doc(thisChatDocID.value).update(
+        {"$unIndexed.$chatPersonUID.${crs.isThisChatOpen}": isThisChatOpen});
     //2
     WriteBatch batch = FirebaseFirestore.instance.batch();
     await chatRoomCR

@@ -1,3 +1,4 @@
+import 'package:dietapp_a/hive%20Boxes/boxes.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/a_chat_room_top.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_chat_room_middle.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/c_chat_room_bottom.dart';
@@ -9,9 +10,11 @@ import 'package:get/get.dart';
 
 class ChatRoomScreen extends StatefulWidget {
   final ChatRoomModel crm;
+  final bool isChat;
 
   const ChatRoomScreen(
     this.crm, {
+    this.isChat = true,
     Key? key,
   }) : super(key: key);
 
@@ -26,12 +29,15 @@ class _ChatRoomScreenState extends State<ChatRoomScreen>
   @override
   void initState() {
     super.initState();
-    tabC = TabController(initialIndex: 1, length: 2, vsync: this);
+    tabC = TabController(
+        initialIndex: widget.isChat ? 1 : 0, length: 2, vsync: this);
   }
 
   @override
   void dispose() {
+    boxIndexes.put(widget.crm.chatPersonUID, (tabC.index == 1) ? true : false);
     tabC.dispose();
+
     super.dispose();
   }
 
@@ -44,7 +50,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen>
       appBar: AppBar(
         automaticallyImplyLeading: false,
         titleSpacing: 0,
-        title: const ChatRoomAppBar(),
+        title: ChatRoomAppBar(widget.crm),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(32.0),
           child: TabBar(
@@ -73,7 +79,6 @@ class _ChatRoomScreenState extends State<ChatRoomScreen>
           ),
         ],
       ),
-     
     ));
   }
 }

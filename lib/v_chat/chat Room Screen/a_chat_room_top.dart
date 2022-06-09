@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/userData/models/user_strings.dart';
 import 'package:dietapp_a/userData/models/user_welcome_model.dart';
 import 'package:dietapp_a/v_chat/chat%20person%20profile%20view/chat_person_profile_view_screen.dart';
@@ -13,7 +14,8 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 // Rx<bool> isChatPersonOnChat = false.obs;
 
 class ChatRoomAppBar extends StatelessWidget {
-  const ChatRoomAppBar({Key? key}) : super(key: key);
+  final ChatRoomModel crm;
+  const ChatRoomAppBar(this.crm, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +28,7 @@ class ChatRoomAppBar extends StatelessWidget {
               MdiIcons.arrowLeft,
               color: Colors.white,
             )),
-        details(),
+        details(crm),
       ],
     );
   }
@@ -42,7 +44,8 @@ Widget ifChatOpen({required Widget elseW}) {
         var data = docStreamReturn(c, d, widType: "tile");
         isChatPersonOnChat.value = false;
         if (data is Map) {
-          if (data[thisChatPersonUID][crs.isThisChatOpen]) {
+          var chatPersonUID = crs.chatPersonUIDfromDocID(thisChatDocID.value);
+          if (data[unIndexed][chatPersonUID][crs.isThisChatOpen]) {
             isChatPersonOnChat.value = true;
           }
         }
@@ -55,11 +58,11 @@ Widget ifChatOpen({required Widget elseW}) {
       });
 }
 
-Widget details() {
+Widget details(ChatRoomModel crm) {
   return StreamBuilder(
       stream: FirebaseFirestore.instance
           .collection(uss.users)
-          .doc(thisChatPersonUID.value)
+          .doc(crm.chatPersonUID)
           .snapshots(),
       builder: (c, AsyncSnapshot<DocumentSnapshot> d) {
         var data = docStreamReturn(c, d, widType: "tile");
@@ -96,7 +99,8 @@ Widget details() {
             ),
             onTap: () {
               Get.to(() => ChatPersonProfileViewScreen(
-                  chatPersonUID: thisChatPersonUID.value));
+                  chatPersonUID:
+                      crs.chatPersonUIDfromDocID(thisChatDocID.value)));
             },
           );
         }

@@ -11,7 +11,7 @@ Widget chatSearchFieldRow = Row(
       flex: 1,
       child: IconButton(
         onPressed: () => Get.back(),
-        icon: Icon(
+        icon: const Icon(
           MdiIcons.arrowLeft,
         ),
         color: Colors.black54,
@@ -25,11 +25,12 @@ Widget chatSearchFieldRow = Row(
 );
 
 Widget chatSearchField = TextField(
-  decoration: InputDecoration(hintText: "search userID"),
+  decoration:
+      const InputDecoration(prefix: Text("@"), hintText: "search userID"),
   autofocus: true,
   textInputAction: TextInputAction.search,
   onChanged: (value) async {
-    await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(const Duration(seconds: 1));
     chatSearchString.value = value;
   },
 );

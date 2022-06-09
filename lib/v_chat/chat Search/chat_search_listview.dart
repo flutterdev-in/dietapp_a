@@ -1,12 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/userData/models/user_strings.dart';
 import 'package:dietapp_a/userData/models/user_welcome_model.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/_chat_room_screen.dart';
 import 'package:dietapp_a/v_chat/chat%20Search/chat_search_textfield.dart';
 import 'package:dietapp_a/v_chat/constants/chat_const_variables.dart';
 import 'package:dietapp_a/v_chat/models/chat_room_model.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/firestore.dart';
 import 'package:get/get.dart';
@@ -21,26 +20,26 @@ class ChatSearchListview extends StatelessWidget {
           shrinkWrap: true,
           query: FirebaseFirestore.instance
               .collection(uss.users)
-              .where(uss.userID, isEqualTo: chatSearchString.value)
-              .limit(1),
+              .where(uss.userID, isGreaterThanOrEqualTo: chatSearchString.value)
+              .limit(5),
           // .orderBy(crs.lastChatTime, descending: true),
           itemBuilder: (context, snapshot) {
-            Map<String, dynamic> userMap = snapshot.data();
-            UserWelcomeModel uwm = UserWelcomeModel.fromMap(userMap);
-
+            UserWelcomeModel uwm = UserWelcomeModel.fromMap(snapshot.data());
+            uwm.firebaseUID = snapshot.reference.id;
             return ListTile(
                 title: Text(uwm.displayName),
-                subtitle: Text(uwm.userID),
+                subtitle: Text("@" + uwm.userID),
                 leading: GFAvatar(
                   size: GFSize.SMALL,
-                  backgroundImage: NetworkImage(uwm.photoURL!),
+                  backgroundImage: CachedNetworkImageProvider(uwm.photoURL!),
                 ),
                 onTap: () async {
-                  var crm =await crs.chatRoomModelFromChatPersonUID(uwm.firebaseUID);
-                  
+                  var crm = await crs
+                      .chatRoomModelFromChatPersonUID(uwm.firebaseUID!);
+                  thisChatDocID.value = crs.chatDRf(crm.chatMembers).id;
+                  Get.back();
 
-                    Get.to(() => ChatRoomScreen(crm), opaque: false);
-                  
+                  Get.to(() => ChatRoomScreen(crm), opaque: false);
                 });
           },
         ));
