@@ -5,13 +5,13 @@ import 'package:dietapp_a/app%20Constants/fire_ref.dart';
 class MessageModel {
   String chatSentBy;
   String chatRecdBy;
-  DocumentReference? docRef;
+  DocumentReference<Map<String, dynamic>>? docRef;
   Timestamp senderSentTime;
   Timestamp? recieverSeenTime;
   String? chatString;
   String? chatType;
-
   List? listDocMaps;
+  
 
   MessageModel({
     this.docRef,
@@ -22,19 +22,22 @@ class MessageModel {
     this.chatString,
     this.chatType,
     this.listDocMaps,
+    
   });
 
   Map<String, dynamic> toMap() {
     return {
       mmos.senderSentTime: senderSentTime,
+      mmos.chatType: chatType,
       unIndexed: {
         mmos.docRef: docRef,
         mmos.chatSentBy: chatSentBy,
         mmos.chatRecdBy: chatRecdBy,
         mmos.recieverSeenTime: recieverSeenTime,
         mmos.chatString: chatString,
-        mmos.chatType: chatType,
+        
         mmos.listDocMaps: listDocMaps,
+        
       }
     };
   }
@@ -47,8 +50,9 @@ class MessageModel {
       senderSentTime: messageMap[mmos.senderSentTime],
       recieverSeenTime: messageMap[unIndexed][mmos.recieverSeenTime],
       chatString: messageMap[unIndexed][mmos.chatString],
-      chatType: messageMap[unIndexed][mmos.chatType],
+      chatType: messageMap[mmos.chatType],
       listDocMaps: messageMap[unIndexed][mmos.listDocMaps],
+      
     );
   }
 }
@@ -102,4 +106,7 @@ class ChatTypesStrings {
   final multiWeek = "multiWeek";
   final multiPlan = "multiPlan";
   final viewRequest = "viewRequest";
+
+  final isApproved = "isApproved";
+  final isDietViewRequest = "isDietViewRequest";
 }

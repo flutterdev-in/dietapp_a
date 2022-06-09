@@ -1,8 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/colors.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
+import 'package:dietapp_a/v_chat/chat%20Room%20Screen/functions/chat_room_send_functions.dart';
+import 'package:dietapp_a/v_chat/constants/chat_const_variables.dart';
 import 'package:dietapp_a/v_chat/diet%20Room%20Screen/_diet_room_controller.dart';
 import 'package:dietapp_a/v_chat/models/chat_room_model.dart';
+import 'package:dietapp_a/v_chat/models/message_model%20copy.dart';
+import 'package:dietapp_a/v_chat/models/message_model.dart';
 import 'package:dietapp_a/x_customWidgets/month_calander.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
 import 'package:flutter/material.dart';
@@ -73,6 +77,72 @@ class DietViewChat extends StatelessWidget {
                             crmNew.chatDR.update({
                               "$unIndexed.$userUID.${crs.dietRequestSendTime}":
                                   Timestamp.fromDate(DateTime.now()),
+                            });
+
+                            //
+                            await FirebaseFirestore.instance
+                                .collection(crs.chatRooms)
+                                .doc(thisChatDocID.value)
+                                .collection(crs.chats)
+                                .add(
+                                  MessageModel(
+                                    chatSentBy: userUID,
+                                    chatRecdBy: crmNew.chatPersonUID,
+                                    chatString: null,
+                                    senderSentTime:
+                                        Timestamp.fromDate(DateTime.now()),
+                                    listDocMaps: [
+                                      DietChatRequestModel(
+                                              isDietViewRequest: true,
+                                              isApproved: null,
+                                              actionTime: null)
+                                          .toMap(),
+                                    ],
+                                    chatType: chatTS.viewRequest,
+                                  ).toMap(),
+                                )
+                                .then((docRf) async {
+                              docRf.update(
+                                {
+                                  mmos.senderSentTime:
+                                      Timestamp.fromDate(DateTime.now()),
+                                  "$unIndexed.${mmos.recieverSeenTime}":
+                                      isChatPersonOnChat.value
+                                          ? Timestamp.fromDate(DateTime.now())
+                                          : null,
+                                  "$unIndexed.$docRef0": docRf
+                                },
+                              );
+
+                              ChatRoomSendFunctions().updateChatDocAfterSend(
+                                  chatRoomDR: FirebaseFirestore.instance
+                                      .collection(crs.chatRooms)
+                                      .doc(thisChatDocID.value),
+                                  lastChatDR: docRf,
+                                  lastChatSentBy: userUID,
+                                  lastChatRecdBy: crs.chatPersonUIDfromDocID(
+                                      thisChatDocID.value));
+
+                              FirebaseFirestore.instance
+                                  .collection(crs.chatRooms)
+                                  .doc(thisChatDocID.value)
+                                  .collection(crs.chats)
+                                  .where(mmos.chatType,
+                                      isEqualTo: chatTS.viewRequest)
+                                  .orderBy(mmos.senderSentTime,
+                                      descending: true)
+                                  .get()
+                                  .then((qs) async {
+                                if (qs.docs.isNotEmpty) {
+                                  var lr =
+                                      qs.docs.map((e) => e.reference).toList();
+                                  lr.remove(docRf);
+
+                                  for (var i in lr) {
+                                    await i.delete();
+                                  }
+                                }
+                              });
                             });
                           }),
                   ],

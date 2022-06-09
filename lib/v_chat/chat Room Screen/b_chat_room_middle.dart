@@ -8,6 +8,7 @@ import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/models/food
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/day_plan_middle.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/diet_plans_middle.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/multi_foods_collection_middle.dart';
+import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/request_widget_dietchat.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/single_folder_middle.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/text_widget_chat.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/timing_plan_middle.dart';
@@ -16,7 +17,6 @@ import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/week_pl
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/youtube_video_widget.dart';
 import 'package:dietapp_a/v_chat/constants/chat_const_variables.dart';
 import 'package:dietapp_a/v_chat/models/chat_room_model.dart';
-
 import 'package:dietapp_a/v_chat/models/message_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/firestore.dart';
@@ -45,6 +45,7 @@ class ChatRoomMiddle extends StatelessWidget {
           itemBuilder: (context, snapshot) {
             Map<String, dynamic> messageMap = snapshot.data();
             MessageModel mm = MessageModel.fromMap(messageMap);
+            mm.docRef = snapshot.reference;
             bool isSentByMe = mm.chatSentBy == userUID;
 
             return InkWell(
@@ -141,6 +142,8 @@ Widget chatWidget(MessageModel mm) {
           return DietPlanBasicInfoModel.fromMap(map);
         }).toList(),
         text: mm.chatString);
+  } else if (mm.chatType == chatTS.viewRequest) {
+    return RequestWidgetDietChat(mm);
   } else {
     return TextWidgetChatMiddle(mm: mm);
   }
