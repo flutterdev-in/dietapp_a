@@ -11,12 +11,15 @@ class BrowserController {
   Rx<String> currentURL = "https://m.youtube.com/".obs;
   Rx<String> currentRefURLimageURL = "".obs;
   final currentRefUrlMetadataModel = rummfos.constModel.obs;
-      
-  Rx<bool> isTextFieldTapped = false.obs;
+
+  // Rx<bool> isTextFieldTapped = false.obs;
   Rx<String> homeURL = "https://m.youtube.com/".obs;
   Rx<String> lastFavWebURL = "".obs;
   Rx<String> functionButtonType = "".obs;
   Rx<bool> isBrowserForRefURL = false.obs;
+  Rx<String> currentSearchEngineGYT = "G".obs;
+  final currentSearchEngine = "currentSearchEngine";
+  Rx<bool> isFocused = false.obs;
   void tecText(String text) {
     tec.text = text;
     tec.selection =

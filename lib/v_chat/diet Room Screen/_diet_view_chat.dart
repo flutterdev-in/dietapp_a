@@ -143,7 +143,7 @@ class DietViewChat extends StatelessWidget {
                                   }
                                 }
                               });
-                            });
+                            }); 
                           }),
                   ],
                 ),

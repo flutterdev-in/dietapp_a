@@ -17,7 +17,6 @@ class InAppWebViewWidget extends StatelessWidget {
         bc.wvc = controller;
       },
       onTitleChanged: (controller, title) async {
-        bc.isTextFieldTapped.value = false;
         Uri? u = await bc.wvc?.getUrl();
         if (u != null) bc.currentURL.value = u.toString();
         if (title != null) {

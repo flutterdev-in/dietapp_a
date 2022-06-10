@@ -1,21 +1,27 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:getwidget/getwidget.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
-class YoutubePlayerMiddle extends StatelessWidget {
-  final String webURL;
+class YoutubeVideoPlayerScreen extends StatelessWidget {
+  final RefUrlMetadataModel rumm;
 
   final String? title;
-  const YoutubePlayerMiddle({
+  const YoutubeVideoPlayerScreen(
+    this.rumm,
+    this.title, {
     Key? key,
-    required this.webURL,
-    required this.title,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     YoutubePlayerController ytc = YoutubePlayerController(
-      initialVideoId: YoutubePlayer.convertUrlToId(webURL) ?? "kjiSVunIWpU",
+      initialVideoId: YoutubePlayer.convertUrlToId(rumm.url) ?? "kjiSVunIWpU",
       flags: const YoutubePlayerFlags(
         autoPlay: true,
         hideThumbnail: true,
@@ -30,6 +36,8 @@ class YoutubePlayerMiddle extends StatelessWidget {
       player: YoutubePlayer(
         controller: ytc,
         actionsPadding: const EdgeInsets.all(0.0),
+        thumbnail:
+            rumm.img != null ? CachedNetworkImage(imageUrl: rumm.img!) : null,
 
         // showVideoProgressIndicator: true,
         bottomActions: [
@@ -47,6 +55,7 @@ class YoutubePlayerMiddle extends StatelessWidget {
           FullScreenButton(),
         ],
         showVideoProgressIndicator: true,
+      
         progressColors: const ProgressBarColors(
           bufferedColor: Colors.transparent,
           playedColor: Colors.red,
@@ -65,8 +74,30 @@ class YoutubePlayerMiddle extends StatelessWidget {
                 child: Text(title ?? ""),
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  IconButton(onPressed: null, icon: Icon(MdiIcons.share)),
+                  IconButton(
+                      onPressed: () async {
+                        await Share.share(
+                            "${title ?? rumm.title ?? ''}\n${rumm.url}");
+                      },
+                      icon: const Icon(MdiIcons.share)),
+                  IconButton(
+                      onPressed: () {
+                        Clipboard.setData(ClipboardData(text: rumm.url));
+                        GFToast.showToast(
+                          "Copied to clipboard",
+                          context,
+                          toastPosition: GFToastPosition.CENTER,
+                        );
+                      },
+                      icon: const Icon(MdiIcons.contentCopy)),
+                  IconButton(
+                      onPressed: () async {
+                        await Future.delayed(const Duration(milliseconds: 400));
+                        Get.back();
+                      },
+                      icon: const Icon(MdiIcons.arrowLeft)),
                 ],
               ),
             ]),

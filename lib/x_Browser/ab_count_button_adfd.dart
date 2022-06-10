@@ -165,6 +165,7 @@ class CountButtonAdfdW extends StatelessWidget {
                 ElevatedButton(
                   child: const Text("Add all"),
                   onPressed: () async {
+                    print(bottomBarindex.value);
                     for (FoodsCollectionModel fcm in adfc.addedFoodList.value) {
                       if (bottomBarindex.value == 2) {
                         pcc.addFoods(fcm);

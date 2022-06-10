@@ -5,10 +5,7 @@ import 'package:dietapp_a/userData/models/user_strings.dart';
 import 'package:dietapp_a/v_chat/models/chat_room_model.dart';
 
 //Strings
-Stream<DocumentSnapshot> userDS0 =
-    FirebaseFirestore.instance.collection(uss.users).doc(userUID).snapshots();
-Stream<DocumentSnapshot> userDS =
-    FirebaseFirestore.instance.collection(uss.users).doc(userUID).snapshots();
+
 
 final DocumentReference<Map<String, dynamic>> userDR =
     FirebaseFirestore.instance.collection(uss.users).doc(userUID);

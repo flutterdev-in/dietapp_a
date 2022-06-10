@@ -52,9 +52,13 @@ class AddFoodScreen extends StatelessWidget {
           const SizedBox(width: 5),
           const Expanded(child: TextFieldForBrowser(), flex: 5),
           const SizedBox(width: 10),
-          Obx(() => bc.isBrowserForRefURL.value ? forRefURL() : countButton()),
-          const SizedBox(
-            width: 40,
+          Obx(() => bc.isFocused.value
+              ? const SizedBox()
+              : bc.isBrowserForRefURL.value
+                  ? forRefURL()
+                  : countButton()),
+          const Padding(
+            padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
             child: MenuItemsWebBrowser(),
           ),
         ],

@@ -16,7 +16,7 @@ class _WebViewPluginScreenState extends State<WebViewPluginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SizedBox(
+      body: const SizedBox(
         // width: 200,
         child: WebView(
           // appBar: AppBar(),
@@ -24,7 +24,7 @@ class _WebViewPluginScreenState extends State<WebViewPluginScreen> {
         ),
       ),
       floatingActionButton:
-          IconButton(onPressed: () {}, icon: Icon(MdiIcons.plus)),
+          IconButton(onPressed: () {}, icon: const Icon(MdiIcons.plus)),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
     // Stack(

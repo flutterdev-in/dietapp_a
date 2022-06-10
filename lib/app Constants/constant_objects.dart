@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
-final String userUID = FirebaseAuth.instance.currentUser!.uid;
+String userUID = FirebaseAuth.instance.currentUser!.uid;
 
 final User? currentUser = FirebaseAuth.instance.currentUser;
 final String userGoogleEmail = FirebaseAuth.instance.currentUser!.email ?? "";
@@ -42,4 +42,12 @@ class ActiveDietFinalObjects {
   final String takenNotes = "takenNotes";
   final String isPlanned = "isPlanned";
   final String isTaken = "isTaken";
+}
+
+bool isYoutubeVideo(String url) {
+  if (url.isURL && url.contains("youtube.com/watch?")) {
+    return true;
+  } else {
+    return false;
+  }
 }

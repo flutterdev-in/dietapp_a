@@ -119,52 +119,54 @@ class FavWebPagesListView extends StatelessWidget {
             itemBuilder: (context, index) {
               Map dataMap = boxFavWebPages.get(rxFavWebPages[index]);
 
-              return Padding(
-                padding: const EdgeInsets.fromLTRB(2, 3, 3, 3),
-                child: Row(
-                  children: [
-                    GFAvatar(
-                      shape: GFAvatarShape.standard,
-                      size: GFSize.MEDIUM,
-                      maxRadius: 20,
-                      backgroundImage: NetworkImage(dataMap["imageURL"] ?? ""),
-                    ),
-                    const SizedBox(
-                      width: 5,
-                    ),
-                    Expanded(
-                      child: InkWell(
-                        child: Text(
-                          dataMap["title"],
-                          softWrap: true,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        onTap: () async {
-                          Get.back();
-                          Get.back();
-                          await bc.loadURl(dataMap["webURL"]);
-                        },
+              return InkWell(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(2, 3, 3, 3),
+                  child: Row(
+                    children: [
+                      GFAvatar(
+                        shape: GFAvatarShape.standard,
+                        size: GFSize.MEDIUM,
+                        maxRadius: 20,
+                        backgroundImage:
+                            NetworkImage(dataMap["imageURL"] ?? ""),
                       ),
-                      flex: 8,
-                    ),
-                    const SizedBox(
-                      width: 5,
-                    ),
-                    Expanded(
-                      child: InkWell(
-                          child: const Icon(
-                            MdiIcons.minusCircleOutline,
-                            color: Colors.black,
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      Expanded(
+                        child: InkWell(
+                          child: Text(
+                            dataMap["title"],
+                            softWrap: true,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
                           ),
-                          onTap: () {
-                            rxFavWebPages.removeAt(index);
-                            boxFavWebPages.deleteAt(index);
-                          }),
-                      flex: 1,
-                    ),
-                  ],
+                        ),
+                        flex: 8,
+                      ),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      Expanded(
+                        child: InkWell(
+                            child: const Icon(
+                              MdiIcons.minusCircleOutline,
+                              color: Colors.black,
+                            ),
+                            onTap: () {
+                              rxFavWebPages.removeAt(index);
+                              boxFavWebPages.deleteAt(index);
+                            }),
+                        flex: 1,
+                      ),
+                    ],
+                  ),
                 ),
+                onTap: () async {
+                  Get.back();
+                  await bc.loadURl(dataMap["webURL"]);
+                },
               );
             },
           );

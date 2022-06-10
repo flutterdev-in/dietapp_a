@@ -19,6 +19,7 @@ class FoodCollectionScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           const FoodsCollectionTopBar(),
+          
           const Expanded(child: FoodsCollectionListView()),
           Obx(() {
             if (fcc.isCopyOrMoveStarted.value) {

@@ -17,11 +17,11 @@ class BasicInfoEditScreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Basic Info'),
+          title: const Text('Basic Info'),
         ),
         body: ListView(
           children: [
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             _gender(),
             divider(),
             _age(),
@@ -41,7 +41,7 @@ class BasicInfoEditScreen extends StatelessWidget {
   }
 
   Widget divider() {
-    return Divider(
+    return const Divider(
       thickness: 1,
     );
   }
@@ -65,12 +65,12 @@ class BasicInfoEditScreen extends StatelessWidget {
     return Obx(
       () => Row(
         children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
+          const Padding(
+            padding: EdgeInsets.fromLTRB(20, 5, 20, 5),
             child: Icon(MdiIcons.humanMaleFemale),
           ),
           _button("Male"),
-          SizedBox(width: 20),
+          const SizedBox(width: 20),
           _button("Female"),
         ],
       ),
@@ -85,8 +85,8 @@ class BasicInfoEditScreen extends StatelessWidget {
         TextSelection.fromPosition(TextPosition(offset: tc.text.length));
     return Row(
       children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
+        const Padding(
+          padding: EdgeInsets.fromLTRB(20, 5, 20, 5),
           child: Icon(MdiIcons.cakeVariant),
         ),
         SizedBox(
@@ -101,13 +101,13 @@ class BasicInfoEditScreen extends StatelessWidget {
             },
           ),
         ),
-        Text("yrs"),
+        const Text("yrs"),
         Padding(
           padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
           child: Obx(
             () => (vd.value >= 1 && vd.value < 120)
-                ? Text("")
-                : Text(
+                ? const Text("")
+                : const Text(
                     "Enter valid age",
                     style: TextStyle(color: Colors.brown),
                   ),
@@ -129,8 +129,8 @@ class BasicInfoEditScreen extends StatelessWidget {
 
     return Row(
       children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(20, 5, 10, 5),
+        const Padding(
+          padding: EdgeInsets.fromLTRB(20, 5, 10, 5),
           child: Icon(MdiIcons.humanMaleHeightVariant),
         ),
         SizedBox(
@@ -152,7 +152,7 @@ class BasicInfoEditScreen extends StatelessWidget {
                       )))
                   .toList()),
         ),
-        Text("ft"),
+        const Text("ft"),
         SizedBox(
           width: 70,
           height: 60,
@@ -172,7 +172,7 @@ class BasicInfoEditScreen extends StatelessWidget {
                       )))
                   .toList()),
         ),
-        Text("inch"),
+        const Text("inch"),
       ],
     );
   }
@@ -185,8 +185,8 @@ class BasicInfoEditScreen extends StatelessWidget {
         TextSelection.fromPosition(TextPosition(offset: tc.text.length));
     return Row(
       children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
+        const Padding(
+          padding: EdgeInsets.fromLTRB(20, 5, 20, 5),
           child: Icon(FontAwesomeIcons.weight),
         ),
         SizedBox(
@@ -224,17 +224,17 @@ class BasicInfoEditScreen extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
       child: Row(
         children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20, 5, 0, 5),
+          const Padding(
+            padding: EdgeInsets.fromLTRB(20, 5, 0, 5),
             child: Icon(MdiIcons.shoeSneaker),
           ),
-          SizedBox(width: 20),
+          const SizedBox(width: 20),
           Expanded(
             child: InkWell(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  const Text(
                     "Daily activity",
                     style: TextStyle(color: Colors.black54),
                   ),
@@ -242,7 +242,7 @@ class BasicInfoEditScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Obx(() => Text(activityText.value)),
-                      Icon(MdiIcons.menuDown)
+                      const Icon(MdiIcons.menuDown)
                     ],
                   ),
                 ],
@@ -258,24 +258,25 @@ class BasicInfoEditScreen extends StatelessWidget {
                       children: [
                         Text(title),
                         Text(subtitle, textScaleFactor: 0.9),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         )
                       ],
                     ),
                     onTap: () async {
                       Navigator.of(context).pop();
-                      await Future.delayed(Duration(milliseconds: 300));
+                      await Future.delayed(const Duration(milliseconds: 300));
                       activityText.value = title;
                     },
                   );
                 }
 
                 showDialog(
-                  barrierDismissible: false,
+                  barrierDismissible: true,
                   context: context,
                   builder: (context) => AlertDialog(
-                      contentPadding: EdgeInsets.fromLTRB(8.0, 20.0, 8.0, 24.0),
+                      contentPadding:
+                          const EdgeInsets.fromLTRB(8.0, 20.0, 8.0, 24.0),
                       scrollable: true,
                       actionsAlignment: MainAxisAlignment.start,
                       content: Column(
@@ -293,7 +294,7 @@ class BasicInfoEditScreen extends StatelessWidget {
                           selct(
                             title: "Moderately Active",
                             subtitle:
-                                "High physical movement during working hours, (eg. delivery person, waiter",
+                                "High physical movement during working hours, (eg. delivery person, waiter etc)",
                           ),
                           selct(
                             title: "Very Active",
@@ -306,7 +307,7 @@ class BasicInfoEditScreen extends StatelessWidget {
               },
             ),
           ),
-          SizedBox(width: 20),
+          const SizedBox(width: 20),
         ],
       ),
     );
@@ -320,7 +321,7 @@ class BasicInfoEditScreen extends StatelessWidget {
       child: Row(
         children: [
           const Padding(
-            padding: const EdgeInsets.fromLTRB(20, 5, 0, 5),
+            padding: EdgeInsets.fromLTRB(20, 5, 0, 5),
             child: Icon(MdiIcons.food),
           ),
           const SizedBox(width: 20),
@@ -367,7 +368,7 @@ class BasicInfoEditScreen extends StatelessWidget {
                 }
 
                 showDialog(
-                  barrierDismissible: false,
+                  barrierDismissible: true,
                   context: context,
                   builder: (context) => AlertDialog(
                       contentPadding:

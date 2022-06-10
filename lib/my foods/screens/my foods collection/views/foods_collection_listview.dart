@@ -1,8 +1,13 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/controllers/fc_controller.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/functions/fc_useful_functions.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/models/food_collection_model.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/foods_collection_strings.dart';
+import 'package:dietapp_a/x_customWidgets/expandable_text.dart';
+import 'package:dietapp_a/x_customWidgets/web%20view/web_view_page.dart';
+import 'package:dietapp_a/x_customWidgets/youtube/youtube_player_middle.dart';
+import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/firestore.dart';
 import 'package:get/get.dart';
@@ -38,30 +43,46 @@ class FoodsCollectionListView extends StatelessWidget {
           });
           Widget avatarW() {
             if (fdcm.isFolder) {
-              return const Icon(
+              return Icon(
                 MdiIcons.folder,
-                color: Colors.orange,
+                color: Colors.orange.shade300,
+                size: 50,
               );
             } else {
-              Widget avatar = GFAvatar(
-                shape: GFAvatarShape.standard,
-                size: GFSize.MEDIUM,
-                maxRadius: 20,
-                backgroundImage: NetworkImage(fdcm.rumm?.img ?? ""),
-              );
+              Widget avatar = fdcm.rumm?.isYoutubeVideo == true
+                  ? ClipRRect(
+                      borderRadius: BorderRadius.circular(5),
+                      child: SizedBox(
+                        width: 70,
+                        child: CachedNetworkImage(imageUrl: fdcm.rumm!.img!),
+                      ),
+                    )
+                  : GFAvatar(
+                      child: fdcm.rumm?.img == null
+                          ? const Icon(MdiIcons.note)
+                          : null,
+                      shape: GFAvatarShape.standard,
+                      maxRadius: 30,
+                      backgroundImage: fdcm.rumm?.img != null
+                          ? CachedNetworkImageProvider(fdcm.rumm!.img!)
+                          : null,
+                    );
               if (fdcm.rumm?.isYoutubeVideo ?? false) {
                 return Stack(
                   children: [
                     avatar,
                     Positioned(
                       child: Container(
-                        color: Colors.white70,
-                        child: const Icon(
-                          MdiIcons.youtube,
-                          color: Colors.red,
-                          size: 15,
-                        ),
-                      ),
+                          decoration: const BoxDecoration(
+                            color: Colors.black,
+                            borderRadius:
+                                BorderRadius.only(topLeft: Radius.circular(5)),
+                          ),
+                          child: Text(
+                            fdcm.rumm!.youtubeVideoLength ?? "",
+                            textScaleFactor: 0.9,
+                            style: const TextStyle(color: Colors.white),
+                          )),
                       right: 0,
                       bottom: 0,
                     )
@@ -77,12 +98,22 @@ class FoodsCollectionListView extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(0, 5, 8, 0),
             margin: const EdgeInsets.symmetric(vertical: 7, horizontal: 10),
             avatar: avatarW(),
-            title: Text(
-              fdcm.fieldName,
-              softWrap: true,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
+            subTitle: fdcm.notes != null
+                ? expText(fdcm.notes!, collapseOnTextTap: false)
+                : null,
+            title: fdcm.notes != null
+                ? Text(
+                    fdcm.fieldName,
+                    softWrap: true,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  )
+                : ExpandableText(
+                    fdcm.fieldName,
+                    maxLines: 3,
+                    expandText: "more",
+                    collapseText: "show less",
+                  ),
             icon: Obx(() {
               isItemSelected.value = fcc.currentsPathItemsMaps
                   .value[snapshot.reference]?[fdcs.isItemSelected];
@@ -141,7 +172,12 @@ class FoodsCollectionListView extends StatelessWidget {
                   },
                 );
               } else {
-                // bc.loadURl(fdcm.webURL ?? "");
+                if (fdcm.rumm?.isYoutubeVideo ?? false) {
+                  Get.to(() =>
+                      YoutubeVideoPlayerScreen(fdcm.rumm!, fdcm.fieldName));
+                } else if (fdcm.rumm?.url != null) {
+                  Get.to(() => WebViewPage(fdcm.rumm!.url, fdcm.fieldName));
+                }
               }
             },
             onLongPress: () {

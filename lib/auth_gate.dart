@@ -1,3 +1,4 @@
+import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/assets/assets.dart';
 import 'package:dietapp_a/main_screen_manager.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -26,6 +27,7 @@ class AuthGate extends StatelessWidget {
               // );
               const LoginView();
         }
+        userUID = FirebaseAuth.instance.currentUser!.uid;
         return const ManinScreenManager();
 
         // Render your application if authenticated

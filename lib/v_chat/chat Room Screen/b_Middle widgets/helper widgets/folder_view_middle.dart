@@ -3,8 +3,8 @@ import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/controllers
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/models/food_collection_model.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/foods_collection_strings.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/views/widgets/top%20bars/fc_path_bar.dart';
-import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/helper%20widgets/web_page_middle.dart';
-import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/helper%20widgets/youtube_player_middle.dart';
+import 'package:dietapp_a/x_customWidgets/web%20view/web_view_page.dart';
+import 'package:dietapp_a/x_customWidgets/youtube/youtube_player_middle.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/firestore.dart';
 import 'package:get/get.dart';
@@ -108,11 +108,10 @@ class FolderViewMiddle extends StatelessWidget {
                         },
                       );
                     } else if (fdcm.rumm?.isYoutubeVideo ?? false) {
-                      Get.to(() => YoutubePlayerMiddle(
-                          webURL: fdcm.rumm!.url, title: fdcm.fieldName));
+                      Get.to(() =>
+                          YoutubeVideoPlayerScreen(fdcm.rumm!, fdcm.fieldName));
                     } else if (fdcm.rumm != null) {
-                      Get.to(() => WebPageMiddle(
-                          webURL: fdcm.rumm!.url, title: fdcm.fieldName));
+                      Get.to(() => WebViewPage(fdcm.rumm!.url, fdcm.fieldName));
                     }
                   },
                 );

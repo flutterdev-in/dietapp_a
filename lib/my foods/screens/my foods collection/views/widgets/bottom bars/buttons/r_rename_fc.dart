@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/controllers/fc_controller.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/functions/fc_useful_functions.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/models/food_collection_model.dart';
@@ -101,7 +102,7 @@ class FCitemEditButton extends StatelessWidget {
                       child: const Text("Modify"),
                       onPressed: () async {
                         Get.back();
-                        if (fdcm.isFolder && snapshotReference != null) {
+                        if (snapshotReference != null) {
                           await Future.delayed(
                               const Duration(milliseconds: 700));
                           fcc.currentsPathItemsMaps.value[snapshotReference]
@@ -110,9 +111,10 @@ class FCitemEditButton extends StatelessWidget {
                           fcc.itemsSelectionCount.value =
                               fcufs.countSelectedItems();
 
+                          fcc.isSelectionStarted.value = false;
                           await snapshotReference!.update({
                             fdcs.fieldName: tcName.text,
-                            fdcs.notes: tcNotes.text,
+                            "$unIndexed.${fdcs.notes}": tcNotes.text,
                           });
                         }
                       },

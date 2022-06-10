@@ -1,5 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
+import 'package:dietapp_a/hive%20Boxes/boxes.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/models/food_collection_model.dart';
 import 'package:dietapp_a/x_Browser/controllers/add_food_controller.dart';
 import 'package:dietapp_a/x_Browser/controllers/browser_controllers.dart';
@@ -17,74 +17,97 @@ class TextFieldForBrowser extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bc.tec.text = "Youtube";
+    bc.currentSearchEngineGYT.value =
+        boxIndexes.get(bc.currentSearchEngine) ?? "G";
     return Container(
       height: 45,
       color: Colors.transparent,
-      child: TextField(
-        autocorrect: false,
-        autofocus: false,
-        controller: bc.tec,
-        keyboardType: TextInputType.name,
-        textInputAction: TextInputAction.search,
-        decoration: InputDecoration(
-          suffixIcon: textfieldSuffix(),
-          hintText: 'Search or enter URL',
-          contentPadding: const EdgeInsets.fromLTRB(15, 0, 10, 0),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(24.0),
-            borderSide: const BorderSide(color: Colors.black12),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(24.0),
-            borderSide: const BorderSide(color: Colors.black12),
-          ),
+      child: FocusScope(
+        child: Focus(
+          onFocusChange: (isFocused) {
+            bc.isFocused.value = isFocused;
+          },
+          child: Obx(() => TextField(
+                autocorrect: false,
+                autofocus: false,
+                controller: bc.tec,
+                keyboardType: TextInputType.name,
+                textInputAction: TextInputAction.search,
+                decoration: InputDecoration(
+                  prefixIcon: bc.isFocused.value ? prefixIcon() : null,
+                  suffixIcon: textfieldSuffix(),
+                  prefixIconConstraints:
+                      BoxConstraints.tight(const Size.square(50)),
+                  hintText: 'Search or enter URL',
+                  contentPadding: const EdgeInsets.fromLTRB(10, 0, 3, 0),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(24.0),
+                    borderSide: const BorderSide(color: Colors.black12),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(24.0),
+                    borderSide: const BorderSide(color: Colors.black12),
+                  ),
+                ),
+                onChanged: (value) async {
+                  value = value.trimLeft();
+                  value = value.replaceAll(RegExp(r"\s{2,}"), " ");
+                  if (!value.contains(RegExp(r"\s$")) && value.length > 3) {
+                    EasyDebounce.debounce("1", const Duration(seconds: 2), () {
+                      adfc.searchString.value = value;
+                    });
+                  }
+                },
+                onTap: () async {
+                  bc.tec.selection = TextSelection(
+                    baseOffset: 0,
+                    extentOffset: bc.tec.text.length,
+                  );
+                  bc.tec.selection = TextSelection.fromPosition(
+                      TextPosition(offset: bc.tec.text.length));
+                },
+                onSubmitted: (value) async {
+                  String uriString = value;
+                  if (value.trim().toLowerCase() == "google") {
+                    uriString = "https://www.google.com/";
+                  } else if (value.trim().toLowerCase() == "youtube") {
+                    uriString = "https://m.youtube.com/";
+                  } else if (!GetUtils.isURL(value)) {
+                    if (bc.currentSearchEngineGYT.value == "Y") {
+                      uriString =
+                          "https://m.youtube.com/results?search_query=$value";
+                    } else if (bc.currentSearchEngineGYT.value == "T") {
+                      uriString =
+                          "https://recipes.timesofindia.com/searchresults.cms?query=$value";
+                    } else {
+                      uriString = "https://www.google.com/search?q=$value";
+                    }
+                  }
+
+                  if (bc.wvc != null) {
+                    await bc.wvc!.loadUrl(
+                        urlRequest: URLRequest(url: Uri.parse(uriString)));
+                  }
+                },
+              )),
         ),
-        onChanged: (value) async {
-          value = value.trimLeft();
-          value = value.replaceAll(RegExp(r"\s{2,}"), " ");
-          if (!value.contains(RegExp(r"\s$")) && value.length > 3) {
-            EasyDebounce.debounce("1", const Duration(seconds: 2), () {
-              adfc.searchString.value = value;
-            });
-          }
-        },
-        onTap: () async {
-
-          bc.isTextFieldTapped.value = true;
-          bc.tec.selection = TextSelection.fromPosition(
-              TextPosition(offset: bc.tec.text.length));
-        },
-        onSubmitted: (value) async {
-          bc.isTextFieldTapped.value = false;
-          String uriString = value;
-          if (value.trim().toLowerCase() == "google") {
-            uriString = "https://www.google.com/";
-          } else if (value.trim().toLowerCase() == "youtube") {
-            uriString = "https://m.youtube.com/";
-          } else if (!GetUtils.isURL(value)) {
-            uriString = "https://www.google.com/search?q=$value";
-          }
-
-          if (bc.wvc != null) {
-            await bc.wvc!
-                .loadUrl(urlRequest: URLRequest(url: Uri.parse(uriString)));
-          }
-        },
       ),
     );
   }
 
-  Widget? textfieldSuffix() {
+  Widget textfieldSuffix() {
     return Obx(
       () {
         if (bc.isBrowserForRefURL.value) {
           return const SizedBox();
-        } else if (bc.isTextFieldTapped.value) {
+        } else if (bc.isFocused.value) {
           return IconButton(
+              splashRadius: 24.0,
               onPressed: () => bc.tec.clear(),
-              icon: const Icon(MdiIcons.close));
+              icon: const Icon(MdiIcons.close, color: Colors.black));
         } else if (GetUtils.isURL(bc.currentURL.value)) {
           return IconButton(
+            splashRadius: 24.0,
             onPressed: () async {
               Metadata? data = await MetadataFetch.extract(bc.currentURL.value);
               FoodsCollectionModel fdcm = FoodsCollectionModel(
@@ -115,10 +138,95 @@ class TextFieldForBrowser extends StatelessWidget {
           );
         } else {
           return const IconButton(
+            splashRadius: 24.0,
             onPressed: null,
             icon: Icon(MdiIcons.webPlus, color: Colors.black45),
           );
         }
+      },
+    );
+  }
+
+  Widget prefixIcon() {
+    Widget timesFoodIcon = Container(
+      decoration: const BoxDecoration(
+        color: Colors.red,
+        borderRadius: BorderRadius.all(Radius.circular(5)),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(2.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: const [
+            Text(
+              "TOI",
+              textScaleFactor: 0.7,
+              style:
+                  TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+            ),
+            Text(
+              "FOOD",
+              textScaleFactor: 0.6,
+              style: TextStyle(color: Colors.white),
+            ),
+          ],
+        ),
+      ),
+    );
+    return PopupMenuButton(
+      child: Obx(() {
+        if (bc.currentSearchEngineGYT.value == "Y") {
+          return const Icon(MdiIcons.youtube, color: Colors.red, size: 30);
+        } else if (bc.currentSearchEngineGYT.value == "T") {
+          return const Icon(MdiIcons.alphaTBoxOutline,
+              color: Colors.red, size: 30);
+        } else {
+          return const Icon(MdiIcons.google, size: 30);
+        }
+      }),
+      itemBuilder: (context) {
+        return [
+          PopupMenuItem(
+            child: Row(
+              children: const [
+                Icon(MdiIcons.google, size: 30),
+                // SvgPicture.asset(Assets().googleIcon),
+                SizedBox(width: 5),
+                Text("Google"),
+              ],
+            ),
+            onTap: () {
+              bc.currentSearchEngineGYT.value = "G";
+              boxIndexes.put(bc.currentSearchEngine, "G");
+            },
+          ),
+          PopupMenuItem(
+            child: Row(
+              children: const [
+                Icon(MdiIcons.youtube, color: Colors.red, size: 30),
+                SizedBox(width: 5),
+                Text("Youtube"),
+              ],
+            ),
+            onTap: () {
+              bc.currentSearchEngineGYT.value = "Y";
+              boxIndexes.put(bc.currentSearchEngine, "Y");
+            },
+          ),
+          PopupMenuItem(
+            child: Row(
+              children: const [
+                Icon(MdiIcons.alphaTBoxOutline, color: Colors.red, size: 30),
+                SizedBox(width: 5),
+                Text("TimesFood"),
+              ],
+            ),
+            onTap: () {
+              bc.currentSearchEngineGYT.value = "T";
+              boxIndexes.put(bc.currentSearchEngine, "T");
+            },
+          ),
+        ];
       },
     );
   }
