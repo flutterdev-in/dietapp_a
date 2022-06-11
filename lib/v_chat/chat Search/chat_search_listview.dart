@@ -36,7 +36,7 @@ class ChatSearchListview extends StatelessWidget {
                 onTap: () async {
                   var crm = await crs
                       .chatRoomModelFromChatPersonUID(uwm.firebaseUID!);
-                  thisChatDocID.value = crs.chatDRf(crm.chatMembers).id;
+                 
                   Get.back();
 
                   Get.to(() => ChatRoomScreen(crm), opaque: false);

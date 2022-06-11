@@ -5,10 +5,11 @@ import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/default_timing_mod
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/diet_plan_model.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/food_model_for_plan_creation.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/week_model.dart';
+import 'package:dietapp_a/app%20Constants/fire_ref.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/controllers/fc_controller.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/c_chat_room_bottom.dart';
 import 'package:dietapp_a/v_chat/controllers/chat_room_controller.dart';
-import 'package:dietapp_a/app%20Constants/fire_ref.dart';
+import 'package:dietapp_a/v_chat/models/chat_room_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutterfire_ui/firestore.dart';
@@ -17,7 +18,9 @@ import 'package:getwidget/getwidget.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class PlanViewForChat extends StatelessWidget {
-  PlanViewForChat({Key? key}) : super(key: key);
+  final ChatRoomModel crm;
+  final ChatScreenController chatSC;
+  PlanViewForChat(this.crm, this.chatSC, {Key? key}) : super(key: key);
 
   final currentPathCR = userDR.collection(dietpbims.dietPlansBeta).obs;
   final orderString = dietpbims.planCreationTime.obs;
@@ -29,6 +32,7 @@ class PlanViewForChat extends StatelessWidget {
   final listCR = RxList<QueryDocumentSnapshot<Map<String, dynamic>>>([]).obs;
   Rx<String> currentWeekName = "".obs;
   Rx<String> currentDayName = "".obs;
+
   @override
   Widget build(BuildContext context) {
     listCR.value.clear();
@@ -37,7 +41,7 @@ class PlanViewForChat extends StatelessWidget {
     return Column(
       children: [
         SizedBox(
-          child: ChatRoomBottom(isSuffixButtonsRequired: false),
+          child: ChatRoomBottom(crm, isSuffixButtonsRequired: false),
           height: 60,
         ),
         planPathBar(),

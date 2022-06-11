@@ -6,7 +6,8 @@ import 'package:dietapp_a/v_chat/models/chat_room_model.dart';
 import 'package:flutter/material.dart';
 
 class DietViewMemberManager extends StatelessWidget {
-  const DietViewMemberManager({Key? key}) : super(key: key);
+  final ChatRoomModel crm;
+  const DietViewMemberManager(this.crm,{Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +18,7 @@ class DietViewMemberManager extends StatelessWidget {
             return const CircularProgressIndicator();
           } else if (snapshot.hasData && snapshot.data!.data() != null) {
             var dietViewMembersMap = snapshot.data!.data()!;
-            if (dietViewMembersMap.containsKey(crs.chatPersonUIDfromDocID(thisChatDocID.value))) {
+            if (dietViewMembersMap.containsKey(crm.chatPersonUID)) {
               return const TimingsViewDietRoom();
             } else {
               return dietRoleManager();

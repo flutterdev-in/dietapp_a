@@ -43,7 +43,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen>
 
   @override
   Widget build(BuildContext context) {
-    Get.put(ChatScreenController());
+    Get.put(ChatScreenController(widget.crm));
 
     return SafeArea(
         child: Scaffold(
@@ -73,8 +73,8 @@ class _ChatRoomScreenState extends State<ChatRoomScreen>
           DietViewChat(widget.crm),
           Column(
             children: [
-              const ChatRoomMiddle(),
-              ChatRoomBottom(),
+              ChatRoomMiddle(widget.crm),
+              ChatRoomBottom(widget.crm),
             ],
           ),
         ],

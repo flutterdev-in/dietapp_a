@@ -5,6 +5,7 @@ import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/foo
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/views/widgets/top%20bars/fc_path_bar.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/c_chat_room_bottom.dart';
 import 'package:dietapp_a/v_chat/controllers/chat_room_controller.dart';
+import 'package:dietapp_a/v_chat/models/chat_room_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/firestore.dart';
 import 'package:get/get.dart';
@@ -12,15 +13,18 @@ import 'package:getwidget/getwidget.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class CollectionViewNavBar extends StatelessWidget {
- const CollectionViewNavBar({Key? key}) : super(key: key);
+  final ChatRoomModel crm;
+  const CollectionViewNavBar(this.crm, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var chatSC = ChatScreenController(crm);
     chatSC.selectedList.value.clear();
     return Column(
       children: [
         SizedBox(
-            child: ChatRoomBottom(isSuffixButtonsRequired: false), height: 60),
+            child: ChatRoomBottom(crm, isSuffixButtonsRequired: false),
+            height: 60),
         const FcPathBar(),
         Expanded(
           child: Obx(
@@ -41,6 +45,7 @@ class CollectionViewNavBar extends StatelessWidget {
                     return const Icon(
                       MdiIcons.folder,
                       color: Colors.orange,
+                      size: 40,
                     );
                   } else {
                     Widget avatar = GFAvatar(
@@ -49,15 +54,14 @@ class CollectionViewNavBar extends StatelessWidget {
                       maxRadius: 20,
                       backgroundImage: NetworkImage(fdcm.rumm?.img ?? ""),
                     );
-                    if (fdcm.rumm?.isYoutubeVideo ??
-                        false) {
+                    if (fdcm.rumm?.isYoutubeVideo ?? false) {
                       return Stack(
                         children: [
                           avatar,
                           Positioned(
                             child: Container(
                               color: Colors.white70,
-                              child:const Icon(
+                              child: const Icon(
                                 MdiIcons.youtube,
                                 color: Colors.red,
                                 size: 15,

@@ -9,11 +9,8 @@ import 'package:intl/intl.dart';
 class ActiveTimingModel {
   String timingName;
   String timingString;
-
   String? notes;
-
   RefUrlMetadataModel? rumm;
-
   DocumentReference<Map<String, dynamic>>? docRef;
 
   //

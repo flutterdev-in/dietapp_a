@@ -16,9 +16,10 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 
 class ChatRoomBottom extends StatelessWidget {
   final bool isSuffixButtonsRequired;
+  final ChatRoomModel crm;
 
   const ChatRoomBottom(
-     {
+    this.crm, {
     Key? key,
     this.isSuffixButtonsRequired = true,
   }) : super(key: key);
@@ -26,6 +27,8 @@ class ChatRoomBottom extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TextEditingController tc = TextEditingController();
+    final ChatScreenController chatSC = ChatScreenController(crm);
+
     return Container(
       color: Colors.teal.shade50,
       child: Row(
@@ -85,7 +88,7 @@ class ChatRoomBottom extends StatelessWidget {
                     String chatType = chatTS.stringOnly;
 
                     if (chatSC.selectedList.value.isNotEmpty) {
-                      listDocMaps = ChatRoomFunctions().getFinalList();
+                      listDocMaps = ChatRoomFunctions().getFinalList(crm);
 
                       chatType = chatSC.chatType.value;
                     }
@@ -93,15 +96,12 @@ class ChatRoomBottom extends StatelessWidget {
                     if (tcText.replaceAll(" ", "") != "" ||
                         chatSC.selectedList.value.isNotEmpty) {
                       //
-                      await FirebaseFirestore.instance
-                          .collection(crs.chatRooms)
-                          .doc(thisChatDocID.value)
+                      await crm.chatDR
                           .collection(crs.chats)
                           .add(
                             MessageModel(
                               chatSentBy: userUID,
-                              chatRecdBy: crs
-                                  .chatPersonUIDfromDocID(thisChatDocID.value),
+                              chatRecdBy: crm.chatPersonUID,
                               chatString: tcText,
                               senderSentTime:
                                   Timestamp.fromDate(DateTime.now()),
@@ -113,13 +113,15 @@ class ChatRoomBottom extends StatelessWidget {
                         if (chatType != chatTS.stringOnly) {
                           Navigator.pop(context);
                         }
+                        bool isOnChat =
+                            await ChatRoomFunctions().isChatPersonOnChat(crm);
 
                         await docRf.update(
                           {
                             mmos.senderSentTime:
                                 Timestamp.fromDate(DateTime.now()),
                             "$unIndexed.${mmos.recieverSeenTime}":
-                                isChatPersonOnChat.value
+                                isOnChat
                                     ? Timestamp.fromDate(DateTime.now())
                                     : null,
                             "$unIndexed.$docRef0": docRf
@@ -127,13 +129,10 @@ class ChatRoomBottom extends StatelessWidget {
                         );
 
                         ChatRoomSendFunctions().updateChatDocAfterSend(
-                            chatRoomDR: FirebaseFirestore.instance
-                                .collection(crs.chatRooms)
-                                .doc(thisChatDocID.value),
+                            chatRoomDR: crm.chatDR,
                             lastChatDR: docRf,
                             lastChatSentBy: userUID,
-                            lastChatRecdBy: crs
-                                .chatPersonUIDfromDocID(thisChatDocID.value));
+                            lastChatRecdBy: crm.chatPersonUID);
                       });
 
                       chatSC.chatType.value = chatTS.stringOnly;
@@ -150,6 +149,7 @@ class ChatRoomBottom extends StatelessWidget {
   }
 
   Widget suffixIconW(BuildContext context) {
+    final ChatScreenController chatSC = ChatScreenController(crm);
     return SizedBox(
       width: 125,
       child: Row(
@@ -166,7 +166,7 @@ class ChatRoomBottom extends StatelessWidget {
               chatSC.chatType.value = chatTS.collectionView;
               bottomSheetW(
                 context,
-                const CollectionViewNavBar(),
+                CollectionViewNavBar(crm),
               );
             },
           ),
@@ -181,7 +181,7 @@ class ChatRoomBottom extends StatelessWidget {
               chatSC.chatType.value = chatTS.planView;
               bottomSheetW(
                 context,
-                PlanViewForChat(),
+                PlanViewForChat(crm, ChatScreenController(crm)),
               );
             },
           ),

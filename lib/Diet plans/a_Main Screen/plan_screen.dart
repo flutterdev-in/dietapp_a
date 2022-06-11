@@ -17,6 +17,7 @@ class PlanScreen extends StatelessWidget {
       ]),
       body: const ListDietPlansW(),
       floatingActionButton: FloatingActionButton(
+          heroTag: null,
           backgroundColor: secondaryColor,
           onPressed: () async {
             await dtmos.getDefaultTimings().then((ltd) {

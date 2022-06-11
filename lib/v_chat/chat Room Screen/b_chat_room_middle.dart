@@ -24,7 +24,8 @@ import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class ChatRoomMiddle extends StatelessWidget {
-  const ChatRoomMiddle({Key? key}) : super(key: key);
+  final ChatRoomModel crm;
+  const ChatRoomMiddle(this.crm,{Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -35,9 +36,7 @@ class ChatRoomMiddle extends StatelessWidget {
           pageSize: 5,
           reverse: true,
           shrinkWrap: true,
-          query: FirebaseFirestore.instance
-              .collection(crs.chatRooms)
-              .doc(thisChatDocID.value)
+          query: crm.chatDR
               .collection(crs.chats)
               .orderBy(mmos.senderSentTime, descending: true),
 

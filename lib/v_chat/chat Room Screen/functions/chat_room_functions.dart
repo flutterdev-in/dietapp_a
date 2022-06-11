@@ -6,8 +6,9 @@ import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/food_model_for_pla
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/week_model.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/models/food_collection_model.dart';
-import 'package:dietapp_a/v_chat/constants/chat_const_variables.dart';
+import 'package:dietapp_a/userData/models/user_welcome_model.dart';
 import 'package:dietapp_a/v_chat/controllers/chat_room_controller.dart';
+import 'package:dietapp_a/v_chat/models/chat_room_model.dart';
 import 'package:dietapp_a/v_chat/models/message_model.dart';
 
 class ChatRoomFunctions {
@@ -23,7 +24,8 @@ class ChatRoomFunctions {
     );
   }
 
-  List<Map<String, dynamic>> getFinalList() {
+  List<Map<String, dynamic>> getFinalList(ChatRoomModel crm) {
+    final chatSC = ChatScreenController(crm);
     final List<QueryDocumentSnapshot<Map<String, dynamic>>> selectedList =
         chatSC.selectedList.value;
     List<Map<String, dynamic>> finalList = selectedList.map((snapshot) {
@@ -90,7 +92,27 @@ class ChatRoomFunctions {
     return finalList;
   }
 
-
-  
-  
+  Future<bool> isChatPersonOnChat(ChatRoomModel crm) async {
+    bool isChatOpen = false;
+    await crm.chatDR.get().then((ds) async {
+      if (ds.exists && ds.data() != null) {
+        var crmNew = ChatRoomModel.fromMap(ds.data()!);
+        if (crmNew.chatPersonModel.isThisChatOpen) {
+          await FirebaseFirestore.instance
+              .collection(users)
+              .doc(crm.chatPersonUID)
+              .get()
+              .then((ds) {
+            if (ds.exists && ds.data() != null) {
+              var uwm = UserWelcomeModel.fromMap(ds.data()!);
+              if (uwm.isActive) {
+                isChatOpen = true;
+              }
+            }
+          });
+        }
+      }
+    });
+    return isChatOpen;
+  }
 }

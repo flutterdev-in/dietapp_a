@@ -91,6 +91,7 @@ class TimingsViewDietRoom extends StatelessWidget {
                   .collection(fmfpcfos.foods),
               itemBuilder: (context, doc) {
                 ActiveFoodModel fm = ActiveFoodModel.fromMap(doc.data());
+                fm.docRef = doc.reference;
 
                 return GFListTile(
                   padding: const EdgeInsets.fromLTRB(5, 5, 0, 0),

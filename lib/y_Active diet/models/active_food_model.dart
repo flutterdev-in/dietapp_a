@@ -50,9 +50,10 @@ class ActiveFoodModel {
 
   factory ActiveFoodModel.fromMap(Map<String, dynamic> docMap) {
     return ActiveFoodModel(
-      isCamFood: docMap[afmos.isCamFood],
-      foodAddedTime:
-          DateTime.fromMillisecondsSinceEpoch(docMap[afmos.foodAddedTime]),
+      isCamFood: docMap[afmos.isCamFood] ?? false,
+      foodAddedTime: docMap[afmos.foodAddedTime] != null
+          ? DateTime.fromMillisecondsSinceEpoch(docMap[afmos.foodAddedTime])
+          : null,
       takenTime: docMap[afmos.takenTime]?.toDate(),
       foodName: docMap[afmos.foodName] ?? "",
       notes: docMap[unIndexed][notes0],

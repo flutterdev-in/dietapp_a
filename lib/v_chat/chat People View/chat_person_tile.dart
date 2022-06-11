@@ -5,7 +5,6 @@ import 'package:dietapp_a/hive%20Boxes/boxes.dart';
 import 'package:dietapp_a/userData/models/user_strings.dart';
 import 'package:dietapp_a/userData/models/user_welcome_model.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/_chat_room_screen.dart';
-import 'package:dietapp_a/v_chat/constants/chat_const_variables.dart';
 import 'package:dietapp_a/v_chat/models/chat_room_model.dart';
 import 'package:dietapp_a/x_customWidgets/stream_builder_functions.dart';
 import 'package:dietapp_a/y_Active%20diet/controllers/active_plan_controller.dart';
@@ -51,8 +50,6 @@ class ChatRoomTile extends StatelessWidget {
                 apc.currentActiveDayDR.value =
                     admos.activeDayDR(DateTime.now(), userUID);
                 Get.to(() {
-                  thisChatDocID.value = crm.chatDR.id;
-
                   var isChat = boxIndexes.get(crm.chatPersonUID) ?? false;
                   if (isChat == false) {
                     return ChatRoomScreen(crm, isChat: false);

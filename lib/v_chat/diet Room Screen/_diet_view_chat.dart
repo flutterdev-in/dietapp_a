@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/colors.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
+import 'package:dietapp_a/v_chat/chat%20Room%20Screen/functions/chat_room_functions.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/functions/chat_room_send_functions.dart';
-import 'package:dietapp_a/v_chat/constants/chat_const_variables.dart';
 import 'package:dietapp_a/v_chat/diet%20Room%20Screen/_diet_room_controller.dart';
 import 'package:dietapp_a/v_chat/models/chat_room_model.dart';
 import 'package:dietapp_a/v_chat/models/message_model%20copy.dart';
@@ -80,9 +80,7 @@ class DietViewChat extends StatelessWidget {
                             });
 
                             //
-                            await FirebaseFirestore.instance
-                                .collection(crs.chatRooms)
-                                .doc(thisChatDocID.value)
+                            await crm.chatDR
                                 .collection(crs.chats)
                                 .add(
                                   MessageModel(
@@ -102,12 +100,14 @@ class DietViewChat extends StatelessWidget {
                                   ).toMap(),
                                 )
                                 .then((docRf) async {
+                              bool isOnChat = await ChatRoomFunctions()
+                                  .isChatPersonOnChat(crm);
                               docRf.update(
                                 {
                                   mmos.senderSentTime:
                                       Timestamp.fromDate(DateTime.now()),
                                   "$unIndexed.${mmos.recieverSeenTime}":
-                                      isChatPersonOnChat.value
+                                      isOnChat
                                           ? Timestamp.fromDate(DateTime.now())
                                           : null,
                                   "$unIndexed.$docRef0": docRf
@@ -115,17 +115,12 @@ class DietViewChat extends StatelessWidget {
                               );
 
                               ChatRoomSendFunctions().updateChatDocAfterSend(
-                                  chatRoomDR: FirebaseFirestore.instance
-                                      .collection(crs.chatRooms)
-                                      .doc(thisChatDocID.value),
+                                  chatRoomDR: crm.chatDR,
                                   lastChatDR: docRf,
                                   lastChatSentBy: userUID,
-                                  lastChatRecdBy: crs.chatPersonUIDfromDocID(
-                                      thisChatDocID.value));
+                                  lastChatRecdBy: crm.chatPersonUID);
 
-                              FirebaseFirestore.instance
-                                  .collection(crs.chatRooms)
-                                  .doc(thisChatDocID.value)
+                              crm.chatDR
                                   .collection(crs.chats)
                                   .where(mmos.chatType,
                                       isEqualTo: chatTS.viewRequest)
@@ -143,7 +138,7 @@ class DietViewChat extends StatelessWidget {
                                   }
                                 }
                               });
-                            }); 
+                            });
                           }),
                   ],
                 ),
