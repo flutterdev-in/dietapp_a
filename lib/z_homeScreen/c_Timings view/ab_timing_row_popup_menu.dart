@@ -5,13 +5,14 @@ import 'package:dietapp_a/y_Active%20diet/controllers/active_plan_controller.dar
 import 'package:dietapp_a/y_Active%20diet/functions/delete_active_entries.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_timing_model.dart';
+import 'package:dietapp_a/y_Models/timing_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class MenuItemsTimingViewHS extends StatelessWidget {
-  final ActiveTimingModel atm;
+  final TimingModel atm;
 
   const MenuItemsTimingViewHS(this.atm, {Key? key}) : super(key: key);
 

@@ -1,4 +1,3 @@
-
 import 'package:dietapp_a/auth_gate.dart';
 import 'package:get/get.dart';
 
@@ -7,7 +6,7 @@ class AppRoutes {
   static final routes = [
     GetPage(
       name: "/",
-      page: () => AuthGate(),
+      page: () => const AuthGate(),
       //binding: HomeBinding(),
     ),
     // // Login
@@ -16,4 +15,3 @@ class AppRoutes {
     // Welcome
   ];
 }
-

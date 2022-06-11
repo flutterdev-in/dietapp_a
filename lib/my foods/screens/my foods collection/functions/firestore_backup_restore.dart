@@ -2,10 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:path_provider/path_provider.dart';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
+import 'package:path_provider/path_provider.dart';
 
 class FirebaseBackupRestore {
   static final FirebaseBackupRestore _singleton =
@@ -83,11 +81,9 @@ class FirebaseBackupRestore {
     List<String> objList = [];
 
     await collectionReference.get().then((snapshot) {
-      if (snapshot.docs != null) {
-        snapshot.docs.forEach((data_) {
-          objList.add(json.encode(data_.data()));
-        });
-      }
+      snapshot.docs.forEach((data_) {
+        objList.add(json.encode(data_.data()));
+      });
     });
     BackUpResult backUpResult = BackUpResult();
     backUpResult.collection = collectionId;
@@ -176,9 +172,7 @@ class FirebaseBackupRestore {
     restoreResult.message = "$done objects successfully restored!";
     return restoreResult;
   }
-} 
-
-
+}
 
 class BackUpResult {
   String? collection;

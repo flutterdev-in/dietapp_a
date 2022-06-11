@@ -1,10 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/day_basic_info.dart';
-import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/default_timing_model.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/diet_plan_model.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/week_model.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
-import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/models/food_collection_model.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/day_plan_middle.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/diet_plans_middle.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/multi_foods_collection_middle.dart';
@@ -15,9 +12,11 @@ import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/timing_
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/web_food_middle.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/week_plan_middle.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/youtube_video_widget.dart';
-import 'package:dietapp_a/v_chat/constants/chat_const_variables.dart';
 import 'package:dietapp_a/v_chat/models/chat_room_model.dart';
 import 'package:dietapp_a/v_chat/models/message_model.dart';
+import 'package:dietapp_a/y_Models/day_model.dart';
+import 'package:dietapp_a/y_Models/food_model.dart';
+import 'package:dietapp_a/y_Models/timing_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/firestore.dart';
 import 'package:intl/intl.dart';
@@ -25,7 +24,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 
 class ChatRoomMiddle extends StatelessWidget {
   final ChatRoomModel crm;
-  const ChatRoomMiddle(this.crm,{Key? key}) : super(key: key);
+  const ChatRoomMiddle(this.crm, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -96,21 +95,21 @@ Widget chatWidget(MessageModel mm) {
 
   if (mm.chatType == chatTS.singleYoutube) {
     Map<String, dynamic> map = listDocMaps!.first as Map<String, dynamic>;
-    FoodsCollectionModel fdcm = FoodsCollectionModel.fromMap(map);
+    FoodModel fdcm = FoodModel.fromMap(map);
     return YoutubeVideoWidget(fdcm: fdcm, text: mm.chatString);
   } else if (mm.chatType == chatTS.singleWebFood) {
     Map<String, dynamic> map = listDocMaps!.first as Map<String, dynamic>;
-    FoodsCollectionModel fdcm = FoodsCollectionModel.fromMap(map);
+    FoodModel fdcm = FoodModel.fromMap(map);
     return WebFoodMiddle(fdcm: fdcm, text: mm.chatString);
   } else if (mm.chatType == chatTS.singleFolder) {
     Map<String, dynamic> map = listDocMaps!.first as Map<String, dynamic>;
-    FoodsCollectionModel fdcm = FoodsCollectionModel.fromMap(map);
+    FoodModel fdcm = FoodModel.fromMap(map);
     return SingleFolderMiddle(fdcm: fdcm, text: mm.chatString);
   } else if (mm.chatType == chatTS.multiFoodCollection) {
     return MultiFoodsCollectionMiddle(
         listFDCM: listDocMaps!.map((e) {
           Map<String, dynamic> map = e as Map<String, dynamic>;
-          return FoodsCollectionModel.fromMap(map);
+          return FoodModel.fromMap(map);
         }).toList(),
         text: mm.chatString);
   } else if (mm.chatType == chatTS.multiDay) {
@@ -131,7 +130,7 @@ Widget chatWidget(MessageModel mm) {
     return TimingPlanMiddle(
         listModels: listDocMaps!.map((e) {
           Map<String, dynamic> map = e as Map<String, dynamic>;
-          return DefaultTimingModel.fromMap(map);
+          return TimingModel.fromMap(map);
         }).toList(),
         text: mm.chatString);
   } else if (mm.chatType == chatTS.multiPlan) {

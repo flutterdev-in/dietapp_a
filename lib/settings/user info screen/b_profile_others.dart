@@ -18,11 +18,11 @@ class BasicInfoEditScreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Basic Info'),
+          title: const Text('Basic Info'),
         ),
         body: ListView(
           children: [
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             _gender(),
             divider(),
             _age(),
@@ -38,7 +38,7 @@ class BasicInfoEditScreen extends StatelessWidget {
   }
 
   Widget divider() {
-    return Divider(
+    return const Divider(
       thickness: 1,
     );
   }
@@ -62,12 +62,12 @@ class BasicInfoEditScreen extends StatelessWidget {
     return Obx(
       () => Row(
         children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
+          const Padding(
+            padding: EdgeInsets.fromLTRB(20, 5, 20, 5),
             child: Icon(MdiIcons.humanMaleFemale),
           ),
           _button("Male"),
-          SizedBox(width: 20),
+          const SizedBox(width: 20),
           _button("Female"),
         ],
       ),
@@ -82,8 +82,8 @@ class BasicInfoEditScreen extends StatelessWidget {
         TextSelection.fromPosition(TextPosition(offset: tc.text.length));
     return Row(
       children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
+        const Padding(
+          padding: EdgeInsets.fromLTRB(20, 5, 20, 5),
           child: Icon(MdiIcons.cakeVariant),
         ),
         SizedBox(
@@ -98,13 +98,13 @@ class BasicInfoEditScreen extends StatelessWidget {
             },
           ),
         ),
-        Text("yrs"),
+        const Text("yrs"),
         Padding(
           padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
           child: Obx(
             () => (vd.value >= 1 && vd.value < 120)
-                ? Text("")
-                : Text(
+                ? const Text("")
+                : const Text(
                     "Enter valid age",
                     style: TextStyle(color: Colors.brown),
                   ),
@@ -126,8 +126,8 @@ class BasicInfoEditScreen extends StatelessWidget {
 
     return Row(
       children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(20, 5, 10, 5),
+        const Padding(
+          padding: EdgeInsets.fromLTRB(20, 5, 10, 5),
           child: Icon(MdiIcons.humanMaleHeightVariant),
         ),
         SizedBox(
@@ -149,7 +149,7 @@ class BasicInfoEditScreen extends StatelessWidget {
                       )))
                   .toList()),
         ),
-        Text("ft"),
+        const Text("ft"),
         SizedBox(
           width: 70,
           height: 60,
@@ -169,7 +169,7 @@ class BasicInfoEditScreen extends StatelessWidget {
                       )))
                   .toList()),
         ),
-        Text("inch"),
+        const Text("inch"),
       ],
     );
   }
@@ -182,8 +182,8 @@ class BasicInfoEditScreen extends StatelessWidget {
         TextSelection.fromPosition(TextPosition(offset: tc.text.length));
     return Row(
       children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
+        const Padding(
+          padding: EdgeInsets.fromLTRB(20, 5, 20, 5),
           child: Icon(FontAwesomeIcons.weight),
         ),
         SizedBox(
@@ -198,13 +198,13 @@ class BasicInfoEditScreen extends StatelessWidget {
             },
           ),
         ),
-        Text("Kg"),
+        const Text("Kg"),
         Padding(
           padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
           child: Obx(
             () => (vd.value > 1 && vd.value < 180)
-                ? Text("")
-                : Text(
+                ? const Text("")
+                : const Text(
                     "Enter valid weight",
                     style: TextStyle(color: Colors.brown),
                   ),

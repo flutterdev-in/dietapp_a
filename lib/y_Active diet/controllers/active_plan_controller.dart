@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/app%20Constants/fire_ref.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
+import 'package:dietapp_a/y_Models/timing_model.dart';
 import 'package:get/get.dart';
 
 import '../models/active_timing_model.dart';
@@ -10,8 +11,8 @@ ActivePlanController apc = ActivePlanController();
 
 class ActivePlanController extends GetxController {
   final dt = DateTime.now().obs;
-  final currentActiveDayDR = admos.activeDayDR(DateTime.now(),userUID).obs;
-  final listCurrentActiveTimingModel = RxList<ActiveTimingModel>([]);
+  final currentActiveDayDR = admos.activeDayDR(DateTime.now(), userUID).obs;
+  final listCurrentActiveTimingModel = RxList<TimingModel>([]);
   final currentTimingString = "am0830".obs;
   final currentActiveTimingDR = userDR.obs;
 
@@ -40,7 +41,7 @@ class ActivePlanController extends GetxController {
         .then((tQS) {
       if (tQS.docs.isNotEmpty) {
         apc.listCurrentActiveTimingModel.value = tQS.docs.map((e) {
-          var atm = ActiveTimingModel.fromMap(e.data());
+          var atm = TimingModel.fromMap(e.data());
           atm.docRef = e.reference;
           return atm;
         }).toList();

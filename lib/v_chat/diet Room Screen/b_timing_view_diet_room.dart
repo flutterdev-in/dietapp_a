@@ -3,8 +3,9 @@ import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/food_model_for_pla
 import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
 import 'package:dietapp_a/app%20Constants/url/ref_url_widget.dart';
 import 'package:dietapp_a/app%20Constants/url/url_avatar.dart';
-import 'package:dietapp_a/y_Active%20diet/models/active_food_model.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_timing_model.dart';
+import 'package:dietapp_a/y_Models/food_model.dart';
+import 'package:dietapp_a/y_Models/timing_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/firestore.dart';
 import 'package:get/get.dart';
@@ -38,7 +39,7 @@ class TimingsViewDietRoom extends StatelessWidget {
             return const Text("Diet not yet planned for this day");
           } else {
             var listTimingDocs = snapshot.data!.docs.map((e) {
-              ActiveTimingModel atm = ActiveTimingModel.fromMap(e.data());
+              TimingModel atm = TimingModel.fromMap(e.data());
               atm.docRef = e.reference;
               return atm;
             }).toList();
@@ -46,7 +47,7 @@ class TimingsViewDietRoom extends StatelessWidget {
               shrinkWrap: true,
               itemCount: listTimingDocs.length,
               itemBuilder: (context, index) {
-                ActiveTimingModel atm = listTimingDocs[index];
+                TimingModel atm = listTimingDocs[index];
                 return timingsView(atm);
               },
             );
@@ -54,7 +55,7 @@ class TimingsViewDietRoom extends StatelessWidget {
         }));
   }
 
-  Widget timingsView(ActiveTimingModel atm) {
+  Widget timingsView(TimingModel atm) {
     RefUrlMetadataModel rumm = atm.rumm ?? rummfos.constModel;
 
     return Card(
@@ -90,7 +91,7 @@ class TimingsViewDietRoom extends StatelessWidget {
                   .doc(atm.timingString)
                   .collection(fmfpcfos.foods),
               itemBuilder: (context, doc) {
-                ActiveFoodModel fm = ActiveFoodModel.fromMap(doc.data());
+                FoodModel fm = FoodModel.fromMap(doc.data());
                 fm.docRef = doc.reference;
 
                 return GFListTile(
@@ -99,7 +100,7 @@ class TimingsViewDietRoom extends StatelessWidget {
                       const EdgeInsets.symmetric(vertical: 3, horizontal: 0),
                   avatar: URLavatar(imgURL: fm.rumm?.img, webURL: fm.rumm?.url),
                   title: Text(fm.foodName, maxLines: 1),
-                  icon: fm.takenTime != null
+                  icon: fm.foodTakenTime != null
                       ? const Icon(MdiIcons.accountCheck)
                       : null,
                   subTitleText:

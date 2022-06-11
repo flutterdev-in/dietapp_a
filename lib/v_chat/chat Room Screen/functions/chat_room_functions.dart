@@ -5,18 +5,19 @@ import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/diet_plan_model.da
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/food_model_for_plan_creation.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/week_model.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
-import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/models/food_collection_model.dart';
 import 'package:dietapp_a/userData/models/user_welcome_model.dart';
 import 'package:dietapp_a/v_chat/controllers/chat_room_controller.dart';
 import 'package:dietapp_a/v_chat/models/chat_room_model.dart';
 import 'package:dietapp_a/v_chat/models/message_model.dart';
+import 'package:dietapp_a/y_Models/food_model.dart';
 
 class ChatRoomFunctions {
-  FoodsCollectionModel foodCollectionModelFromPlan(
-      FoodsModelForPlanCreation fmp) {
-    return FoodsCollectionModel(
-      fieldName: fmp.foodName,
-      fieldTime: fmp.foodAddedTime,
+  FoodModel foodCollectionModelFromPlan(FoodModel fmp) {
+    return FoodModel(
+      foodName: fmp.foodName,
+      foodAddedTime: fmp.foodAddedTime,
+      foodTakenTime: null,
+      isCamFood: null,
       isFolder: false,
       notes: fmp.notes,
       rumm: fmp.rumm,
@@ -41,11 +42,11 @@ class ChatRoomFunctions {
 
     QueryDocumentSnapshot<Map<String, dynamic>> snapshot = selectedList.first;
     if (selectedList.first.reference.path.contains(chatTS.foodsCollection)) {
-      FoodsCollectionModel fdcm = FoodsCollectionModel.fromMap(snapshot.data());
+      FoodModel fdcm = FoodModel.fromMap(snapshot.data());
       if (isSingle) {
-        if (fdcm.isFolder && fdcm.rumm != null) {
+        if (fdcm.isFolder == true && fdcm.rumm != null) {
           chatSC.chatType.value = chatTS.singleWebFolder;
-        } else if (fdcm.isFolder) {
+        } else if (fdcm.isFolder == true) {
           chatSC.chatType.value = chatTS.singleFolder;
         } else if (fdcm.rumm?.isYoutubeVideo ?? false) {
           chatSC.chatType.value = chatTS.singleYoutube;
@@ -69,13 +70,11 @@ class ChatRoomFunctions {
         chatSC.chatType.value = chatTS.multiTiming;
       } else if (parent == fmfpcfos.foods) {
         finalList = finalList
-            .map((e) => foodCollectionModelFromPlan(
-                    FoodsModelForPlanCreation.fromMap(e))
-                .toMap())
+            .map((e) =>
+                foodCollectionModelFromPlan(FoodModel.fromMap(e)).toMap())
             .toList();
         if (isSingle) {
-          FoodsModelForPlanCreation fmp =
-              FoodsModelForPlanCreation.fromMap(snapshot.data());
+          FoodModel fmp = FoodModel.fromMap(snapshot.data());
           if (fmp.rumm?.isYoutubeVideo ?? false) {
             chatSC.chatType.value = chatTS.singleYoutube;
           } else if (fmp.rumm != null) {

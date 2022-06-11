@@ -2,11 +2,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/controllers/fc_controller.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/functions/fc_useful_functions.dart';
-import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/models/food_collection_model.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/foods_collection_strings.dart';
 import 'package:dietapp_a/x_customWidgets/expandable_text.dart';
 import 'package:dietapp_a/x_customWidgets/web%20view/web_view_page.dart';
 import 'package:dietapp_a/x_customWidgets/youtube/youtube_player_middle.dart';
+import 'package:dietapp_a/y_Models/food_model.dart';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/firestore.dart';
@@ -32,7 +32,7 @@ class FoodsCollectionListView extends StatelessWidget {
 
           Map<String, dynamic> fcMap = snapshot.data();
 
-          FoodsCollectionModel fdcm = FoodsCollectionModel.fromMap(fcMap);
+          FoodModel fdcm = FoodModel.fromMap(fcMap);
 
           fcc.currentsPathItemsMaps.value.addAll({
             snapshot.reference: {
@@ -42,7 +42,7 @@ class FoodsCollectionListView extends StatelessWidget {
             }
           });
           Widget avatarW() {
-            if (fdcm.isFolder) {
+            if (fdcm.isFolder == true) {
               return Icon(
                 MdiIcons.folder,
                 color: Colors.orange.shade300,
@@ -103,13 +103,13 @@ class FoodsCollectionListView extends StatelessWidget {
                 : null,
             title: fdcm.notes != null
                 ? Text(
-                    fdcm.fieldName,
+                    fdcm.foodName,
                     softWrap: true,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   )
                 : ExpandableText(
-                    fdcm.fieldName,
+                    fdcm.foodName,
                     maxLines: 3,
                     expandText: "more",
                     collapseText: "show less",
@@ -159,7 +159,7 @@ class FoodsCollectionListView extends StatelessWidget {
                 fcc.currentsPathItemsMaps.value[snapshot.reference]
                     ?[fdcs.isItemSelected] = isItemSelected.value;
                 fcc.itemsSelectionCount.value = fcufs.countSelectedItems();
-              } else if (fdcm.isFolder) {
+              } else if (fdcm.isFolder == true) {
                 fcc.currentPathCR.value =
                     snapshot.reference.collection(fdcs.subCollections).path;
 
@@ -168,15 +168,15 @@ class FoodsCollectionListView extends StatelessWidget {
                     fdcs.pathCR:
                         snapshot.reference.collection(fdcs.subCollections),
                     fdcs.pathCRstring: fcc.currentPathCR.value,
-                    fdcs.fieldName: fdcm.fieldName
+                    fdcs.fieldName: fdcm.foodName
                   },
                 );
               } else {
                 if (fdcm.rumm?.isYoutubeVideo ?? false) {
                   Get.to(() =>
-                      YoutubeVideoPlayerScreen(fdcm.rumm!, fdcm.fieldName));
+                      YoutubeVideoPlayerScreen(fdcm.rumm!, fdcm.foodName));
                 } else if (fdcm.rumm?.url != null) {
-                  Get.to(() => WebViewPage(fdcm.rumm!.url, fdcm.fieldName));
+                  Get.to(() => WebViewPage(fdcm.rumm!.url, fdcm.foodName));
                 }
               }
             },

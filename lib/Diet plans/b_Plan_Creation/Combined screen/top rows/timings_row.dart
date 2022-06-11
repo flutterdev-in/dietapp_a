@@ -2,6 +2,7 @@ import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/default_timing_model.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_timing_model.dart';
+import 'package:dietapp_a/y_Models/timing_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/firestore.dart';
 import 'package:get/get.dart';
@@ -30,13 +31,12 @@ class TimingsRow000PlanCreationCombinedScreen extends StatelessWidget {
                     Map<String, dynamic> timingMap = doc.data();
                     if (timingMap[dtmos.timingString] != null ||
                         timingMap[dtmos.timingName] != null) {
-                      DefaultTimingModel dtm;
+                      TimingModel dtm;
                       if (pcc.currentDayDR.value.parent.id ==
                           admos.activeDaysPlan) {
-                        dtm = dtmos
-                            .dtmFromATM(ActiveTimingModel.fromMap(timingMap));
+                        dtm = dtmos.dtmFromATM(TimingModel.fromMap(timingMap));
                       } else {
-                        dtm = DefaultTimingModel.fromMap(timingMap);
+                        dtm = TimingModel.fromMap(timingMap);
                       }
                       dtm.docRef = doc.reference;
 

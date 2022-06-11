@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutterfire_ui/firestore.dart';
 import 'package:get/get.dart';
 
 class SubSearchNames extends StatelessWidget {
@@ -20,7 +19,7 @@ class SubSearchNames extends StatelessWidget {
             child: Obx(() => Column(
                   children: [
                     Text(beforeName0.value),
-                    SizedBox(
+                    const SizedBox(
                       height: 50,
                     ),
                     Text(afterName0.value),
@@ -29,7 +28,7 @@ class SubSearchNames extends StatelessWidget {
                       color: Colors.black26,
                     ),
                     Text(beforeName.value),
-                    SizedBox(
+                    const SizedBox(
                       height: 50,
                     ),
                     Text(afterName.value),
@@ -37,7 +36,7 @@ class SubSearchNames extends StatelessWidget {
                 )),
           ),
           ElevatedButton(
-            child: Text("Start modification"),
+            child: const Text("Start modification"),
             onPressed: () async {
               int i = 1;
 
@@ -78,9 +77,9 @@ Map<String, dynamic> subSearchNames(Map<String, dynamic> recipieMap) {
   //
   List<String> listSub0 = commonName.split("|").toList();
   List<String> listSub1 = [];
-  listSub0.forEach((element) {
+  for (var element in listSub0) {
     listSub1.add(element.trim().toLowerCase());
-  });
+  }
   List<String> listSubNames = listSub1.toSet().toList();
   List<String> listSearchStrings = [recipieMap["fID"].toString().toLowerCase()];
   //

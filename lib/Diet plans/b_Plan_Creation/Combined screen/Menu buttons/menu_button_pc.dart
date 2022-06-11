@@ -9,6 +9,8 @@ import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/food_model_for_pla
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/week_model.dart';
 import 'package:dietapp_a/app%20Constants/fire_ref.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
+import 'package:dietapp_a/y_Models/day_model.dart';
+import 'package:dietapp_a/y_Models/timing_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -84,7 +86,7 @@ class MenuItemsPC extends StatelessWidget {
                     if (snapshot.hasData && snapshot.data!.data() != null) {
                       if (pcc.currentDayDR.value.parent.id ==
                           admos.activeDaysPlan) {
-                        var dm = ActiveDayModel.fromMap(snapshot.data!.data()!);
+                        var dm = DayModel.fromMap(snapshot.data!.data()!);
                         notes = dm.notes;
                       } else {
                         var dm = DayModel.fromMap(snapshot.data!.data()!);
@@ -210,15 +212,20 @@ class MenuItemsPC extends StatelessWidget {
             weekDR
                 .collection(daymfos.days)
                 .add(DayModel(
-                  dayCreatedTime: null,
-                  dayIndex: dayIndex,
-                ).toMap())
+                        dayDate: null,
+                        dayCreatedTime: null,
+                        dayIndex: dayIndex,
+                        dayName: null,
+                        notes: null,
+                        rumm: null,
+                        docRef: null)
+                    .toMap())
                 .then(
               (dayDR) async {
                 if (pcc.currentDayDR.value == userDR) {
                   pcc.currentDayDR.value = dayDR;
                 }
-                for (DefaultTimingModel dfm in dpbim.planDefaulTimings) {
+                for (TimingModel dfm in dpbim.planDefaulTimings) {
                   dayDR.collection(dtmos.timings).add(dfm.toMap()).then((tDR) {
                     if (pcc.currentTimingDR.value == userDR) {
                       pcc.currentTimingDR.value = tDR;
@@ -281,9 +288,14 @@ class MenuItemsPC extends StatelessWidget {
     await pcc.currentPlanDR.value
         .collection(daymfos.days)
         .add(DayModel(
-          dayCreatedTime: Timestamp.fromDate(DateTime.now()),
-          dayIndex: null,
-        ).toMap())
+                dayDate: null,
+                dayCreatedTime: DateTime.now(),
+                dayIndex: null,
+                dayName: null,
+                notes: null,
+                rumm: null,
+                docRef: null)
+            .toMap())
         .then((dayDR) async {
       Get.back();
 
@@ -308,9 +320,7 @@ class MenuItemsPC extends StatelessWidget {
     });
   }
 
-  void dayNotes(String? notes) {
-    
-  }
+  void dayNotes(String? notes) {}
 
   Future<void> deleteDay() async {
     await pcc.currentDayDR.value

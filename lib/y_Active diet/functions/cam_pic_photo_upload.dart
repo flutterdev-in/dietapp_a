@@ -4,6 +4,7 @@ import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_food_model.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_timing_model.dart';
+import 'package:dietapp_a/y_Models/food_model.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_image/flutter_native_image.dart';
@@ -34,10 +35,11 @@ Future<void> camPicPhotoUploadFunction(
           await Future.delayed(const Duration(seconds: 1));
 
           await ts.ref.getDownloadURL().then((url) async {
-            ActiveFoodModel afm = ActiveFoodModel(
+            FoodModel afm = FoodModel(
                 isCamFood: true,
                 foodAddedTime: DateTime.now(),
-                takenTime: DateTime.now(),
+                foodTakenTime: DateTime.now(),
+                isFolder: false,
                 foodName: dateTimeString,
                 notes: null,
                 rumm: RefUrlMetadataModel(

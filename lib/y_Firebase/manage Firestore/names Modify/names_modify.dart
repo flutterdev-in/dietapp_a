@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutterfire_ui/firestore.dart';
 import 'package:get/get.dart';
 
 class RecipiesNamesModify extends StatelessWidget {
@@ -20,7 +19,7 @@ class RecipiesNamesModify extends StatelessWidget {
             child: Obx(() => Column(
                   children: [
                     Text(beforeName0.value),
-                    SizedBox(
+                    const SizedBox(
                       height: 50,
                     ),
                     Text(afterName0.value),
@@ -29,7 +28,7 @@ class RecipiesNamesModify extends StatelessWidget {
                       color: Colors.black26,
                     ),
                     Text(beforeName.value),
-                    SizedBox(
+                    const SizedBox(
                       height: 50,
                     ),
                     Text(afterName.value),
@@ -37,7 +36,7 @@ class RecipiesNamesModify extends StatelessWidget {
                 )),
           ),
           ElevatedButton(
-            child: Text("Start mofification"),
+            child: const Text("Start mofification"),
             onPressed: () async {
               int i = 996;
 
@@ -64,7 +63,7 @@ class RecipiesNamesModify extends StatelessWidget {
                           .update({
                         "names.Common_name": afterName.value,
                       });
-                      await Future.delayed(Duration(milliseconds: 600));
+                      await Future.delayed(const Duration(milliseconds: 600));
                       beforeName0.value = beforeName.value;
                       afterName0.value = afterName.value;
                       beforeName.value = "";

@@ -4,6 +4,7 @@ import 'package:dietapp_a/app%20Constants/colors.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/app%20Constants/fire_ref.dart';
 import 'package:dietapp_a/x_customWidgets/alert_dialogue.dart';
+import 'package:dietapp_a/y_Models/timing_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -29,8 +30,8 @@ class DefaultTimingsSettingsScreen extends StatelessWidget {
               var timingsDocMap = snapshot.data!.data() ?? {};
               List listTimingsMap = timingsDocMap[unIndexed] ?? [];
 
-              List<DefaultTimingModel> listDefaultTimingModel = listTimingsMap
-                  .map((e) => DefaultTimingModel.fromMapOnly2(e))
+              List<TimingModel> listDefaultTimingModel = listTimingsMap
+                  .map((e) => TimingModel.fromMapOnly2(e))
                   .toList();
               listDefaultTimingModel =
                   dtmos.foodTimingsListSort(listDefaultTimingModel);
@@ -57,13 +58,13 @@ class DefaultTimingsSettingsScreen extends StatelessWidget {
   }
 
   Widget defaultTimingsList(
-      BuildContext context, List<DefaultTimingModel> listDefaultTimingModel) {
+      BuildContext context, List<TimingModel> listDefaultTimingModel) {
     return ListView.builder(
       shrinkWrap: true,
       physics: const ScrollPhysics(),
       itemCount: listDefaultTimingModel.length,
       itemBuilder: (context, index) {
-        DefaultTimingModel dftm = listDefaultTimingModel[index];
+        TimingModel dftm = listDefaultTimingModel[index];
 
         return Card(
           child: Padding(
@@ -116,7 +117,7 @@ class DefaultTimingsSettingsScreen extends StatelessWidget {
   }
 
   Widget alertBodyW(
-      BuildContext context, List<DefaultTimingModel> listDefaultTimingModel) {
+      BuildContext context, List<TimingModel> listDefaultTimingModel) {
     List<int> listHours = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
     Rx<bool> isAM = true.obs;
@@ -220,7 +221,7 @@ class DefaultTimingsSettingsScreen extends StatelessWidget {
                 FocusScope.of(context).unfocus();
                 Get.back();
                 if (timingName.value.isNotEmpty) {
-                  listDefaultTimingModel.add(DefaultTimingModel(
+                  listDefaultTimingModel.add(TimingModel(
                       timingName: timingName.value,
                       timingString: dtmos.timingStringF(
                           hour.value, mins.value, isAM.value)));

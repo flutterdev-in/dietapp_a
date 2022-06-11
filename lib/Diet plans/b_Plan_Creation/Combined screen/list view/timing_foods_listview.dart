@@ -7,6 +7,7 @@ import 'package:dietapp_a/app%20Constants/url/url_avatar.dart';
 import 'package:dietapp_a/x_customWidgets/alert_dialogue.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_food_model.dart';
+import 'package:dietapp_a/y_Models/food_model.dart';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/firestore.dart';
@@ -36,12 +37,9 @@ class FoodsListViewforPC extends StatelessWidget {
                 .orderBy(fmfpcfos.foodAddedTime, descending: false),
             itemBuilder: (context, doc) {
               Map<String, dynamic> foodMap = doc.data();
-              FoodsModelForPlanCreation fm;
-              if (pcc.currentDayDR.value.parent.id == admos.activeDaysPlan) {
-                fm = fmfpcfos.fmfpcFromAFM(ActiveFoodModel.fromMap(foodMap));
-              } else {
-                fm = FoodsModelForPlanCreation.fromMap(foodMap);
-              }
+              FoodModel fm;
+
+              fm = FoodModel.fromMap(foodMap);
               fm.docRef = doc.reference;
 
               return GFListTile(
@@ -87,7 +85,7 @@ class FoodsListViewforPC extends StatelessWidget {
 
   void alertW(
     BuildContext context, {
-    required FoodsModelForPlanCreation fm,
+    required FoodModel fm,
   }) {
     Rx<String> tcName = "".obs;
     Rx<String> tcNotes = "".obs;

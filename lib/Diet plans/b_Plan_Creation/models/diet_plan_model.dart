@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/default_timing_model.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
+import 'package:dietapp_a/y_Models/timing_model.dart';
 
 class DietPlanBasicInfoModel {
   String planName;
@@ -9,7 +9,7 @@ class DietPlanBasicInfoModel {
   Timestamp planCreationTime;
   RefUrlMetadataModel? rumm;
   String? notes;
-  List<DefaultTimingModel> planDefaulTimings;
+  List<TimingModel> planDefaulTimings;
   DocumentReference<Map<String, dynamic>>? docRef;
 
   //
@@ -74,9 +74,9 @@ class DietPlanBasicInfoModelStrings {
 
   String docRef = docRef0;
 
-  List<DefaultTimingModel> listDFTM(List list) {
+  List<TimingModel> listDFTM(List list) {
     return list.map((e) {
-      return DefaultTimingModel.fromMap(e);
+      return TimingModel.fromMap(e);
     }).toList();
   }
 }

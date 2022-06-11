@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
 import 'package:dietapp_a/app%20Constants/fire_ref.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/controllers/fc_controller.dart';
-import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/models/food_collection_model.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/foods_collection_strings.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/views/widgets/top%20bars/fc_path_bar.dart';
 import 'package:dietapp_a/w_bottomBar/_bottom_navigation_bar.dart';
@@ -13,6 +12,7 @@ import 'package:dietapp_a/x_customWidgets/alert_dialogue.dart';
 import 'package:dietapp_a/y_Active%20diet/controllers/active_plan_controller.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_food_model.dart';
+import 'package:dietapp_a/y_Models/food_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
@@ -71,7 +71,7 @@ class CountButtonAdfdW extends StatelessWidget {
                   shrinkWrap: true,
                   itemCount: adfc.addedFoodList.value.length,
                   itemBuilder: (context, index) {
-                    FoodsCollectionModel fdcm = adfc.addedFoodList.value[index];
+                    FoodModel fdcm = adfc.addedFoodList.value[index];
 
                     return Padding(
                       padding: const EdgeInsets.fromLTRB(2, 3, 3, 3),
@@ -96,7 +96,7 @@ class CountButtonAdfdW extends StatelessWidget {
                           Expanded(
                             child: InkWell(
                               child: Text(
-                                fdcm.fieldName,
+                                fdcm.foodName,
                                 softWrap: true,
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
@@ -165,8 +165,7 @@ class CountButtonAdfdW extends StatelessWidget {
                 ElevatedButton(
                   child: const Text("Add all"),
                   onPressed: () async {
-                    print(bottomBarindex.value);
-                    for (FoodsCollectionModel fcm in adfc.addedFoodList.value) {
+                    for (FoodModel fcm in adfc.addedFoodList.value) {
                       if (bottomBarindex.value == 2) {
                         pcc.addFoods(fcm);
                       } else if (bottomBarindex.value == 3) {
@@ -174,11 +173,12 @@ class CountButtonAdfdW extends StatelessWidget {
                             .collection(fcc.currentPathCR.value)
                             .add(fcm.toMap());
                       } else if (bottomBarindex.value == 0) {
-                        var afm = ActiveFoodModel(
+                        var afm = FoodModel(
                             isCamFood: false,
                             foodAddedTime: DateTime.now(),
-                            takenTime: null,
-                            foodName: fcm.fieldName,
+                            foodTakenTime: null,
+                            isFolder: null,
+                            foodName: fcm.foodName,
                             notes: fcm.notes,
                             rumm: null,
                             docRef: null);
@@ -214,10 +214,10 @@ class CountButtonAdfdW extends StatelessWidget {
   }
 
   Widget editFoodDetails() {
-    FoodsCollectionModel fdcm = adfc.addedFoodList.value[rxIndex.value.toInt()];
+    FoodModel fdcm = adfc.addedFoodList.value[rxIndex.value.toInt()];
     TextEditingController tcName = TextEditingController();
     TextEditingController tcNotes = TextEditingController();
-    tcName.text = fdcm.fieldName;
+    tcName.text = fdcm.foodName;
     tcNotes.text = fdcm.notes ?? "";
     return WillPopScope(
       child: Column(
@@ -281,7 +281,7 @@ class CountButtonAdfdW extends StatelessWidget {
                     fdcmMap[fdcs.fieldName] = tcName.text.trimRight();
                     fdcmMap[fdcs.notes] = tcNotes.text.trimRight();
                     adfc.addedFoodList.value[rxIndex.value.toInt()] =
-                        FoodsCollectionModel.fromMap(fdcmMap);
+                        FoodModel.fromMap(fdcmMap);
                     rxIndex.value = 1.2;
                   }),
             ],

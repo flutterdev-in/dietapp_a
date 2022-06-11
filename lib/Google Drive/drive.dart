@@ -37,14 +37,10 @@ class DriveService {
     var drive = gdrive.DriveApi(client);
     int length = await file.length();
 
-     await drive.files
-        .create(
-          gdrive.File(),
-          uploadMedia: gdrive.Media(file.openRead(), length),
-        )
-        .then((value) => print(value.linkShareMetadata));
-
-    
+    await drive.files.create(
+      gdrive.File(),
+      uploadMedia: gdrive.Media(file.openRead(), length),
+    );
 
     Get.back();
     //

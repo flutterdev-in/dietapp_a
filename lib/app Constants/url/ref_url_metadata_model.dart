@@ -81,6 +81,8 @@ class RefUrlMetadataModelFinalObjects {
     if (isYtVideo(url0)) {
       Video video = await YoutubeExplode().videos.get(url0);
       return getDuration(video.duration);
+    } else {
+      return null;
     }
   }
 
@@ -97,11 +99,14 @@ class RefUrlMetadataModelFinalObjects {
             youtubeVideoLength: await ytVideoLength(url0));
       }
     }
+    return null;
   }
 
   RefUrlMetadataModel? rummFromRummMap(var rumm0) {
     if (rumm0 is Map) {
       return RefUrlMetadataModel.fromMap(rumm0);
+    } else {
+      return null;
     }
   }
 }

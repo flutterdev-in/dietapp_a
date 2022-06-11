@@ -5,14 +5,15 @@ import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/x_customWidgets/alert_dialogue.dart';
 import 'package:dietapp_a/x_customWidgets/multi_image_viewer_screen.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_food_model.dart';
-import 'package:dietapp_a/y_Active%20diet/models/active_timing_model.dart';
+import 'package:dietapp_a/y_Models/food_model.dart';
+import 'package:dietapp_a/y_Models/timing_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:intl/intl.dart';
 
 class CamPicturesTimingsView extends StatelessWidget {
-  final ActiveTimingModel atm;
+  final TimingModel atm;
   const CamPicturesTimingsView({Key? key, required this.atm}) : super(key: key);
 
   @override
@@ -26,7 +27,7 @@ class CamPicturesTimingsView extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
             var listAFM = snapshot.data!.docs.map((e) {
-              var afm = ActiveFoodModel.fromMap(e.data());
+              var afm = FoodModel.fromMap(e.data());
               afm.docRef = e.reference;
               return afm;
             }).toList();
@@ -42,7 +43,7 @@ class CamPicturesTimingsView extends StatelessWidget {
                     itemBuilder: (context, index) {
                       var afm = listAFM[index];
                       var time = DateFormat("hh:mm a")
-                          .format(afm.takenTime ?? DateTime.now());
+                          .format(afm.foodTakenTime ?? DateTime.now());
                       return Padding(
                         padding: const EdgeInsets.all(5.0),
                         child: InkWell(

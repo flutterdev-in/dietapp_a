@@ -5,13 +5,15 @@ import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/diet_plan_model.da
 import 'package:dietapp_a/x_customWidgets/alert_dialogue.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_timing_model.dart';
+import 'package:dietapp_a/y_Models/day_model.dart';
+import 'package:dietapp_a/y_Models/timing_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 Future<void> addTimingPCalertW(
     BuildContext context, bool isForActivePlan) async {
-  List<DefaultTimingModel> ldtm = [];
+  List<TimingModel> ldtm = [];
   List<String> listTimingsInFire = [];
   if (isForActivePlan) {
     await dtmos.getDefaultTimings().then((value) {
@@ -62,7 +64,7 @@ Future<void> addTimingPCalertW(
               Column(
                 children: ldtm.map((e) {
                   Map<String, dynamic> dm = e.toMap();
-                  DefaultTimingModel dtm = DefaultTimingModel.fromMap(dm);
+                  TimingModel dtm = TimingModel.fromMap(dm);
                   if (!listTimingsInFire.contains(dtm.timingString)) {
                     return InkWell(
                       child: Container(
@@ -90,9 +92,11 @@ Future<void> addTimingPCalertW(
                                 .then((dayDS) async {
                               if (!dayDS.exists || dayDS.data() == null) {
                                 await pcc.currentDayDR.value.set(
-                                  ActiveDayModel(
+                                  DayModel(
                                     dayDate: admos
                                         .dateFromDayDR(pcc.currentDayDR.value),
+                                    dayCreatedTime: null,
+                                    dayIndex: null,
                                   ).toMap(),
                                   SetOptions(merge: true),
                                 );
@@ -102,11 +106,11 @@ Future<void> addTimingPCalertW(
                           await pcc.currentDayDR.value
                               .collection(dtmos.timings)
                               .add(isForActivePlan
-                                  ? ActiveTimingModel(
+                                  ? TimingModel(
                                       timingName: dtm.timingName,
                                       timingString: dtm.timingString,
                                     ).toMap()
-                                  : DefaultTimingModel(
+                                  : TimingModel(
                                           timingName: dtm.timingName,
                                           timingString: dtm.timingString)
                                       .toMap())
@@ -225,9 +229,11 @@ Future<void> addTimingPCalertW(
                               .then((dayDS) async {
                             if (!dayDS.exists || dayDS.data() == null) {
                               await pcc.currentDayDR.value.set(
-                                ActiveDayModel(
+                                DayModel(
                                   dayDate: admos
                                       .dateFromDayDR(pcc.currentDayDR.value),
+                                  dayCreatedTime: null,
+                                  dayIndex: null,
                                 ).toMap(),
                                 SetOptions(merge: true),
                               );
@@ -238,17 +244,17 @@ Future<void> addTimingPCalertW(
                         await pcc.currentDayDR.value
                             .collection(dtmos.timings)
                             .add(isForActivePlan
-                                ? ActiveTimingModel(
+                                ? TimingModel(
                                     timingName: timingName.value,
                                     timingString: ts,
                                   ).toMap()
-                                : DefaultTimingModel(
+                                : TimingModel(
                                         timingName: timingName.value,
                                         timingString: ts)
                                     .toMap())
                             .then((value) async {
                           if (!isForActivePlan) {
-                            ldtm.add(DefaultTimingModel(
+                            ldtm.add(TimingModel(
                                 timingName: timingName.value,
                                 timingString: ts));
                             await FirebaseFirestore.instance

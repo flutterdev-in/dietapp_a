@@ -6,12 +6,13 @@ import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/default_timing_mod
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/diet_plan_model.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/week_model.dart';
 import 'package:dietapp_a/app%20Constants/colors.dart';
-import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/app%20Constants/fire_ref.dart';
 import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
 import 'package:dietapp_a/x_Browser/_browser_main_screen.dart';
 import 'package:dietapp_a/x_Browser/controllers/browser_controllers.dart';
 import 'package:dietapp_a/x_customWidgets/alert_dialogue.dart';
+import 'package:dietapp_a/y_Models/day_model.dart';
+import 'package:dietapp_a/y_Models/timing_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -19,13 +20,13 @@ import 'package:getwidget/getwidget.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class PlanCreationScreen extends StatelessWidget {
-  final List<DefaultTimingModel> listDefaultTimingModels00;
+  final List<TimingModel> listDefaultTimingModels00;
   PlanCreationScreen(this.listDefaultTimingModels00, {Key? key})
       : super(key: key);
   final Rx<bool> isWeekPlan = true.obs;
   final Rx<String> planName = "Diet plan".obs;
   final Rx<String> notes = "".obs;
-  var listDefaultTimingModels = RxList<DefaultTimingModel>([]).obs;
+  var listDefaultTimingModels = RxList<TimingModel>([]).obs;
 
   @override
   Widget build(BuildContext context) {
@@ -188,14 +189,14 @@ class PlanCreationScreen extends StatelessWidget {
           ),
           Obx(
             () {
-              List<DefaultTimingModel> listDTMsorted =
+              List<TimingModel> listDTMsorted =
                   dtmos.foodTimingsListSort(listDefaultTimingModels.value);
               return ListView.builder(
                 shrinkWrap: true,
                 physics: const ScrollPhysics(),
                 itemCount: listDTMsorted.length,
                 itemBuilder: (context, index) {
-                  DefaultTimingModel dftm = listDTMsorted[index];
+                  TimingModel dftm = listDTMsorted[index];
 
                   return Card(
                     child: Padding(
@@ -354,7 +355,7 @@ class PlanCreationScreen extends StatelessWidget {
                 FocusScope.of(context).unfocus();
                 Get.back();
                 if (timingName.value.isNotEmpty) {
-                  DefaultTimingModel dtm = DefaultTimingModel(
+                  TimingModel dtm = TimingModel(
                     timingName: timingName.value.trim(),
                     timingString:
                         dtmos.timingStringF(hour.value, mins.value, isAM.value),
@@ -385,14 +386,13 @@ class PlanCreationScreen extends StatelessWidget {
     await userDR
         .collection(dietPlans)
         .add(DietPlanBasicInfoModel(
-                planName: planName.value,
-                isWeekWisePlan: isWeekPlan.value,
-                notes: notes.value,
-                planCreationTime: timestampNow,
-                rumm: await rummfos.rummModel(refURL),
-                planDefaulTimings: listDefaultTimingModels.value,
-               )
-            .toMap())
+          planName: planName.value,
+          isWeekWisePlan: isWeekPlan.value,
+          notes: notes.value,
+          planCreationTime: Timestamp.fromDate(DateTime.now()),
+          rumm: await rummfos.rummModel(refURL),
+          planDefaulTimings: listDefaultTimingModels.value,
+        ).toMap())
         .then((planDocRef) async {
       pcc.currentPlanDR.value = planDocRef;
       pcc.currentTimingDR.value = userDR;
@@ -415,15 +415,20 @@ class PlanCreationScreen extends StatelessWidget {
             weekDR
                 .collection(daymfos.days)
                 .add(DayModel(
-                  dayCreatedTime: null,
-                  dayIndex: dayIndex,
-                ).toMap())
+                        dayDate: null,
+                        dayCreatedTime: null,
+                        dayIndex: dayIndex,
+                        dayName: null,
+                        notes: null,
+                        rumm: null,
+                        docRef: null)
+                    .toMap())
                 .then(
               (dayDR) async {
                 if (pcc.currentDayDR.value == userDR) {
                   pcc.currentDayDR.value = dayDR;
                 }
-                for (DefaultTimingModel dfm in listDefaultTimingModels.value) {
+                for (TimingModel dfm in listDefaultTimingModels.value) {
                   dayDR.collection(dtmos.timings).add(dfm.toMap()).then((tDR) {
                     if (pcc.currentTimingDR.value == userDR) {
                       pcc.currentTimingDR.value = tDR;
@@ -438,13 +443,18 @@ class PlanCreationScreen extends StatelessWidget {
         planDocRef
             .collection(daymfos.days)
             .add(DayModel(
-              dayCreatedTime: timestampNow,
-              dayIndex: null,
-            ).toMap())
+                    dayDate: null,
+                    dayCreatedTime: DateTime.now(),
+                    dayIndex: null,
+                    dayName: null,
+                    notes: null,
+                    rumm: null,
+                    docRef: null)
+                .toMap())
             .then(
           (dayDocRef) async {
             pcc.currentDayDR.value = dayDocRef;
-            for (DefaultTimingModel dfm in listDefaultTimingModels.value) {
+            for (TimingModel dfm in listDefaultTimingModels.value) {
               dayDocRef.collection(dtmos.timings).add(dfm.toMap()).then((tDR) {
                 if (pcc.currentTimingDR.value == userDR) {
                   pcc.currentTimingDR.value = tDR;

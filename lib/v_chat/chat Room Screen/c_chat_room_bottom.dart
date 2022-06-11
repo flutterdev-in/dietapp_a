@@ -4,7 +4,6 @@ import 'package:dietapp_a/v_chat/chat%20Room%20Screen/functions/chat_room_functi
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/functions/chat_room_send_functions.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/nav%20bar/a_colllecton_view_navbar.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/nav%20bar/b_plan_view_for_chat.dart';
-import 'package:dietapp_a/v_chat/constants/chat_const_variables.dart';
 import 'package:dietapp_a/v_chat/controllers/chat_room_controller.dart';
 import 'package:dietapp_a/v_chat/models/chat_room_model.dart';
 import 'package:dietapp_a/v_chat/models/message_model.dart';
@@ -120,10 +119,9 @@ class ChatRoomBottom extends StatelessWidget {
                           {
                             mmos.senderSentTime:
                                 Timestamp.fromDate(DateTime.now()),
-                            "$unIndexed.${mmos.recieverSeenTime}":
-                                isOnChat
-                                    ? Timestamp.fromDate(DateTime.now())
-                                    : null,
+                            "$unIndexed.${mmos.recieverSeenTime}": isOnChat
+                                ? Timestamp.fromDate(DateTime.now())
+                                : null,
                             "$unIndexed.$docRef0": docRf
                           },
                         );

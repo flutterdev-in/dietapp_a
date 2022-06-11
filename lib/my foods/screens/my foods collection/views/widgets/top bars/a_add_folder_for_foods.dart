@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/controllers/fc_controller.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/models/food_collection_model.dart';
+import 'package:dietapp_a/y_Models/food_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -40,9 +41,11 @@ void addFolderForFoods(BuildContext context) async {
 
                 await FirebaseFirestore.instance
                     .collection(fcc.currentPathCR.value)
-                    .add(FoodsCollectionModel(
-                      fieldName: tc.text,
-                      fieldTime: DateTime.now(),
+                    .add(FoodModel(
+                      foodName: tc.text,
+                      foodAddedTime: DateTime.now(),
+                      foodTakenTime: null,
+                      isCamFood: null,
                       isFolder: true,
                       rumm: null,
                       notes: null,

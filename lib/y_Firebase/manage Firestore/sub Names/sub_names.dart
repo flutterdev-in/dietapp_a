@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutterfire_ui/firestore.dart';
 import 'package:get/get.dart';
 
 Rx<String> beforeName0 = "beforeName".obs;
@@ -18,14 +17,14 @@ class SubSearchNamesN extends StatelessWidget {
             child: Obx(() => Column(
                   children: [
                     Text(beforeName0.value),
-                    SizedBox(
+                    const SizedBox(
                       height: 50,
                     ),
                   ],
                 )),
           ),
           ElevatedButton(
-            child: Text("Start modification"),
+            child: const Text("Start modification"),
             onPressed: () async {
               await ninUpdate();
             },

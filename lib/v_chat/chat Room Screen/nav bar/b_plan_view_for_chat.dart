@@ -10,6 +10,9 @@ import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/controllers
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/c_chat_room_bottom.dart';
 import 'package:dietapp_a/v_chat/controllers/chat_room_controller.dart';
 import 'package:dietapp_a/v_chat/models/chat_room_model.dart';
+import 'package:dietapp_a/y_Models/day_model.dart';
+import 'package:dietapp_a/y_Models/food_model.dart';
+import 'package:dietapp_a/y_Models/timing_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutterfire_ui/firestore.dart';
@@ -172,10 +175,10 @@ class PlanViewForChat extends StatelessWidget {
         title = daymfos.dayString(dm.dayIndex ?? 0);
       }
     } else if (crs == dtmos.timings) {
-      DefaultTimingModel dtm = DefaultTimingModel.fromMap(fcMap);
+      TimingModel dtm = TimingModel.fromMap(fcMap);
       title = dtm.timingName;
     } else if (crs == fmfpcfos.foods) {
-      FoodsModelForPlanCreation fm = FoodsModelForPlanCreation.fromMap(fcMap);
+      FoodModel fm = FoodModel.fromMap(fcMap);
 
       title = fm.foodName;
       subTitle = null;
@@ -259,7 +262,7 @@ class PlanViewForChat extends StatelessWidget {
                   pathTitle = dm.dayName ?? currentDayName.value;
                 }
               } else if (crs == dtmos.timings) {
-                DefaultTimingModel dtm = DefaultTimingModel.fromMap(fcMap);
+                TimingModel dtm = TimingModel.fromMap(fcMap);
                 pathTitle = dtm.timingName;
               }
               return Row(

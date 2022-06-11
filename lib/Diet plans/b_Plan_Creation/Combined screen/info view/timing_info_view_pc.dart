@@ -8,6 +8,7 @@ import 'package:dietapp_a/app%20Constants/url/ref_url_widget.dart';
 import 'package:dietapp_a/x_customWidgets/alert_dialogue.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_timing_model.dart';
+import 'package:dietapp_a/y_Models/timing_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -31,11 +32,11 @@ class TimingInfoViewPC extends StatelessWidget {
                 Map<String, dynamic> dataMap =
                     snapshot.data!.data() as Map<String, dynamic>;
 
-                DefaultTimingModel dtm;
+                TimingModel dtm;
                 if (pcc.currentDayDR.value.parent.id == admos.activeDaysPlan) {
-                  dtm = dtmos.dtmFromATM(ActiveTimingModel.fromMap(dataMap));
+                  dtm = dtmos.dtmFromATM(TimingModel.fromMap(dataMap));
                 } else {
-                  dtm = DefaultTimingModel.fromMap(dataMap);
+                  dtm = TimingModel.fromMap(dataMap);
                 }
                 dtm.docRef = snapshot.data!.reference;
 

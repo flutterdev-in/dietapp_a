@@ -4,55 +4,57 @@ import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
 import 'package:dietapp_a/y_Active%20diet/functions/active_model_from_planned_model.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
+import 'package:dietapp_a/y_Models/day_model.dart';
+import 'package:dietapp_a/y_Models/timing_model.dart';
 import 'package:intl/intl.dart';
 
-class ActiveTimingModel {
-  String timingName;
-  String timingString;
-  String? notes;
-  RefUrlMetadataModel? rumm;
-  DocumentReference<Map<String, dynamic>>? docRef;
+// class TimingModel {
+//   String timingName;
+//   String timingString;
+//   String? notes;
+//   RefUrlMetadataModel? rumm;
+//   DocumentReference<Map<String, dynamic>>? docRef;
 
-  //
-  ActiveTimingModel({
-    required this.timingName,
-    required this.timingString,
-    this.notes,
-    this.rumm,
-    this.docRef,
-  });
+//   //
+//   TimingModel({
+//     required this.timingName,
+//     required this.timingString,
+//     this.notes,
+//     this.rumm,
+//     this.docRef,
+//   });
 
-  Map<String, dynamic> toMap() {
-    Map<String, dynamic> returnMap = {
-      atmos.timingName: timingName,
-      atmos.timingString: timingString,
-      unIndexed: {}
-    };
-    Map<String, dynamic> nullChaeckValues = {
-      notes0: notes,
-      rummfos.rumm: rumm?.toMap(),
-      docRef0: docRef,
-    };
+//   Map<String, dynamic> toMap() {
+//     Map<String, dynamic> returnMap = {
+//       atmos.timingName: timingName,
+//       atmos.timingString: timingString,
+//       unIndexed: {}
+//     };
+//     Map<String, dynamic> nullChaeckValues = {
+//       notes0: notes,
+//       rummfos.rumm: rumm?.toMap(),
+//       docRef0: docRef,
+//     };
 
-    nullChaeckValues.forEach((key, value) {
-      if (value != null) {
-        returnMap[unIndexed][key] = value;
-      }
-    });
+//     nullChaeckValues.forEach((key, value) {
+//       if (value != null) {
+//         returnMap[unIndexed][key] = value;
+//       }
+//     });
 
-    return returnMap;
-  }
+//     return returnMap;
+//   }
 
-  factory ActiveTimingModel.fromMap(Map docMap) {
-    return ActiveTimingModel(
-      timingName: docMap[atmos.timingName] ?? "",
-      timingString: docMap[atmos.timingString],
-      notes: docMap[unIndexed][notes0],
-      rumm: rummfos.rummFromRummMap(docMap[unIndexed][rummfos.rumm]),
-      docRef: docMap[unIndexed][docRef0],
-    );
-  }
-}
+//   factory TimingModel.fromMap(Map docMap) {
+//     return TimingModel(
+//       timingName: docMap[atmos.timingName] ?? "",
+//       timingString: docMap[atmos.timingString],
+//       notes: docMap[unIndexed][notes0],
+//       rumm: rummfos.rummFromRummMap(docMap[unIndexed][rummfos.rumm]),
+//       docRef: docMap[unIndexed][docRef0],
+//     );
+//   }
+// }
 
 final ActiveTimingModelObjects atmos = ActiveTimingModelObjects();
 
@@ -80,8 +82,7 @@ class ActiveTimingModelObjects {
     return Timestamp.fromDate(dt);
   }
 
-  var basicModel =
-      ActiveTimingModel(timingName: "BreakFast", timingString: "am0830");
+  var basicModel = TimingModel(timingName: "BreakFast", timingString: "am0830");
 
   //
   Future<void> setDefaultTimings(
@@ -100,8 +101,10 @@ class ActiveTimingModelObjects {
       DocumentReference<Map<String, dynamic>> dayDR) async {
     await dayDR
         .set(
-            ActiveDayModel(
+            DayModel(
               dayDate: DateTime.parse(dayDR.id),
+              dayCreatedTime: null,
+              dayIndex: null,
             ).toMap(),
             SetOptions(merge: true))
         .then((value) async {
@@ -115,8 +118,10 @@ class ActiveTimingModelObjects {
       if (!ds.exists || ds.data() == null) {
         await activeDayDR
             .set(
-                ActiveDayModel(
+                DayModel(
                   dayDate: DateTime.parse(activeDayDR.id),
+                  dayCreatedTime: null,
+                  dayIndex: null,
                 ).toMap(),
                 SetOptions(merge: true))
             .then((value) async {

@@ -4,7 +4,6 @@ import 'package:dietapp_a/userData/models/user_strings.dart';
 import 'package:dietapp_a/userData/models/user_welcome_model.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/_chat_room_screen.dart';
 import 'package:dietapp_a/v_chat/chat%20Search/chat_search_textfield.dart';
-import 'package:dietapp_a/v_chat/constants/chat_const_variables.dart';
 import 'package:dietapp_a/v_chat/models/chat_room_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/firestore.dart';
@@ -36,7 +35,7 @@ class ChatSearchListview extends StatelessWidget {
                 onTap: () async {
                   var crm = await crs
                       .chatRoomModelFromChatPersonUID(uwm.firebaseUID!);
-                 
+
                   Get.back();
 
                   Get.to(() => ChatRoomScreen(crm), opaque: false);

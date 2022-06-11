@@ -1,10 +1,10 @@
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/Combined%20screen/bottom%20bar/a1_foods_pick_from_folder_screen.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/controllers/fc_controller.dart';
-import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/models/food_collection_model.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/views/foods_collection_listview.dart';
 import 'package:dietapp_a/x_Browser/_browser_main_screen.dart';
 import 'package:dietapp_a/x_customWidgets/alert_dialogue.dart';
+import 'package:dietapp_a/y_Models/food_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -97,13 +97,14 @@ class FoodAddButtons extends StatelessWidget {
                 child: ElevatedButton(
                     onPressed: () async {
                       if (name.value.isNotEmpty || notes.value.isNotEmpty) {
-                        await pcc.addFoods(FoodsCollectionModel(
-                          fieldName: name.value,
-                          fieldTime: DateTime.now(),
-                          isFolder: false,
-                          notes: notes.value,
-                          rumm: null,
-                        ));
+                        await pcc.addFoods(FoodModel(
+                            foodAddedTime: DateTime.now(),
+                            foodTakenTime: null,
+                            foodName: name.value,
+                            isCamFood: null,
+                            isFolder: null,
+                            notes: notes.value,
+                            rumm: null));
                       }
                       Get.back();
                     },

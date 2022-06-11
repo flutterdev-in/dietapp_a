@@ -1,14 +1,14 @@
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/Combined%20screen/info%20view/timing_info_view_pc.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/Combined%20screen/list%20view/timing_foods_listview.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
-import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/default_timing_model.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/_common_top_widget_middle.dart';
+import 'package:dietapp_a/y_Models/timing_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class TimingPlanMiddle extends StatelessWidget {
-  final List<DefaultTimingModel> listModels;
+  final List<TimingModel> listModels;
   final String? text;
   const TimingPlanMiddle({
     Key? key,
@@ -27,7 +27,7 @@ class TimingPlanMiddle extends StatelessWidget {
           physics: const ClampingScrollPhysics(),
           itemCount: listModels.length,
           itemBuilder: (context, index) {
-            DefaultTimingModel model = listModels[index];
+            TimingModel model = listModels[index];
             return InkWell(
               child: Row(
                 children: [
@@ -61,7 +61,7 @@ class TimingPlanMiddle extends StatelessWidget {
 }
 
 class TimingViewFromChat extends StatelessWidget {
-  final DefaultTimingModel dtm;
+  final TimingModel dtm;
   const TimingViewFromChat({Key? key, required this.dtm}) : super(key: key);
 
   @override

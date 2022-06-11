@@ -1,5 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dietapp_a/y_Active%20diet/models/active_food_model.dart';
+import 'package:dietapp_a/y_Models/food_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -8,7 +8,7 @@ import 'package:photo_view/photo_view_gallery.dart';
 
 class MultiImageViewerScreen extends StatefulWidget {
   final PageController pageController;
-  final List<ActiveFoodModel> listAFM;
+  final List<FoodModel> listAFM;
   final int initialIndex;
   MultiImageViewerScreen({
     Key? key,
@@ -47,7 +47,7 @@ class _MultiImageViewerScreenState extends State<MultiImageViewerScreen> {
         title: Obx(() {
           var afm = widget.listAFM[rxIndex.value];
           var time = DateFormat("dd MMM yyyy (EEE) hh:mm a")
-              .format(afm.takenTime ?? DateTime.now());
+              .format(afm.foodTakenTime ?? DateTime.now());
           return Text(time, textScaleFactor: 0.8);
         }),
       ),
@@ -73,8 +73,8 @@ class _MultiImageViewerScreenState extends State<MultiImageViewerScreen> {
             padding: const EdgeInsets.only(bottom: 150),
             child: Obx(() {
               var afm = widget.listAFM[rxIndex.value];
-              var time =
-                  DateFormat("hh:mm a").format(afm.takenTime ?? DateTime.now());
+              var time = DateFormat("hh:mm a")
+                  .format(afm.foodTakenTime ?? DateTime.now());
               return Text(
                 "Image ${rxIndex.value + 1}/${widget.listAFM.length} ($time)",
                 style: const TextStyle(color: Colors.white),

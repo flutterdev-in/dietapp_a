@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
-import 'package:dietapp_a/app%20Constants/fire_ref.dart';
 import 'package:dietapp_a/v_chat/diet%20Room%20Screen/_diet_room_controller.dart';
 import 'package:dietapp_a/v_chat/models/chat_room_model.dart';
 import 'package:dietapp_a/v_chat/models/message_model.dart';
@@ -39,10 +38,10 @@ class ChatScreenController extends GetxController {
     required bool isThisChatOpen,
   }) async {
     //1
-   
 
-    await crm.chatDR.update(
-        {"$unIndexed.${crm.chatPersonUID}.${crs.isThisChatOpen}": isThisChatOpen});
+    await crm.chatDR.update({
+      "$unIndexed.${crm.chatPersonUID}.${crs.isThisChatOpen}": isThisChatOpen
+    });
     //2
     WriteBatch batch = FirebaseFirestore.instance.batch();
     await crm.chatDR

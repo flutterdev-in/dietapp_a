@@ -4,9 +4,9 @@ import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/default_timing_mod
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/food_model_for_plan_creation.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/week_model.dart';
 import 'package:dietapp_a/app%20Constants/fire_ref.dart';
-import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/models/food_collection_model.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_food_model.dart';
+import 'package:dietapp_a/y_Models/food_model.dart';
 import 'package:get/get.dart';
 
 PlanCreationController pcc = Get.put(PlanCreationController());
@@ -79,26 +79,21 @@ class PlanCreationController {
     });
   }
 
-  Future<void> addFoods(FoodsCollectionModel fcm) async {
+  Future<void> addFoods(FoodModel fcm) async {
     if (pcc.currentDayDR.value.parent.id == admos.activeDaysPlan) {
-      await pcc.currentTimingDR.value.collection(afmos.foods).add(
-          ActiveFoodModel(
-                  isCamFood: false,
-                  foodAddedTime: DateTime.now(),
-                  takenTime: null,
-                  foodName: fcm.fieldName,
-                  notes: fcm.notes,
-                  rumm: fcm.rumm,
-                  docRef: null)
-              .toMap());
+      await pcc.currentTimingDR.value.collection(afmos.foods).add(FoodModel(
+              isCamFood: false,
+              foodAddedTime: DateTime.now(),
+              foodTakenTime: null,
+              isFolder: null,
+              foodName: fcm.foodName,
+              notes: fcm.notes,
+              rumm: fcm.rumm,
+              docRef: null)
+          .toMap());
     } else {
-      await pcc.currentTimingDR.value.collection(fmfpcfos.foods).add(
-          FoodsModelForPlanCreation(
-                  foodAddedTime: DateTime.now(),
-                  foodName: fcm.fieldName,
-                  notes: fcm.notes,
-                  rumm: fcm.rumm)
-              .toMap());
+      await pcc.currentTimingDR.value.collection(fmfpcfos.foods).add(fcm
+          .toMap());
     }
   }
 

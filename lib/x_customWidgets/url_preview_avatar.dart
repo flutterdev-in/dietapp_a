@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-Widget urlPreviewAvatar(
-    {required String url, required String imgURL,}) {
+Widget urlPreviewAvatar({
+  required String url,
+  required String imgURL,
+}) {
   Widget avatar = GFAvatar(
     shape: GFAvatarShape.standard,
     size: GFSize.MEDIUM,
@@ -17,7 +19,7 @@ Widget urlPreviewAvatar(
         Positioned(
           child: Container(
             color: Colors.white70,
-            child: Icon(
+            child: const Icon(
               MdiIcons.youtube,
               color: Colors.red,
               size: 15,

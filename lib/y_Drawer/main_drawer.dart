@@ -1,13 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dietapp_a/app%20Constants/constant_objects.dart';
-import 'package:dietapp_a/assets/assets.dart';
+import 'package:dietapp_a/app%20Constants/fire_ref.dart';
 import 'package:dietapp_a/userData/models/user_strings.dart';
 import 'package:dietapp_a/y_Drawer/widgets/profile_container.dart';
-import 'package:dietapp_a/app%20Constants/fire_ref.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get.dart';
 import 'package:getwidget/components/list_tile/gf_list_tile.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -22,7 +18,7 @@ class MainDrawer extends StatelessWidget {
       child: ListView(
         children: [
           const DrawerProfileContainer(),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           _widget(
             "Trackers",
             Icons.list,
@@ -54,21 +50,21 @@ class MainDrawer extends StatelessWidget {
       avatar: Icon(
         icon,
       ),
-      padding: EdgeInsets.all(0),
+      padding: const EdgeInsets.all(0),
       titleText: titile,
     );
   }
 
   Widget _divider() {
-    return Divider(thickness: 1);
+    return const Divider(thickness: 1);
   }
 
   Widget logout() {
     return GFListTile(
-        avatar: Icon(
+        avatar: const Icon(
           MdiIcons.logout,
         ),
-        padding: EdgeInsets.all(0),
+        padding: const EdgeInsets.all(0),
         titleText: "Logout",
         onTap: () async {
           await GoogleSignIn().disconnect();

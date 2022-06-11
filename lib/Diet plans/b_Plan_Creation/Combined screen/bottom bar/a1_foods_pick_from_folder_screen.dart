@@ -2,9 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/controllers/fc_controller.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/functions/fc_useful_functions.dart';
-import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/models/food_collection_model.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/foods_collection_strings.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/views/widgets/top%20bars/fc_path_bar.dart';
+import 'package:dietapp_a/y_Models/food_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/firestore.dart';
 import 'package:get/get.dart';
@@ -21,15 +21,14 @@ class FoodsPickFromFolderScren extends StatelessWidget {
         actions: [
           ElevatedButton(
               onPressed: () async {
-             
                 fcc.currentsPathItemsMaps.value.forEach(
                   (docRef, itemMap) async {
-                    FoodsCollectionModel fcm = itemMap[fdcs.fcModel];
+                    FoodModel fcm = itemMap[fdcs.fcModel];
                     Map fdcmMap = fcm.toMap();
                     if (itemMap[fdcs.isItemSelected] &&
-                        !fcm.isFolder &&
+                        (fcm.isFolder != true) &&
                         fdcmMap.isNotEmpty) {
-                      await  pcc.addFoods(fcm);
+                      await pcc.addFoods(fcm);
                     }
                   },
                 );
@@ -56,7 +55,7 @@ class FoodsPickFromFolderScren extends StatelessWidget {
       ),
       body: Column(
         children: [
-         const  FcPathBar(),
+          const FcPathBar(),
           Obx(
             () => FirestoreListView<Map<String, dynamic>>(
               shrinkWrap: true,
@@ -70,8 +69,8 @@ class FoodsPickFromFolderScren extends StatelessWidget {
 
                 Map<String, dynamic> fcMap = snapshot.data();
 
-                FoodsCollectionModel fdcm = FoodsCollectionModel.fromMap(fcMap);
-                Rx<bool> isFolder = fdcm.isFolder.obs;
+                FoodModel fdcm = FoodModel.fromMap(fcMap);
+                Rx<bool> isFolder = true.obs;
                 fcc.currentsPathItemsMaps.value.addAll({
                   snapshot.reference: {
                     fdcs.isItemSelected: false,
@@ -80,7 +79,7 @@ class FoodsPickFromFolderScren extends StatelessWidget {
                   }
                 });
                 Widget avatarW() {
-                  if (fdcm.isFolder) {
+                  if (fdcm.isFolder == true) {
                     return const Icon(
                       MdiIcons.folder,
                       color: Colors.orange,
@@ -92,15 +91,14 @@ class FoodsPickFromFolderScren extends StatelessWidget {
                       maxRadius: 20,
                       backgroundImage: NetworkImage(fdcm.rumm?.img ?? ""),
                     );
-                    if (fdcm.rumm?.isYoutubeVideo ??
-                        false) {
+                    if (fdcm.rumm?.isYoutubeVideo ?? false) {
                       return Stack(
                         children: [
                           avatar,
                           Positioned(
                             child: Container(
                               color: Colors.white70,
-                              child: Icon(
+                              child: const Icon(
                                 MdiIcons.youtube,
                                 color: Colors.red,
                                 size: 15,
@@ -123,7 +121,7 @@ class FoodsPickFromFolderScren extends StatelessWidget {
                       const EdgeInsets.symmetric(vertical: 7, horizontal: 10),
                   avatar: avatarW(),
                   title: Text(
-                    fdcm.fieldName,
+                    fdcm.foodName,
                     softWrap: true,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
@@ -152,7 +150,7 @@ class FoodsPickFromFolderScren extends StatelessWidget {
                     },
                   ),
                   onTap: () {
-                    if (fdcm.isFolder) {
+                    if (fdcm.isFolder == true) {
                       fcc.currentPathCR.value =
                           snapshot.reference.path + fdcs.fcPathSeperator;
 
@@ -161,7 +159,7 @@ class FoodsPickFromFolderScren extends StatelessWidget {
                           fdcs.pathCR: snapshot.reference
                               .collection(fdcs.subCollections),
                           fdcs.pathCRstring: fcc.currentPathCR.value,
-                          fdcs.fieldName: fdcm.fieldName
+                          fdcs.fieldName: fdcm.foodName
                         },
                       );
                     } else {

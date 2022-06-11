@@ -43,11 +43,11 @@ class RecipiesNamesEdit extends StatelessWidget {
                             autofocus: true,
                             maxLines: null,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 60,
                           ),
                           TextButton(
-                            child: Text("Modify"),
+                            child: const Text("Modify"),
                             onPressed: () async {
                               Navigator.of(context).pop();
                               await FirebaseFirestore.instance

@@ -11,7 +11,7 @@ class MenuButtonDietPlanScreen extends StatelessWidget {
       child: PopupMenuButton(
         padding: const EdgeInsets.all(10.0),
         // color: Colors.black87,
-        child: Icon(MdiIcons.dotsVertical, color: Colors.white),
+        child: const Icon(MdiIcons.dotsVertical, color: Colors.white),
         itemBuilder: (context) {
           return [
             PopupMenuItem(
@@ -28,7 +28,7 @@ class MenuButtonDietPlanScreen extends StatelessWidget {
       child: SizedBox(
         height: 45,
         child: Row(
-          children: [
+          children: const [
             SizedBox(width: 15),
             Text(
               "Fav Names",

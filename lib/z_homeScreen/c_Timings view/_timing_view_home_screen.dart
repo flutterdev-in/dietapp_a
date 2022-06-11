@@ -8,6 +8,8 @@ import 'package:dietapp_a/x_customWidgets/expandable_text.dart';
 import 'package:dietapp_a/y_Active%20diet/controllers/active_plan_controller.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_timing_model.dart';
+import 'package:dietapp_a/y_Models/day_model.dart';
+import 'package:dietapp_a/y_Models/timing_model.dart';
 import 'package:dietapp_a/z_homeScreen/c_Timings%20view/a_timings_row_home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/firestore.dart';
@@ -39,7 +41,7 @@ class TimingViewHomeScreen extends StatelessWidget {
               .collection(atmos.timings)
               .orderBy(atmos.timingString),
           itemBuilder: (context, qDS) {
-            var atm = ActiveTimingModel.fromMap(qDS.data());
+            var atm = TimingModel.fromMap(qDS.data());
             atm.docRef = qDS.reference;
 
             return Card(
@@ -108,9 +110,12 @@ class TimingViewHomeScreen extends StatelessWidget {
                         text: null, onPressedConfirm: (text) async {
                       FocusScope.of(context).unfocus();
                       Get.back();
-                      apc.currentActiveDayDR.value.set(
-                          ActiveDayModel(dayDate: selectedDate, notes: text)
-                              .toMap());
+                      apc.currentActiveDayDR.value.set(DayModel(
+                        dayDate: selectedDate,
+                        dayCreatedTime: null,
+                        dayIndex: null,
+                        notes: text,
+                      ).toMap());
                     });
                   }
                 },
@@ -121,7 +126,7 @@ class TimingViewHomeScreen extends StatelessWidget {
     );
   }
 
-  Widget notes(BuildContext context, ActiveTimingModel atm) {
+  Widget notes(BuildContext context, TimingModel atm) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Align(

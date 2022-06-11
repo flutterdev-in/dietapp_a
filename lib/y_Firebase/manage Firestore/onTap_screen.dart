@@ -9,8 +9,8 @@ class FireOnTap extends StatelessWidget {
       appBar: AppBar(),
       body: Column(
         children: [
-          Text(""),
-          TextButton(onPressed: () {}, child: Text("Execute"))
+          const Text(""),
+          TextButton(onPressed: () {}, child: const Text("Execute"))
         ],
       ),
     );

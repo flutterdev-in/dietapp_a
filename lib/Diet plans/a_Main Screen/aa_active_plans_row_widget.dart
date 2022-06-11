@@ -6,9 +6,7 @@ class ActivePlansRowWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      children: [
-        ElevatedButton(onPressed: null, child: Text("data"))
-      ],
+      children: const [ElevatedButton(onPressed: null, child: Text("data"))],
     );
   }
 }

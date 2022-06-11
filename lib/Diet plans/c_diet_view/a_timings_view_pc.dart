@@ -7,6 +7,8 @@ import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
 import 'package:dietapp_a/app%20Constants/url/ref_url_widget.dart';
 import 'package:dietapp_a/app%20Constants/url/url_avatar.dart';
 import 'package:dietapp_a/x_customWidgets/expandable_text.dart';
+import 'package:dietapp_a/y_Models/food_model.dart';
+import 'package:dietapp_a/y_Models/timing_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/firestore.dart';
 import 'package:get/get.dart';
@@ -31,7 +33,7 @@ class TimingsViewPC extends StatelessWidget {
   }
 
   Widget timingsView(QueryDocumentSnapshot<Map<String, dynamic>> qDocSnap) {
-    DefaultTimingModel dtm = DefaultTimingModel.fromMap(qDocSnap.data());
+    TimingModel dtm = TimingModel.fromMap(qDocSnap.data());
     RefUrlMetadataModel rumm = dtm.rumm ?? rummfos.constModel;
 
     return Card(
@@ -67,8 +69,7 @@ class TimingsViewPC extends StatelessWidget {
                   .collection(fmfpcfos.foods)
                   .orderBy(fmfpcfos.foodAddedTime, descending: false),
               itemBuilder: (context, doc) {
-                FoodsModelForPlanCreation fm =
-                    FoodsModelForPlanCreation.fromMap(doc.data());
+                FoodModel fm = FoodModel.fromMap(doc.data());
                 return GFListTile(
                   padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
                   margin:

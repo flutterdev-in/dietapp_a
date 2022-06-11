@@ -1,12 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/models/food_collection_model.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/_common_top_widget_middle.dart';
 import 'package:dietapp_a/x_customWidgets/web%20view/web_view_page.dart';
+import 'package:dietapp_a/y_Models/food_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class WebFoodMiddle extends StatelessWidget {
-  final FoodsCollectionModel fdcm;
+  final FoodModel fdcm;
 
   final String? text;
   const WebFoodMiddle({Key? key, required this.fdcm, this.text})
@@ -35,7 +35,7 @@ class WebFoodMiddle extends StatelessWidget {
               width: double.maxFinite,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text(fdcm.fieldName,
+                child: Text(fdcm.foodName,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
@@ -47,8 +47,7 @@ class WebFoodMiddle extends StatelessWidget {
         ),
         onTap: () {
           if (fdcm.rumm != null) {
-            Get.to(() =>
-                WebViewPage( fdcm.rumm!.url, fdcm.fieldName));
+            Get.to(() => WebViewPage(fdcm.rumm!.url, fdcm.foodName));
           }
         },
       ),

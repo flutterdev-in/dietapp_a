@@ -1,9 +1,9 @@
 import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
 import 'package:dietapp_a/hive%20Boxes/boxes.dart';
-import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/models/food_collection_model.dart';
 import 'package:dietapp_a/x_Browser/controllers/add_food_controller.dart';
 import 'package:dietapp_a/x_Browser/controllers/browser_controllers.dart';
 import 'package:dietapp_a/x_Browser/controllers/rxvariables_for_count_button.dart';
+import 'package:dietapp_a/y_Models/food_model.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -110,9 +110,11 @@ class TextFieldForBrowser extends StatelessWidget {
             splashRadius: 24.0,
             onPressed: () async {
               Metadata? data = await MetadataFetch.extract(bc.currentURL.value);
-              FoodsCollectionModel fdcm = FoodsCollectionModel(
-                fieldName: data?.title ?? "",
-                fieldTime: DateTime.now(),
+              FoodModel fdcm = FoodModel(
+                foodName: data?.title ?? "",
+                foodAddedTime: DateTime.now(),
+                foodTakenTime: null,
+                isCamFood: null,
                 isFolder: false,
                 rumm: await rummfos.rummModel(bc.currentURL.value,
                     metaData: data),
@@ -148,31 +150,7 @@ class TextFieldForBrowser extends StatelessWidget {
   }
 
   Widget prefixIcon() {
-    Widget timesFoodIcon = Container(
-      decoration: const BoxDecoration(
-        color: Colors.red,
-        borderRadius: BorderRadius.all(Radius.circular(5)),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(2.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            Text(
-              "TOI",
-              textScaleFactor: 0.7,
-              style:
-                  TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
-            ),
-            Text(
-              "FOOD",
-              textScaleFactor: 0.6,
-              style: TextStyle(color: Colors.white),
-            ),
-          ],
-        ),
-      ),
-    );
+    
     return PopupMenuButton(
       child: Obx(() {
         if (bc.currentSearchEngineGYT.value == "Y") {

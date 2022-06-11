@@ -5,13 +5,14 @@ import 'package:dietapp_a/y_Active%20diet/controllers/active_plan_controller.dar
 import 'package:dietapp_a/y_Active%20diet/functions/cam_pic_photo_upload.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_timing_model.dart';
+import 'package:dietapp_a/y_Models/timing_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class TimingsRowHomeScreen extends StatelessWidget {
-  final ActiveTimingModel atm;
+  final TimingModel atm;
   final bool editingIconRequired;
   const TimingsRowHomeScreen(
       {Key? key, required this.atm, this.editingIconRequired = true})
@@ -52,7 +53,7 @@ class TimingsRowHomeScreen extends StatelessWidget {
     );
   }
 
-  void notes(BuildContext context, ActiveTimingModel atm) {
+  void notes(BuildContext context, TimingModel atm) {
     textFieldAlertW(
       context,
       text: atm.notes,

@@ -5,11 +5,13 @@ import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/diet_plan_model.da
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/food_model_for_plan_creation.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/week_model.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
-import 'package:dietapp_a/app%20Constants/fire_ref.dart';
 import 'package:dietapp_a/y_Active%20diet/functions/active_model_from_planned_model.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_food_model.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_timing_model.dart';
+import 'package:dietapp_a/y_Models/day_model.dart';
+import 'package:dietapp_a/y_Models/food_model.dart';
+import 'package:dietapp_a/y_Models/timing_model.dart';
 
 ActivatePlannedData activatePlannedData = ActivatePlannedData();
 
@@ -51,8 +53,6 @@ class ActivatePlannedData {
             }
           });
         }
-
-        
       }
     });
   }
@@ -173,7 +173,7 @@ class ActivatePlannedData {
       );
 
       await admos
-          .activeDayDR(date,userUID)
+          .activeDayDR(date, userUID)
           .set(adm.toMap(), SetOptions(merge: true))
           .then((value) async {
         await plannedDayDR.collection(dtmos.timings).get().then((tqs) async {
@@ -210,7 +210,7 @@ class ActivatePlannedData {
     required DateTime date,
   }) async {
     Future<void> proceed(Map<String, dynamic> map) async {
-      var dtm = DefaultTimingModel.fromMap(map);
+      var dtm = TimingModel.fromMap(map);
       var atm = amfpm.timingModel(dtm: dtm);
       var atmDR = admos
           .activeDayDR(date, userUID)
@@ -247,8 +247,7 @@ class ActivatePlannedData {
     required DocumentReference<Map<String, dynamic>> activeTimingDR,
     required Map<String, dynamic> plannedFoodDataMap,
   }) async {
-    var afm =
-        amfpm.foodModel(FoodsModelForPlanCreation.fromMap(plannedFoodDataMap));
+    var afm = amfpm.foodModel(FoodModel.fromMap(plannedFoodDataMap));
     await activeTimingDR.collection(afmos.foods).add(afm.toMap());
   }
 

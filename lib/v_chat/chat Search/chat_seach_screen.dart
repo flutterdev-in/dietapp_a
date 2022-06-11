@@ -10,7 +10,7 @@ class ChatSearchScreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         body: Column(
-          children: [chatSearchFieldRow, ChatSearchListview()],
+          children: [chatSearchFieldRow, const ChatSearchListview()],
         ),
       ),
     );

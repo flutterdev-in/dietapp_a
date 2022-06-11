@@ -9,6 +9,7 @@ import 'package:dietapp_a/x_customWidgets/expandable_text.dart';
 import 'package:dietapp_a/x_customWidgets/month_calander.dart';
 import 'package:dietapp_a/y_Active%20diet/controllers/active_plan_controller.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
+import 'package:dietapp_a/y_Models/day_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -26,11 +27,11 @@ class HomeScreen extends StatelessWidget {
         stream: apc.currentActiveDayDR.value.snapshots(),
         builder: (context, snapshot) {
           bool isDayExists = false;
-          ActiveDayModel? adm;
+          DayModel? adm;
 
           if (snapshot.hasData && snapshot.data!.data() != null) {
             isDayExists = true;
-            adm = ActiveDayModel.fromMap(snapshot.data!.data()!);
+            adm = DayModel.fromMap(snapshot.data!.data()!);
           }
           return Scaffold(
             appBar: AppBar(
@@ -109,7 +110,7 @@ class HomeScreen extends StatelessWidget {
   }
 
   FloatingActionButton? floatingButton(
-      BuildContext context, bool isDayExists, ActiveDayModel? adm) {
+      BuildContext context, bool isDayExists, DayModel? adm) {
     var todayString = admos.dayStringFromDate(DateTime.now());
     var today = DateTime.parse(todayString);
 
