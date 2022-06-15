@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/url/url_avatar.dart';
-import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
 import 'package:dietapp_a/y_Models/day_model.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
@@ -24,8 +23,7 @@ class DayUrlNotesViewHS extends StatelessWidget {
               children: [
                 if (dm.rumm != null)
                   GFListTile(
-                    avatar:
-                        URLavatar(imgURL: dm.rumm?.img, webURL: dm.rumm?.url),
+                    avatar: UrlAvatar(dm.rumm),
                   ),
                 if (dm.notes != null)
                   ExpandablePanel(

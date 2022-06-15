@@ -5,7 +5,7 @@ import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/food_model_for_pla
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/week_model.dart';
 import 'package:dietapp_a/app%20Constants/fire_ref.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
-import 'package:dietapp_a/y_Active%20diet/models/active_food_model.dart';
+
 import 'package:dietapp_a/y_Models/food_model.dart';
 import 'package:get/get.dart';
 
@@ -81,7 +81,7 @@ class PlanCreationController {
 
   Future<void> addFoods(FoodModel fcm) async {
     if (pcc.currentDayDR.value.parent.id == admos.activeDaysPlan) {
-      await pcc.currentTimingDR.value.collection(afmos.foods).add(FoodModel(
+      await pcc.currentTimingDR.value.collection(fmos.foods).add(FoodModel(
               isCamFood: false,
               foodAddedTime: DateTime.now(),
               foodTakenTime: null,
@@ -92,8 +92,9 @@ class PlanCreationController {
               docRef: null)
           .toMap());
     } else {
-      await pcc.currentTimingDR.value.collection(fmfpcfos.foods).add(fcm
-          .toMap());
+      await pcc.currentTimingDR.value
+          .collection(fmfpcfos.foods)
+          .add(fcm.toMap());
     }
   }
 

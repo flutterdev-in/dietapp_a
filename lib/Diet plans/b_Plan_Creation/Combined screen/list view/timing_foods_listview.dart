@@ -6,7 +6,6 @@ import 'package:dietapp_a/app%20Constants/fire_ref.dart';
 import 'package:dietapp_a/app%20Constants/url/url_avatar.dart';
 import 'package:dietapp_a/x_customWidgets/alert_dialogue.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
-import 'package:dietapp_a/y_Active%20diet/models/active_food_model.dart';
 import 'package:dietapp_a/y_Models/food_model.dart';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
@@ -34,6 +33,7 @@ class FoodsListViewforPC extends StatelessWidget {
             scrollDirection: Axis.vertical,
             query: pcc.currentTimingDR.value
                 .collection(fmfpcfos.foods)
+                .where(fmos.isCamFood, isEqualTo: false)
                 .orderBy(fmfpcfos.foodAddedTime, descending: false),
             itemBuilder: (context, doc) {
               Map<String, dynamic> foodMap = doc.data();
@@ -45,7 +45,7 @@ class FoodsListViewforPC extends StatelessWidget {
               return GFListTile(
                 padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
                 margin: const EdgeInsets.symmetric(vertical: 3, horizontal: 0),
-                avatar: URLavatar(imgURL: fm.rumm?.img, webURL: fm.rumm?.url),
+                avatar: UrlAvatar(fm.rumm),
                 title: Text(
                   fm.foodName,
                   softWrap: true,
@@ -154,7 +154,7 @@ class FoodsListViewforPC extends StatelessWidget {
                   },
                 ),
                 ElevatedButton(
-                    child: const Text("Modify"),
+                    child: const Text("Update"),
                     onPressed: () async {
                       String name =
                           tcName.value.isEmpty ? fm.foodName : tcName.value;
@@ -165,7 +165,7 @@ class FoodsListViewforPC extends StatelessWidget {
                       if (pcc.currentDayDR.value.parent.id ==
                           admos.activeDaysPlan) {
                         await fm.docRef!.update({
-                          afmos.foodName: name,
+                          fmos.foodName: name,
                           "$unIndexed.$notes0": notes,
                         });
                       } else {

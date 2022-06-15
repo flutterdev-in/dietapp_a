@@ -1,16 +1,13 @@
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/controllers/fc_controller.dart';
-import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/foods_collection_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
 
 Future<void> deleteItemsFromFC(BuildContext context) async {
   int currentPathSelectedItems = 0;
-  fcc.currentsPathItemsMaps.value.forEach((snapRef, thisItemMap) {
-    if (thisItemMap[fdcs.isItemSelected] ?? false) {
-      currentPathSelectedItems++;
-    }
-  });
+  fcc.currentPathMapFoodModels.value.forEach((fdcm, isSelected) => {
+        if (isSelected) {currentPathSelectedItems++}
+      });
 
   if (currentPathSelectedItems > 0) {
     showDialog(
@@ -39,10 +36,10 @@ Future<void> deleteItemsFromFC(BuildContext context) async {
                   child: const Text("Yes, Delete"),
                   onPressed: () {
                     Get.back();
-                    fcc.currentsPathItemsMaps.value
-                        .forEach((snapRef, thisItemMap) async {
-                      if (thisItemMap[fdcs.isItemSelected] ?? false) {
-                        await snapRef.delete();
+                    fcc.currentPathMapFoodModels.value
+                        .forEach((fdcm, isSelected) async {
+                      if (isSelected && fdcm.docRef != null) {
+                        await fdcm.docRef!.delete();
                       }
                     });
                   },

@@ -1,8 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/controllers/fc_controller.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/functions/fc_useful_functions.dart';
-import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/foods_collection_strings.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/views/widgets/top%20bars/fc_path_bar.dart';
 import 'package:dietapp_a/y_Models/food_model.dart';
 import 'package:flutter/material.dart';
@@ -12,26 +10,23 @@ import 'package:getwidget/getwidget.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class FoodsPickFromFolderScren extends StatelessWidget {
-  FoodsPickFromFolderScren({Key? key}) : super(key: key);
-  Rx<int> selectedUnselectedAllIndex = 0.obs;
+  const FoodsPickFromFolderScren({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
+    var selectedUnselectedAllIndex = 0.obs;
+
     return Scaffold(
       appBar: AppBar(
         actions: [
           ElevatedButton(
               onPressed: () async {
-                fcc.currentsPathItemsMaps.value.forEach(
-                  (docRef, itemMap) async {
-                    FoodModel fcm = itemMap[fdcs.fcModel];
-                    Map fdcmMap = fcm.toMap();
-                    if (itemMap[fdcs.isItemSelected] &&
-                        (fcm.isFolder != true) &&
-                        fdcmMap.isNotEmpty) {
-                      await pcc.addFoods(fcm);
-                    }
-                  },
-                );
+                fcc.currentPathMapFoodModels.value
+                    .forEach((fdm, isSelected) async {
+                  if (isSelected && fdm.isFolder != true) {
+                    await pcc.addFoods(fdm);
+                  }
+                });
 
                 Get.back();
               },
@@ -59,30 +54,24 @@ class FoodsPickFromFolderScren extends StatelessWidget {
           Obx(
             () => FirestoreListView<Map<String, dynamic>>(
               shrinkWrap: true,
-              query: FirebaseFirestore.instance
-                  .collection(fcc.currentPathCR.value)
-                  .orderBy(fdcs.isFolder, descending: false),
+              query:
+                  fcc.currentCR.value.orderBy(fmos.isFolder, descending: false),
               itemBuilder: (context, snapshot) {
                 //Rx variables
 
                 Rx<bool> isItemSelected = false.obs;
 
-                Map<String, dynamic> fcMap = snapshot.data();
-
-                FoodModel fdcm = FoodModel.fromMap(fcMap);
+                FoodModel fdcm = FoodModel.fromMap(snapshot.data());
+                fdcm.docRef = snapshot.reference;
                 Rx<bool> isFolder = true.obs;
-                fcc.currentsPathItemsMaps.value.addAll({
-                  snapshot.reference: {
-                    fdcs.isItemSelected: false,
-                    fdcs.itemIndex: fcc.currentsPathItemsMaps.value.length,
-                    fdcs.fcModel: fdcm
-                  }
-                });
+                fcc.currentPathMapFoodModels.value.addAll({fdcm: false});
+
                 Widget avatarW() {
                   if (fdcm.isFolder == true) {
                     return const Icon(
                       MdiIcons.folder,
                       color: Colors.orange,
+                      size: 40,
                     );
                   } else {
                     Widget avatar = GFAvatar(
@@ -128,6 +117,7 @@ class FoodsPickFromFolderScren extends StatelessWidget {
                   ),
                   icon: Obx(
                     () {
+                      isFolder.value = fdcm.isFolder ?? false;
                       if (!isFolder.value) {
                         if (selectedUnselectedAllIndex.value == 1) {
                           return const Icon(MdiIcons.checkboxMarkedCircle);
@@ -135,8 +125,9 @@ class FoodsPickFromFolderScren extends StatelessWidget {
                           return const Icon(
                               MdiIcons.checkboxBlankCircleOutline);
                         } else {
-                          isItemSelected.value = fcc.currentsPathItemsMaps
-                              .value[snapshot.reference]?[fdcs.isItemSelected];
+                          isItemSelected.value =
+                              fcc.currentPathMapFoodModels.value[fdcm] ?? false;
+
                           if (isItemSelected.value) {
                             return const Icon(MdiIcons.checkboxMarkedCircle);
                           } else {
@@ -151,26 +142,18 @@ class FoodsPickFromFolderScren extends StatelessWidget {
                   ),
                   onTap: () {
                     if (fdcm.isFolder == true) {
-                      fcc.currentPathCR.value =
-                          snapshot.reference.path + fdcs.fcPathSeperator;
+                      fcc.currentCR.value =
+                          snapshot.reference.collection(fmos.subCollections);
 
-                      fcc.pathsListMaps.value.add(
-                        {
-                          fdcs.pathCR: snapshot.reference
-                              .collection(fdcs.subCollections),
-                          fdcs.pathCRstring: fcc.currentPathCR.value,
-                          fdcs.fieldName: fdcm.foodName
-                        },
-                      );
+                      fcc.listFoodModelsForPath.value.add(fdcm);
                     } else {
                       selectedUnselectedAllIndex.value = 9;
 
-                      bool isSlected = fcc.currentsPathItemsMaps
-                          .value[snapshot.reference]?[fdcs.isItemSelected];
+                      bool isSlected =
+                          fcc.currentPathMapFoodModels.value[fdcm] ?? false;
 
-                      // isItemSelected.value = !isItemSelected.value;
-                      fcc.currentsPathItemsMaps.value[snapshot.reference]
-                          ?[fdcs.isItemSelected] = !isSlected;
+                      isItemSelected.value = !isItemSelected.value;
+                      fcc.currentPathMapFoodModels.value[fdcm] = !isSlected;
                       isItemSelected.value = !isSlected;
                     }
                   },

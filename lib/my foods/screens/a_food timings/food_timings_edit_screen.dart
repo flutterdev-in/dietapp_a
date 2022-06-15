@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
-import 'package:dietapp_a/my%20foods/screens/a_food%20timings/models/food_timing_model.dart';
 import 'package:dietapp_a/my%20foods/screens/a_food%20timings/functions/food_timings_list_sort.dart';
+import 'package:dietapp_a/my%20foods/screens/a_food%20timings/models/food_timing_model.dart';
 import 'package:dietapp_a/userData/models/user_strings.dart';
 import 'package:dietapp_a/x_customWidgets/stream_builder_functions.dart';
 import 'package:flutter/cupertino.dart';
@@ -151,7 +151,7 @@ class FoodTimingsScreen extends StatelessWidget {
               ),
             ),
             const Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: EdgeInsets.all(8.0),
               child: Text(
                 "Timing",
                 textScaleFactor: 0.9,
@@ -222,7 +222,7 @@ class FoodTimingsScreen extends StatelessWidget {
                         .toList(),
                   ),
                 ),
-                Text("\u00B1"),
+                const Text("\u00B1"),
                 SizedBox(
                   height: 60,
                   width: 55,
@@ -243,16 +243,16 @@ class FoodTimingsScreen extends StatelessWidget {
                         .toList(),
                   ),
                 ),
-                Text("m"),
+                const Text("m"),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
-            Divider(
+            const Divider(
               thickness: 1,
             ),
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
             Row(
@@ -267,7 +267,7 @@ class FoodTimingsScreen extends StatelessWidget {
                     } else {
                       Get.back();
                       rxFoodTimingsListMaps.removeAt(listIndex ?? 0);
-                      await Future.delayed(Duration(milliseconds: 600));
+                      await Future.delayed(const Duration(milliseconds: 600));
                       await FirebaseFirestore.instance
                           .collection(uss.users)
                           .doc(userUID)

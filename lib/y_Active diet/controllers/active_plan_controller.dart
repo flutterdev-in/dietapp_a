@@ -5,7 +5,6 @@ import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
 import 'package:dietapp_a/y_Models/timing_model.dart';
 import 'package:get/get.dart';
 
-import '../models/active_timing_model.dart';
 
 ActivePlanController apc = ActivePlanController();
 
@@ -35,8 +34,8 @@ class ActivePlanController extends GetxController {
   Future<void> getCurrentActiveTimingModels(
       DocumentReference<Map<String, dynamic>> dayDR) async {
     await dayDR
-        .collection(atmos.timings)
-        .orderBy(atmos.timingString)
+        .collection(tmos.timings)
+        .orderBy(tmos.timingString)
         .get(const GetOptions(source: Source.serverAndCache))
         .then((tQS) {
       if (tQS.docs.isNotEmpty) {

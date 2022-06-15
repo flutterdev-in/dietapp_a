@@ -2,9 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
-import 'package:dietapp_a/y_Active%20diet/models/active_food_model.dart';
-import 'package:dietapp_a/y_Active%20diet/models/active_timing_model.dart';
 import 'package:dietapp_a/y_Models/food_model.dart';
+import 'package:dietapp_a/y_Models/timing_model.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_image/flutter_native_image.dart';
@@ -26,7 +25,7 @@ Future<void> camPicPhotoUploadFunction(
       ).then((compressedFile) async {
         final storageRef = FirebaseStorage.instance.ref();
         final String dateTimeString =
-            "${admos.dayStringFromDate(DateTime.now())}_${atmos.timingFireStringFromDateTime(DateTime.now())}";
+            "${admos.activeDayStringFromDate(DateTime.now())}_${tmos.timingFireStringFromDateTime(DateTime.now())}";
         final userSR = storageRef
             .child("users")
             .child(userUID)
@@ -51,7 +50,7 @@ Future<void> camPicPhotoUploadFunction(
                 docRef: null);
 
             await activeTimingDR
-                .collection(afmos.foods)
+                .collection(fmos.foods)
                 .add(afm.toMap())
                 .then((fmDR) async {});
           });

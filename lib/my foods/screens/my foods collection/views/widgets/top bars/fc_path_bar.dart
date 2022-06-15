@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:dietapp_a/app%20Constants/colors.dart';
+import 'package:dietapp_a/app%20Constants/fire_ref.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/controllers/fc_controller.dart';
-import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/foods_collection_strings.dart';
+import 'package:dietapp_a/y_Models/food_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
@@ -19,7 +21,7 @@ class FcPathBar extends StatelessWidget {
       child: Align(
         alignment: Alignment.centerLeft,
         child: Obx(() {
-          if (fcc.pathsListMaps.value.isNotEmpty) {
+          if (fcc.listFoodModelsForPath.value.isNotEmpty) {
             return Row(children: [
               homeButton(),
               const ScrollPaths(),
@@ -40,12 +42,13 @@ class FcPathBar extends StatelessWidget {
       ),
       onTap: () async {
         await Future.delayed(const Duration(milliseconds: 100));
-        fcc.currentPathCR.value =
-            (homePath != null) ? homePath! : fdcs.foodsCR0.path;
+        fcc.currentCR.value = (homePath != null)
+            ? FirebaseFirestore.instance.collection(homePath!)
+            : userDR.collection(fmos.foodsCollection);
         fcc.isUnselectAll.value = true;
-        fcc.pathsListMaps.value.clear();
-        fcc.currentsPathItemsMaps.value.forEach((key, value) {
-          fcc.currentsPathItemsMaps.value[key]?[fdcs.isItemSelected] = false;
+        fcc.listFoodModelsForPath.value.clear();
+        fcc.currentPathMapFoodModels.value.forEach((key, value) {
+          fcc.currentPathMapFoodModels.value.update(key, (i) => false);
         });
         fcc.itemsSelectionCount.value = 0;
       },
@@ -65,45 +68,50 @@ class ScrollPaths extends StatelessWidget {
     });
     return Expanded(
       child: SizedBox(
-        child: ListView(
-          shrinkWrap: true,
-          scrollDirection: Axis.horizontal,
-          controller: _controller,
-          children: fcc.pathsListMaps.value.mapIndexed((index, element) {
-            return Row(
-              children: [
-                const Icon(MdiIcons.chevronRight),
-                InkWell(
-                  child: Container(
-                    child: Text(
-                      element[fdcs.fieldName] ?? "$element",
-                      overflow: TextOverflow.fade,
-                      softWrap: false,
+        child: Obx(() => ListView(
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              controller: _controller,
+              children:
+                  fcc.listFoodModelsForPath.value.mapIndexed((index, fdm) {
+                return Row(
+                  children: [
+                    const Icon(MdiIcons.chevronRight),
+                    InkWell(
+                      child: Container(
+                        child: Text(
+                          fdm.foodName,
+                          overflow: TextOverflow.fade,
+                          softWrap: false,
+                        ),
+                        constraints: BoxConstraints(
+                          minWidth: 15,
+                          maxWidth: fcc.listFoodModelsForPath.value.length < 2
+                              ? 100
+                              : 45,
+                        ),
+                      ),
+                      onTap: () {
+                        fcc.currentCR.value =
+                            fdm.docRef?.collection(fmos.subCollections) ??
+                                userDR.collection(fmos.foodsCollection);
+                        if (fdm != fcc.listFoodModelsForPath.value.last) {
+                          fcc.listFoodModelsForPath.value.removeRange(index + 1,
+                              fcc.listFoodModelsForPath.value.length);
+                          fcc.isUnselectAll.value = true;
+                        }
+                        fcc.currentPathMapFoodModels.value
+                            .forEach((key, value) {
+                          fcc.currentPathMapFoodModels.value
+                              .update(key, (i) => false);
+                        });
+                        fcc.itemsSelectionCount.value = 0;
+                      },
                     ),
-                    constraints: BoxConstraints(
-                      minWidth: 15,
-                      maxWidth: fcc.pathsListMaps.value.length < 2 ? 100 : 45,
-                    ),
-                  ),
-                  onTap: () {
-                    fcc.currentPathCR.value =
-                        element[fdcs.pathCRstring] ?? fdcs.foodsCR0;
-                    if (element != fcc.pathsListMaps.value.last) {
-                      fcc.pathsListMaps.value.removeRange(
-                          index + 1, fcc.pathsListMaps.value.length);
-                      fcc.isUnselectAll.value = true;
-                    }
-                    fcc.currentsPathItemsMaps.value.forEach((key, value) {
-                      fcc.currentsPathItemsMaps.value[key]
-                          ?[fdcs.isItemSelected] = false;
-                    });
-                    fcc.itemsSelectionCount.value = 0;
-                  },
-                ),
-              ],
-            );
-          }).toList(),
-        ),
+                  ],
+                );
+              }).toList(),
+            )),
       ),
     );
   }

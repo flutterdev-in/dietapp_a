@@ -1,13 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/diet_plan_model.dart';
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/week_model.dart';
+import 'package:dietapp_a/app%20Constants/colors.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/functions/chat_room_functions.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/functions/chat_room_send_functions.dart';
-import 'package:dietapp_a/v_chat/chat%20Room%20Screen/nav%20bar/a_colllecton_view_navbar.dart';
+import 'package:dietapp_a/v_chat/chat%20Room%20Screen/a_colllecton_view_navbar.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/nav%20bar/b_plan_view_for_chat.dart';
 import 'package:dietapp_a/v_chat/controllers/chat_room_controller.dart';
+import 'package:dietapp_a/v_chat/controllers/chat_room_variables.dart';
 import 'package:dietapp_a/v_chat/models/chat_room_model.dart';
 import 'package:dietapp_a/v_chat/models/message_model.dart';
 import 'package:dietapp_a/x_customWidgets/bottom_sheet_widget.dart';
+import 'package:dietapp_a/y_Models/day_model.dart';
+import 'package:dietapp_a/y_Models/food_model.dart';
+import 'package:dietapp_a/y_Models/timing_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
@@ -26,7 +33,7 @@ class ChatRoomBottom extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TextEditingController tc = TextEditingController();
-    final ChatScreenController chatSC = ChatScreenController(crm);
+    // final ChatScreenController chatSC = ChatScreenController(crm);
 
     return Container(
       color: Colors.teal.shade50,
@@ -43,11 +50,12 @@ class ChatRoomBottom extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(1.0),
                 child: Obx(() => TextField(
+                      focusNode: csv.focusNode,
                       maxLines: null,
                       keyboardType: TextInputType.multiline,
                       controller: tc,
                       decoration: InputDecoration(
-                        suffixIcon: (chatSC.tcText.value.isEmpty &&
+                        suffixIcon: (csv.tcText.value.isEmpty &&
                                 isSuffixButtonsRequired)
                             ? suffixIconW(context)
                             : null,
@@ -65,7 +73,7 @@ class ChatRoomBottom extends StatelessWidget {
                         ),
                       ),
                       onChanged: (value) {
-                        chatSC.tcText.value = value;
+                        csv.tcText.value = value;
                       },
                     )),
               ),
@@ -76,25 +84,24 @@ class ChatRoomBottom extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: GFAvatar(
+                backgroundColor: primaryColor,
                 size: GFSize.SMALL,
                 child: IconButton(
+                  color: Colors.white,
                   icon: const Icon(MdiIcons.send),
                   onPressed: () async {
-                    String tcText = chatSC.tcText.value;
+                    String tcText = csv.tcText.value;
                     tc.clear();
-                    chatSC.tcText.value = "";
+                    csv.tcText.value = "";
                     List<Map<String, dynamic>>? listDocMaps;
                     String chatType = chatTS.stringOnly;
 
-                    if (chatSC.selectedList.value.isNotEmpty) {
-                      listDocMaps = ChatRoomFunctions().getFinalList(crm);
-
-                      chatType = chatSC.chatType.value;
-                    }
-
-                    if (tcText.replaceAll(" ", "") != "" ||
-                        chatSC.selectedList.value.isNotEmpty) {
+                    if ((tcText.trim().isNotEmpty) ||
+                        csv.selectedList.value.isNotEmpty) {
+                      listDocMaps = getFinalList(crm);
+                      chatType = csv.chatType.value;
                       //
+
                       await crm.chatDR
                           .collection(crs.chats)
                           .add(
@@ -102,8 +109,7 @@ class ChatRoomBottom extends StatelessWidget {
                               chatSentBy: userUID,
                               chatRecdBy: crm.chatPersonUID,
                               chatString: tcText,
-                              senderSentTime:
-                                  Timestamp.fromDate(DateTime.now()),
+                              senderSentTime: DateTime.now(),
                               listDocMaps: listDocMaps,
                               chatType: chatType,
                             ).toMap(),
@@ -133,8 +139,8 @@ class ChatRoomBottom extends StatelessWidget {
                             lastChatRecdBy: crm.chatPersonUID);
                       });
 
-                      chatSC.chatType.value = chatTS.stringOnly;
-                      chatSC.selectedList.value.clear();
+                      csv.chatType.value = chatTS.stringOnly;
+                      csv.selectedList.value.clear();
                     }
                   },
                 ),
@@ -147,7 +153,6 @@ class ChatRoomBottom extends StatelessWidget {
   }
 
   Widget suffixIconW(BuildContext context) {
-    final ChatScreenController chatSC = ChatScreenController(crm);
     return SizedBox(
       width: 125,
       child: Row(
@@ -161,7 +166,7 @@ class ChatRoomBottom extends StatelessWidget {
             highlightColor: Colors.purple,
             splashColor: Colors.purple,
             onTap: () {
-              chatSC.chatType.value = chatTS.collectionView;
+              csv.chatType.value = chatTS.collectionView;
               bottomSheetW(
                 context,
                 CollectionViewNavBar(crm),
@@ -176,7 +181,7 @@ class ChatRoomBottom extends StatelessWidget {
             highlightColor: Colors.purple,
             splashColor: Colors.purple,
             onTap: () {
-              chatSC.chatType.value = chatTS.planView;
+              csv.chatType.value = chatTS.planView;
               bottomSheetW(
                 context,
                 PlanViewForChat(crm, ChatScreenController(crm)),
@@ -187,5 +192,71 @@ class ChatRoomBottom extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  List<Map<String, dynamic>> getFinalList(ChatRoomModel crm) {
+    final chatSC = ChatScreenController(crm);
+    final List<QueryDocumentSnapshot<Map<String, dynamic>>> selectedList =
+        csv.selectedList.value;
+    List<Map<String, dynamic>> finalList = selectedList.map((snapshot) {
+      Map<String, dynamic> map = snapshot.data();
+
+      map[unIndexed][docRef0] = snapshot.reference;
+      return map;
+    }).toList();
+
+    bool isSingle = selectedList.length == 1;
+
+    String parent = selectedList.first.reference.parent.id;
+
+    QueryDocumentSnapshot<Map<String, dynamic>> snapshot = selectedList.first;
+    if (selectedList.first.reference.path.contains(chatTS.foodsCollection)) {
+      FoodModel fdcm = FoodModel.fromMap(snapshot.data());
+      if (isSingle) {
+        if (fdcm.isFolder == true && fdcm.rumm != null) {
+          csv.chatType.value = chatTS.singleWebFolder;
+        } else if (fdcm.isFolder == true) {
+          csv.chatType.value = chatTS.singleFolder;
+        } else if (fdcm.rumm?.isYoutubeVideo ?? false) {
+          csv.chatType.value = chatTS.singleYoutube;
+        } else if (fdcm.rumm != null) {
+          csv.chatType.value = chatTS.singleWebFood;
+        } else {
+          csv.chatType.value = chatTS.singleCustomFood;
+        }
+      } else {
+        csv.chatType.value = chatTS.multiFoodCollection;
+      }
+    } else if (selectedList.first.reference.path
+        .contains(chatTS.dietPlansBeta)) {
+      if (parent == dietpbims.dietPlansBeta) {
+        csv.chatType.value = chatTS.multiPlan;
+      } else if (parent == wmfos.weeks) {
+        csv.chatType.value = chatTS.multiWeek;
+      } else if (parent == dmos.days) {
+        csv.chatType.value = chatTS.multiDay;
+      } else if (parent == tmos.timings) {
+        csv.chatType.value = chatTS.multiTiming;
+      } else if (parent == fmos.foods) {
+        // finalList = finalList
+        //     .map((e) =>
+        //         foodCollectionModelFromPlan(FoodModel.fromMap(e)).toMap())
+        //     .toList();
+        if (isSingle) {
+          FoodModel fmp = FoodModel.fromMap(snapshot.data());
+          if (fmp.rumm?.isYoutubeVideo ?? false) {
+            csv.chatType.value = chatTS.singleYoutube;
+          } else if (fmp.rumm != null) {
+            csv.chatType.value = chatTS.singleWebFood;
+          } else {
+            csv.chatType.value = chatTS.singleCustomFood;
+          }
+        } else {
+          csv.chatType.value = chatTS.multiFoodCollection;
+        }
+      }
+    }
+
+    return finalList;
   }
 }

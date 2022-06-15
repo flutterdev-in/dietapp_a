@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/app%20Constants/fire_ref.dart';
 import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
+import 'package:intl/intl.dart';
 
 class TimingModel {
   String timingName;
@@ -26,7 +27,7 @@ class TimingModel {
       unIndexed: {}
     };
     Map<String, dynamic> nullChaeckValues = {
-      tmos.notes: notes,
+      notes0: notes,
       rummfos.rumm: rumm?.toMap(),
       tmos.docRef: docRef,
     };
@@ -50,7 +51,7 @@ class TimingModel {
     return TimingModel(
       timingName: dataMap[tmos.timingName],
       timingString: dataMap[tmos.timingString],
-      notes: dataMap[unIndexed][tmos.notes],
+      notes: dataMap[unIndexed][notes0],
       rumm: rummfos.rummFromRummMap(dataMap[unIndexed][rummfos.rumm]),
       docRef: dataMap[unIndexed][tmos.docRef],
     );
@@ -70,11 +71,19 @@ class TimingModelObjects {
 
   String timingString = "timingString";
   String timings = "timings";
-  final String notes = "notes";
+  
   final String refUrlMetadata = "refUrlMetadata";
   final String defaultTimings = "defaultTimings";
   String docRef = docRef0;
 
+
+// 
+String timingFireStringFromDateTime(DateTime date) {
+    String s = DateFormat("ahhmm").format(date).toLowerCase();
+    return s;
+  }
+
+  //
   List<TimingModel> foodTimingsListSort(
       List<TimingModel> listDefaultTimingModel) {
     listDefaultTimingModel.sort((a, b) {

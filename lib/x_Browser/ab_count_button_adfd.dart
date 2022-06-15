@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
 import 'package:dietapp_a/app%20Constants/fire_ref.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/controllers/fc_controller.dart';
-import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/foods_collection_strings.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/views/widgets/top%20bars/fc_path_bar.dart';
 import 'package:dietapp_a/w_bottomBar/_bottom_navigation_bar.dart';
 import 'package:dietapp_a/x_Browser/controllers/add_food_controller.dart';
@@ -11,7 +10,6 @@ import 'package:dietapp_a/x_Browser/controllers/rxvariables_for_count_button.dar
 import 'package:dietapp_a/x_customWidgets/alert_dialogue.dart';
 import 'package:dietapp_a/y_Active%20diet/controllers/active_plan_controller.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
-import 'package:dietapp_a/y_Active%20diet/models/active_food_model.dart';
 import 'package:dietapp_a/y_Models/food_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -169,8 +167,7 @@ class CountButtonAdfdW extends StatelessWidget {
                       if (bottomBarindex.value == 2) {
                         pcc.addFoods(fcm);
                       } else if (bottomBarindex.value == 3) {
-                        FirebaseFirestore.instance
-                            .collection(fcc.currentPathCR.value)
+                        fcc.currentCR.value
                             .add(fcm.toMap());
                       } else if (bottomBarindex.value == 0) {
                         var afm = FoodModel(
@@ -184,13 +181,13 @@ class CountButtonAdfdW extends StatelessWidget {
                             docRef: null);
                         if (apc.currentActiveTimingDR.value != userDR) {
                           apc.currentActiveTimingDR.value
-                              .collection(afmos.foods)
+                              .collection(fmos.foods)
                               .add(afm.toMap());
                         }
                         if (pcc.currentDayDR.value.parent.id ==
                             admos.activeDaysPlan) {
                           pcc.currentTimingDR.value
-                              .collection(afmos.foods)
+                              .collection(fmos.foods)
                               .add(afm.toMap());
                         }
                       }
@@ -277,11 +274,9 @@ class CountButtonAdfdW extends StatelessWidget {
               ElevatedButton(
                   child: const Text("Modify"),
                   onPressed: () {
-                    Map<String, dynamic> fdcmMap = fdcm.toMap();
-                    fdcmMap[fdcs.fieldName] = tcName.text.trimRight();
-                    fdcmMap[fdcs.notes] = tcNotes.text.trimRight();
-                    adfc.addedFoodList.value[rxIndex.value.toInt()] =
-                        FoodModel.fromMap(fdcmMap);
+                    fdcm.foodName = tcName.text.trimRight();
+                    fdcm.notes = tcNotes.text.trimRight();
+                    adfc.addedFoodList.value[rxIndex.value.toInt()] = fdcm;
                     rxIndex.value = 1.2;
                   }),
             ],

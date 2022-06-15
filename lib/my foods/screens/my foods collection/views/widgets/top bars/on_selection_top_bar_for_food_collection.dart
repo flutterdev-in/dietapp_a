@@ -1,6 +1,5 @@
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/controllers/fc_controller.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/functions/fc_useful_functions.dart';
-import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/foods_collection_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -20,9 +19,8 @@ class OnSelectedTopBarForFoodCollection extends StatelessWidget {
               fcc.isSelectionStarted.value = !fcc.isSelectionStarted.value;
               fcc.isSelectAll.value = false;
               fcc.isUnselectAll.value = true;
-              fcc.currentsPathItemsMaps.value.forEach((snapRef, thisItemMap) {
-                fcc.currentsPathItemsMaps.value[snapRef]?[fdcs.isItemSelected] =
-                    false;
+              fcc.currentPathMapFoodModels.value.forEach((key, value) {
+                fcc.currentPathMapFoodModels.value.update(key, (i) => false);
               });
             },
           ),

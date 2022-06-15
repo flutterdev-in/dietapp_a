@@ -34,7 +34,7 @@ class FoodsCollectionTopBar extends StatelessWidget {
               child: const Text("Add Folder"),
               onPressed: () async {
                 List<String> listSubs =
-                    fcc.currentPathCR.split(fdcs.subCollections);
+                    fcc.currentCR.value.path.split(fdcs.subCollections);
                 if (listSubs.length < 6) {
                   addFolderForFoods(context);
                 }

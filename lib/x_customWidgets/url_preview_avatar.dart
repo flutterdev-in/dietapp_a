@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -9,8 +10,8 @@ Widget urlPreviewAvatar({
   Widget avatar = GFAvatar(
     shape: GFAvatarShape.standard,
     size: GFSize.MEDIUM,
-    maxRadius: 20,
-    backgroundImage: NetworkImage(imgURL),
+    minRadius: 40,
+    backgroundImage: CachedNetworkImageProvider(imgURL),
   );
   if (url.contains("youtube.com/watch?v=")) {
     return Stack(

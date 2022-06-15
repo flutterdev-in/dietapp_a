@@ -1,6 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dietapp_a/app%20Constants/fire_ref.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/controllers/fc_controller.dart';
-import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/foods_collection_strings.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/views/widgets/top%20bars/fc_path_bar.dart';
 import 'package:dietapp_a/x_customWidgets/web%20view/web_view_page.dart';
 import 'package:dietapp_a/x_customWidgets/youtube/youtube_player_middle.dart';
@@ -11,7 +10,7 @@ import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-class FolderViewMiddle extends StatelessWidget {
+class FolderViewMiddle extends StatefulWidget {
   final String folderName;
   final String homePath;
   const FolderViewMiddle(
@@ -19,33 +18,41 @@ class FolderViewMiddle extends StatelessWidget {
       : super(key: key);
 
   @override
+  State<FolderViewMiddle> createState() => _FolderViewMiddleState();
+}
+
+class _FolderViewMiddleState extends State<FolderViewMiddle> {
+  @override
+  void dispose() {
+    fcc.currentCR.value = userDR.collection(fmos.foodsCollection);
+    fcc.listFoodModelsForPath.value.clear();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(folderName)),
+      appBar: AppBar(title: Text(widget.folderName)),
       body: Column(
         children: [
-          FcPathBar(homePath: homePath),
+          FcPathBar(homePath: widget.homePath),
           Obx(
             () => FirestoreListView<Map<String, dynamic>>(
               shrinkWrap: true,
-              query: FirebaseFirestore.instance
-                  .collection(fcc.currentPathCR.value)
-                  .orderBy(fdcs.isFolder, descending: true)
-                  .orderBy(fdcs.fieldTime, descending: false),
+              query: fcc.currentCR.value
+                  .orderBy(fmos.isFolder, descending: true)
+                  .orderBy(fmos.foodAddedTime, descending: false),
               itemBuilder: (context, snapshot) {
-                //Rx variables
+                FoodModel fdcm = FoodModel.fromMap(snapshot.data());
+                fdcm.docRef = snapshot.reference;
 
-                Map<String, dynamic> fcMap = snapshot.data();
-
-                FoodModel fdcm = FoodModel.fromMap(fcMap);
-
-                fcc.currentsPathItemsMaps.value.addAll({
-                  snapshot.reference: {
-                    fdcs.isItemSelected: false,
-                    fdcs.itemIndex: fcc.currentsPathItemsMaps.value.length,
-                    fdcs.fcModel: fdcm
-                  }
-                });
+                // fcc.currentsPathItemsMaps.value.addAll({
+                //   snapshot.reference: {
+                //     fdcs.isItemSelected: false,
+                //     fdcs.itemIndex: fcc.currentsPathItemsMaps.value.length,
+                //     fdcs.fcModel: fdcm
+                //   }
+                // });
                 Widget avatarW() {
                   if (fdcm.isFolder == true) {
                     return const Icon(
@@ -96,17 +103,10 @@ class FolderViewMiddle extends StatelessWidget {
                   ),
                   onTap: () {
                     if (fdcm.isFolder == true) {
-                      fcc.currentPathCR.value =
-                          snapshot.reference.path + fdcs.fcPathSeperator;
+                      fcc.currentCR.value =
+                          snapshot.reference.collection(fmos.subCollections);
 
-                      fcc.pathsListMaps.value.add(
-                        {
-                          fdcs.pathCR: snapshot.reference
-                              .collection(fdcs.subCollections),
-                          fdcs.pathCRstring: fcc.currentPathCR.value,
-                          fdcs.fieldName: fdcm.foodName
-                        },
-                      );
+                      fcc.listFoodModelsForPath.value.add(fdcm);
                     } else if (fdcm.rumm?.isYoutubeVideo ?? false) {
                       Get.to(() =>
                           YoutubeVideoPlayerScreen(fdcm.rumm!, fdcm.foodName));

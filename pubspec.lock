@@ -8,6 +8,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.3"
+  animated_icon_button:
+    dependency: "direct main"
+    description:
+      name: animated_icon_button
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.2"
   any_link_preview:
     dependency: "direct main"
     description:
@@ -1153,6 +1160,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.3.0"
+  swipe_to:
+    dependency: "direct main"
+    description:
+      name: swipe_to
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.2"
   syncfusion_flutter_calendar:
     dependency: "direct main"
     description:

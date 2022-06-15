@@ -37,7 +37,7 @@ class DietViewChat extends StatelessWidget {
               return Column(
                 children: [
                   monthCalander(),
-                  const TimingsViewDietRoom(),
+                  Expanded(child: TimingsViewDietRoom(crm)),
                 ],
               );
             } else {
@@ -87,8 +87,7 @@ class DietViewChat extends StatelessWidget {
                                     chatSentBy: userUID,
                                     chatRecdBy: crmNew.chatPersonUID,
                                     chatString: null,
-                                    senderSentTime:
-                                        Timestamp.fromDate(DateTime.now()),
+                                    senderSentTime: DateTime.now(),
                                     listDocMaps: [
                                       DietChatRequestModel(
                                               isDietViewRequest: true,

@@ -42,9 +42,8 @@ class RefURLWidget extends StatelessWidget {
           GFListTile(
             padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
             margin: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
-            avatar: URLavatar(
-                imgURL: refUrlMetadataModel.img ?? "",
-                webURL: refUrlMetadataModel.url),
+            avatar: UrlAvatar(refUrlMetadataModel
+                ),
             title: Text(
               refUrlMetadataModel.title ?? refUrlMetadataModel.url,
               maxLines: 2,

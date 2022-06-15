@@ -3,9 +3,10 @@ import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/food_model_for_pla
 import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
 import 'package:dietapp_a/app%20Constants/url/ref_url_widget.dart';
 import 'package:dietapp_a/app%20Constants/url/url_avatar.dart';
-import 'package:dietapp_a/y_Active%20diet/models/active_timing_model.dart';
+import 'package:dietapp_a/v_chat/models/chat_room_model.dart';
 import 'package:dietapp_a/y_Models/food_model.dart';
 import 'package:dietapp_a/y_Models/timing_model.dart';
+import 'package:dietapp_a/z_homeScreen/c_Timings%20view/b_cam_pictures_timings_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/firestore.dart';
 import 'package:get/get.dart';
@@ -16,8 +17,10 @@ import '_diet_room_controller.dart';
 
 class TimingsViewDietRoom extends StatelessWidget {
   final bool editingIconRequired;
+  final ChatRoomModel crm;
 
-  const TimingsViewDietRoom({
+  const TimingsViewDietRoom(
+    this.crm, {
     Key? key,
     this.editingIconRequired = true,
   }) : super(key: key);
@@ -26,12 +29,12 @@ class TimingsViewDietRoom extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(() => StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
         stream: drc.currentDayDR.value
-            .collection(atmos.timings)
-            .orderBy(atmos.timingString)
+            .collection(tmos.timings)
+            .orderBy(tmos.timingString)
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const CircularProgressIndicator();
+            return const LinearProgressIndicator();
           } else if (snapshot.hasError) {
             return const Text("Error while fetching data, please try again");
           } else if (!snapshot.hasData ||
@@ -48,6 +51,7 @@ class TimingsViewDietRoom extends StatelessWidget {
               itemCount: listTimingDocs.length,
               itemBuilder: (context, index) {
                 TimingModel atm = listTimingDocs[index];
+
                 return timingsView(atm);
               },
             );
@@ -83,13 +87,14 @@ class TimingsViewDietRoom extends StatelessWidget {
               child: Text(atm.notes!),
               width: double.maxFinite,
             )),
+          CamPicturesTimingsView(atm, isActionAllowed: false),
           FirestoreListView<Map<String, dynamic>>(
               shrinkWrap: true,
               physics: const ClampingScrollPhysics(),
-              query: drc.currentDayDR.value
-                  .collection(atmos.timings)
-                  .doc(atm.timingString)
-                  .collection(fmfpcfos.foods),
+              query: atm.docRef!
+                  .collection(fmfpcfos.foods)
+                  .where(fmos.isCamFood, isEqualTo: false)
+                  .orderBy(fmos.foodAddedTime, descending: true),
               itemBuilder: (context, doc) {
                 FoodModel fm = FoodModel.fromMap(doc.data());
                 fm.docRef = doc.reference;
@@ -98,7 +103,7 @@ class TimingsViewDietRoom extends StatelessWidget {
                   padding: const EdgeInsets.fromLTRB(5, 5, 0, 0),
                   margin:
                       const EdgeInsets.symmetric(vertical: 3, horizontal: 0),
-                  avatar: URLavatar(imgURL: fm.rumm?.img, webURL: fm.rumm?.url),
+                  avatar: UrlAvatar(fm.rumm),
                   title: Text(fm.foodName, maxLines: 1),
                   icon: fm.foodTakenTime != null
                       ? const Icon(MdiIcons.accountCheck)

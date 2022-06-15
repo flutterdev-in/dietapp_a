@@ -6,6 +6,7 @@ import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/dartUtilities/day_string_from_date.dart';
 import 'package:dietapp_a/x_customWidgets/alert_dialogue.dart';
 import 'package:dietapp_a/x_customWidgets/expandable_text.dart';
+import 'package:dietapp_a/x_customWidgets/lootie_animations.dart';
 import 'package:dietapp_a/x_customWidgets/month_calander.dart';
 import 'package:dietapp_a/y_Active%20diet/controllers/active_plan_controller.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
@@ -50,26 +51,28 @@ class HomeScreen extends StatelessWidget {
                 ),
               ],
             ),
-            body: Stack(
-              children: [
-                Column(
+            body: Obx(() => Stack(
+                  alignment: AlignmentDirectional.center,
                   children: [
-                    Obx(() => isCalendarEnabled.value
-                        ? monthCalander()
-                        : const SizedBox()),
-                    Expanded(
-                        child: ListView(
-                      shrinkWrap: true,
-                      physics: const ClampingScrollPhysics(),
+                    Column(
                       children: [
-                        if (adm?.notes != null) dayNotes(adm!.notes!),
-                        TimingViewHomeScreen(isDayExists: isDayExists),
+                        Obx(() => isCalendarEnabled.value
+                            ? monthCalander()
+                            : const SizedBox()),
+                        Expanded(
+                            child: ListView(
+                          shrinkWrap: true,
+                          physics: const ClampingScrollPhysics(),
+                          children: [
+                            if (adm?.notes != null) dayNotes(adm!.notes!),
+                            TimingViewHomeScreen(isDayExists: isDayExists),
+                          ],
+                        )),
                       ],
-                    )),
+                    ),
+                    if (isLoading.value) loot.linerDotsLoading(),
                   ],
-                ),
-              ],
-            ),
+                )),
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerDocked,
             floatingActionButton: floatingButton(context, isDayExists, adm),
@@ -111,7 +114,7 @@ class HomeScreen extends StatelessWidget {
 
   FloatingActionButton? floatingButton(
       BuildContext context, bool isDayExists, DayModel? adm) {
-    var todayString = admos.dayStringFromDate(DateTime.now());
+    var todayString = admos.activeDayStringFromDate(DateTime.now());
     var today = DateTime.parse(todayString);
 
     var selectedDate = DateTime.parse(apc.currentActiveDayDR.value.id);

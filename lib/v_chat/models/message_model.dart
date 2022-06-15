@@ -6,12 +6,12 @@ class MessageModel {
   String chatSentBy;
   String chatRecdBy;
   DocumentReference<Map<String, dynamic>>? docRef;
-  Timestamp senderSentTime;
-  Timestamp? recieverSeenTime;
+  DateTime senderSentTime;
+  DateTime? recieverSeenTime;
   String? chatString;
   String? chatType;
   List? listDocMaps;
-  
+  MessageModel? replyMessageModel;
 
   MessageModel({
     this.docRef,
@@ -22,22 +22,22 @@ class MessageModel {
     this.chatString,
     this.chatType,
     this.listDocMaps,
-    
+    this.replyMessageModel,
   });
 
   Map<String, dynamic> toMap() {
     return {
-      mmos.senderSentTime: senderSentTime,
+      mmos.senderSentTime: Timestamp.fromDate(senderSentTime),
       mmos.chatType: chatType,
       unIndexed: {
         mmos.docRef: docRef,
         mmos.chatSentBy: chatSentBy,
         mmos.chatRecdBy: chatRecdBy,
-        mmos.recieverSeenTime: recieverSeenTime,
+        mmos.recieverSeenTime: recieverSeenTime != null
+            ? Timestamp.fromDate(recieverSeenTime!)
+            : null,
         mmos.chatString: chatString,
-        
         mmos.listDocMaps: listDocMaps,
-        
       }
     };
   }
@@ -47,12 +47,11 @@ class MessageModel {
       docRef: messageMap[unIndexed][mmos.docRef],
       chatSentBy: messageMap[unIndexed][mmos.chatSentBy],
       chatRecdBy: messageMap[unIndexed][mmos.chatRecdBy],
-      senderSentTime: messageMap[mmos.senderSentTime],
-      recieverSeenTime: messageMap[unIndexed][mmos.recieverSeenTime],
+      senderSentTime: messageMap[mmos.senderSentTime]?.toDate(),
+      recieverSeenTime: messageMap[unIndexed][mmos.recieverSeenTime]?.toDate(),
       chatString: messageMap[unIndexed][mmos.chatString],
       chatType: messageMap[mmos.chatType],
       listDocMaps: messageMap[unIndexed][mmos.listDocMaps],
-      
     );
   }
 }

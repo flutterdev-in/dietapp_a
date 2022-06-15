@@ -1,5 +1,7 @@
 import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
-DayWeekFunctions dayWeekFunctions =  DayWeekFunctions();
+
+DayWeekFunctions dayWeekFunctions = DayWeekFunctions();
+
 class DayWeekFunctions {
   StartEndDates weekStartEndDates(DateTime selectedDate) {
     int toMonday = selectedDate.weekday - 1;
@@ -10,8 +12,8 @@ class DayWeekFunctions {
 
   String weekString(DateTime middleDate) {
     var wSE = weekStartEndDates(middleDate);
-    var s = admos.dayStringFromDate(wSE.startDate);
-    var e = admos.dayStringFromDate(wSE.endDate);
+    var s = admos.activeDayStringFromDate(wSE.startDate);
+    var e = admos.activeDayStringFromDate(wSE.endDate);
     return s + "_" + e;
   }
 }

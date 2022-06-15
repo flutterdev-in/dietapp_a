@@ -18,7 +18,7 @@ class DietViewMemberManager extends StatelessWidget {
           } else if (snapshot.hasData && snapshot.data!.data() != null) {
             var dietViewMembersMap = snapshot.data!.data()!;
             if (dietViewMembersMap.containsKey(crm.chatPersonUID)) {
-              return const TimingsViewDietRoom();
+              return  TimingsViewDietRoom(crm);
             } else {
               return dietRoleManager();
             }

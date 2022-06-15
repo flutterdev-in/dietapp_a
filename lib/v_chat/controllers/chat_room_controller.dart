@@ -1,24 +1,22 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
+import 'package:dietapp_a/v_chat/controllers/chat_room_variables.dart';
 import 'package:dietapp_a/v_chat/diet%20Room%20Screen/_diet_room_controller.dart';
 import 'package:dietapp_a/v_chat/models/chat_room_model.dart';
 import 'package:dietapp_a/v_chat/models/message_model.dart';
 import 'package:get/get.dart';
 
-// ChatScreenController chatSC = ChatScreenController();
-
 class ChatScreenController extends GetxController {
   // final docList = RxList<DocumentReference<Map<String, dynamic>>>([]).obs;
-  final selectedList =
-      RxList<QueryDocumentSnapshot<Map<String, dynamic>>>([]).obs;
-  final Rx<String> tcText = "".obs;
-  final Rx<String> chatType = chatTS.stringOnly.obs;
+
   final ChatRoomModel crm;
   ChatScreenController(this.crm);
 
   @override
   void onInit() async {
     drc.calendarDate.value = DateTime.now();
+    csv.replyMessageModel.value = dummyMM;
+
     await updateFire(
       isThisChatOpen: true,
     );
@@ -27,6 +25,7 @@ class ChatScreenController extends GetxController {
 
   @override
   void onClose() async {
+    csv.replyMessageModel.value = dummyMM;
     drc.calendarDate.value = DateTime.now();
     await updateFire(
       isThisChatOpen: false,

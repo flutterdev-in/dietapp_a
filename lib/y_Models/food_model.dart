@@ -59,8 +59,9 @@ class FoodModel {
 
   factory FoodModel.fromMap(Map dataMap) {
     return FoodModel(
-      foodAddedTime:
-          DateTime.fromMillisecondsSinceEpoch(dataMap[fmos.foodAddedTime]),
+      foodAddedTime: (dataMap[fmos.foodAddedTime] != null)
+          ? DateTime.fromMillisecondsSinceEpoch(dataMap[fmos.foodAddedTime])
+          : DateTime.now(),
       foodTakenTime: dataMap[fmos.foodTakenTime]?.toDate(),
       isFolder: dataMap[fmos.isFolder],
       isCamFood: dataMap[fmos.isCamFood],
@@ -82,4 +83,6 @@ class FoodsModelObjects {
   final String isFolder = "isFolder";
   //
   final String foods = "foods";
+  final String foodsCollection = "foodsCollection";
+  final String subCollections = "subCollections";
 }

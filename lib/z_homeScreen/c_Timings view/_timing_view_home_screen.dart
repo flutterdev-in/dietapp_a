@@ -38,8 +38,8 @@ class TimingViewHomeScreen extends StatelessWidget {
           shrinkWrap: true,
           physics: const ClampingScrollPhysics(),
           query: apc.currentActiveDayDR.value
-              .collection(atmos.timings)
-              .orderBy(atmos.timingString),
+              .collection(tmos.timings)
+              .orderBy(tmos.timingString),
           itemBuilder: (context, qDS) {
             var atm = TimingModel.fromMap(qDS.data());
             atm.docRef = qDS.reference;
@@ -48,7 +48,7 @@ class TimingViewHomeScreen extends StatelessWidget {
               child: Column(
                 children: [
                   TimingsRowHomeScreen(atm: atm),
-                  CamPicturesTimingsView(atm: atm),
+                  CamPicturesTimingsView( atm,isActionAllowed: true),
                   if (atm.rumm != null)
                     RefURLWidget(
                       refUrlMetadataModel: atm.rumm ?? rummfos.constModel,
@@ -66,7 +66,7 @@ class TimingViewHomeScreen extends StatelessWidget {
   }
 
   Widget dayNotExistsW(BuildContext context) {
-    var todayString = admos.dayStringFromDate(DateTime.now());
+    var todayString = admos.activeDayStringFromDate(DateTime.now());
     var today = DateTime.parse(todayString);
 
     var selectedDate = DateTime.parse(apc.currentActiveDayDR.value.id);

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/controllers/fc_controller.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/functions/fc_delete_copy_move_operations_function.dart';
 import 'package:flutter/material.dart';
@@ -39,7 +40,7 @@ class PasteBarForFC extends StatelessWidget {
                   fcc.pathWhenCopyOrMovePressed.value != "") {
                 await fcDeleteCopyMoveOperations(
                   listSourceDR: fcc.listSelectedItemsDRsForOperation.value,
-                  targetCRpath: fcc.currentPathCR.value,
+                  targetCRpath: fcc.currentCR.value.path,
                 );
 
                 fcc.isCopyOrMoveStarted.value = false;
@@ -62,11 +63,13 @@ class PasteBarForFC extends StatelessWidget {
 
   bool isPasteValidPath() {
     bool isPathValid = true;
-    if (fcc.currentPathCR.value == fcc.pathWhenCopyOrMovePressed.value) {
+    if (fcc.currentCR.value ==
+        FirebaseFirestore.instance
+            .collection(fcc.pathWhenCopyOrMovePressed.value)) {
       isPathValid = false;
     } else {
       for (var thisDR in fcc.listSelectedItemsDRsForOperation.value) {
-        if (fcc.currentPathCR.value.contains(thisDR.path)) {
+        if (fcc.currentCR.value.path.contains(thisDR.path)) {
           isPathValid = false;
         }
       }

@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/controllers/fc_controller.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/functions/fc_useful_functions.dart';
-import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/foods_collection_strings.dart';
 import 'package:dietapp_a/y_Models/food_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -38,95 +37,89 @@ class FCitemEditButton extends StatelessWidget {
   Widget build(BuildContext context) {
     //
 
-    DocumentReference? snapshotReference;
-    // Values only for initialisation
-    FoodModel fdcm = FoodModel(
-      foodName: "",
-      foodAddedTime: DateTime.now(),
-      foodTakenTime: null,
-      isCamFood: null,
-      isFolder: true,
-      rumm: null,
-      notes: null,
-    );
-    fcc.currentsPathItemsMaps.value.forEach((snapReference, thisItemMap) {
-      if (thisItemMap[fdcs.isItemSelected] ?? false) {
-        snapshotReference = snapReference;
-        fdcm = thisItemMap[fdcs.fcModel];
-      }
-    });
-    TextEditingController tcName = TextEditingController();
-    tcName.text = fdcm.foodName;
-    TextEditingController tcNotes = TextEditingController();
-    tcNotes.text = fdcm.notes ?? "";
     return TextButton(
       child: const Text("Edit"),
       onPressed: () async {
         await Future.delayed(const Duration(milliseconds: 80));
-        showDialog(
-          barrierDismissible: false,
-          context: context,
-          builder: (context) => AlertDialog(
-            insetPadding: const EdgeInsets.all(10),
-            contentPadding: const EdgeInsets.fromLTRB(8.0, 20.0, 8.0, 24.0),
-            scrollable: true,
-            actionsAlignment: MainAxisAlignment.start,
-            content: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextField(
-                    autofocus: true,
-                    controller: tcName,
-                    decoration: const InputDecoration(labelText: "Folder name"),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextField(
-                    controller: tcNotes,
-                    decoration:
-                        const InputDecoration(labelText: "Notes (optional)"),
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    ElevatedButton(
-                      child: const Text("Cancle"),
-                      onPressed: () async {
-                        Get.back();
-                      },
+        DocumentReference? snapshotReference;
+        // Values only for initialisation
+        FoodModel? fdcm;
+        fcc.currentPathMapFoodModels.value.forEach((fdm, isSelected) {
+          if (isSelected && fdm.docRef != null) {
+            snapshotReference = fdm.docRef!;
+            fdcm = fdm;
+          }
+        });
+        TextEditingController tcName = TextEditingController();
+        tcName.text = fdcm?.foodName ?? "";
+        TextEditingController tcNotes = TextEditingController();
+        tcNotes.text = fdcm?.notes ?? "";
+        if (fdcm != null) {
+          showDialog(
+            barrierDismissible: false,
+            context: context,
+            builder: (context) => AlertDialog(
+              insetPadding: const EdgeInsets.all(10),
+              contentPadding: const EdgeInsets.fromLTRB(8.0, 20.0, 8.0, 24.0),
+              scrollable: true,
+              actionsAlignment: MainAxisAlignment.start,
+              content: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextField(
+                      autofocus: true,
+                      controller: tcName,
+                      decoration:
+                          const InputDecoration(labelText: "Folder name"),
                     ),
-                    ElevatedButton(
-                      child: const Text("Modify"),
-                      onPressed: () async {
-                        Get.back();
-                        if (snapshotReference != null) {
-                          await Future.delayed(
-                              const Duration(milliseconds: 700));
-                          fcc.currentsPathItemsMaps.value[snapshotReference]
-                              ?[fdcs.isItemSelected] = false;
-                          fcc.isUnselectAll.value = true;
-                          fcc.itemsSelectionCount.value =
-                              fcufs.countSelectedItems();
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextField(
+                      controller: tcNotes,
+                      decoration:
+                          const InputDecoration(labelText: "Notes (optional)"),
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ElevatedButton(
+                        child: const Text("Cancle"),
+                        onPressed: () async {
+                          Get.back();
+                        },
+                      ),
+                      ElevatedButton(
+                        child: const Text("Update"),
+                        onPressed: () async {
+                          Get.back();
+                          if (snapshotReference != null) {
+                            await Future.delayed(
+                                const Duration(milliseconds: 700));
+                            fcc.currentPathMapFoodModels.value[fdcm!] = false;
+                            fcc.isUnselectAll.value = true;
+                            fcc.itemsSelectionCount.value =
+                                fcufs.countSelectedItems();
 
-                          fcc.isSelectionStarted.value = false;
-                          await snapshotReference!.update({
-                            fdcs.fieldName: tcName.text,
-                            "$unIndexed.${fdcs.notes}": tcNotes.text,
-                          });
-                        }
-                      },
-                    ),
-                  ],
-                ),
-              ],
+                            fcc.isSelectionStarted.value = false;
+                            await snapshotReference!.update({
+                              fmos.foodName: tcName.text,
+                              "$unIndexed.$notes0": tcNotes.text,
+                            });
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
-        );
+          );
+        }
       },
     );
   }

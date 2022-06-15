@@ -4,7 +4,6 @@ import 'package:dietapp_a/x_customWidgets/alert_dialogue.dart';
 import 'package:dietapp_a/y_Active%20diet/controllers/active_plan_controller.dart';
 import 'package:dietapp_a/y_Active%20diet/functions/delete_active_entries.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
-import 'package:dietapp_a/y_Active%20diet/models/active_timing_model.dart';
 import 'package:dietapp_a/y_Models/timing_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -25,7 +24,7 @@ class MenuItemsTimingViewHS extends StatelessWidget {
         color: Colors.white,
         child: const Icon(MdiIcons.dotsVertical),
         itemBuilder: (context) {
-          var todayString = admos.dayStringFromDate(DateTime.now());
+          var todayString = admos.activeDayStringFromDate(DateTime.now());
           var selectedDate = DateTime.parse(apc.currentActiveDayDR.value.id);
 
           var isBefore = selectedDate.isBefore(DateTime.now());

@@ -1,19 +1,22 @@
+import 'package:dietapp_a/app%20Constants/fire_ref.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/controllers/fc_controller.dart';
-import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/foods_collection_strings.dart';
 import 'package:dietapp_a/w_bottomBar/_bottom_navigation_bar.dart';
+import 'package:dietapp_a/y_Models/food_model.dart';
 
 void fcBackButtonFunction() {
-  if (fcc.currentPathCR.value != fdcs.foodsCR0.path) {
-    fcc.pathsListMaps.value.removeLast();
-    if (fcc.pathsListMaps.value.isNotEmpty) {
-      fcc.currentPathCR.value = fcc.pathsListMaps.value.last[fdcs.pathCRstring];
+  if (fcc.currentCR.value != userDR.collection(fmos.foodsCollection)) {
+    fcc.listFoodModelsForPath.value.removeLast();
+    if (fcc.listFoodModelsForPath.value.isNotEmpty) {
+      fcc.currentCR.value = fcc.listFoodModelsForPath.value.last.docRef
+              ?.collection(fmos.subCollections) ??
+          userDR.collection(fmos.foodsCollection);
     } else {
-      fcc.currentPathCR.value = fdcs.foodsCR0.path;
+      fcc.currentCR.value = userDR.collection(fmos.foodsCollection);
     }
-  } else if (fcc.currentPathCR.value == fdcs.foodsCR0.path &&
+  } else if (fcc.currentCR.value == userDR.collection(fmos.foodsCollection) &&
       fcc.isSelectionStarted.value) {
     fcc.isSelectionStarted.value = false;
-  } else if (fcc.currentPathCR.value == fdcs.foodsCR0.path) {
+  } else if (fcc.currentCR.value == userDR.collection(fmos.foodsCollection)) {
     bottomBarindex.value = 0;
   }
 }

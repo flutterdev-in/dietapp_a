@@ -24,13 +24,16 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 
 class ChatRoomMiddle extends StatelessWidget {
   final ChatRoomModel crm;
+
   const ChatRoomMiddle(this.crm, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-        color: Colors.teal.shade50,
+        decoration: BoxDecoration(
+          color: Colors.teal.shade50,
+        ),
         child: FirestoreListView<Map<String, dynamic>>(
           pageSize: 5,
           reverse: true,
@@ -44,14 +47,14 @@ class ChatRoomMiddle extends StatelessWidget {
             Map<String, dynamic> messageMap = snapshot.data();
             MessageModel mm = MessageModel.fromMap(messageMap);
             mm.docRef = snapshot.reference;
-            bool isSentByMe = mm.chatSentBy == userUID;
+            bool isSentByMe = mm.chatSentBy != userUID;
 
             return InkWell(
               child: Column(
                 children: [
                   Align(
                     child: Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                      padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                       child: chatWidget(mm),
                     ),
                     alignment: isSentByMe
@@ -79,9 +82,7 @@ class ChatRoomMiddle extends StatelessWidget {
                   ),
                 ],
               ),
-              onLongPress: () async {
-                await snapshot.reference.delete();
-              },
+              onLongPress: () async {},
             );
           },
         ),
@@ -147,24 +148,23 @@ Widget chatWidget(MessageModel mm) {
   }
 }
 
-String chatTimeString(Timestamp senderSentTime) {
-  String ampm = DateFormat("a").format(senderSentTime.toDate()).toLowerCase();
-  String chatDayTime =
-      DateFormat("dd MMM h:mm ").format(senderSentTime.toDate()) + ampm;
+String chatTimeString(DateTime senderSentTime) {
+  String ampm = DateFormat("a").format(senderSentTime).toLowerCase();
+  String chatDayTime = DateFormat("dd MMM h:mm ").format(senderSentTime) + ampm;
   //
   String today = DateFormat("dd MMM").format(DateTime.now());
-  String chatDay = DateFormat("dd MMM").format(senderSentTime.toDate());
+  String chatDay = DateFormat("dd MMM").format(senderSentTime);
 
   if (today == chatDay) {
-    chatDayTime = DateFormat("h:mm ").format(senderSentTime.toDate()) + ampm;
+    chatDayTime = DateFormat("h:mm ").format(senderSentTime) + ampm;
   }
 
   return chatDayTime;
 }
 
 Icon tickIcon(
-  Timestamp? senderSentTime,
-  Timestamp? recieverSeenTime,
+  DateTime? senderSentTime,
+  DateTime? recieverSeenTime,
   DocumentReference? docRef,
 ) {
   if (recieverSeenTime != null) {

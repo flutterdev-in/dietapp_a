@@ -9,6 +9,7 @@ import 'package:dietapp_a/app%20Constants/fire_ref.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/controllers/fc_controller.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/c_chat_room_bottom.dart';
 import 'package:dietapp_a/v_chat/controllers/chat_room_controller.dart';
+import 'package:dietapp_a/v_chat/controllers/chat_room_variables.dart';
 import 'package:dietapp_a/v_chat/models/chat_room_model.dart';
 import 'package:dietapp_a/y_Models/day_model.dart';
 import 'package:dietapp_a/y_Models/food_model.dart';
@@ -40,7 +41,7 @@ class PlanViewForChat extends StatelessWidget {
   Widget build(BuildContext context) {
     listCR.value.clear();
 
-    chatSC.selectedList.value.clear();
+    csv.selectedList.value.clear();
     return Column(
       children: [
         SizedBox(
@@ -86,7 +87,7 @@ class PlanViewForChat extends StatelessWidget {
                     icon: IconButton(
                       icon: Obx(
                         () {
-                          if (chatSC.selectedList.value.contains(snapshot)) {
+                          if (csv.selectedList.value.contains(snapshot)) {
                             return const Icon(MdiIcons.checkboxMarkedCircle);
                           } else {
                             return const Icon(
@@ -95,17 +96,17 @@ class PlanViewForChat extends StatelessWidget {
                         },
                       ),
                       onPressed: () {
-                        if (chatSC.selectedList.value.contains(snapshot)) {
-                          chatSC.selectedList.value.remove(snapshot);
+                        if (csv.selectedList.value.contains(snapshot)) {
+                          csv.selectedList.value.remove(snapshot);
                         } else {
-                          chatSC.selectedList.value.add(snapshot);
+                          csv.selectedList.value.add(snapshot);
                         }
                       },
                     ),
                     onTap: () async {
-                      if (chatSC.selectedList.value.isNotEmpty &&
+                      if (csv.selectedList.value.isNotEmpty &&
                           snapshot.reference.parent.id != fmfpcfos.foods) {
-                        chatSC.selectedList.value.clear();
+                        csv.selectedList.value.clear();
                         await Future.delayed(const Duration(milliseconds: 200));
                       }
 
@@ -226,7 +227,7 @@ class PlanViewForChat extends StatelessWidget {
       onTap: () {
         currentPathCR.value = userDR.collection("dietPlansBeta");
         orderString.value = dietpbims.planCreationTime;
-        chatSC.selectedList.value.clear();
+        csv.selectedList.value.clear();
         listCR.value.clear();
       },
     );
@@ -277,12 +278,14 @@ class PlanViewForChat extends StatelessWidget {
                       ),
                       constraints: BoxConstraints(
                         minWidth: 15,
-                        maxWidth: fcc.pathsListMaps.value.length < 2 ? 100 : 45,
+                        maxWidth: fcc.listFoodModelsForPath.value.length < 2
+                            ? 100
+                            : 45,
                       ),
                     ),
                     onTap: () {
                       onPressed(snapshot);
-                      chatSC.selectedList.value.clear();
+                      csv.selectedList.value.clear();
                       listCR.value.removeRange(index + 1, listCR.value.length);
                     },
                   ),

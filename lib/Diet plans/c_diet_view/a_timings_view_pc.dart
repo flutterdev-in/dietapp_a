@@ -74,7 +74,7 @@ class TimingsViewPC extends StatelessWidget {
                   padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
                   margin:
                       const EdgeInsets.symmetric(vertical: 3, horizontal: 0),
-                  avatar: URLavatar(imgURL: fm.rumm?.img, webURL: fm.rumm?.url),
+                  avatar: UrlAvatar(fm.rumm),
                   title: Text(fm.foodName, maxLines: 1),
                   subTitle: expText(
                     fm.notes,

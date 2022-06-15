@@ -1,3 +1,4 @@
+import 'package:dietapp_a/app%20Constants/colors.dart';
 import 'package:dietapp_a/app%20Constants/url/url_avatar.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/controllers/fc_controller.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/foods_collection_strings.dart';
@@ -27,7 +28,7 @@ class MultiFoodsCollectionMiddle extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              color: Colors.blueGrey.shade900,
+              color: chatFoodCollectionColor,
               child: ListView.builder(
                 shrinkWrap: true,
                 physics: const ClampingScrollPhysics(),
@@ -42,7 +43,7 @@ class MultiFoodsCollectionMiddle extends StatelessWidget {
                         child: Row(
                           children: [
                             const Icon(MdiIcons.folderOutline,
-                                color: Colors.white),
+                                color: Colors.white, size: 50),
                             const SizedBox(width: 10),
                             Text(fdcm.foodName,
                                 style: const TextStyle(color: Colors.white)),
@@ -50,13 +51,13 @@ class MultiFoodsCollectionMiddle extends StatelessWidget {
                         ),
                         onTap: () {
                           if (fdcm.docRef != null) {
-                            fcc.pathsListMaps.value.clear();
-                            fcc.currentPathCR.value = fdcm.docRef!
-                                .collection(fdcs.subCollections)
-                                .path;
+                            fcc.listFoodModelsForPath.value.clear();
+                            fcc.currentCR.value =
+                                fdcm.docRef!.collection(fdcs.subCollections);
+
                             Get.to(() => FolderViewMiddle(
                                   folderName: fdcm.foodName,
-                                  homePath: fcc.currentPathCR.value,
+                                  homePath: fcc.currentCR.value.path,
                                 ));
                           }
                         },
@@ -68,9 +69,7 @@ class MultiFoodsCollectionMiddle extends StatelessWidget {
                       child: InkWell(
                           child: Row(
                             children: [
-                              URLavatar(
-                                  imgURL: fdcm.rumm?.img,
-                                  webURL: fdcm.rumm?.url),
+                              UrlAvatar(fdcm.rumm),
                               const SizedBox(width: 10),
                               Expanded(
                                 child: Text(
