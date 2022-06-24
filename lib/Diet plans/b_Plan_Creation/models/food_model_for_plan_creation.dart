@@ -1,7 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
-import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
-import 'package:dietapp_a/y_Models/food_model.dart';
 
 // class FoodModel {
 //   DateTime foodAddedTime;
@@ -64,6 +61,4 @@ class FoodsModelForPlanCreationFinalObjects {
   String docRef = docRef0;
   //
   final String foods = "foods";
-
- 
 }

@@ -18,7 +18,7 @@ class ChatScreenController extends GetxController {
     csv.replyMessageModel.value = dummyMM;
 
     await updateFire(
-      isThisChatOpen: true,
+      isThisChatOpen: false,
     );
     super.onInit();
   }

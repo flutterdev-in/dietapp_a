@@ -11,6 +11,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       themeMode: ThemeMode.light,
+     
+      navigatorKey: Get.key,
       theme: ThemeData(
         colorScheme: const ColorScheme.light(primary: primaryColor),
         primaryColor: Colors.deepPurple.shade800,
@@ -39,7 +41,6 @@ class MyHomePage0 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-   
     return SafeArea(
       child: Scaffold(
         body: Container(

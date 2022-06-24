@@ -4,7 +4,6 @@ import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/default_timing_mod
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/diet_plan_model.dart';
 import 'package:dietapp_a/x_customWidgets/alert_dialogue.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
-import 'package:dietapp_a/y_Active%20diet/models/active_timing_model.dart';
 import 'package:dietapp_a/y_Models/day_model.dart';
 import 'package:dietapp_a/y_Models/timing_model.dart';
 import 'package:flutter/cupertino.dart';

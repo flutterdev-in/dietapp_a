@@ -1,24 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/app%20Constants/fire_ref.dart';
 import 'package:dietapp_a/userData/models/user_strings.dart';
 import 'package:flutter/material.dart';
 
 Future<void> userActivityUpdate(AppLifecycleState state) async {
-  Map<String, dynamic> activityMap;
+
   Timestamp ts = Timestamp.fromDate(DateTime.now());
 
   if (state == AppLifecycleState.resumed) {
-    activityMap = {
-      "${uss.userActivity}.${uss.isActive}": true,
-      "${uss.userActivity}.${uss.activeAt}": ts,
-    };
-    await userDR.update(activityMap);
+    await userDR.update({
+      "$unIndexed.${uss.activeAt}": ts,
+    });
   } else {
-    activityMap = {
-      "${uss.userActivity}.${uss.isActive}": false,
-      "${uss.userActivity}.${uss.inactiveAt}": ts,
-    };
-    await userDR.update(activityMap);
+    await userDR.update({
+      "$unIndexed.${uss.inactiveAt}": ts,
+    });
   }
 }
 

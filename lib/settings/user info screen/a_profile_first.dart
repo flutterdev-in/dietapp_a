@@ -121,7 +121,7 @@ class ProfileImageViewer extends StatelessWidget {
               await ts.ref.getDownloadURL().then((url) async {
                 rxPhoto.value = url;
                 await userDR.update({
-                  "${uss.profileData}.${uss.photoURL}": url,
+                  "$unIndexed.${uss.photoURL}": url,
                 });
               });
             });

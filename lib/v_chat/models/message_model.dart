@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/app%20Constants/fire_ref.dart';
+import 'package:dietapp_a/x_FCM/fcm_model.dart';
 
 class MessageModel {
   String chatSentBy;
@@ -11,6 +12,7 @@ class MessageModel {
   String? chatString;
   String? chatType;
   List? listDocMaps;
+  FcmModel fcmModel;
   MessageModel? replyMessageModel;
 
   MessageModel({
@@ -22,6 +24,7 @@ class MessageModel {
     this.chatString,
     this.chatType,
     this.listDocMaps,
+    required this.fcmModel,
     this.replyMessageModel,
   });
 
@@ -33,6 +36,7 @@ class MessageModel {
         mmos.docRef: docRef,
         mmos.chatSentBy: chatSentBy,
         mmos.chatRecdBy: chatRecdBy,
+        fcmos.fcmModel: fcmModel.toMap(),
         mmos.recieverSeenTime: recieverSeenTime != null
             ? Timestamp.fromDate(recieverSeenTime!)
             : null,
@@ -52,6 +56,7 @@ class MessageModel {
       chatString: messageMap[unIndexed][mmos.chatString],
       chatType: messageMap[mmos.chatType],
       listDocMaps: messageMap[unIndexed][mmos.listDocMaps],
+      fcmModel: FcmModel.fromMap(messageMap[unIndexed][fcmos.fcmModel] ?? {}),
     );
   }
 }
@@ -65,10 +70,13 @@ class MessageModelObjects {
   String chatRecdBy = "chatRecdBy";
   String isChatUploaded = "isChatUploaded";
   String senderSentTime = "senderSentTime";
+
   String isChatString = "isChatString";
   String chatString = "chatString";
   String chatMap = "chatMap";
   String recieverSeenTime = "recieverSeenTime";
+  String isRecieverOnChat = "isRecieverOnChat";
+  String recieverToken = "recieverToken";
   final String chatType = "chatType";
   final String listDocMaps = "listDocMaps";
   final String collection = "collection";

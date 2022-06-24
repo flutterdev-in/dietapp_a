@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/food_model_for_plan_creation.dart';
 import 'package:dietapp_a/app%20Constants/url/url_avatar.dart';
 import 'package:dietapp_a/x_customWidgets/expandable_text.dart';
-import 'package:dietapp_a/x_customWidgets/youtube/youtube_player_middle.dart';
+import 'package:dietapp_a/x_customWidgets/youtube/youtube_video_player.dart';
 import 'package:dietapp_a/y_Active%20diet/controllers/active_plan_controller.dart';
 import 'package:dietapp_a/y_Models/food_model.dart';
 import 'package:dietapp_a/y_Models/timing_model.dart';

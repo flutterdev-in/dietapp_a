@@ -1,5 +1,6 @@
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/functions/fc_back_button_function.dart';
 import 'package:dietapp_a/w_bottomBar/_bottom_navigation_bar.dart';
+import 'package:dietapp_a/x_FCM/fcm_functions.dart';
 import 'package:dietapp_a/z_homeScreen/app%20States/user_activity_update.dart';
 import 'package:dietapp_a/z_homeScreen/controllers/welcome_controller.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,7 @@ class _HomeScreenState extends State<ManinScreenManager>
   @override
   void initState() {
     WidgetsBinding.instance.addObserver(this);
+    FCMfunctions.onMessage();
     super.initState();
   }
 
@@ -33,6 +35,7 @@ class _HomeScreenState extends State<ManinScreenManager>
 
   @override
   Widget build(BuildContext context) {
+    
     return WillPopScope(
       onWillPop: () async {
         if (bottomBarindex.value == 3) {
@@ -47,4 +50,6 @@ class _HomeScreenState extends State<ManinScreenManager>
       ),
     );
   }
+
+  
 }

@@ -148,6 +148,9 @@ Widget chatWidget(MessageModel mm) {
   }
 }
 
+//
+
+
 String chatTimeString(DateTime senderSentTime) {
   String ampm = DateFormat("a").format(senderSentTime).toLowerCase();
   String chatDayTime = DateFormat("dd MMM h:mm ").format(senderSentTime) + ampm;
@@ -187,3 +190,5 @@ Icon tickIcon(
     );
   }
 }
+
+

@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dietapp_a/app%20Constants/colors.dart';
 import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -87,10 +88,10 @@ class _YoutubeVideoPlayerScreenState extends State<YoutubeVideoPlayerScreen>
                         controller: ytc,
                         isExpanded: true,
                         colors: const ProgressBarColors(
-                          bufferedColor: Colors.transparent,
-                          playedColor: Colors.red,
-                          handleColor: Colors.red,
-                          backgroundColor: Colors.white,
+                          bufferedColor: Colors.white,
+                          playedColor: primaryColor,
+                          handleColor: primaryColor,
+                          backgroundColor: Colors.white70,
                         )),
                     FullScreenButton(controller: ytc),
                   ]
@@ -213,10 +214,10 @@ class _YoutubeVideoPlayerScreenState extends State<YoutubeVideoPlayerScreen>
                                     controller: ytc,
                                     isExpanded: true,
                                     colors: const ProgressBarColors(
-                                      bufferedColor: Colors.transparent,
-                                      playedColor: Colors.red,
-                                      handleColor: Colors.red,
-                                      backgroundColor: Colors.white,
+                                      bufferedColor: Colors.white,
+                                      playedColor: primaryColor,
+                                      handleColor: primaryColor,
+                                      backgroundColor: Colors.white70,
                                     ),
                                   ),
                                   Text(

@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
-import 'package:dietapp_a/x_customWidgets/youtube/youtube_player_middle.dart';
+import 'package:dietapp_a/x_customWidgets/youtube/youtube_video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';

@@ -2,10 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/default_timing_model.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/app%20Constants/fire_ref.dart';
+import 'package:dietapp_a/hive%20Boxes/boxes.dart';
 import 'package:dietapp_a/userData/models/user_strings.dart';
 import 'package:dietapp_a/userData/models/user_welcome_model.dart';
 import 'package:dietapp_a/v_chat/constants/chat_const_variables.dart';
 import 'package:dietapp_a/v_chat/models/chat_room_model.dart';
+import 'package:dietapp_a/x_FCM/fcm_variables.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_timing_model.dart';
 import 'package:get/get.dart';
 
@@ -15,6 +17,7 @@ class WelcomeController extends GetxController {
     await createUserDoc();
     await createChatDoc();
     await atmos.checkAndSetDefaultTimings(DateTime.now());
+    await checkFCMtoken();
     super.onInit();
   }
 
@@ -26,12 +29,17 @@ class WelcomeController extends GetxController {
         .then((DocumentSnapshot documentSnapshot) async {
       if (!documentSnapshot.exists) {
         String userID0 = userGoogleEmail.replaceAll("@gmail.com", "");
+        String? fcmToken = await fcm.getToken();
         var userWelcomeMap = UserWelcomeModel(
           userID: userID0,
           photoURL: currentUser!.photoURL,
           displayName: currentUser!.displayName ?? "Anonymous User",
-          activeAt: Timestamp.fromDate(DateTime.now()),
-          inactiveAt: Timestamp.fromDate(DateTime.now()),
+          activeAt: DateTime.now(),
+          inactiveAt: DateTime.now(),
+          nameSearchStrings: uwmos
+              .getSearchStrings(currentUser!.displayName ?? "Anonymous User"),
+          userIdSearchStrings: uwmos.getSearchStrings(userID0),
+          fcmToken: fcmToken,
         ).toMap();
         await FirebaseFirestore.instance
             .collection(uss.users)
@@ -43,6 +51,8 @@ class WelcomeController extends GetxController {
                 listDefaultTimingModels0.map((e) => e.toMapOnly2()).toList()
           }, SetOptions(merge: true));
         });
+
+        await boxServices.put(fcmVariables.fcmToken, fcmToken);
       }
     });
   }
@@ -79,5 +89,14 @@ class WelcomeController extends GetxController {
     });
   }
 
-  Future<void> createDefaultTimings() async {}
+  Future<void> checkFCMtoken() async {
+    var tokenB = boxServices.get(fcmVariables.fcmToken);
+    if (tokenB == null || tokenB != String) {
+      var fcmToken = await fcm.getToken();
+      await userDR.update({
+        "$unIndexed.${fcmVariables.fcmToken}": fcmToken,
+      });
+      await boxServices.put(fcmVariables.fcmToken, fcmToken);
+    }
+  }
 }

@@ -94,7 +94,7 @@ class TimingsViewDietRoom extends StatelessWidget {
               query: atm.docRef!
                   .collection(fmfpcfos.foods)
                   .where(fmos.isCamFood, isEqualTo: false)
-                  .orderBy(fmos.foodAddedTime, descending: true),
+                  .orderBy(fmos.foodAddedTime, descending: false),
               itemBuilder: (context, doc) {
                 FoodModel fm = FoodModel.fromMap(doc.data());
                 fm.docRef = doc.reference;

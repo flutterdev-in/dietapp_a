@@ -1,5 +1,10 @@
+import 'package:dietapp_a/Google%20Drive/image_pick.dart';
+import 'package:dietapp_a/app%20Constants/constant_objects.dart';
+import 'package:dietapp_a/app%20Constants/fire_ref.dart';
+import 'package:dietapp_a/hive%20Boxes/boxes.dart';
 import 'package:dietapp_a/settings/a_Profile/basic%20info%20screen/basic_info_edit_screen.dart';
 import 'package:dietapp_a/settings/user%20info%20screen/a_profile_first.dart';
+import 'package:dietapp_a/x_FCM/fcm_variables.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
@@ -26,6 +31,7 @@ class SettingsScreen extends StatelessWidget {
             basic(),
             defaultFoodTimings(),
             logout(),
+            const ImagePickerW(),
           ],
         ));
   }
@@ -62,8 +68,16 @@ class SettingsScreen extends StatelessWidget {
         ),
         titleText: "Logout",
         onTap: () async {
+          await removeFcmToken();
           await GoogleSignIn().disconnect();
           await FirebaseAuth.instance.signOut();
         });
+  }
+
+  Future<void> removeFcmToken() async {
+    await userDR.update({
+      "$unIndexed.${fcmVariables.fcmToken}": null,
+    });
+    await boxServices.put(fcmVariables.fcmToken, null);
   }
 }

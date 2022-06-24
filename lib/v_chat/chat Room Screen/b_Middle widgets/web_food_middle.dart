@@ -31,6 +31,17 @@ class WebFoodMiddle extends StatelessWidget {
                   errorWidget: (context, url, error) => const Icon(Icons.error),
                 ),
               ),
+            Container(
+              width: double.maxFinite,
+              color: Colors.black54,
+              child: Padding(
+                padding: const EdgeInsets.all(2.0),
+                child: Text(Uri.parse(fdcm.rumm!.url).host,
+                    style: const TextStyle(
+                      color: Colors.white,
+                    )),
+              ),
+            ),
             SizedBox(
               width: double.maxFinite,
               child: Padding(

@@ -34,6 +34,7 @@ class TimingViewHomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (isDayExists) {
+      
       return Obx(() => FirestoreListView<Map<String, dynamic>>(
           shrinkWrap: true,
           physics: const ClampingScrollPhysics(),

@@ -2,6 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/v_chat/models/message_model.dart';
+import 'package:dietapp_a/x_FCM/fcm_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -17,4 +18,13 @@ class ChatScreenVariables {
 }
 
 final MessageModel dummyMM = MessageModel(
-    chatSentBy: userUID, chatRecdBy: userUID, senderSentTime: DateTime.now());
+  chatSentBy: userUID,
+  chatRecdBy: userUID,
+  senderSentTime: DateTime.now(),
+  fcmModel: FcmModel(
+      fcmBody: "New message",
+      chatImg: null,
+      recieverToken: "",
+      recieverName: "",
+      recieverProfileImgUrl: null),
+);

@@ -5,7 +5,7 @@ import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/foo
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/_common_top_widget_middle.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/helper%20widgets/folder_view_middle.dart';
 import 'package:dietapp_a/x_customWidgets/web%20view/web_view_page.dart';
-import 'package:dietapp_a/x_customWidgets/youtube/youtube_player_middle.dart';
+import 'package:dietapp_a/x_customWidgets/youtube/youtube_video_player.dart';
 import 'package:dietapp_a/y_Models/food_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

@@ -4,7 +4,7 @@ import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/functions/f
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/foods_collection_strings.dart';
 import 'package:dietapp_a/x_customWidgets/expandable_text.dart';
 import 'package:dietapp_a/x_customWidgets/web%20view/web_view_page.dart';
-import 'package:dietapp_a/x_customWidgets/youtube/youtube_player_middle.dart';
+import 'package:dietapp_a/x_customWidgets/youtube/youtube_video_player.dart';
 import 'package:dietapp_a/y_Models/food_model.dart';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +23,7 @@ class FoodsCollectionListView extends StatelessWidget {
         shrinkWrap: true,
         query: fcc.currentCR.value
             .orderBy(fmos.isFolder, descending: true)
-            .orderBy(fmos.foodAddedTime, descending: true),
+            .orderBy(fmos.foodAddedTime, descending: false),
         itemBuilder: (context, snapshot) {
           //Rx variables
           Rx<bool> isItemSelected = false.obs;

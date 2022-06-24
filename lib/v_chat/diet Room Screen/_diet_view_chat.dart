@@ -7,6 +7,8 @@ import 'package:dietapp_a/v_chat/diet%20Room%20Screen/_diet_room_controller.dart
 import 'package:dietapp_a/v_chat/models/chat_room_model.dart';
 import 'package:dietapp_a/v_chat/models/message_model%20copy.dart';
 import 'package:dietapp_a/v_chat/models/message_model.dart';
+import 'package:dietapp_a/x_FCM/fcm_model.dart';
+import 'package:dietapp_a/x_customWidgets/lootie_animations.dart';
 import 'package:dietapp_a/x_customWidgets/month_calander.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +28,7 @@ class DietViewChat extends StatelessWidget {
         stream: crm.chatDR.snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const CircularProgressIndicator();
+            return loot.sqareDotsLoading();
           } else if (snapshot.hasError || !(snapshot.data?.exists ?? true)) {
             return const Text("Error while fetching data, please try again");
           } else {
@@ -79,6 +81,9 @@ class DietViewChat extends StatelessWidget {
                                   Timestamp.fromDate(DateTime.now()),
                             });
 
+                            FcmModel fcmModel =
+                                await ChatRoomFunctions.getFcmModel(crm);
+
                             //
                             await crm.chatDR
                                 .collection(crs.chats)
@@ -88,6 +93,7 @@ class DietViewChat extends StatelessWidget {
                                     chatRecdBy: crmNew.chatPersonUID,
                                     chatString: null,
                                     senderSentTime: DateTime.now(),
+                                    fcmModel: fcmModel,
                                     listDocMaps: [
                                       DietChatRequestModel(
                                               isDietViewRequest: true,
@@ -99,14 +105,12 @@ class DietViewChat extends StatelessWidget {
                                   ).toMap(),
                                 )
                                 .then((docRf) async {
-                              bool isOnChat = await ChatRoomFunctions()
-                                  .isChatPersonOnChat(crm);
                               docRf.update(
                                 {
                                   mmos.senderSentTime:
                                       Timestamp.fromDate(DateTime.now()),
                                   "$unIndexed.${mmos.recieverSeenTime}":
-                                      isOnChat
+                                      fcmModel.isRecieverOnChat
                                           ? Timestamp.fromDate(DateTime.now())
                                           : null,
                                   "$unIndexed.$docRef0": docRf
