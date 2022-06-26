@@ -84,7 +84,5 @@ class FcmObjects {
     } else {
       return fcmHeadline + "\n" + chatString!;
     }
-
-    
   }
 }

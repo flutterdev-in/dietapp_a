@@ -89,7 +89,8 @@ dependencies:
   swipe_to: ^1.0.2
   firebase_messaging: ^11.4.1
   flutter_local_notifications: ^9.6.0
-  
+  js: ^0.6.4
+
   
   
     

@@ -20,7 +20,9 @@ class _HomeScreenState extends State<ManinScreenManager>
   @override
   void initState() {
     WidgetsBinding.instance.addObserver(this);
+    FCMfunctions.setupInteractedBackroundMessage();
     FCMfunctions.onMessage();
+
     super.initState();
   }
 
@@ -35,7 +37,6 @@ class _HomeScreenState extends State<ManinScreenManager>
 
   @override
   Widget build(BuildContext context) {
-    
     return WillPopScope(
       onWillPop: () async {
         if (bottomBarindex.value == 3) {
@@ -50,6 +51,4 @@ class _HomeScreenState extends State<ManinScreenManager>
       ),
     );
   }
-
-  
 }
