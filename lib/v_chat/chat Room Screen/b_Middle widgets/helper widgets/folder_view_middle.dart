@@ -60,7 +60,9 @@ class _FolderViewMiddleState extends State<FolderViewMiddle> {
                         shape: GFAvatarShape.standard,
                         size: GFSize.MEDIUM,
                         maxRadius: 20,
-                        backgroundImage: NetworkImage(fm.rumm?.img ?? ""),
+                        backgroundImage: fm.rumm?.img != null
+                            ? NetworkImage(fm.rumm!.img!)
+                            : null,
                       );
                       if (fm.rumm?.isYoutubeVideo ?? false) {
                         return Stack(

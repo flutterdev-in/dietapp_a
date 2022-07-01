@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/app%20Constants/fire_ref.dart';
 import 'package:dietapp_a/userData/models/user_strings.dart';
+import 'package:dietapp_a/userData/models/user_welcome_model.dart';
 import 'package:flutter/material.dart';
 
 Future<void> userActivityUpdate(AppLifecycleState state) async {
@@ -10,11 +11,11 @@ Future<void> userActivityUpdate(AppLifecycleState state) async {
 
   if (state == AppLifecycleState.resumed) {
     await userDR.update({
-      "$unIndexed.${uss.activeAt}": ts,
+      "$unIndexed.${uwmos.activeAt}": ts,
     });
   } else {
     await userDR.update({
-      "$unIndexed.${uss.inactiveAt}": ts,
+      "$unIndexed.${uwmos.inactiveAt}": ts,
     });
   }
 }

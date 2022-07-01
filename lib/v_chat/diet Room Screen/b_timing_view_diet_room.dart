@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/food_model_for_plan_creation.dart';
 import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
 import 'package:dietapp_a/app%20Constants/url/ref_url_widget.dart';
 import 'package:dietapp_a/app%20Constants/url/url_avatar.dart';
@@ -92,7 +91,7 @@ class TimingsViewDietRoom extends StatelessWidget {
               shrinkWrap: true,
               physics: const ClampingScrollPhysics(),
               query: atm.docRef!
-                  .collection(fmfpcfos.foods)
+                  .collection(fmos.foods)
                   .where(fmos.isCamFood, isEqualTo: false)
                   .orderBy(fmos.foodAddedTime, descending: false),
               itemBuilder: (context, doc) {

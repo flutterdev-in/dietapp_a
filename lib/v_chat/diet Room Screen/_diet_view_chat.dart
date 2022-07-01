@@ -109,7 +109,7 @@ class DietViewChat extends StatelessWidget {
                                 {
                                   mmos.senderSentTime:
                                       Timestamp.fromDate(DateTime.now()),
-                                  "$unIndexed.${mmos.recieverSeenTime}":
+                                  mmos.recieverSeenTime:
                                       fcmModel.isRecieverOnChat
                                           ? Timestamp.fromDate(DateTime.now())
                                           : null,

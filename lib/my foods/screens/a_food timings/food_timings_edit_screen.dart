@@ -3,6 +3,7 @@ import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/my%20foods/screens/a_food%20timings/functions/food_timings_list_sort.dart';
 import 'package:dietapp_a/my%20foods/screens/a_food%20timings/models/food_timing_model.dart';
 import 'package:dietapp_a/userData/models/user_strings.dart';
+import 'package:dietapp_a/userData/models/user_welcome_model.dart';
 import 'package:dietapp_a/x_customWidgets/stream_builder_functions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -37,9 +38,7 @@ class FoodTimingsScreen extends StatelessWidget {
               FoodTimingModel ftm0 = FoodTimingModel.fromMap(rxFoodTimingsMap);
               String name = ftm0.name;
               int hours = ftm0.hours;
-              String minS = ftm0.mins == 0 ? "00" : ftm0.mins.toString();
-
-              String ampm = ftm0.isAm ? "am" : "pm";
+            
               tc.text = name;
               dialogW(
                 context: context,
@@ -57,7 +56,7 @@ class FoodTimingsScreen extends StatelessWidget {
       ),
       body: StreamBuilder(
           stream: FirebaseFirestore.instance
-              .collection(uss.users)
+              .collection(uwmos.users)
               .doc(userUID)
               .collection(userDocuments)
               .doc(foodTimings)
@@ -269,7 +268,7 @@ class FoodTimingsScreen extends StatelessWidget {
                       rxFoodTimingsListMaps.removeAt(listIndex ?? 0);
                       await Future.delayed(const Duration(milliseconds: 600));
                       await FirebaseFirestore.instance
-                          .collection(uss.users)
+                          .collection(uwmos.users)
                           .doc(userUID)
                           .collection(userDocuments)
                           .doc(foodTimings)
@@ -300,7 +299,7 @@ class FoodTimingsScreen extends StatelessWidget {
                     Get.back();
                     await Future.delayed(const Duration(milliseconds: 600));
                     await FirebaseFirestore.instance
-                        .collection(uss.users)
+                        .collection(uwmos.users)
                         .doc(userUID)
                         .collection(userDocuments)
                         .doc(foodTimings)

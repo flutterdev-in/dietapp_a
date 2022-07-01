@@ -6,6 +6,7 @@ import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/day_pla
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/diet_plans_middle.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/multi_foods_collection_middle.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/request_widget_dietchat.dart';
+import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/single_custom_food.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/single_folder_middle.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/text_widget_chat.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/timing_plan_middle.dart';
@@ -47,7 +48,7 @@ class ChatRoomMiddle extends StatelessWidget {
             Map<String, dynamic> messageMap = snapshot.data();
             MessageModel mm = MessageModel.fromMap(messageMap);
             mm.docRef = snapshot.reference;
-            bool isSentByMe = mm.chatSentBy != userUID;
+            bool isSentByMe = mm.chatSentBy == userUID;
 
             return InkWell(
               child: Column(
@@ -102,6 +103,10 @@ Widget chatWidget(MessageModel mm) {
     Map<String, dynamic> map = listDocMaps!.first as Map<String, dynamic>;
     FoodModel fdcm = FoodModel.fromMap(map);
     return WebFoodMiddle(fdcm: fdcm, text: mm.chatString);
+  } else if (mm.chatType == chatTS.singleCustomFood) {
+    Map<String, dynamic> map = listDocMaps!.first as Map<String, dynamic>;
+    FoodModel fdcm = FoodModel.fromMap(map);
+    return SingleCustomFoodMiddle(fdcm: fdcm, text: mm.chatString);
   } else if (mm.chatType == chatTS.singleFolder) {
     Map<String, dynamic> map = listDocMaps!.first as Map<String, dynamic>;
     FoodModel fdcm = FoodModel.fromMap(map);
@@ -150,7 +155,6 @@ Widget chatWidget(MessageModel mm) {
 
 //
 
-
 String chatTimeString(DateTime senderSentTime) {
   String ampm = DateFormat("a").format(senderSentTime).toLowerCase();
   String chatDayTime = DateFormat("dd MMM h:mm ").format(senderSentTime) + ampm;
@@ -190,5 +194,3 @@ Icon tickIcon(
     );
   }
 }
-
-

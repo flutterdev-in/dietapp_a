@@ -10,10 +10,9 @@ class TextWidgetChatMiddle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool isSentByMe = mm.chatSentBy != userUID;
+    final bool isSentByMe = mm.chatSentBy == userUID;
     return Container(
       decoration: BoxDecoration(
-       
         color: secondaryColor,
         borderRadius: BorderRadius.only(
           topLeft: isSentByMe ? const Radius.circular(7) : Radius.zero,

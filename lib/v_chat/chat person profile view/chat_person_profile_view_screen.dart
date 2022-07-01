@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/userData/models/user_welcome_model.dart';
 import 'package:flutter/material.dart';
-import 'package:getwidget/getwidget.dart';
 
 class ChatPersonProfileViewScreen extends StatelessWidget {
   final String chatPersonUID;
@@ -13,7 +12,12 @@ class ChatPersonProfileViewScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        foregroundColor: Colors.black,
+      ),
       body: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
           stream: usersCollection.doc(chatPersonUID).snapshots(),
           builder: (context, snapshot) {
@@ -33,17 +37,18 @@ class ChatPersonProfileViewScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            GFAvatar(
-              backgroundColor: Colors.transparent,
-              size: 100,
-              child: uwm.photoURL != null
-                  ? CachedNetworkImage(imageUrl: uwm.photoURL!)
-                  : null,
-            ),
+            const SizedBox(height: 50),
+            if (uwm.photoURL != null)
+              Center(
+                child: ClipRRect(
+                    borderRadius: const BorderRadius.all(Radius.circular(100)),
+                    child: CachedNetworkImage(imageUrl: uwm.photoURL!)),
+              ),
+            const SizedBox(height: 25),
             Text("Profile Name  :  " + uwm.displayName, textScaleFactor: 1.1),
-            Text("User ID  :  " + uwm.userID),
+            Text("User ID  :  @" + uwm.userID),
             const SizedBox(height: 20),
-            Text("Bio  :  " + uwm.bioData),
+            if (uwm.bioData.isNotEmpty) Text("Bio  :  " + uwm.bioData),
           ],
         ),
       ),

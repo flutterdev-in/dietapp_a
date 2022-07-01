@@ -100,14 +100,16 @@ class FoodAddButtons extends StatelessWidget {
                 child: ElevatedButton(
                     onPressed: () async {
                       if (name.value.isNotEmpty || notes.value.isNotEmpty) {
-                        await pcc.addFoods(FoodModel(
-                            foodAddedTime: DateTime.now(),
-                            foodTakenTime: null,
-                            foodName: name.value,
-                            isCamFood: null,
-                            isFolder: null,
-                            notes: notes.value,
-                            rumm: null));
+                        pcc.currentTimingDR.value.collection(fmos.foods).add(
+                            FoodModel(
+                                    foodAddedTime: DateTime.now(),
+                                    foodTakenTime: null,
+                                    foodName: name.value,
+                                    isCamFood: null,
+                                    isFolder: null,
+                                    notes: notes.value,
+                                    rumm: null)
+                                .toMap());
                       }
                       Get.back();
                     },

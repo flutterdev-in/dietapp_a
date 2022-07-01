@@ -58,7 +58,7 @@ class FcmObjects {
     String fcmHeadline = "";
 
     if (chatType == chatTS.singleYoutube) {
-      fcmHeadline = "\u{25B6}  " + (fileName ?? 'Youtube video');
+      fcmHeadline = "\u{25b6}  " + (fileName ?? 'Youtube video');
     } else if (chatType == chatTS.singleWebFood) {
       fcmHeadline = "\u{1F310}  " + (fileName ?? 'Web');
     } else if (chatType == chatTS.singleFolder) {
@@ -84,7 +84,5 @@ class FcmObjects {
     } else {
       return fcmHeadline + "\n" + chatString!;
     }
-
-    
   }
 }

@@ -21,8 +21,13 @@ class PasteBarForFC extends StatelessWidget {
               "Cancle",
               // style: TextStyle(color: Colors.black38),
             ),
-            onPressed: () {
+            onPressed: () async {
+              await Future.delayed(const Duration(milliseconds: 200));
               fcc.isCopyOrMoveStarted.value = false;
+              fcc.itemsSelectionCount.value = 0;
+              fcc.operationValue.value = 9;
+              fcc.isSelectionStarted.value = false;
+              fcc.listSelectedItemsDRsForOperation.value.clear();
             },
           ),
           TextButton(

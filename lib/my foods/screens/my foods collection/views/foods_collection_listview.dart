@@ -63,6 +63,7 @@ class FoodsCollectionListView extends StatelessWidget {
                     maxLines: 2,
                     expandText: "more",
                     collapseText: "show less",
+                    animation: true,
                   ),
             icon: Obx(() {
               isItemSelected.value =

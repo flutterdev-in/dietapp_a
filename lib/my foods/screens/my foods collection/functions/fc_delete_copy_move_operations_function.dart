@@ -3,6 +3,7 @@ import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/controllers/fc_controller.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/foods_collection_strings.dart';
 import 'package:dietapp_a/userData/models/user_strings.dart';
+import 'package:dietapp_a/userData/models/user_welcome_model.dart';
 
 Future<void> fcDeleteCopyMoveOperations({
   required List<DocumentReference> listSourceDR,
@@ -43,7 +44,7 @@ Future<void> fcDeleteCopyMoveOperations({
   await nestedGetFunction(listSourceDR);
 
   CollectionReference fdcPath = FirebaseFirestore.instance
-      .collection(uss.users)
+      .collection(uwmos.users)
       .doc(userUID)
       .collection(fdcs.foodsCollection);
 

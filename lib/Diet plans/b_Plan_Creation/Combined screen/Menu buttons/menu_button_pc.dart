@@ -5,11 +5,11 @@ import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/day_basic_info.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/default_timing_model.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/diet_plan_model.dart';
-import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/food_model_for_plan_creation.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/week_model.dart';
 import 'package:dietapp_a/app%20Constants/fire_ref.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
 import 'package:dietapp_a/y_Models/day_model.dart';
+import 'package:dietapp_a/y_Models/food_model.dart';
 import 'package:dietapp_a/y_Models/timing_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -181,7 +181,7 @@ class MenuItemsPC extends StatelessWidget {
   Future<void> deleteThisTiming() async {
     if (pcc.currentTimingDR.value != userDR) {
       await pcc.currentTimingDR.value
-          .collection(fmfpcfos.foods)
+          .collection(fmos.foods)
           .get()
           .then((qs) async {
         if (qs.docs.isNotEmpty) {
@@ -254,7 +254,7 @@ class MenuItemsPC extends StatelessWidget {
             if (qs.docs.isNotEmpty) {
               for (var timingQds in qs.docs) {
                 await timingQds.reference
-                    .collection(fmfpcfos.foods)
+                    .collection(fmos.foods)
                     .get()
                     .then((qs) async {
                   if (qs.docs.isNotEmpty) {
@@ -329,7 +329,7 @@ class MenuItemsPC extends StatelessWidget {
         .then((qs) async {
       var listTdr = qs.docs;
       for (var tdr in listTdr) {
-        await tdr.reference.collection(fmfpcfos.foods).get().then((qsf) async {
+        await tdr.reference.collection(fmos.foods).get().then((qsf) async {
           for (var fdr in qsf.docs) {
             await fdr.reference.delete();
           }
@@ -354,7 +354,7 @@ class MenuItemsPC extends StatelessWidget {
         .then((qs0) async {
       QuerySnapshot<Map<String, dynamic>> qs = qs0;
       for (QueryDocumentSnapshot<Map<String, dynamic>> dr in qs.docs) {
-        await dr.reference.collection(fmfpcfos.foods).get().then((qsf) async {
+        await dr.reference.collection(fmos.foods).get().then((qsf) async {
           QuerySnapshot<Map<String, dynamic>> qsf0 = qsf;
           for (QueryDocumentSnapshot<Map<String, dynamic>> drf in qsf0.docs) {
             await drf.reference.delete();
@@ -382,7 +382,7 @@ class MenuItemsPC extends StatelessWidget {
               if (qs.docs.isNotEmpty) {
                 for (var timingQds in qs.docs) {
                   await timingQds.reference
-                      .collection(fmfpcfos.foods)
+                      .collection(fmos.foods)
                       .get()
                       .then((qs) async {
                     if (qs.docs.isNotEmpty) {

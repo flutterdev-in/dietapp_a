@@ -21,7 +21,7 @@ class ProfileFirst extends StatelessWidget {
   Widget build(BuildContext context) {
     return StreamBuilder(
         stream: FirebaseFirestore.instance
-            .collection(uss.users)
+            .collection(uwmos.users)
             .doc(userUID)
             .snapshots(),
         builder: (c, AsyncSnapshot<DocumentSnapshot> d) {
@@ -121,7 +121,7 @@ class ProfileImageViewer extends StatelessWidget {
               await ts.ref.getDownloadURL().then((url) async {
                 rxPhoto.value = url;
                 await userDR.update({
-                  "$unIndexed.${uss.photoURL}": url,
+                  "$unIndexed.${uwmos.photoURL}": url,
                 });
               });
             });

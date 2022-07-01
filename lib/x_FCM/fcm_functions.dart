@@ -103,6 +103,7 @@ class FCMfunctions {
               backgroundColor: Colors.white, onTap: (snackbar) async {
             var crm = await crs
                 .chatRoomModelFromChatPersonUID(msgData["chatPersonUID"]);
+            Get.closeCurrentSnackbar();
             Get.to(() => ChatRoomScreen(crm));
           });
         }

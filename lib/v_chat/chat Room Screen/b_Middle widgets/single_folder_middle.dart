@@ -19,28 +19,32 @@ class SingleFolderMiddle extends StatelessWidget {
   Widget build(BuildContext context) {
     return CommonTopWidgetMiddle(
       text: text,
-      color: chatFoodCollectionColor,
-      child: Padding(
-        padding: const EdgeInsets.all(4.0),
-        child: InkWell(
-          child: Row(
-            children: [
-              const Icon(MdiIcons.folderOutline, color: Colors.white, size: 35),
-              const SizedBox(width: 15),
-              Text(fdcm.foodName, style: const TextStyle(color: Colors.white)),
-            ],
+      child: Container(
+        color: chatFoodCollectionColor,
+        child: Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: InkWell(
+            child: Row(
+              children: [
+                const Icon(MdiIcons.folderOutline,
+                    color: Colors.white, size: 45),
+                const SizedBox(width: 15),
+                Text(fdcm.foodName,
+                    style: const TextStyle(color: Colors.white)),
+              ],
+            ),
+            onTap: () {
+              if (fdcm.docRef != null) {
+                fcc.listFoodModelsForPath.value.clear();
+                fcc.currentCR.value =
+                    fdcm.docRef!.collection(fdcs.subCollections);
+                Get.to(() => FolderViewMiddle(
+                      folderName: fdcm.foodName,
+                      homePath: fcc.currentCR.value.path,
+                    ));
+              }
+            },
           ),
-          onTap: () {
-            if (fdcm.docRef != null) {
-              fcc.listFoodModelsForPath.value.clear();
-              fcc.currentCR.value =
-                  fdcm.docRef!.collection(fdcs.subCollections);
-              Get.to(() => FolderViewMiddle(
-                    folderName: fdcm.foodName,
-                    homePath: fcc.currentCR.value.path,
-                  ));
-            }
-          },
         ),
       ),
     );

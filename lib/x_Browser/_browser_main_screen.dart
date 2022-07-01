@@ -8,6 +8,7 @@ import 'package:dietapp_a/x_Browser/b_web_view_adfd.dart';
 import 'package:dietapp_a/x_Browser/bb_menu_items_adfd.dart';
 import 'package:dietapp_a/x_Browser/controllers/browser_controllers.dart';
 import 'package:dietapp_a/x_Browser/controllers/rxvariables_for_count_button.dart';
+import 'package:dietapp_a/x_customWidgets/lootie_animations.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -107,15 +108,18 @@ class AddFoodScreen extends StatelessWidget {
         return SizedBox(
           width: 44,
           height: 40,
-          child: Lottie.asset(adfcv.heartAnimation, repeat: false),
+          child:
+              // loot.plus(),
+              Lottie.asset(adfcv.heartAnimation, repeat: false),
         );
       } else if (countbvs.isItemDuplicate.value) {
         return SizedBox(
           width: 44,
           height: 40,
-          child: Lottie.network(
-              'https://assets8.lottiefiles.com/packages/lf20_olhixnxg.json',
-              repeat: false),
+          child: 
+          loot.duplicate(),
+          
+          
         );
       } else if (countbvs.isAddAll.value) {
         return SizedBox(

@@ -74,7 +74,7 @@ class PlanViewForChat extends StatelessWidget {
                     padding: const EdgeInsets.fromLTRB(0, 5, 8, 0),
                     margin:
                         const EdgeInsets.symmetric(vertical: 7, horizontal: 10),
-                    avatar: (snapshot.reference.parent.id == fmfpcfos.foods)
+                    avatar: (snapshot.reference.parent.id == fmos.foods)
                         ? avatarW
                         : null,
                     subTitleText: subTitle,
@@ -105,7 +105,7 @@ class PlanViewForChat extends StatelessWidget {
                     ),
                     onTap: () async {
                       if (csv.selectedList.value.isNotEmpty &&
-                          snapshot.reference.parent.id != fmfpcfos.foods) {
+                          snapshot.reference.parent.id != fmos.foods) {
                         csv.selectedList.value.clear();
                         await Future.delayed(const Duration(milliseconds: 200));
                       }
@@ -149,10 +149,10 @@ class PlanViewForChat extends StatelessWidget {
       orderString.value = dtmos.timingString;
       currentPathCR.value = snapshot.reference.collection(dtmos.timings);
     } else if (crs == dtmos.timings) {
-      orderString.value = fmfpcfos.foodAddedTime;
-      currentPathCR.value = snapshot.reference.collection(fmfpcfos.foods);
+      orderString.value = fmos.foodAddedTime;
+      currentPathCR.value = snapshot.reference.collection(fmos.foods);
     }
-    if (!listCR.value.contains(snapshot) && crs != fmfpcfos.foods) {
+    if (!listCR.value.contains(snapshot) && crs != fmos.foods) {
       listCR.value.add(snapshot);
     }
   }
@@ -178,7 +178,7 @@ class PlanViewForChat extends StatelessWidget {
     } else if (crs == dtmos.timings) {
       TimingModel dtm = TimingModel.fromMap(fcMap);
       title = dtm.timingName;
-    } else if (crs == fmfpcfos.foods) {
+    } else if (crs == fmos.foods) {
       FoodModel fm = FoodModel.fromMap(fcMap);
 
       title = fm.foodName;
@@ -191,7 +191,9 @@ class PlanViewForChat extends StatelessWidget {
         shape: GFAvatarShape.standard,
         size: GFSize.MEDIUM,
         maxRadius: 20,
-        backgroundImage: NetworkImage(fm.rumm?.img ?? ""),
+        backgroundImage: fm.rumm?.img != null
+                            ? NetworkImage(fm.rumm!.img!)
+                            : null,
       );
       if (fm.rumm?.isYoutubeVideo ?? false) {
         avatar = Stack(

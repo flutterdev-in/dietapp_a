@@ -15,7 +15,7 @@ class DrawerIcon extends StatelessWidget {
     return Builder(builder: (BuildContext context) {
       return StreamBuilder(
           stream: FirebaseFirestore.instance
-              .collection(uss.users)
+              .collection(uwmos.users)
               .doc(userUID)
               .snapshots(),
           builder: (c, AsyncSnapshot<DocumentSnapshot> d) {

@@ -39,41 +39,41 @@ class UserWelcomeModel {
     return {
       uwmos.userIdSearchStrings: uwmos.getSearchStrings(userID),
       uwmos.nameSearchStrings: uwmos.getSearchStrings(displayName),
-      uss.userID: userID,
+      uwmos.userID: userID,
       unIndexed: {
         fcmVariables.fcmToken: fcmToken,
-        uss.photoURL: photoURL,
-        uss.displayName: displayName,
-        uss.bioData: bioData,
-        uss.activeAt: Timestamp.fromDate(activeAt),
-        uss.inactiveAt: Timestamp.fromDate(inactiveAt),
+        uwmos.photoURL: photoURL,
+        uwmos.displayName: displayName,
+        uwmos.bioData: bioData,
+        uwmos.activeAt: Timestamp.fromDate(activeAt),
+        uwmos.inactiveAt: Timestamp.fromDate(inactiveAt),
       }
     };
   }
 
   factory UserWelcomeModel.fromMap(Map userDocMap) {
     DateTime ina =
-        userDocMap[unIndexed][uss.inactiveAt]?.toDate() ?? DateTime.now();
+        userDocMap[unIndexed][uwmos.inactiveAt]?.toDate() ?? DateTime.now();
     DateTime act =
-        userDocMap[unIndexed][uss.activeAt]?.toDate() ?? DateTime.now();
+        userDocMap[unIndexed][uwmos.activeAt]?.toDate() ?? DateTime.now();
     bool isAct = (act != ina && act.isAfter(ina));
 
     return UserWelcomeModel(
       firebaseUID: null,
       nameSearchStrings: userDocMap[uwmos.nameSearchStrings],
       userIdSearchStrings: userDocMap[uwmos.userIdSearchStrings],
-      userID: userDocMap[uss.userID],
+      userID: userDocMap[uwmos.userID],
       fcmToken: userDocMap[unIndexed][fcmVariables.fcmToken],
 
       //
-      photoURL: userDocMap[unIndexed][uss.photoURL],
-      displayName: userDocMap[unIndexed][uss.displayName],
+      photoURL: userDocMap[unIndexed][uwmos.photoURL],
+      displayName: userDocMap[unIndexed][uwmos.displayName],
 
-      bioData: userDocMap[unIndexed][uss.bioData],
+      bioData: userDocMap[unIndexed][uwmos.bioData],
       //
       isActive: isAct,
-      activeAt: userDocMap[unIndexed][uss.activeAt]?.toDate(),
-      inactiveAt: userDocMap[unIndexed][uss.inactiveAt]?.toDate(),
+      activeAt: userDocMap[unIndexed][uwmos.activeAt]?.toDate(),
+      inactiveAt: userDocMap[unIndexed][uwmos.inactiveAt]?.toDate(),
     );
   }
 }
@@ -81,8 +81,21 @@ class UserWelcomeModel {
 UserWelcomeModelObjects uwmos = UserWelcomeModelObjects();
 
 class UserWelcomeModelObjects {
-  final String nameSearchStrings = "nameSearchStrings";
-  final String userIdSearchStrings = "userIdSearchStrings";
+   final  users = "Users";
+
+  final userID = "userID";
+
+  final photoURL = "photoURL";
+  final displayName = "displayName";
+
+  final bioData = "bioData";
+
+  final activeAt = "activeAt";
+
+  final inactiveAt = "inactiveAt";
+  final userIdSearchStrings = "userIdSearchStrings";  
+  final  nameSearchStrings = "nameSearchStrings";
+ 
 
   //
   List<String> getSearchStrings(String name, [int fromIndex = 3]) {

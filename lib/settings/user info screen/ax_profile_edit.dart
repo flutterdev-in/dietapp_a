@@ -21,7 +21,7 @@ class ProfileEdit extends StatelessWidget {
   Widget build(BuildContext context) {
     return StreamBuilder(
         stream: FirebaseFirestore.instance
-            .collection(uss.users)
+            .collection(uwmos.users)
             .doc(userUID)
             .snapshots(),
         builder: (c, AsyncSnapshot<DocumentSnapshot> d) {

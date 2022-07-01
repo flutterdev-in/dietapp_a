@@ -212,8 +212,8 @@ class ActivatePlannedData {
           .doc(dtm.timingString);
       await atmDR.set(dtm.toMap(), SetOptions(merge: true)).then((value) async {
         await plannedTimingDR
-            .collection(fmfpcfos.foods)
-            .orderBy(fmfpcfos.foodAddedTime, descending: false)
+            .collection(fmos.foods)
+            .orderBy(fmos.foodAddedTime, descending: false)
             .get()
             .then((fqs) async {
           if (fqs.docs.isNotEmpty) {

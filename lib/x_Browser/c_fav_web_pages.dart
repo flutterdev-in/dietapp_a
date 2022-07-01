@@ -129,7 +129,10 @@ class FavWebPagesListView extends StatelessWidget {
                         size: GFSize.MEDIUM,
                         maxRadius: 20,
                         backgroundImage:
-                            NetworkImage(dataMap["imageURL"] ?? ""),
+                        dataMap["imageURL"] != null
+                          ? NetworkImage(dataMap["imageURL"])
+                          : null,
+                            
                       ),
                       const SizedBox(
                         width: 5,

@@ -22,7 +22,7 @@ class CamPicturesTimingsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
         stream: atm.docRef!
-            .collection(fmfpcfos.foods)
+            .collection(fmos.foods)
             .where(fmos.isCamFood, isEqualTo: true)
             .orderBy(fmos.foodAddedTime)
             .snapshots(),

@@ -107,16 +107,24 @@ class _YoutubeVideoPlayerScreenState extends State<YoutubeVideoPlayerScreen>
                     PopupMenuButton(itemBuilder: (context) {
                       return [
                         PopupMenuItem(
-                          child:
-                              const Icon(MdiIcons.share, color: Colors.black),
+                          child: Row(
+                            children: const [
+                              Icon(MdiIcons.share, color: Colors.black),
+                              Text(" Share"),
+                            ],
+                          ),
                           onTap: () async {
                             await Share.share(
                                 "${widget.title ?? widget.rumm.title ?? ''}\n${widget.rumm.url}");
                           },
                         ),
                         PopupMenuItem(
-                          child: const Icon(MdiIcons.contentCopy,
-                              color: Colors.black),
+                          child: Row(
+                            children: const [
+                              Icon(MdiIcons.contentCopy, color: Colors.black),
+                              Text(" Copy")
+                            ],
+                          ),
                           onTap: () async {
                             Clipboard.setData(
                                 ClipboardData(text: widget.rumm.url));

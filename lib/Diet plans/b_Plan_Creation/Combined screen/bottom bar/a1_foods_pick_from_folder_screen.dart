@@ -24,7 +24,9 @@ class FoodsPickFromFolderScren extends StatelessWidget {
                 fcc.currentPathMapFoodModels.value
                     .forEach((fdm, isSelected) async {
                   if (isSelected && fdm.isFolder != true) {
-                    await pcc.addFoods(fdm);
+                    pcc.currentTimingDR.value
+                        .collection(fmos.foods)
+                        .add(fdm.toMap());
                   }
                 });
 

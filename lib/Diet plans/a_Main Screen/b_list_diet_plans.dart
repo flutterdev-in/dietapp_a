@@ -67,7 +67,7 @@ class ListDietPlansW extends StatelessWidget {
       child: FirestoreListView<Map<String, dynamic>>(
         shrinkWrap: true,
         query: FirebaseFirestore.instance
-            .collection(uss.users)
+            .collection(uwmos.users)
             .doc(userUID)
             .collection(dietpbims.dietPlansBeta),
         itemBuilder: (context, snapshot) {

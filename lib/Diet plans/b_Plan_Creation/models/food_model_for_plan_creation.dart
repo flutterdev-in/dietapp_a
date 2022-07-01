@@ -49,16 +49,16 @@ import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 //   }
 // }
 
-final FoodsModelForPlanCreationFinalObjects fmfpcfos =
-    FoodsModelForPlanCreationFinalObjects();
+// final FoodsModelForPlanCreationFinalObjects fmfpcfos =
+//     FoodsModelForPlanCreationFinalObjects();
 
-class FoodsModelForPlanCreationFinalObjects {
-  final String foodAddedTime = "foodAddedTime";
-  final String foodName = "foodName";
-  final String imgURL = "imgURL";
-  final String notes = "notes";
-  final String refURL = "refURL";
-  String docRef = docRef0;
-  //
-  final String foods = "foods";
-}
+// class FoodsModelForPlanCreationFinalObjects {
+//   final String foodAddedTime = "foodAddedTime";
+//   final String foodName = "foodName";
+//   final String imgURL = "imgURL";
+//   final String notes = "notes";
+//   final String refURL = "refURL";
+//   String docRef = docRef0;
+//   //
+//   final String foods = "foods";
+// }

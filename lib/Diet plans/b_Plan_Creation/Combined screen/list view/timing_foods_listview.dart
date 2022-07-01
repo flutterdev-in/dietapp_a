@@ -1,6 +1,5 @@
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/Combined%20screen/list%20view/url_viewer_pc.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
-import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/food_model_for_plan_creation.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/app%20Constants/fire_ref.dart';
 import 'package:dietapp_a/app%20Constants/url/url_avatar.dart';
@@ -32,9 +31,9 @@ class FoodsListViewforPC extends StatelessWidget {
             physics: const ClampingScrollPhysics(),
             scrollDirection: Axis.vertical,
             query: pcc.currentTimingDR.value
-                .collection(fmfpcfos.foods)
+                .collection(fmos.foods)
                 .where(fmos.isCamFood, isEqualTo: false)
-                .orderBy(fmfpcfos.foodAddedTime, descending: false),
+                .orderBy(fmos.foodAddedTime, descending: false),
             itemBuilder: (context, doc) {
               Map<String, dynamic> foodMap = doc.data();
               FoodModel fm;
@@ -170,7 +169,7 @@ class FoodsListViewforPC extends StatelessWidget {
                         });
                       } else {
                         await fm.docRef!.update({
-                          fmfpcfos.foodName: name,
+                          fmos.foodName: name,
                           "$unIndexed.$notes": notes,
                         });
                       }

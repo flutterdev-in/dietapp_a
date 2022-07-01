@@ -3,7 +3,6 @@ import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/default_timing_mod
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/app%20Constants/fire_ref.dart';
 import 'package:dietapp_a/hive%20Boxes/boxes.dart';
-import 'package:dietapp_a/userData/models/user_strings.dart';
 import 'package:dietapp_a/userData/models/user_welcome_model.dart';
 import 'package:dietapp_a/v_chat/constants/chat_const_variables.dart';
 import 'package:dietapp_a/v_chat/models/chat_room_model.dart';
@@ -23,7 +22,7 @@ class WelcomeController extends GetxController {
 
   Future<void> createUserDoc() async {
     await FirebaseFirestore.instance
-        .collection(uss.users)
+        .collection(uwmos.users)
         .doc(userUID)
         .get()
         .then((DocumentSnapshot documentSnapshot) async {
@@ -42,7 +41,7 @@ class WelcomeController extends GetxController {
           fcmToken: fcmToken,
         ).toMap();
         await FirebaseFirestore.instance
-            .collection(uss.users)
+            .collection(uwmos.users)
             .doc(userUID)
             .set(userWelcomeMap, SetOptions(merge: true))
             .then((value) async {

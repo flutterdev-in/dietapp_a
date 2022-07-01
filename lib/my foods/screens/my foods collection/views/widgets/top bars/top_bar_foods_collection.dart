@@ -6,6 +6,8 @@ import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/views/widge
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/views/widgets/top%20bars/on_selection_top_bar_for_food_collection.dart';
 import 'package:dietapp_a/w_bottomBar/_bottom_navigation_bar.dart';
 import 'package:dietapp_a/x_Browser/_browser_main_screen.dart';
+import 'package:dietapp_a/x_customWidgets/add_title_notes.dart';
+import 'package:dietapp_a/y_Models/food_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -21,18 +23,32 @@ class FoodsCollectionTopBar extends StatelessWidget {
           children: [
             TextButton(
               child: const Text("Add Notes"),
-              onPressed: () {},
+              onPressed: () async {
+                addTitleNotes(context, todo: (title, notes) async {
+                  fcc.currentCR.value.add(FoodModel(
+                          foodAddedTime: DateTime.now(),
+                          foodTakenTime: null,
+                          foodName: title,
+                          isCamFood: null,
+                          isFolder: false,
+                          notes: notes,
+                          rumm: null)
+                      .toMap());
+                });
+              },
             ),
             TextButton(
               child: const Text("Add Food"),
-              onPressed: () {
+              onPressed: () async {
                 bottomBarindex.value = 3;
-                Get.to(const AddFoodScreen());
+                await Future.delayed(const Duration(milliseconds: 120));
+                Get.to(() => const AddFoodScreen());
               },
             ),
             TextButton(
               child: const Text("Add Folder"),
               onPressed: () async {
+                await Future.delayed(const Duration(milliseconds: 120));
                 List<String> listSubs =
                     fcc.currentCR.value.path.split(fdcs.subCollections);
                 if (listSubs.length < 6) {
@@ -56,4 +72,6 @@ class FoodsCollectionTopBar extends StatelessWidget {
       ],
     );
   }
+
+  void addNotes() {}
 }

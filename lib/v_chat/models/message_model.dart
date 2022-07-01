@@ -32,14 +32,14 @@ class MessageModel {
     return {
       mmos.senderSentTime: Timestamp.fromDate(senderSentTime),
       mmos.chatType: chatType,
+      mmos.chatRecdBy: chatRecdBy,
+      mmos.recieverSeenTime: recieverSeenTime != null
+          ? Timestamp.fromDate(recieverSeenTime!)
+          : null,
       unIndexed: {
         mmos.docRef: docRef,
         mmos.chatSentBy: chatSentBy,
-        mmos.chatRecdBy: chatRecdBy,
         fcmos.fcmModel: fcmModel.toMap(),
-        mmos.recieverSeenTime: recieverSeenTime != null
-            ? Timestamp.fromDate(recieverSeenTime!)
-            : null,
         mmos.chatString: chatString,
         mmos.listDocMaps: listDocMaps,
       }
@@ -49,10 +49,10 @@ class MessageModel {
   factory MessageModel.fromMap(Map messageMap) {
     return MessageModel(
       docRef: messageMap[unIndexed][mmos.docRef],
-      chatSentBy: messageMap[unIndexed][mmos.chatSentBy],
-      chatRecdBy: messageMap[unIndexed][mmos.chatRecdBy],
+      chatSentBy: messageMap[unIndexed][mmos.chatSentBy]??"",
+      chatRecdBy: messageMap[mmos.chatRecdBy]??"",
       senderSentTime: messageMap[mmos.senderSentTime]?.toDate(),
-      recieverSeenTime: messageMap[unIndexed][mmos.recieverSeenTime]?.toDate(),
+      recieverSeenTime: messageMap[mmos.recieverSeenTime]?.toDate(),
       chatString: messageMap[unIndexed][mmos.chatString],
       chatType: messageMap[mmos.chatType],
       listDocMaps: messageMap[unIndexed][mmos.listDocMaps],

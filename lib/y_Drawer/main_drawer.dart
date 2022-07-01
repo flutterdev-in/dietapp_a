@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/app%20Constants/fire_ref.dart';
 import 'package:dietapp_a/userData/models/user_strings.dart';
+import 'package:dietapp_a/userData/models/user_welcome_model.dart';
 import 'package:dietapp_a/y_Drawer/widgets/profile_container.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -73,7 +74,7 @@ class MainDrawer extends StatelessWidget {
 
           await userDR.update({
            
-            "$unIndexed.${uss.inactiveAt}":
+            "$unIndexed.${uwmos.inactiveAt}":
                 Timestamp.fromDate(DateTime.now()),
           });
         });

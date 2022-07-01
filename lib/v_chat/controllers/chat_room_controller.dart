@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
+import 'package:dietapp_a/hive%20Boxes/boxes.dart';
 import 'package:dietapp_a/v_chat/controllers/chat_room_variables.dart';
 import 'package:dietapp_a/v_chat/diet%20Room%20Screen/_diet_room_controller.dart';
 import 'package:dietapp_a/v_chat/models/chat_room_model.dart';
@@ -17,8 +18,8 @@ class ChatScreenController extends GetxController {
     drc.calendarDate.value = DateTime.now();
     csv.replyMessageModel.value = dummyMM;
 
-    await updateFire(
-      isThisChatOpen: false,
+    updateFire(
+      isThisChatOpen: true,
     );
     super.onInit();
   }
@@ -27,7 +28,7 @@ class ChatScreenController extends GetxController {
   void onClose() async {
     csv.replyMessageModel.value = dummyMM;
     drc.calendarDate.value = DateTime.now();
-    await updateFire(
+    updateFire(
       isThisChatOpen: false,
     );
     super.onClose();
@@ -37,39 +38,26 @@ class ChatScreenController extends GetxController {
     required bool isThisChatOpen,
   }) async {
     //1
+    var isChat = boxIndexes.get(crm.chatPersonUID) ?? false;
+    if (isChat == true) {
+      await crm.chatDR.update(
+          {"$unIndexed.$userUID.${crs.isThisChatOpen}": isThisChatOpen});
+      //2
 
-    await crm.chatDR.update({
-      "$unIndexed.${crm.chatPersonUID}.${crs.isThisChatOpen}": isThisChatOpen
-    });
-    //2
-    WriteBatch batch = FirebaseFirestore.instance.batch();
-    await crm.chatDR
-        .collection(crs.chats)
-        .where(mmos.chatRecdBy, isEqualTo: userUID)
-        .where(mmos.recieverSeenTime, isEqualTo: null)
-        .get()
-        .then((querySnapshot) {
-      for (QueryDocumentSnapshot<Map<String, dynamic>> document
-          in querySnapshot.docs) {
-        batch.update(document.reference, {
-          mmos.docID: document.reference.id,
-          mmos.recieverSeenTime: Timestamp.fromDate(DateTime.now()),
-        });
-      }
-    });
-
-    await crm.chatDR
-        .collection(crs.chats)
-        .where(mmos.docID, isEqualTo: null)
-        .get()
-        .then((querySnapshot) {
-      for (QueryDocumentSnapshot<Map<String, dynamic>> document
-          in querySnapshot.docs) {
-        batch.update(document.reference, {
-          mmos.docID: document.reference.id,
-        });
-      }
-      return batch.commit();
-    });
+      await crm.chatDR
+          .collection(crs.chats)
+          .where(mmos.chatRecdBy, isEqualTo: userUID)
+          .where(mmos.recieverSeenTime, isNull: true)
+          .get()
+          .then((querySnapshot) {
+        for (QueryDocumentSnapshot<Map<String, dynamic>> document
+            in querySnapshot.docs) {
+          document.reference.update({
+            "$unIndexed.${mmos.docRef}": document.reference,
+            mmos.recieverSeenTime: Timestamp.fromDate(DateTime.now()),
+          });
+        }
+      });
+    }
   }
 }

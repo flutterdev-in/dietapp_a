@@ -30,7 +30,7 @@ class _MultiImageViewerScreenState extends State<MultiImageViewerScreen> {
   @override
   void dispose() {
     widget.pageController.dispose();
-    context.dependOnInheritedWidgetOfExactType();
+    // context.dependOnInheritedWidgetOfExactType();
     super.dispose();
   }
 

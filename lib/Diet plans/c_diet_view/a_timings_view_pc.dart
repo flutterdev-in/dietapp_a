@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/default_timing_model.dart';
-import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/food_model_for_plan_creation.dart';
 import 'package:dietapp_a/app%20Constants/colors.dart';
 import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
 import 'package:dietapp_a/app%20Constants/url/ref_url_widget.dart';
@@ -66,8 +65,8 @@ class TimingsViewPC extends StatelessWidget {
               shrinkWrap: true,
               physics: const ClampingScrollPhysics(),
               query: qDocSnap.reference
-                  .collection(fmfpcfos.foods)
-                  .orderBy(fmfpcfos.foodAddedTime, descending: false),
+                  .collection(fmos.foods)
+                  .orderBy(fmos.foodAddedTime, descending: false),
               itemBuilder: (context, doc) {
                 FoodModel fm = FoodModel.fromMap(doc.data());
                 return GFListTile(

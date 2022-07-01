@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
 import 'package:dietapp_a/app%20Constants/fire_ref.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/controllers/fc_controller.dart';
@@ -81,7 +80,9 @@ class CountButtonAdfdW extends StatelessWidget {
                               size: GFSize.MEDIUM,
                               maxRadius: 20,
                               backgroundImage:
-                                  NetworkImage(fdcm.rumm?.img ?? ""),
+                                fdcm.rumm?.img != null
+                          ? NetworkImage(fdcm.rumm!.img!)
+                          : null,
                             ),
                             onTap: () {
                               Get.back();
@@ -165,10 +166,11 @@ class CountButtonAdfdW extends StatelessWidget {
                   onPressed: () async {
                     for (FoodModel fcm in adfc.addedFoodList.value) {
                       if (bottomBarindex.value == 2) {
-                        pcc.addFoods(fcm);
-                      } else if (bottomBarindex.value == 3) {
-                        fcc.currentCR.value
+                        pcc.currentTimingDR.value
+                            .collection(fmos.foods)
                             .add(fcm.toMap());
+                      } else if (bottomBarindex.value == 3) {
+                        fcc.currentCR.value.add(fcm.toMap());
                       } else if (bottomBarindex.value == 0) {
                         var afm = FoodModel(
                             isCamFood: false,

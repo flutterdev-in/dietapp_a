@@ -28,33 +28,48 @@ class InAppWebViewWidget extends StatelessWidget {
           RequestFocusNodeHrefResult? k = await bc.wvc!.requestFocusNodeHref();
           Uri uri = k?.url ?? Uri.parse("about:blank");
           String longPressURL = uri.toString();
-          String title = k?.title ?? "";
-
-          if (!title.contains(RegExp(r"[a-zA-Z]+"))) {
-            var data = await MetadataFetch.extract(longPressURL);
-            title = data?.title ?? "";
-          }
-          RefUrlMetadataModel? rumm0 = await rummfos.rummModel(longPressURL);
-
-          FoodModel fdcm = FoodModel(
-            foodName: title,
-            foodAddedTime: DateTime.now(),
-            foodTakenTime: null,
-            isCamFood: null,
-            isFolder: false,
-            notes: null,
-            rumm: rumm0,
-          );
 
           List<String> ls = adfc.addedFoodList.value
               .map((element) => element.rumm?.url.toString() ?? "")
               .toList();
 
+          // if (!ls.contains(longPressURL)) {
+          //   countbvs.isItemAdded.value = true;
+
+          //   await Future.delayed(const Duration(milliseconds: 1500));
+          //   countbvs.isItemAdded.value = false;
+          // } else {
+          //   countbvs.isItemDuplicate.value = true;
+          //   await Future.delayed(const Duration(milliseconds: 4000));
+          //   countbvs.isItemDuplicate.value = false;
+          // }
+
           if (!ls.contains(longPressURL)) {
             countbvs.isItemAdded.value = true;
-            adfc.addedFoodList.value.add(fdcm);
-            await Future.delayed(const Duration(milliseconds: 1500));
+
+            //
+            String title = k?.title ?? "";
+
+            if (!title.contains(RegExp(r"[a-zA-Z]+"))) {
+              var data = await MetadataFetch.extract(longPressURL);
+              title = data?.title ?? "";
+            }
+            RefUrlMetadataModel? rumm0 = await rummfos.rummModel(longPressURL);
+
+            FoodModel fdcm = FoodModel(
+              foodName: title,
+              foodAddedTime: DateTime.now(),
+              foodTakenTime: null,
+              isCamFood: null,
+              isFolder: false,
+              notes: null,
+              rumm: rumm0,
+            );
+
+            //
             countbvs.isItemAdded.value = false;
+
+            adfc.addedFoodList.value.add(fdcm);
           } else {
             countbvs.isItemDuplicate.value = true;
             await Future.delayed(const Duration(milliseconds: 4000));

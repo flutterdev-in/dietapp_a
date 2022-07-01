@@ -1,8 +1,8 @@
+import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/hive%20Boxes/boxes.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/a_chat_room_top.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_chat_room_middle.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/c_chat_room_bottom.dart';
-import 'package:dietapp_a/v_chat/chat%20Room%20Screen/d_reply_message_widget.dart';
 import 'package:dietapp_a/v_chat/controllers/chat_room_controller.dart';
 import 'package:dietapp_a/v_chat/diet%20Room%20Screen/_diet_view_chat.dart';
 import 'package:dietapp_a/v_chat/models/chat_room_model.dart';
@@ -32,11 +32,23 @@ class _ChatRoomScreenState extends State<ChatRoomScreen>
     super.initState();
     tabC = TabController(
         initialIndex: widget.isChat ? 1 : 0, length: 2, vsync: this);
+    tabC.addListener(() async {
+      if (tabC.indexIsChanging || !tabC.indexIsChanging) {
+        FocusScope.of(context).unfocus();
+        boxIndexes.put(
+            widget.crm.chatPersonUID, (tabC.index == 1) ? true : false);
+        widget.crm.chatDR.update({
+          "$unIndexed.$userUID.${crs.isThisChatOpen}":
+              (tabC.index == 1) ? true : false
+        });
+      }
+    });
   }
 
   @override
   void dispose() {
     boxIndexes.put(widget.crm.chatPersonUID, (tabC.index == 1) ? true : false);
+    tabC.removeListener(() {});
     tabC.dispose();
     super.dispose();
   }
@@ -61,9 +73,6 @@ class _ChatRoomScreenState extends State<ChatRoomScreen>
               SizedBox(height: 30, child: Center(child: Text("Chat"))),
             ],
             indicatorWeight: 2.5,
-            onTap: (index) {
-              FocusScope.of(context).unfocus();
-            },
           ),
         ),
       ),
@@ -74,7 +83,6 @@ class _ChatRoomScreenState extends State<ChatRoomScreen>
           Column(
             children: [
               ChatRoomMiddle(widget.crm),
-              
               ChatRoomBottom(widget.crm),
             ],
           ),

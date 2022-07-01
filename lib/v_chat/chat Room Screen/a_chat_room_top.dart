@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dietapp_a/userData/models/user_strings.dart';
 import 'package:dietapp_a/userData/models/user_welcome_model.dart';
 import 'package:dietapp_a/v_chat/chat%20person%20profile%20view/chat_person_profile_view_screen.dart';
 import 'package:dietapp_a/v_chat/models/chat_room_model.dart';
@@ -57,7 +56,7 @@ class ChatRoomAppBar extends StatelessWidget {
   Widget details(ChatRoomModel crm) {
     return StreamBuilder(
         stream: FirebaseFirestore.instance
-            .collection(uss.users)
+            .collection(uwmos.users)
             .doc(crm.chatPersonUID)
             .snapshots(),
         builder: (c, AsyncSnapshot<DocumentSnapshot> d) {
@@ -87,7 +86,7 @@ class ChatRoomAppBar extends StatelessWidget {
                       ),
                       ifChatOpen(
                         uwm,
-                        elseW: Text(uwm.isActive ? "active" : "inactive",
+                        elseW: Text(uwm.isActive ? "online" : "inactive",
                             style: const TextStyle(
                                 color: Colors.white60, fontSize: 14)),
                       ),

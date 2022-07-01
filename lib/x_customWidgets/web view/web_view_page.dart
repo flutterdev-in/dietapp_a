@@ -26,14 +26,13 @@ class WebViewPage extends StatelessWidget {
                   progressBarColor: primaryColor,
                 )),
             Expanded(
-              child: Flexible(
-                  child: WebView(
+              child: WebView(
                 javascriptMode: JavascriptMode.unrestricted,
                 initialUrl: webURL,
                 onProgress: (value) {
-                  progress.value = value;
+              progress.value = value;
                 },
-              )),
+              ),
             ),
           ],
         ),

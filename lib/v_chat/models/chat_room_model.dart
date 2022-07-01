@@ -72,6 +72,7 @@ class ChatMemberModel {
   bool isChatAllowed;
   bool isDietAllowed;
   bool isThisChatOpen;
+  
   DateTime? chatRequestSendTime;
 
   DateTime? dietRequestSendTime;

@@ -51,9 +51,11 @@ class ChatRoomBottom extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(1.0),
                 child: Obx(() => TextField(
-                      focusNode: csv.focusNode,
+                      // focusNode: csv.focusNode,
                       maxLines: null,
-                      keyboardType: TextInputType.multiline,
+                      keyboardType: isSuffixButtonsRequired
+                          ? TextInputType.multiline
+                          : TextInputType.name,
                       controller: tc,
                       decoration: InputDecoration(
                         suffixIcon: (csv.tcText.value.isEmpty &&
@@ -94,8 +96,10 @@ class ChatRoomBottom extends StatelessWidget {
                     String tcText = csv.tcText.value;
                     tc.clear();
                     csv.tcText.value = "";
+
                     List<Map<String, dynamic>>? listDocMaps;
                     String chatType = chatTS.stringOnly;
+
                     var clfn = getFinalListAndName(crm);
 
                     if ((tcText.trim().isNotEmpty) ||
@@ -115,7 +119,7 @@ class ChatRoomBottom extends StatelessWidget {
                           .collection(crs.chats)
                           .add(
                             MessageModel(
-                              chatSentBy: "userUID",
+                              chatSentBy: userUID,
                               chatRecdBy: crm.chatPersonUID,
                               chatString: tcText,
                               senderSentTime: DateTime.now(),
@@ -133,10 +137,9 @@ class ChatRoomBottom extends StatelessWidget {
                           {
                             mmos.senderSentTime:
                                 Timestamp.fromDate(DateTime.now()),
-                            "$unIndexed.${mmos.recieverSeenTime}":
-                                fcmModel.isRecieverOnChat
-                                    ? Timestamp.fromDate(DateTime.now())
-                                    : null,
+                            mmos.recieverSeenTime: fcmModel.isRecieverOnChat
+                                ? Timestamp.fromDate(DateTime.now())
+                                : null,
                             "$unIndexed.$docRef0": docRf
                           },
                         );
@@ -176,6 +179,7 @@ class ChatRoomBottom extends StatelessWidget {
             splashColor: Colors.purple,
             onTap: () {
               csv.chatType.value = chatTS.collectionView;
+
               bottomSheetW(
                 context,
                 CollectionViewNavBar(crm),
@@ -191,6 +195,7 @@ class ChatRoomBottom extends StatelessWidget {
             splashColor: Colors.purple,
             onTap: () {
               csv.chatType.value = chatTS.planView;
+
               bottomSheetW(
                 context,
                 PlanViewForChat(crm, ChatScreenController(crm)),
@@ -272,63 +277,36 @@ class ChatRoomBottom extends StatelessWidget {
   ChatListDocsFileName getFinalListAndName(ChatRoomModel crm) {
     final List<QueryDocumentSnapshot<Map<String, dynamic>>> selectedList =
         csv.selectedList.value;
-    List<Map<String, dynamic>> finalList = selectedList.map((snapshot) {
-      Map<String, dynamic> map = snapshot.data();
+    ChatListDocsFileName clfn =
+        ChatListDocsFileName(listDocs: [], fileName: null, chatImage: null);
 
-      map[unIndexed][docRef0] = snapshot.reference;
-      return map;
-    }).toList();
+    List<Map<String, dynamic>>? finalList;
+    if (selectedList.isNotEmpty) {
+      finalList = selectedList.map((snapshot) {
+        Map<String, dynamic> map = snapshot.data();
 
-    ChatListDocsFileName clfn = ChatListDocsFileName(
-        listDocs: finalList, fileName: null, chatImage: null);
+        map[unIndexed][docRef0] = snapshot.reference;
+        return map;
+      }).toList();
+      clfn.listDocs = finalList;
 
-    bool isSingle = selectedList.length == 1;
+      bool isSingle = selectedList.length == 1;
 
-    String parent = selectedList.first.reference.parent.id;
+      String parent = selectedList.first.reference.parent.id;
 
-    QueryDocumentSnapshot<Map<String, dynamic>> snapshot = selectedList.first;
-    if (selectedList.first.reference.path.contains(chatTS.foodsCollection)) {
-      FoodModel fdcm = FoodModel.fromMap(snapshot.data());
-      clfn.fileName = fdcm.foodName;
-      clfn.chatImage = fdcm.rumm?.img;
-      if (isSingle) {
-        if (fdcm.isFolder == true && fdcm.rumm != null) {
-          csv.chatType.value = chatTS.singleWebFolder;
-        } else if (fdcm.isFolder == true) {
-          csv.chatType.value = chatTS.singleFolder;
-        } else if (fdcm.rumm?.isYoutubeVideo ?? false) {
-          csv.chatType.value = chatTS.singleYoutube;
-        } else if (fdcm.rumm != null) {
-          csv.chatType.value = chatTS.singleWebFood;
-        } else {
-          csv.chatType.value = chatTS.singleCustomFood;
-        }
-      } else {
-        csv.chatType.value = chatTS.multiFoodCollection;
-      }
-    } else if (selectedList.first.reference.path
-        .contains(chatTS.dietPlansBeta)) {
-      if (parent == dietpbims.dietPlansBeta) {
-        csv.chatType.value = chatTS.multiPlan;
-      } else if (parent == wmfos.weeks) {
-        csv.chatType.value = chatTS.multiWeek;
-      } else if (parent == dmos.days) {
-        csv.chatType.value = chatTS.multiDay;
-      } else if (parent == tmos.timings) {
-        csv.chatType.value = chatTS.multiTiming;
-      } else if (parent == fmos.foods) {
-        // finalList = finalList
-        //     .map((e) =>
-        //         foodCollectionModelFromPlan(FoodModel.fromMap(e)).toMap())
-        //     .toList();
+      QueryDocumentSnapshot<Map<String, dynamic>> snapshot = selectedList.first;
+      if (selectedList.first.reference.path.contains(chatTS.foodsCollection)) {
+        FoodModel fdcm = FoodModel.fromMap(snapshot.data());
+        clfn.fileName = fdcm.foodName;
+        clfn.chatImage = fdcm.rumm?.img;
         if (isSingle) {
-          FoodModel fmp = FoodModel.fromMap(snapshot.data());
-
-          clfn.fileName = fmp.foodName;
-          clfn.chatImage = fmp.rumm?.img;
-          if (fmp.rumm?.isYoutubeVideo ?? false) {
+          if (fdcm.isFolder == true && fdcm.rumm != null) {
+            csv.chatType.value = chatTS.singleWebFolder;
+          } else if (fdcm.isFolder == true) {
+            csv.chatType.value = chatTS.singleFolder;
+          } else if (fdcm.rumm?.isYoutubeVideo ?? false) {
             csv.chatType.value = chatTS.singleYoutube;
-          } else if (fmp.rumm != null) {
+          } else if (fdcm.rumm != null) {
             csv.chatType.value = chatTS.singleWebFood;
           } else {
             csv.chatType.value = chatTS.singleCustomFood;
@@ -336,26 +314,57 @@ class ChatRoomBottom extends StatelessWidget {
         } else {
           csv.chatType.value = chatTS.multiFoodCollection;
         }
-      }
-
-      if (selectedList.length == 1) {
-        var map = selectedList.first.data();
+      } else if (selectedList.first.reference.path
+          .contains(chatTS.dietPlansBeta)) {
         if (parent == dietpbims.dietPlansBeta) {
-          var dpm = DietPlanBasicInfoModel.fromMap(map);
-          clfn.fileName = dpm.planName;
-          clfn.chatImage = dpm.rumm?.img;
+          csv.chatType.value = chatTS.multiPlan;
         } else if (parent == wmfos.weeks) {
-          var wm = WeekModel.fromMap(map);
-
-          clfn.fileName = wm.weekName;
+          csv.chatType.value = chatTS.multiWeek;
         } else if (parent == dmos.days) {
-          var dm = DayModel.fromMap(map);
-          clfn.fileName = dm.dayName;
-          clfn.chatImage = dm.rumm?.img;
+          csv.chatType.value = chatTS.multiDay;
         } else if (parent == tmos.timings) {
-          var tm = TimingModel.fromMap(map);
-          clfn.fileName = tm.timingName;
-          clfn.chatImage = tm.rumm?.img;
+          csv.chatType.value = chatTS.multiTiming;
+        } else if (parent == fmos.foods) {
+          // finalList = finalList
+          //     .map((e) =>
+          //         foodCollectionModelFromPlan(FoodModel.fromMap(e)).toMap())
+          //     .toList();
+          if (isSingle) {
+            FoodModel fmp = FoodModel.fromMap(snapshot.data());
+
+            clfn.fileName = fmp.foodName;
+            clfn.chatImage = fmp.rumm?.img;
+            if (fmp.rumm?.isYoutubeVideo ?? false) {
+              csv.chatType.value = chatTS.singleYoutube;
+            } else if (fmp.rumm != null) {
+              csv.chatType.value = chatTS.singleWebFood;
+            } else {
+              csv.chatType.value = chatTS.singleCustomFood;
+            }
+          } else {
+            csv.chatType.value = chatTS.multiFoodCollection;
+          }
+        }
+
+        if (selectedList.length == 1) {
+          var map = selectedList.first.data();
+          if (parent == dietpbims.dietPlansBeta) {
+            var dpm = DietPlanBasicInfoModel.fromMap(map);
+            clfn.fileName = dpm.planName;
+            clfn.chatImage = dpm.rumm?.img;
+          } else if (parent == wmfos.weeks) {
+            var wm = WeekModel.fromMap(map);
+
+            clfn.fileName = wm.weekName;
+          } else if (parent == dmos.days) {
+            var dm = DayModel.fromMap(map);
+            clfn.fileName = dm.dayName;
+            clfn.chatImage = dm.rumm?.img;
+          } else if (parent == tmos.timings) {
+            var tm = TimingModel.fromMap(map);
+            clfn.fileName = tm.timingName;
+            clfn.chatImage = tm.rumm?.img;
+          }
         }
       }
     }

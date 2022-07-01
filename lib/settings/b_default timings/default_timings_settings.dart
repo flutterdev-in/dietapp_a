@@ -23,7 +23,7 @@ class DefaultTimingsSettingsScreen extends StatelessWidget {
           stream: defaultTimingsDR.snapshots(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CircularProgressIndicator();
+              return const SizedBox();
             } else if (snapshot.hasError || !snapshot.hasData) {
               return const Center(child: Text("Error while fetching data"));
             } else {

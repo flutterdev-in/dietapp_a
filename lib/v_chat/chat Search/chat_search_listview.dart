@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dietapp_a/userData/models/user_strings.dart';
 import 'package:dietapp_a/userData/models/user_welcome_model.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/_chat_room_screen.dart';
 import 'package:dietapp_a/v_chat/chat%20Search/chat_search_textfield.dart';
@@ -18,8 +17,9 @@ class ChatSearchListview extends StatelessWidget {
     return Obx(() => FirestoreListView<Map<String, dynamic>>(
           shrinkWrap: true,
           query: FirebaseFirestore.instance
-              .collection(uss.users)
-              .where(uss.userID, isGreaterThanOrEqualTo: chatSearchString.value)
+              .collection(uwmos.users)
+              .where(uwmos.userIdSearchStrings,
+                  arrayContains: chatSearchString.value)
               .limit(5),
           // .orderBy(crs.lastChatTime, descending: true),
           itemBuilder: (context, snapshot) {

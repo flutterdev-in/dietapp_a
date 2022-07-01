@@ -49,7 +49,9 @@ class CollectionViewNavBar extends StatelessWidget {
                       shape: GFAvatarShape.standard,
                       size: GFSize.MEDIUM,
                       maxRadius: 20,
-                      backgroundImage: NetworkImage(fdcm.rumm?.img ?? ""),
+                      backgroundImage: fdcm.rumm?.img != null
+                          ? NetworkImage(fdcm.rumm!.img!)
+                          : null,
                     );
                     if (fdcm.rumm?.isYoutubeVideo ?? false) {
                       return Stack(

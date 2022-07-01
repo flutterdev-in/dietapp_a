@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/colors.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/settings/settings_screen.dart';
-import 'package:dietapp_a/userData/models/user_strings.dart';
 import 'package:dietapp_a/userData/models/user_welcome_model.dart';
 import 'package:dietapp_a/x_customWidgets/stream_builder_functions.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +16,7 @@ class DrawerProfileContainer extends StatelessWidget {
     return Builder(builder: (BuildContext context) {
       return StreamBuilder(
           stream: FirebaseFirestore.instance
-              .collection(uss.users)
+              .collection(uwmos.users)
               .doc(userUID)
               .snapshots(),
           builder: (c, AsyncSnapshot<DocumentSnapshot> d) {
