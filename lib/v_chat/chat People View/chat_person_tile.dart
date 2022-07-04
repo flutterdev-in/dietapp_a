@@ -47,7 +47,10 @@ class ChatRoomTile extends StatelessWidget {
               icon: unseenCount(),
               subTitle: (crm.lastChatModel != null)
                   ? Text(
-                      crm.lastChatModel!.fcmModel.fcmBody,
+                      (crm.lastChatModel!.chatRecdBy == userUID
+                              ? "\u{2B06} "
+                              : "\u{2B07} ") +
+                          crm.lastChatModel!.fcmModel.fcmBody,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(color: Colors.black54),

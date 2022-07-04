@@ -34,7 +34,7 @@ class WelcomeController extends GetxController {
           photoURL: currentUser!.photoURL,
           displayName: currentUser!.displayName ?? "Anonymous User",
           activeAt: DateTime.now(),
-          inactiveAt: DateTime.now(),
+          inactiveAt: DateTime.now().subtract(const Duration(seconds: 1)),
           userIdSearchStrings: uwmos.getSearchStrings(userID0),
           fcmToken: fcmToken,
         ).toMap();
@@ -50,6 +50,10 @@ class WelcomeController extends GetxController {
         });
 
         await boxServices.put(fcmVariables.fcmToken, fcmToken);
+      } else {
+        documentSnapshot.reference.update({
+          "$unIndexed.${uwmos.activeAt}": Timestamp.fromDate(DateTime.now()),
+        });
       }
     });
   }

@@ -3,7 +3,7 @@ import 'package:dietapp_a/userData/models/user_welcome_model.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
-class AdManagerController extends GetxController {
+class NativeAdController extends GetxController {
   InterstitialAd? intAd;
   @override
   void onInit() {

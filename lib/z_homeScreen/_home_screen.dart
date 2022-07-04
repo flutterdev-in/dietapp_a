@@ -24,6 +24,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var isCalendarEnabled = false.obs;
+
     return Obx(() => StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
         stream: apc.currentActiveDayDR.value.snapshots(),
         builder: (context, snapshot) {

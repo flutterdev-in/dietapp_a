@@ -3,7 +3,7 @@ import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/diet_plan_model.dart';
 import 'package:dietapp_a/Diet%20plans/c_diet_view/diet_view_widget.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_timing_model.dart';
-import 'package:dietapp_a/z_Ad%20manager/admanager.dart';
+import 'package:dietapp_a/z_Ad%20manager/nativead_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
@@ -32,7 +32,7 @@ class PlanCreationCombinedScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Get.put(AdManagerController());
+    Get.put(NativeAdController());
     pcc.isPlanView.value = false;
     return Scaffold(
         appBar: AppBar(
