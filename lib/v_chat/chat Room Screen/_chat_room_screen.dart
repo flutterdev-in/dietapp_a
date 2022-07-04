@@ -26,6 +26,7 @@ class ChatRoomScreen extends StatefulWidget {
 class _ChatRoomScreenState extends State<ChatRoomScreen>
     with SingleTickerProviderStateMixin {
   late TabController tabC;
+  // InterstitialAd? intAd;
 
   @override
   void initState() {
@@ -35,6 +36,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen>
     tabC.addListener(() async {
       if (tabC.indexIsChanging || !tabC.indexIsChanging) {
         FocusScope.of(context).unfocus();
+        // showInterstitialAd();
         boxIndexes.put(
             widget.crm.chatPersonUID, (tabC.index == 1) ? true : false);
         widget.crm.chatDR.update({
@@ -43,6 +45,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen>
         });
       }
     });
+    // adManager.loadAd();
   }
 
   @override
@@ -50,6 +53,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen>
     boxIndexes.put(widget.crm.chatPersonUID, (tabC.index == 1) ? true : false);
     tabC.removeListener(() {});
     tabC.dispose();
+    // showInterstitialAd();
     super.dispose();
   }
 
@@ -90,4 +94,23 @@ class _ChatRoomScreenState extends State<ChatRoomScreen>
       ),
     ));
   }
+
+  // void showInterstitialAd() {
+  //   if (intAd != null) {
+  //     intAd!.fullScreenContentCallback = FullScreenContentCallback(
+  //       onAdShowedFullScreenContent: (InterstitialAd ad) => intAd!.dispose(),
+  //       onAdDismissedFullScreenContent: (InterstitialAd ad) {
+  //         intAd!.dispose();
+  //         adManager.loadAd();
+  //       },
+  //       onAdFailedToShowFullScreenContent: (InterstitialAd ad, AdError error) {
+  //         intAd!.dispose();
+  //         adManager.loadAd();
+  //       },
+  //     );
+  //     intAd!.show();
+  //     // _interstitialAd = null;
+
+  //   }
+  // }
 }

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
-import 'package:dietapp_a/userData/models/user_strings.dart';
 import 'package:dietapp_a/x_FCM/fcm_variables.dart';
+import 'package:dietapp_a/y_Razor%20pay/payment_model.dart';
 
 class UserWelcomeModel {
   String? firebaseUID;
@@ -14,7 +14,8 @@ class UserWelcomeModel {
   String displayName;
   String bioData;
   List userIdSearchStrings;
-  List nameSearchStrings;
+
+  PaymentModel? paymentModel;
 
   //
   bool isActive;
@@ -30,7 +31,7 @@ class UserWelcomeModel {
     this.fcmToken,
     this.isActive = false,
     required this.userIdSearchStrings,
-    required this.nameSearchStrings,
+    this.paymentModel,
     required this.activeAt,
     required this.inactiveAt,
   });
@@ -38,7 +39,6 @@ class UserWelcomeModel {
   Map<String, dynamic> toMap() {
     return {
       uwmos.userIdSearchStrings: uwmos.getSearchStrings(userID),
-      uwmos.nameSearchStrings: uwmos.getSearchStrings(displayName),
       uwmos.userID: userID,
       unIndexed: {
         fcmVariables.fcmToken: fcmToken,
@@ -47,6 +47,7 @@ class UserWelcomeModel {
         uwmos.bioData: bioData,
         uwmos.activeAt: Timestamp.fromDate(activeAt),
         uwmos.inactiveAt: Timestamp.fromDate(inactiveAt),
+        uwmos.paymentModel: paymentModel?.toMap(),
       }
     };
   }
@@ -60,7 +61,7 @@ class UserWelcomeModel {
 
     return UserWelcomeModel(
       firebaseUID: null,
-      nameSearchStrings: userDocMap[uwmos.nameSearchStrings],
+
       userIdSearchStrings: userDocMap[uwmos.userIdSearchStrings],
       userID: userDocMap[uwmos.userID],
       fcmToken: userDocMap[unIndexed][fcmVariables.fcmToken],
@@ -68,6 +69,9 @@ class UserWelcomeModel {
       //
       photoURL: userDocMap[unIndexed][uwmos.photoURL],
       displayName: userDocMap[unIndexed][uwmos.displayName],
+      paymentModel: userDocMap[unIndexed][uwmos.paymentModel] != null
+          ? PaymentModel.fromMap(userDocMap[unIndexed][uwmos.paymentModel])
+          : null,
 
       bioData: userDocMap[unIndexed][uwmos.bioData],
       //
@@ -81,7 +85,7 @@ class UserWelcomeModel {
 UserWelcomeModelObjects uwmos = UserWelcomeModelObjects();
 
 class UserWelcomeModelObjects {
-   final  users = "Users";
+  final users = "Users";
 
   final userID = "userID";
 
@@ -93,9 +97,8 @@ class UserWelcomeModelObjects {
   final activeAt = "activeAt";
 
   final inactiveAt = "inactiveAt";
-  final userIdSearchStrings = "userIdSearchStrings";  
-  final  nameSearchStrings = "nameSearchStrings";
- 
+  final userIdSearchStrings = "userIdSearchStrings";
+  final paymentModel = "paymentModel";
 
   //
   List<String> getSearchStrings(String name, [int fromIndex = 3]) {
