@@ -35,8 +35,6 @@ class WelcomeController extends GetxController {
           displayName: currentUser!.displayName ?? "Anonymous User",
           activeAt: DateTime.now(),
           inactiveAt: DateTime.now(),
-          nameSearchStrings: uwmos
-              .getSearchStrings(currentUser!.displayName ?? "Anonymous User"),
           userIdSearchStrings: uwmos.getSearchStrings(userID0),
           fcmToken: fcmToken,
         ).toMap();

@@ -6,6 +6,7 @@ import 'package:dietapp_a/v_chat/chat%20Room%20Screen/c_chat_room_bottom.dart';
 import 'package:dietapp_a/v_chat/controllers/chat_room_controller.dart';
 import 'package:dietapp_a/v_chat/diet%20Room%20Screen/_diet_view_chat.dart';
 import 'package:dietapp_a/v_chat/models/chat_room_model.dart';
+import 'package:dietapp_a/z_Ad%20manager/admanager.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -50,12 +51,14 @@ class _ChatRoomScreenState extends State<ChatRoomScreen>
     boxIndexes.put(widget.crm.chatPersonUID, (tabC.index == 1) ? true : false);
     tabC.removeListener(() {});
     tabC.dispose();
+
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     Get.put(ChatScreenController(widget.crm));
+    Get.put(AdManagerController());
 
     return SafeArea(
         child: Scaffold(
