@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/app%20Constants/fire_ref.dart';
+import 'package:dietapp_a/v_chat/models/chat_room_model.dart';
 import 'package:dietapp_a/x_FCM/fcm_model.dart';
 
 class MessageModel {
@@ -49,8 +50,8 @@ class MessageModel {
   factory MessageModel.fromMap(Map messageMap) {
     return MessageModel(
       docRef: messageMap[unIndexed][mmos.docRef],
-      chatSentBy: messageMap[unIndexed][mmos.chatSentBy]??"",
-      chatRecdBy: messageMap[mmos.chatRecdBy]??"",
+      chatSentBy: messageMap[unIndexed][mmos.chatSentBy] ?? "",
+      chatRecdBy: messageMap[mmos.chatRecdBy] ?? "",
       senderSentTime: messageMap[mmos.senderSentTime]?.toDate(),
       recieverSeenTime: messageMap[mmos.recieverSeenTime]?.toDate(),
       chatString: messageMap[unIndexed][mmos.chatString],
@@ -58,6 +59,10 @@ class MessageModel {
       listDocMaps: messageMap[unIndexed][mmos.listDocMaps],
       fcmModel: FcmModel.fromMap(messageMap[unIndexed][fcmos.fcmModel] ?? {}),
     );
+  }
+
+  DocumentReference<Map<String, dynamic>> chatRoomDR() {
+    return crs.chatDRf([chatSentBy, chatRecdBy]);
   }
 }
 

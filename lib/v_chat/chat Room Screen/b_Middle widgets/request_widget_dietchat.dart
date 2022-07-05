@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/_common_top_widget_middle.dart';
+import 'package:dietapp_a/v_chat/models/chat_room_model.dart';
 import 'package:dietapp_a/v_chat/models/message_model%20copy.dart';
 import 'package:dietapp_a/v_chat/models/message_model.dart';
 import 'package:flutter/material.dart';
@@ -37,11 +38,12 @@ class RequestWidgetDietChat extends StatelessWidget {
                           Text(
                               "${dcrm.isDietViewRequest ? 'Diet' : 'Chat'} view request sent"),
                           const SizedBox(height: 10),
-                          dcrm.isApproved == null
-                              ? const Text("Status : 'Pending..'")
-                              : dcrm.isApproved!
-                                  ? const Text("Status : 'Approved'")
-                                  : const Text("Status : 'Rejected'"),
+                          if (dcrm.isApproved == null)
+                            const Text("Status : 'Pending..'"),
+                          if (dcrm.isApproved == true)
+                            const Text("Status : 'Approved'"),
+                          if (dcrm.isApproved == false)
+                            const Text("Status : 'Rejected'"),
                         ],
                       ),
                     ),
@@ -56,54 +58,88 @@ class RequestWidgetDietChat extends StatelessWidget {
                         children: [
                           Text(
                               "${dcrm.isDietViewRequest ? 'Diet' : 'Chat'} view requested"),
-                          dcrm.isApproved == null
-                              ? Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    GFButton(
-                                        child: const Text('Reject'),
-                                        color: Colors.red,
-                                        onPressed: () {}),
-                                    GFButton(
-                                        child: const Text('Approve'),
-                                        color: Colors.green,
-                                        onPressed: () {}),
-                                  ],
-                                )
-                              : dcrm.isApproved!
-                                  ? GFButton(
-                                      color: Colors.green.shade500,
-                                      child: SizedBox(
-                                        width: 110,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: const [
-                                            Icon(MdiIcons.checkDecagram),
-                                            Text(" Approved"),
-                                          ],
-                                        ),
+
+                          //
+                          if (dcrm.isApproved == null)
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                GFButton(
+                                    child: const Text('Reject'),
+                                    color: Colors.red,
+                                    onPressed: () {
+                                      //
+                                      dcrm!.isApproved = false;
+                                      dcrm.actionTime = DateTime.now();
+                                      mm.docRef!.update({
+                                        "$unIndexed.${mmos.listDocMaps}": [
+                                          dcrm.toMap()
+                                        ],
+                                      });
+
+                                      //
+                                      mm.chatRoomDR().update({
+                                        "$unIndexed.$userUID.${dcrm.isDietViewRequest ? crs.isDietAllowed : crs.isChatAllowed}":
+                                            false,
+                                      });
+                                    }),
+                                GFButton(
+                                    child: const Text('Approve'),
+                                    color: Colors.green,
+                                    onPressed: () {
+                                      //
+                                      dcrm!.isApproved = true;
+                                      dcrm.actionTime = DateTime.now();
+                                      mm.docRef!.update({
+                                        "$unIndexed.${mmos.listDocMaps}": [
+                                          dcrm.toMap()
+                                        ],
+                                      });
+
+                                      //
+                                      mm.chatRoomDR().update({
+                                        "$unIndexed.$userUID.${dcrm.isDietViewRequest ? crs.isDietAllowed : crs.isChatAllowed}":
+                                            true,
+                                      });
+                                    }),
+                              ],
+                            ),
+
+                          //
+                          if (dcrm.isApproved == true)
+                            GFButton(
+                                color: Colors.green.shade500,
+                                child: SizedBox(
+                                  width: 110,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: const [
+                                      Icon(MdiIcons.checkDecagram),
+                                      Text(" Approved"),
+                                    ],
+                                  ),
+                                ),
+                                onPressed: null),
+
+                          //
+                          if (dcrm.isApproved == false)
+                            GFButton(
+                                color: Colors.red,
+                                child: SizedBox(
+                                  width: 110,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Row(
+                                        children: const [
+                                          Icon(MdiIcons.closeCircle),
+                                          Text(" Rejected"),
+                                        ],
                                       ),
-                                      onPressed: () {})
-                                  : GFButton(
-                                      color: Colors.red,
-                                      child: SizedBox(
-                                        width: 110,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Row(
-                                              children: const [
-                                                Icon(MdiIcons.closeCircle),
-                                                Text(" Rejected"),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      onPressed: () {})
+                                    ],
+                                  ),
+                                ),
+                                onPressed: null),
                         ],
                       ),
                     ),

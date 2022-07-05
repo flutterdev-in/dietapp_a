@@ -37,7 +37,7 @@ class ChatRoomBottom extends StatelessWidget {
     // final ChatScreenController chatSC = ChatScreenController(crm);
 
     return Container(
-      color: Colors.teal.shade50,
+      color: const Color.fromARGB(117, 224, 242, 241),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

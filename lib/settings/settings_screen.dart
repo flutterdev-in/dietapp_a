@@ -6,7 +6,6 @@ import 'package:dietapp_a/settings/a_Profile/basic%20info%20screen/basic_info_ed
 import 'package:dietapp_a/settings/user%20info%20screen/a_profile_first.dart';
 import 'package:dietapp_a/userData/models/user_welcome_model.dart';
 import 'package:dietapp_a/x_FCM/fcm_variables.dart';
-import 'package:dietapp_a/x_customWidgets/lootie_animations.dart';
 import 'package:dietapp_a/y_Razor%20pay/razor.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +15,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
+import 'package:restart_app/restart_app.dart';
 
 import 'b_default timings/default_timings_settings.dart';
 
@@ -53,7 +53,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           children: [
             const ProfileFirst(),
             const SizedBox(height: 10),
-            basic(),
+            // basic(),
             defaultFoodTimings(),
             razorPayW(),
             logout(),
@@ -93,9 +93,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ),
         titleText: "Logout",
         onTap: () async {
+          await Future.delayed(const Duration(milliseconds: 500));
           await removeFcmToken();
           await GoogleSignIn().disconnect();
           await FirebaseAuth.instance.signOut();
+
+          
+          
+          Restart.restartApp();
         });
   }
 
@@ -119,13 +124,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
               var date = DateFormat("dd MMM yyyy")
                   .format(uwm.paymentModel!.expirationTime);
               return GFListTile(
-                avatar: SizedBox(width: 30, height: 30, child: loot.adfree()),
+                avatar: const Icon(MdiIcons.googleAds),
+                // avatar: SizedBox(width: 30, height: 30, child: loot.adfree()),
                 titleText: "No Ads",
                 subTitleText: "Till $date",
               );
             } else {
               return GFListTile(
-                avatar: SizedBox(width: 30, height: 30, child: loot.adfree()),
+                avatar: const Icon(MdiIcons.googleAds),
                 titleText: "Remove Ads",
                 subTitleText: "Just Rs.49/- per month",
                 onTap: () {

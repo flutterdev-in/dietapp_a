@@ -20,6 +20,7 @@ import 'package:dietapp_a/y_Models/food_model.dart';
 import 'package:dietapp_a/y_Models/timing_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/firestore.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -32,8 +33,8 @@ class ChatRoomMiddle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-        decoration: BoxDecoration(
-          color: Colors.teal.shade50,
+        decoration: const BoxDecoration(
+          color: Color.fromARGB(117, 224, 242, 241),
         ),
         child: FirestoreListView<Map<String, dynamic>>(
           pageSize: 5,
@@ -176,9 +177,9 @@ Icon tickIcon(
 ) {
   if (recieverSeenTime != null) {
     return const Icon(
-      MdiIcons.checkAll,
+      FontAwesomeIcons.check,
       color: Colors.blue,
-      size: 18,
+      size: 16,
     );
   } else if (docRef != null) {
     return const Icon(

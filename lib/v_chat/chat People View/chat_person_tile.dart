@@ -15,7 +15,8 @@ import 'package:getwidget/getwidget.dart';
 
 class ChatRoomTile extends StatelessWidget {
   final ChatRoomModel crm;
-  const ChatRoomTile(
+  bool _haveUnseen = true;
+  ChatRoomTile(
     this.crm, {
     Key? key,
   }) : super(key: key);
@@ -47,7 +48,7 @@ class ChatRoomTile extends StatelessWidget {
               icon: unseenCount(),
               subTitle: (crm.lastChatModel != null)
                   ? Text(
-                      (crm.lastChatModel!.chatRecdBy == userUID
+                      (crm.lastChatModel!.chatSentBy == userUID
                               ? "\u{2B06} "
                               : "\u{2B07} ") +
                           crm.lastChatModel!.fcmModel.fcmBody,
@@ -62,7 +63,7 @@ class ChatRoomTile extends StatelessWidget {
                 Get.to(() {
                   var isChat = boxIndexes.get(crm.chatPersonUID) ?? false;
 
-                  if (isChat == false) {
+                  if (isChat == false && _haveUnseen == false) {
                     return ChatRoomScreen(crm, isChat: false);
                   } else {
                     return ChatRoomScreen(crm);
@@ -94,6 +95,8 @@ class ChatRoomTile extends StatelessWidget {
                     : snapshot.data!.docs.length.toString(),
               ),
             );
+          } else {
+            _haveUnseen = false;
           }
           return const SizedBox();
         });

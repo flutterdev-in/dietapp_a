@@ -16,18 +16,71 @@ class ChatRoomAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        IconButton(
-            onPressed: () => Get.back(),
-            icon: const Icon(
-              MdiIcons.arrowLeft,
-              color: Colors.white,
-            )),
-        details(crm),
-      ],
-    );
+    return StreamBuilder(
+        stream: FirebaseFirestore.instance
+            .collection(uwmos.users)
+            .doc(crm.chatPersonUID)
+            .snapshots(),
+        builder: (c, AsyncSnapshot<DocumentSnapshot> d) {
+          var data = docStreamReturn(c, d, widType: "tile");
+          if (data is Map) {
+            UserWelcomeModel uwm = UserWelcomeModel.fromMap(data);
+
+            return Row(
+              children: [
+                InkWell(
+                    child: Row(
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                          child: Icon(
+                            MdiIcons.arrowLeft,
+                            color: Colors.white,
+                          ),
+                        ),
+                        GFAvatar(
+                          maxRadius: 18,
+                          size: GFSize.SMALL,
+                          backgroundImage: NetworkImage(uwm.photoURL!),
+                        ),
+                      ],
+                    ),
+                    onTap: () async {
+                      await Future.delayed(const Duration(milliseconds: 150));
+                      Get.back();
+                    }),
+                const SizedBox(
+                  width: 12,
+                ),
+                InkWell(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        uwm.displayName,
+                        style:
+                            const TextStyle(color: Colors.white, fontSize: 15),
+                      ),
+                      ifChatOpen(
+                        uwm,
+                        elseW: Text(uwm.isActive ? "online" : "inactive",
+                            style: const TextStyle(
+                                color: Colors.white60, fontSize: 14)),
+                      ),
+                    ],
+                  ),
+                  onTap: () async {
+                    await Future.delayed(const Duration(milliseconds: 150));
+                    Get.to(() => ChatPersonProfileViewScreen(
+                        chatPersonUID: crm.chatPersonUID));
+                  },
+                ),
+              ],
+            );
+          }
+          return Container();
+        });
   }
 
   Widget ifChatOpen(UserWelcomeModel uwm, {required Widget elseW}) {
@@ -67,6 +120,10 @@ class ChatRoomAppBar extends StatelessWidget {
             return InkWell(
               child: Row(
                 children: [
+                  const Icon(
+                    MdiIcons.arrowLeft,
+                    color: Colors.white,
+                  ),
                   GFAvatar(
                     maxRadius: 18,
                     size: GFSize.SMALL,
