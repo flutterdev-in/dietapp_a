@@ -76,7 +76,7 @@ class FcmObjects {
     } else if (chatType == chatTS.multiTiming) {
       fcmHeadline = "\u{1F553}  " + (fileName ?? 'Timing plan');
     } else if (chatType == chatTS.viewRequest) {
-      fcmHeadline = "\u{1F510}  " + ("Request");
+      fcmHeadline = "\u{1F510}  Request";
     }
 
     if (fcmHeadline.isEmpty) {

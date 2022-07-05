@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/app%20Constants/fire_ref.dart';
+import 'package:dietapp_a/userData/models/user_welcome_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
@@ -107,8 +108,8 @@ class ProfileIdEdit extends StatelessWidget {
                 await Future.delayed(const Duration(milliseconds: 700));
                 Stopwatch stopwatch3 = Stopwatch()..start();
                 await FirebaseFirestore.instance
-                    .collection('Users')
-                    .where('userID', isEqualTo: value)
+                    .collection(uwmos.users)
+                    .where(uwmos.userID, isEqualTo: value)
                     .limit(1)
                     .get()
                     .then((qs) {
@@ -170,7 +171,7 @@ class ProfileIdEdit extends StatelessWidget {
       return const Padding(
         padding: EdgeInsets.all(8.0),
         child: Text(
-            "*    New Profile ID should be in alphanumeric and must contain atleast one special character {  _  -  !  *  ~  } and atmost two special characters."),
+            "*    New Profile ID should be in alphanumeric and must contain atleast one special character   _  -  !  *  ~   and atmost two special characters."),
       );
     }
 
@@ -227,7 +228,7 @@ class ProfileIdEdit extends StatelessWidget {
             stopwatch3.stop();
             if (stopwatch3.elapsed < const Duration(seconds: 2) &&
                 qs.docs.isEmpty) {
-              await userDR.update({"userID": rxID.value});
+              await userDR.update({uwmos.userID: rxID.value});
               rxB.value = "success";
 
               Get.snackbar(

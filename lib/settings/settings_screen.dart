@@ -95,11 +95,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
         onTap: () async {
           await Future.delayed(const Duration(milliseconds: 500));
           await removeFcmToken();
-          await GoogleSignIn().disconnect();
           await FirebaseAuth.instance.signOut();
+          await GoogleSignIn().signOut();
 
-          
-          
           Restart.restartApp();
         });
   }

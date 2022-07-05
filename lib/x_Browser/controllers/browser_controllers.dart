@@ -7,6 +7,7 @@ BrowserController bc = BrowserController();
 
 class BrowserController {
   InAppWebViewController? wvc;
+  var loadingProgress = 0.obs;
   TextEditingController tec = TextEditingController();
   Rx<String> currentURL = "https://m.youtube.com/".obs;
   Rx<String> currentRefURLimageURL = "".obs;
@@ -17,7 +18,7 @@ class BrowserController {
   Rx<String> lastFavWebURL = "".obs;
   Rx<String> functionButtonType = "".obs;
   Rx<bool> isBrowserForRefURL = false.obs;
-  Rx<String> currentSearchEngineGYT = "G".obs;
+  Rx<String> currentSearchEngineGYTU = "G".obs;
   final currentSearchEngine = "currentSearchEngine";
   Rx<bool> isFocused = false.obs;
   void tecText(String text) {

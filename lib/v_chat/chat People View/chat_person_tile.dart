@@ -32,21 +32,19 @@ class ChatRoomTile extends StatelessWidget {
           var data = docStreamReturn(c, d, widType: "tile");
           if (data is Map) {
             UserWelcomeModel uwm = UserWelcomeModel.fromMap(data);
-            return GFListTile(
-              padding: const EdgeInsets.all(10),
-              margin: const EdgeInsets.all(0),
+            return ListTile(
               title: Text(
                 uwm.displayName,
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
-              avatar: GFAvatar(
+              leading: GFAvatar(
                 backgroundImage: CachedNetworkImageProvider(
                   uwm.photoURL!,
                 ),
                 size: GFSize.SMALL,
               ),
-              icon: unseenCount(),
-              subTitle: (crm.lastChatModel != null)
+              trailing: unseenCount(),
+              subtitle: (crm.lastChatModel != null)
                   ? Text(
                       (crm.lastChatModel!.chatSentBy == userUID
                               ? "\u{2B06} "

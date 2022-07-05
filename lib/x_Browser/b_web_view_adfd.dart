@@ -16,6 +16,12 @@ class InAppWebViewWidget extends StatelessWidget {
       onWebViewCreated: (controller) {
         bc.wvc = controller;
       },
+      onProgressChanged: (controller, progress) {
+        bc.loadingProgress.value = progress;
+      },
+      onLoadStop: (controller, uri) {
+        bc.loadingProgress.value = 0;
+      },
       onTitleChanged: (controller, title) async {
         Uri? u = await bc.wvc?.getUrl();
         if (u != null) bc.currentURL.value = u.toString();

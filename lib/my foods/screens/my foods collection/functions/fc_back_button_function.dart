@@ -19,4 +19,6 @@ void fcBackButtonFunction() {
   } else if (fcc.currentCR.value == userDR.collection(fmos.foodsCollection)) {
     bottomBarindex.value = 0;
   }
+  fcc.currentPathMapFoodModels.value.clear();
+  fcc.itemsSelectionCount.value = 0;
 }

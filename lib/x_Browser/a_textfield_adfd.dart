@@ -1,3 +1,4 @@
+import 'package:dietapp_a/app%20Constants/colors.dart';
 import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
 import 'package:dietapp_a/hive%20Boxes/boxes.dart';
 import 'package:dietapp_a/x_Browser/controllers/add_food_controller.dart';
@@ -17,7 +18,7 @@ class TextFieldForBrowser extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bc.tec.text = "Youtube";
-    bc.currentSearchEngineGYT.value =
+    bc.currentSearchEngineGYTU.value =
         boxIndexes.get(bc.currentSearchEngine) ?? "G";
     return Container(
       height: 45,
@@ -52,6 +53,9 @@ class TextFieldForBrowser extends StatelessWidget {
                 onChanged: (value) async {
                   value = value.trimLeft();
                   value = value.replaceAll(RegExp(r"\s{2,}"), " ");
+                  if (value.isURL) {
+                    bc.currentSearchEngineGYTU.value = "U";
+                  }
                   if (!value.contains(RegExp(r"\s$")) && value.length > 3) {
                     EasyDebounce.debounce("1", const Duration(seconds: 2), () {
                       adfc.searchString.value = value;
@@ -72,11 +76,11 @@ class TextFieldForBrowser extends StatelessWidget {
                     uriString = "https://www.google.com/";
                   } else if (value.trim().toLowerCase() == "youtube") {
                     uriString = "https://m.youtube.com/";
-                  } else if (!GetUtils.isURL(value)) {
-                    if (bc.currentSearchEngineGYT.value == "Y") {
+                  } else if (!value.isURL) {
+                    if (bc.currentSearchEngineGYTU.value == "Y") {
                       uriString =
                           "https://m.youtube.com/results?search_query=$value";
-                    } else if (bc.currentSearchEngineGYT.value == "T") {
+                    } else if (bc.currentSearchEngineGYTU.value == "T") {
                       uriString =
                           "https://recipes.timesofindia.com/searchresults.cms?query=$value";
                     } else {
@@ -150,14 +154,15 @@ class TextFieldForBrowser extends StatelessWidget {
   }
 
   Widget prefixIcon() {
-    
     return PopupMenuButton(
       child: Obx(() {
-        if (bc.currentSearchEngineGYT.value == "Y") {
+        if (bc.currentSearchEngineGYTU.value == "Y") {
           return const Icon(MdiIcons.youtube, color: Colors.red, size: 30);
-        } else if (bc.currentSearchEngineGYT.value == "T") {
+        } else if (bc.currentSearchEngineGYTU.value == "T") {
           return const Icon(MdiIcons.alphaTBoxOutline,
               color: Colors.red, size: 30);
+        } else if (bc.currentSearchEngineGYTU.value == "U") {
+          return const Icon(MdiIcons.searchWeb, color: primaryColor, size: 30);
         } else {
           return const Icon(MdiIcons.google, size: 30);
         }
@@ -174,7 +179,7 @@ class TextFieldForBrowser extends StatelessWidget {
               ],
             ),
             onTap: () {
-              bc.currentSearchEngineGYT.value = "G";
+              bc.currentSearchEngineGYTU.value = "G";
               boxIndexes.put(bc.currentSearchEngine, "G");
             },
           ),
@@ -187,7 +192,7 @@ class TextFieldForBrowser extends StatelessWidget {
               ],
             ),
             onTap: () {
-              bc.currentSearchEngineGYT.value = "Y";
+              bc.currentSearchEngineGYTU.value = "Y";
               boxIndexes.put(bc.currentSearchEngine, "Y");
             },
           ),
@@ -200,7 +205,7 @@ class TextFieldForBrowser extends StatelessWidget {
               ],
             ),
             onTap: () {
-              bc.currentSearchEngineGYT.value = "T";
+              bc.currentSearchEngineGYTU.value = "T";
               boxIndexes.put(bc.currentSearchEngine, "T");
             },
           ),

@@ -27,11 +27,7 @@ class DietViewChat extends StatelessWidget {
     return StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
         stream: crm.chatDR.snapshots(),
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return loot.sqareDotsLoading();
-          } else if (snapshot.hasError || !(snapshot.data?.exists ?? true)) {
-            return const Text("Error while fetching data, please try again");
-          } else {
+          if (snapshot.hasData && snapshot.data!.data() != null) {
             ChatRoomModel crmNew =
                 ChatRoomModel.fromMap(snapshot.data!.data()!);
             crmNew.chatDR = snapshot.data!.reference;
@@ -83,6 +79,10 @@ class DietViewChat extends StatelessWidget {
 
                             FcmModel fcmModel =
                                 await ChatRoomFunctions.getFcmModel(crm);
+                            fcmModel.fcmBody = fcmos.getFcmBody(
+                                chatType: chatTS.viewRequest,
+                                chatString: null,
+                                fileName: null);
 
                             //
                             await crm.chatDR
@@ -127,8 +127,7 @@ class DietViewChat extends StatelessWidget {
                                   .collection(crs.chats)
                                   .where(mmos.chatType,
                                       isEqualTo: chatTS.viewRequest)
-                                  .orderBy(mmos.senderSentTime,
-                                      descending: true)
+                                  .where(mmos.chatRecdBy, isNotEqualTo: userUID)
                                   .get()
                                   .then((qs) async {
                                 if (qs.docs.isNotEmpty) {
@@ -148,6 +147,7 @@ class DietViewChat extends StatelessWidget {
               );
             }
           }
+          return loot.sqareDotsLoading();
         });
   }
 

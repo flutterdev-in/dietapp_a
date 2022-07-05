@@ -21,6 +21,7 @@ class BottomBarWithBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bottomNavController.index = boxIndexes.get(boxKeyNames.bottomBarindex) ?? 0;
+    bottomBarindex.value = boxIndexes.get(boxKeyNames.bottomBarindex) ?? 0;
     if (bottomNavController.index == 4) {
       bottomNavController.index = 0;
     }

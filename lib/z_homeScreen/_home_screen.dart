@@ -28,13 +28,20 @@ class HomeScreen extends StatelessWidget {
     return Obx(() => StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
         stream: apc.currentActiveDayDR.value.snapshots(),
         builder: (context, snapshot) {
-          bool isDayExists = false;
+          bool? isDayExists;
           DayModel? adm;
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            isDayExists = null;
+          }
 
           if (snapshot.hasData && snapshot.data!.data() != null) {
             isDayExists = true;
             adm = DayModel.fromMap(snapshot.data!.data()!);
           }
+          if (!snapshot.hasData) {
+            isDayExists = false;
+          }
+
           return Scaffold(
             appBar: AppBar(
               title: const Text("DietApp"),
@@ -66,7 +73,9 @@ class HomeScreen extends StatelessWidget {
                           physics: const ClampingScrollPhysics(),
                           children: [
                             if (adm?.notes != null) dayNotes(adm!.notes!),
-                            TimingViewHomeScreen(isDayExists: isDayExists),
+                            if (isDayExists == null) loot.linerDotsLoading(),
+                            if (isDayExists != null)
+                              TimingViewHomeScreen(isDayExists: isDayExists),
                           ],
                         )),
                       ],
@@ -76,7 +85,9 @@ class HomeScreen extends StatelessWidget {
                 )),
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerDocked,
-            floatingActionButton: floatingButton(context, isDayExists, adm),
+            floatingActionButton: isDayExists != null
+                ? floatingButton(context, isDayExists, adm)
+                : null,
           );
         }));
   }

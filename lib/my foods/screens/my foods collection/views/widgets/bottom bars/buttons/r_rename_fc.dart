@@ -10,7 +10,7 @@ Widget fcItemEditButton() {
   Widget nullEditButton = TextButton(
       onPressed: () {},
       child: const Text(
-        "Edit",
+        "Rename",
         style: TextStyle(color: Colors.black54),
       ));
 
@@ -38,7 +38,7 @@ class FCitemEditButton extends StatelessWidget {
     //
 
     return TextButton(
-      child: const Text("Edit"),
+      child: const Text("Rename"),
       onPressed: () async {
         await Future.delayed(const Duration(milliseconds: 80));
         DocumentReference? snapshotReference;

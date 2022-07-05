@@ -4,7 +4,6 @@ import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/app%20Constants/fire_ref.dart';
 import 'package:dietapp_a/assets/assets.dart';
 import 'package:dietapp_a/settings/user%20info%20screen/axx_userid_edit_screen.dart';
-import 'package:dietapp_a/userData/models/user_strings.dart';
 import 'package:dietapp_a/userData/models/user_welcome_model.dart';
 import 'package:dietapp_a/x_customWidgets/stream_builder_functions.dart';
 import 'package:flutter/material.dart';
@@ -144,11 +143,8 @@ class ProfileEdit extends StatelessWidget {
                   if (rxName.value != uwm.displayName ||
                       rxBio.value != uwm.bioData) {
                     await userDR.update({
-                      "profileData": {
-                        "displayName": rxName.value,
-                        "bioData": rxBio.value,
-                        "photoURL": uwm.photoURL,
-                      },
+                      "$unIndexed.${uwmos.displayName}": rxName.value,
+                      "$unIndexed.${uwmos.bioData}": rxBio.value,
                     }).then((value) {
                       rxButton.value = "updated";
                     });

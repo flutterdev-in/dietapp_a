@@ -63,16 +63,16 @@ class ChatRoomBottom extends StatelessWidget {
                             ? suffixIconW(context)
                             : null,
                         filled: true,
-                        fillColor: Colors.grey[100],
+                        fillColor: Colors.white,
                         hintText: 'Message...',
                         contentPadding: const EdgeInsets.fromLTRB(15, 0, 10, 0),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(24.0),
-                          borderSide: const BorderSide(color: Colors.black12),
+                          borderSide: const BorderSide(color: primaryColor),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(24.0),
-                          borderSide: const BorderSide(color: Colors.black12),
+                          borderSide: const BorderSide(color: primaryColor),
                         ),
                       ),
                       onChanged: (value) {

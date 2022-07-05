@@ -18,21 +18,40 @@ class ChatScreen extends StatelessWidget {
           chatSearchButton,
         ],
       ),
-      body: Container(
-        color: Colors.white,
-        child: FirestoreListView<Map<String, dynamic>>(
-          shrinkWrap: true,
-          query: FirebaseFirestore.instance
-              .collection(crs.chatRooms)
-              .where(crs.chatMembers, arrayContains: userUID),
-          // .orderBy(gs.lastChatTime, descending: true),
-          itemBuilder: (context, snapshot) {
-            
-            var crm = ChatRoomModel.fromMap(snapshot.data());
-            return ChatRoomTile(crm);
-          },
-        ),
+      body: Column(
+        children: [
+          userTileW(),
+          Expanded(
+            child: FirestoreListView<Map<String, dynamic>>(
+              shrinkWrap: true,
+              query: FirebaseFirestore.instance
+                  .collection(crs.chatRooms)
+                  .where(crs.chatMembers, arrayContains: userUID)
+                  .orderBy(crs.lastChatTime, descending: true),
+              itemBuilder: (context, snapshot) {
+                var crm = ChatRoomModel.fromMap(snapshot.data());
+                if (crm.chatPersonUID == userUID) {
+                  return const SizedBox();
+                } else {
+                  return ChatRoomTile(crm);
+                }
+              },
+            ),
+          ),
+        ],
       ),
     );
+  }
+
+  Widget userTileW() {
+    return StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+        stream: crs.chatDRf([userUID, userUID]).snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData && snapshot.data!.data() != null) {
+            var crm = ChatRoomModel.fromMap(snapshot.data!.data()!);
+            return ChatRoomTile(crm);
+          }
+          return const SizedBox();
+        });
   }
 }

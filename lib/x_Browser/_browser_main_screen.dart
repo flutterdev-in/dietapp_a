@@ -1,4 +1,5 @@
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
+import 'package:dietapp_a/app%20Constants/colors.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
 import 'package:dietapp_a/my%20foods/screens/Add%20food/constants/adf_const_variables.dart';
@@ -12,6 +13,7 @@ import 'package:dietapp_a/x_customWidgets/lootie_animations.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:getwidget/getwidget.dart';
 import 'package:lottie/lottie.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:metadata_fetch/metadata_fetch.dart';
@@ -34,8 +36,17 @@ class AddFoodScreen extends StatelessWidget {
       child: Scaffold(
         appBar: appBarW(context),
         body: Column(
-          children: const [
-            Expanded(child: InAppWebViewWidget()),
+          children: [
+            Obx(() => bc.loadingProgress.value == 0
+                ? const SizedBox()
+                : GFProgressBar(
+                    percentage: bc.loadingProgress.value > 100
+                        ? 1.0
+                        : bc.loadingProgress.value.toDouble() / 100,
+                    lineHeight: bc.loadingProgress.value < 100 ? 2.5 : 0.0,
+                    progressBarColor: primaryColor,
+                  )),
+            const Expanded(child: InAppWebViewWidget()),
           ],
         ),
       ),
@@ -116,10 +127,7 @@ class AddFoodScreen extends StatelessWidget {
         return SizedBox(
           width: 44,
           height: 40,
-          child: 
-          loot.duplicate(),
-          
-          
+          child: loot.duplicate(),
         );
       } else if (countbvs.isAddAll.value) {
         return SizedBox(
