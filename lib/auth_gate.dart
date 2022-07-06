@@ -69,6 +69,7 @@ class LoginView extends StatelessWidget {
     final GoogleSignIn googleSignIn = GoogleSignIn();
 
     GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
+    
 
     try {
       GoogleSignInAuthentication googleSignInAuthentication =

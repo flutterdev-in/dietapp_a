@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/day_basic_info.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/default_timing_model.dart';
-import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/food_model_for_plan_creation.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/week_model.dart';
 import 'package:dietapp_a/app%20Constants/fire_ref.dart';
-import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
-import 'package:dietapp_a/y_Models/food_model.dart';
+import 'package:dietapp_a/x_customWidgets/expandable_text.dart';
+import 'package:dietapp_a/y_Models/day_model.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 PlanCreationController pcc = Get.put(PlanCreationController());
@@ -149,5 +149,23 @@ class PlanCreationController {
         }
       });
     }
+  }
+
+  Widget dayNotes() {
+    return Obx(() => StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+        stream: pcc.currentDayDR.value.snapshots(),
+        builder: (context, snapshot) {
+          
+          if (snapshot.hasData && snapshot.data!.data() != null) {
+            var dm = DayModel.fromMap(snapshot.data!.data()!);
+            if (dm.notes != null && dm.notes!.isNotEmpty) {
+              return Padding(
+                padding: const EdgeInsets.fromLTRB(8, 5, 8, 5),
+                child: expText(dm.notes!)!,
+              );
+            }
+          }
+          return const SizedBox();
+        }));
   }
 }

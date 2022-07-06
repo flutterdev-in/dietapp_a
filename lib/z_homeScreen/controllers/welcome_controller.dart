@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/default_timing_model.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/app%20Constants/fire_ref.dart';
+import 'package:dietapp_a/app%20Constants/global_rx_variables.dart';
 import 'package:dietapp_a/hive%20Boxes/boxes.dart';
 import 'package:dietapp_a/userData/models/user_welcome_model.dart';
 import 'package:dietapp_a/v_chat/constants/chat_const_variables.dart';
@@ -16,7 +17,7 @@ class WelcomeController extends GetxController {
     await createUserDoc();
     await createChatDoc();
     await atmos.checkAndSetDefaultTimings(DateTime.now());
-    await checkFCMtoken();
+
     super.onInit();
   }
 
@@ -25,7 +26,7 @@ class WelcomeController extends GetxController {
         .collection(uwmos.users)
         .doc(userUID)
         .get()
-        .then((DocumentSnapshot documentSnapshot) async {
+        .then((DocumentSnapshot<Map<String, dynamic>> documentSnapshot) async {
       if (!documentSnapshot.exists) {
         String userID0 = userGoogleEmail.replaceAll("@gmail.com", "");
         String? fcmToken = await fcm.getToken();
@@ -51,6 +52,12 @@ class WelcomeController extends GetxController {
 
         await boxServices.put(fcmVariables.fcmToken, fcmToken);
       } else {
+        var uwm = UserWelcomeModel.fromMap(documentSnapshot.data()!);
+        userRxProfileName.value = uwm.displayName;
+        if (uwm.photoURL != null) {
+          userRxPhotoUrl.value = uwm.photoURL!;
+        }
+
         documentSnapshot.reference.update({
           "$unIndexed.${uwmos.activeAt}": Timestamp.fromDate(DateTime.now()),
         });
@@ -88,16 +95,5 @@ class WelcomeController extends GetxController {
             .onError((error, stackTrace) {});
       }
     });
-  }
-
-  Future<void> checkFCMtoken() async {
-    var tokenB = boxServices.get(fcmVariables.fcmToken);
-    if (tokenB == null || tokenB != String) {
-      var fcmToken = await fcm.getToken();
-      await userDR.update({
-        "$unIndexed.${fcmVariables.fcmToken}": fcmToken,
-      });
-      await boxServices.put(fcmVariables.fcmToken, fcmToken);
-    }
   }
 }

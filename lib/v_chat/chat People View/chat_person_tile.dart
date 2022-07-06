@@ -12,6 +12,7 @@ import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:intl/intl.dart';
 
 class ChatRoomTile extends StatelessWidget {
   final ChatRoomModel crm;
@@ -38,6 +39,7 @@ class ChatRoomTile extends StatelessWidget {
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
               leading: GFAvatar(
+                backgroundColor: Colors.black12,
                 backgroundImage: CachedNetworkImageProvider(
                   uwm.photoURL!,
                 ),
@@ -96,7 +98,28 @@ class ChatRoomTile extends StatelessWidget {
           } else {
             _haveUnseen = false;
           }
-          return const SizedBox();
+          return titleTime();
         });
+  }
+
+  Widget titleTime() {
+    if (crm.lastChatModel?.senderSentTime != null) {
+      String ampm = DateFormat("a")
+          .format(crm.lastChatModel!.senderSentTime)
+          .toLowerCase();
+      String chatDayTime =
+          DateFormat("dd MMM").format(crm.lastChatModel!.senderSentTime) + ampm;
+      //
+      String today = DateFormat("dd MMM").format(DateTime.now());
+      String chatDay =
+          DateFormat("dd MMM").format(crm.lastChatModel!.senderSentTime);
+
+      if (today == chatDay) {
+        chatDayTime =
+            DateFormat("h:mm").format(crm.lastChatModel!.senderSentTime) + ampm;
+      }
+      return Text(chatDayTime, textScaleFactor: 0.95);
+    }
+    return const SizedBox();
   }
 }

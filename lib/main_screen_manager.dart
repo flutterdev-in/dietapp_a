@@ -6,7 +6,6 @@ import 'package:dietapp_a/z_homeScreen/controllers/welcome_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-
 import 'z_homeScreen/app States/hive_indexes_update.dart';
 
 class ManinScreenManager extends StatefulWidget {
@@ -21,10 +20,10 @@ class _HomeScreenState extends State<ManinScreenManager>
   @override
   void initState() {
     WidgetsBinding.instance.addObserver(this);
+    FCMfunctions.setupInteractedMessage();
     FCMfunctions.onMessage();
-
+    FCMfunctions.checkFCMtoken();
     super.initState();
-   
   }
 
   @override

@@ -85,6 +85,7 @@ class PlanCreationCombinedScreen extends StatelessWidget {
             return Column(
               children: [
                 DaysRowForActivePlan(isForSingleDayActive),
+                pcc.dayNotes(),
                 const TimingsRow000PlanCreationCombinedScreen(),
                 Expanded(
                   child: ListView(
@@ -102,6 +103,7 @@ class PlanCreationCombinedScreen extends StatelessWidget {
             return Column(
               children: [
                 DaysRowForActivePlan(isForSingleDayActive),
+                pcc.dayNotes(),
                 Column(
                   children: [
                     const Padding(
@@ -132,6 +134,7 @@ class PlanCreationCombinedScreen extends StatelessWidget {
       children: [
         if (isWeekWisePlan) const WeeksRowForPlan(),
         isWeekWisePlan ? const DaysRowForWeek() : const DaysRowNonWeek(),
+        pcc.dayNotes(),
         const TimingsRow000PlanCreationCombinedScreen(),
         Expanded(
           child: ListView(

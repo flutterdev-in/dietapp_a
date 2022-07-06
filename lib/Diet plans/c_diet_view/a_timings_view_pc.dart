@@ -55,11 +55,13 @@ class TimingsViewPC extends StatelessWidget {
               editingIconRequired: editingIconRequired,
             ),
           if (dtm.notes != null && dtm.notes != "")
-            Card(
+            Padding(
+              padding: const EdgeInsets.all(8.0),
               child: expText(
                 dtm.notes,
                 fontSize: 13,
-              ),
+                textColor: Colors.black,
+              )!,
             ),
           FirestoreListView<Map<String, dynamic>>(
               shrinkWrap: true,

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
+import 'package:dietapp_a/app%20Constants/global_rx_variables.dart';
 import 'package:dietapp_a/userData/models/user_welcome_model.dart';
 import 'package:dietapp_a/v_chat/models/chat_room_model.dart';
 import 'package:dietapp_a/x_FCM/fcm_model.dart';
@@ -24,8 +25,8 @@ class ChatRoomFunctions {
         fcmBody: "New message",
         chatImg: null,
         recieverToken: "",
-        recieverName: "",
-        recieverProfileImgUrl: null);
+        senderName: userRxProfileName.value,
+        senderProfileImgUrl: userRxPhotoUrl.value);
     await FirebaseFirestore.instance
         .collection(users)
         .doc(crm.chatPersonUID)
@@ -35,8 +36,8 @@ class ChatRoomFunctions {
         var uwm = UserWelcomeModel.fromMap(ds.data()!);
 
         ff.recieverToken = uwm.fcmToken ?? "";
-        ff.recieverProfileImgUrl = uwm.photoURL;
-        ff.recieverName = uwm.displayName;
+        // ff.senderProfileImgUrl = uwm.photoURL;
+        // ff.senderName = uwm.displayName;
         if (uwm.isActive) {
           await crm.chatDR.get().then((ds) async {
             if (ds.exists && ds.data() != null) {

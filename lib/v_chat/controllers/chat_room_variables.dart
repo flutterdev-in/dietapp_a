@@ -25,6 +25,6 @@ final MessageModel dummyMM = MessageModel(
       fcmBody: "New message",
       chatImg: null,
       recieverToken: "",
-      recieverName: "",
-      recieverProfileImgUrl: null),
+      senderName: "",
+      senderProfileImgUrl: null),
 );

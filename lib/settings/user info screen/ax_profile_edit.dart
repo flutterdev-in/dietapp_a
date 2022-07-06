@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/colors.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/app%20Constants/fire_ref.dart';
+import 'package:dietapp_a/app%20Constants/global_rx_variables.dart';
 import 'package:dietapp_a/assets/assets.dart';
 import 'package:dietapp_a/settings/user%20info%20screen/axx_userid_edit_screen.dart';
 import 'package:dietapp_a/userData/models/user_welcome_model.dart';
@@ -147,6 +148,7 @@ class ProfileEdit extends StatelessWidget {
                       "$unIndexed.${uwmos.bioData}": rxBio.value,
                     }).then((value) {
                       rxButton.value = "updated";
+                      userRxProfileName.value = rxName.value;
                     });
                   }
                   await Future.delayed(const Duration(seconds: 1));

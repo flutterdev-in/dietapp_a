@@ -1,4 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dietapp_a/app%20Constants/constant_objects.dart';
+import 'package:dietapp_a/app%20Constants/fire_ref.dart';
+import 'package:dietapp_a/hive%20Boxes/boxes.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/_chat_room_screen.dart';
 import 'package:dietapp_a/v_chat/models/chat_room_model.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -73,6 +76,16 @@ class FCMfunctions {
   }
 
   //
+  static Future<void> checkFCMtoken() async {
+    var tokenB = boxServices.get(fcmVariables.fcmToken);
+    if (tokenB == null || tokenB != String) {
+      var fcmToken = await fcm.getToken();
+      await userDR.update({
+        "$unIndexed.${fcmVariables.fcmToken}": fcmToken,
+      });
+      await boxServices.put(fcmVariables.fcmToken, fcmToken);
+    }
+  }
 
   //
 
@@ -109,5 +122,30 @@ class FCMfunctions {
         }
       }
     });
+  }
+
+  static Future<void> setupInteractedMessage() async {
+    // Get any messages which caused the application to open from
+    // a terminated state.
+    RemoteMessage? initialMessage =
+        await FirebaseMessaging.instance.getInitialMessage();
+    void _handleMessage(RemoteMessage message) async {
+      var chatPersonUID = message.data['chatPersonUID'];
+      if (chatPersonUID != null) {
+        var crm = await crs.chatRoomModelFromChatPersonUID(chatPersonUID);
+
+        Get.to(() => ChatRoomScreen(crm));
+      }
+    }
+
+    // If the message also contains a data property with a "type" of "chat",
+    // navigate to a chat screen
+    if (initialMessage != null) {
+      _handleMessage(initialMessage);
+    }
+
+    // Also handle any interaction when the app is in the background via a
+    // Stream listener
+    FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
   }
 }

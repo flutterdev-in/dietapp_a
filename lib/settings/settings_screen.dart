@@ -15,7 +15,6 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
-import 'package:restart_app/restart_app.dart';
 
 import 'b_default timings/default_timings_settings.dart';
 
@@ -95,10 +94,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
         onTap: () async {
           await Future.delayed(const Duration(milliseconds: 500));
           await removeFcmToken();
+          await GoogleSignIn().disconnect();
           await FirebaseAuth.instance.signOut();
-          await GoogleSignIn().signOut();
 
-          Restart.restartApp();
+          // Restart.restartApp();
         });
   }
 
@@ -106,7 +105,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
     await userDR.update({
       "$unIndexed.${fcmVariables.fcmToken}": null,
     });
-    await boxServices.put(fcmVariables.fcmToken, null);
+    await boxServices.delete(fcmVariables.fcmToken);
+    // await boxServices.put(fcmVariables.fcmToken, null);
   }
 
   Widget razorPayW() {

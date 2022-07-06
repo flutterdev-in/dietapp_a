@@ -2,8 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/app%20Constants/fire_ref.dart';
+import 'package:dietapp_a/app%20Constants/global_rx_variables.dart';
 import 'package:dietapp_a/settings/user%20info%20screen/ax_profile_edit.dart';
-import 'package:dietapp_a/userData/models/user_strings.dart';
 import 'package:dietapp_a/userData/models/user_welcome_model.dart';
 import 'package:dietapp_a/x_customWidgets/stream_builder_functions.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -42,6 +42,7 @@ class ProfileFirst extends StatelessWidget {
                       children: [
                         InkWell(
                           child: CircleAvatar(
+                            backgroundColor: Colors.black12,
                             foregroundImage:
                                 CachedNetworkImageProvider(uwm.photoURL!),
                             minRadius: 60,
@@ -123,6 +124,7 @@ class ProfileImageViewer extends StatelessWidget {
                 await userDR.update({
                   "$unIndexed.${uwmos.photoURL}": url,
                 });
+                userRxPhotoUrl.value = url;
               });
             });
           });

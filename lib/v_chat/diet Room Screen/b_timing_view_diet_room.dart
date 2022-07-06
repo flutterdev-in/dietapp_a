@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dietapp_a/app%20Constants/colors.dart';
 import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
 import 'package:dietapp_a/app%20Constants/url/ref_url_widget.dart';
 import 'package:dietapp_a/app%20Constants/url/url_avatar.dart';
 import 'package:dietapp_a/v_chat/models/chat_room_model.dart';
+import 'package:dietapp_a/x_customWidgets/lootie_animations.dart';
 import 'package:dietapp_a/y_Models/food_model.dart';
 import 'package:dietapp_a/y_Models/timing_model.dart';
 import 'package:dietapp_a/z_homeScreen/c_Timings%20view/b_cam_pictures_timings_view.dart';
@@ -33,7 +35,7 @@ class TimingsViewDietRoom extends StatelessWidget {
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const LinearProgressIndicator();
+            return loot.linerDotsLoading();
           } else if (snapshot.hasError) {
             return const Text("Error while fetching data, please try again");
           } else if (!snapshot.hasData ||
@@ -67,12 +69,12 @@ class TimingsViewDietRoom extends StatelessWidget {
           GFListTile(
             padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
             margin: const EdgeInsets.symmetric(vertical: 3, horizontal: 0),
-            color: Colors.yellow.shade100,
+            color: secondaryColor,
             title: Text(
               atm.timingName,
               textScaleFactor: 1.2,
               maxLines: 1,
-              style: const TextStyle(color: Colors.red),
+              // style: const TextStyle(color: Colors.red),
             ),
           ),
           if (atm.rumm != null)
@@ -81,11 +83,12 @@ class TimingsViewDietRoom extends StatelessWidget {
               editingIconRequired: editingIconRequired,
             ),
           if (atm.notes != null && atm.notes != "")
-            Card(
-                child: SizedBox(
-              child: Text(atm.notes!),
-              width: double.maxFinite,
-            )),
+            Align(
+                alignment: Alignment.topLeft,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 5, 8, 5),
+                  child: Text(atm.notes!),
+                )),
           CamPicturesTimingsView(atm, isActionAllowed: false),
           FirestoreListView<Map<String, dynamic>>(
               shrinkWrap: true,

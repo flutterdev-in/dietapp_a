@@ -1,6 +1,5 @@
 import 'package:dietapp_a/app%20Constants/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
 
 alertDialogW(
@@ -64,7 +63,8 @@ textFieldAlertW(BuildContext context,
                 onPressed: () {
                   FocusScope.of(context).unfocus();
                   tc.clear();
-                  Get.back();
+                  Navigator.of(context, rootNavigator: true).pop();
+                  // Get.back();
                 },
                 child: const Text("Cancle"),
                 color: primaryColor,

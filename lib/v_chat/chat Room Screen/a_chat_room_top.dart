@@ -72,8 +72,7 @@ class ChatRoomAppBar extends StatelessWidget {
                   ),
                   onTap: () async {
                     await Future.delayed(const Duration(milliseconds: 150));
-                    Get.to(() => ChatPersonProfileViewScreen(
-                        chatPersonUID: crm.chatPersonUID));
+                    Get.to(() => ChatPersonProfileViewScreen(crm));
                   },
                 ),
               ],
@@ -152,8 +151,7 @@ class ChatRoomAppBar extends StatelessWidget {
                 ],
               ),
               onTap: () {
-                Get.to(() => ChatPersonProfileViewScreen(
-                    chatPersonUID: crm.chatPersonUID));
+                Get.to(() => ChatPersonProfileViewScreen(crm));
               },
             );
           }

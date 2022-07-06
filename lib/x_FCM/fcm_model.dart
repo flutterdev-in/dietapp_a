@@ -4,17 +4,17 @@ class FcmModel {
   String fcmBody;
   bool isRecieverOnChat;
   String recieverToken;
-  String recieverName;
+  String senderName;
 
-  String? recieverProfileImgUrl;
+  String? senderProfileImgUrl;
   String? chatImg;
 
   FcmModel({
     this.isRecieverOnChat = false,
     required this.fcmBody,
     required this.recieverToken,
-    required this.recieverName,
-    required this.recieverProfileImgUrl,
+    required this.senderName,
+    required this.senderProfileImgUrl,
     required this.chatImg,
   });
   Map<String, dynamic> toMap() {
@@ -22,8 +22,8 @@ class FcmModel {
       fcmos.isRecieverOnChat: isRecieverOnChat,
       fcmos.fcmBody: fcmBody,
       fcmos.recieverToken: recieverToken,
-      fcmos.recieverName: recieverName,
-      fcmos.recieverProfileImgUrl: recieverProfileImgUrl,
+      fcmos.senderName: senderName,
+      fcmos.senderProfileImgUrl: senderProfileImgUrl,
       fcmos.chatImg: chatImg,
     };
   }
@@ -33,8 +33,8 @@ class FcmModel {
       isRecieverOnChat: functionMap[fcmos.isRecieverOnChat] ?? false,
       fcmBody: functionMap[fcmos.fcmBody] ?? "New message",
       recieverToken: functionMap[fcmos.recieverToken] ?? "",
-      recieverName: functionMap[fcmos.recieverName] ?? "",
-      recieverProfileImgUrl: functionMap[fcmos.recieverProfileImgUrl] ?? "",
+      senderName: functionMap[fcmos.senderName] ?? "",
+      senderProfileImgUrl: functionMap[fcmos.senderProfileImgUrl] ?? "",
       chatImg: functionMap[fcmos.chatImg],
     );
   }
@@ -46,8 +46,8 @@ class FcmObjects {
   final fcmModel = "fcmModel";
   final isRecieverOnChat = "isRecieverOnChat";
   final recieverToken = "recieverToken";
-  final recieverName = "recieverName";
-  final recieverProfileImgUrl = "recieverProfileImgUrl";
+  final senderName = "senderName";
+  final senderProfileImgUrl = "senderProfileImgUrl";
   final chatImg = "chatImg";
   final fcmBody = "fcmBody";
 

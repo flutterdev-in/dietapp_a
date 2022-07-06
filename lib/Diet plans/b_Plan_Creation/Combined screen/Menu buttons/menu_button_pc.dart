@@ -6,7 +6,9 @@ import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/day_basic_info.dar
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/default_timing_model.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/diet_plan_model.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/week_model.dart';
+import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/app%20Constants/fire_ref.dart';
+import 'package:dietapp_a/x_customWidgets/alert_dialogue.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
 import 'package:dietapp_a/y_Models/day_model.dart';
 import 'package:dietapp_a/y_Models/food_model.dart';
@@ -95,7 +97,7 @@ class MenuItemsPC extends StatelessWidget {
                     }
                     return TextButton(
                       onPressed: () async {
-                        dayNotes(notes);
+                        dayNotes(context, notes);
                       },
                       child: Text(
                           "${notes != null ? 'Edit day notes' : 'Add day notes'}        "),
@@ -320,7 +322,18 @@ class MenuItemsPC extends StatelessWidget {
     });
   }
 
-  void dayNotes(String? notes) {}
+  void dayNotes(BuildContext context, String? notes) {
+    Get.back();
+    textFieldAlertW(context, text: notes, onPressedConfirm: (value) async {
+      if (value != null && value.isNotEmpty) {
+        await pcc.currentDayDR.value.update({
+          "$unIndexed.$notes0": value,
+        });
+        Navigator.of(context, rootNavigator: true).pop();
+        // Get.back();
+      }
+    });
+  }
 
   Future<void> deleteDay() async {
     await pcc.currentDayDR.value

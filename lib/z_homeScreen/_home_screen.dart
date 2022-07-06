@@ -28,11 +28,8 @@ class HomeScreen extends StatelessWidget {
     return Obx(() => StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
         stream: apc.currentActiveDayDR.value.snapshots(),
         builder: (context, snapshot) {
-          bool? isDayExists;
+          bool isDayExists = false;
           DayModel? adm;
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            isDayExists = null;
-          }
 
           if (snapshot.hasData && snapshot.data!.data() != null) {
             isDayExists = true;
@@ -43,52 +40,47 @@ class HomeScreen extends StatelessWidget {
           }
 
           return Scaffold(
-            appBar: AppBar(
-              title: const Text("DietApp"),
-              actions: [
-                InkWell(
-                  child: Row(
-                    children: [
-                      Obx(() => Text(dayStringFromDate(apc.dt.value))),
-                      const Icon(MdiIcons.chevronDown),
-                    ],
-                  ),
-                  onTap: () async {
-                    isCalendarEnabled.value = !isCalendarEnabled.value;
-                  },
-                ),
-              ],
-            ),
-            body: Obx(() => Stack(
-                  alignment: AlignmentDirectional.center,
-                  children: [
-                    Column(
+              appBar: AppBar(
+                title: const Text("DietApp"),
+                actions: [
+                  InkWell(
+                    child: Row(
                       children: [
-                        Obx(() => isCalendarEnabled.value
-                            ? monthCalander()
-                            : const SizedBox()),
-                        Expanded(
-                            child: ListView(
-                          shrinkWrap: true,
-                          physics: const ClampingScrollPhysics(),
-                          children: [
-                            if (adm?.notes != null) dayNotes(adm!.notes!),
-                            if (isDayExists == null) loot.linerDotsLoading(),
-                            if (isDayExists != null)
-                              TimingViewHomeScreen(isDayExists: isDayExists),
-                          ],
-                        )),
+                        Obx(() => Text(dayStringFromDate(apc.dt.value))),
+                        const Icon(MdiIcons.chevronDown),
                       ],
                     ),
-                    if (isLoading.value) loot.linerDotsLoading(),
-                  ],
-                )),
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.centerDocked,
-            floatingActionButton: isDayExists != null
-                ? floatingButton(context, isDayExists, adm)
-                : null,
-          );
+                    onTap: () async {
+                      isCalendarEnabled.value = !isCalendarEnabled.value;
+                    },
+                  ),
+                ],
+              ),
+              body: Obx(() => Stack(
+                    alignment: AlignmentDirectional.center,
+                    children: [
+                      Column(
+                        children: [
+                          Obx(() => isCalendarEnabled.value
+                              ? monthCalander()
+                              : const SizedBox()),
+                          Expanded(
+                              child: ListView(
+                            shrinkWrap: true,
+                            physics: const ClampingScrollPhysics(),
+                            children: [
+                              if (adm?.notes != null) dayNotes(adm!.notes!),
+                              TimingViewHomeScreen(isDayExists: isDayExists),
+                            ],
+                          )),
+                        ],
+                      ),
+                      if (isLoading.value) loot.linerDotsLoading(),
+                    ],
+                  )),
+              floatingActionButtonLocation:
+                  FloatingActionButtonLocation.centerDocked,
+              floatingActionButton: floatingButton(context, isDayExists, adm));
         }));
   }
 
