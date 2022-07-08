@@ -25,4 +25,16 @@ class LootAnimations {
   Widget adfree() {
     return Lottie.asset("assets/14933-go-premium-ad-free.json", repeat: true);
   }
+
+  Widget send() {
+    return Lottie.asset("assets/10360-done.json", repeat: false);
+  }
+
+  Widget delete() {
+    return Lottie.asset("assets/79053-delete-message.json", repeat: false);
+  }
+
+  Widget addRight() {
+    return Lottie.asset("96295-success-popup.json", repeat: false);
+  }
 }

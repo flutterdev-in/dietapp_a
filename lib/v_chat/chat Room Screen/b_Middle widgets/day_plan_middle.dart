@@ -45,7 +45,7 @@ class DayPlanMiddle extends StatelessWidget {
                   const Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Icon(MdiIcons.calendarToday,
-                        color: Colors.white, size: 35),
+                        color: Colors.white, size: 30),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),

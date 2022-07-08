@@ -1,5 +1,6 @@
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/assets/assets.dart';
+import 'package:dietapp_a/intro_view.dart';
 import 'package:dietapp_a/main_screen_manager.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -42,24 +43,40 @@ class LoginView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: InkWell(
-          child: Card(
-            margin: const EdgeInsets.only(left: 16, right: 16),
-            child: Row(
-              children: [
-                SvgPicture.asset(Assets().googleIcon),
-                const Text(
-                  "  Continue with Google",
-                  style: TextStyle(fontSize: 18, color: Colors.black),
+      body: Column(
+        children: [
+          SizedBox(height: mdHeight(context) * 3 / 4, child: const IntroView()),
+          SizedBox(
+            height: mdHeight(context) * 1 / 4,
+            child: Center(
+              child: InkWell(
+                child: Card(
+                  elevation: 2.1,
+                  margin: const EdgeInsets.only(left: 16, right: 16),
+                  child: Padding(
+                    padding: const EdgeInsets.all(2.0),
+                    child: Row(
+                      children: [
+                        const SizedBox(width: 5),
+                        SvgPicture.asset(Assets().googleIcon),
+                        const Text(
+                          "  Continue with Google",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 18,
+                              color: Colors.black),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-              ],
+                onTap: () async {
+                  await login();
+                },
+              ),
             ),
           ),
-          onTap: () async {
-            await login();
-          },
-        ),
+        ],
       ),
     );
   }
@@ -69,7 +86,6 @@ class LoginView extends StatelessWidget {
     final GoogleSignIn googleSignIn = GoogleSignIn();
 
     GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
-    
 
     try {
       GoogleSignInAuthentication googleSignInAuthentication =

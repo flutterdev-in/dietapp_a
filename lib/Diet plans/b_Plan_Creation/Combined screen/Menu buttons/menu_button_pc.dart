@@ -6,6 +6,7 @@ import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/day_basic_info.dar
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/default_timing_model.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/diet_plan_model.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/week_model.dart';
+import 'package:dietapp_a/app%20Constants/colors.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/app%20Constants/fire_ref.dart';
 import 'package:dietapp_a/x_customWidgets/alert_dialogue.dart';
@@ -15,6 +16,7 @@ import 'package:dietapp_a/y_Models/food_model.dart';
 import 'package:dietapp_a/y_Models/timing_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:getwidget/getwidget.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class MenuItemsPC extends StatelessWidget {
@@ -80,30 +82,31 @@ class MenuItemsPC extends StatelessWidget {
                   child: const Text("Add Day           "),
                 ),
               ),
-            PopupMenuItem(
-              child: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-                  stream: pcc.currentDayDR.value.snapshots(),
-                  builder: (context, snapshot) {
-                    String? notes;
-                    if (snapshot.hasData && snapshot.data!.data() != null) {
-                      if (pcc.currentDayDR.value.parent.id ==
-                          admos.activeDaysPlan) {
-                        var dm = DayModel.fromMap(snapshot.data!.data()!);
-                        notes = dm.notes;
-                      } else {
-                        var dm = DayModel.fromMap(snapshot.data!.data()!);
-                        notes = dm.notes;
-                      }
-                    }
-                    return TextButton(
-                      onPressed: () async {
-                        dayNotes(context, notes);
-                      },
-                      child: Text(
-                          "${notes != null ? 'Edit day notes' : 'Add day notes'}        "),
-                    );
-                  }),
-            ),
+            // PopupMenuItem(
+            //   child: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+            //       stream: pcc.currentDayDR.value.snapshots(),
+            //       builder: (context, snapshot) {
+            //         String? notes;
+            //         if (snapshot.hasData && snapshot.data!.data() != null) {
+            //           if (pcc.currentDayDR.value.parent.id ==
+            //               admos.activeDaysPlan) {
+            //             var dm = DayModel.fromMap(snapshot.data!.data()!);
+            //             notes = dm.notes;
+            //           } else {
+            //             var dm = DayModel.fromMap(snapshot.data!.data()!);
+            //             notes = dm.notes;
+            //           }
+            //         }
+            //         return TextButton(
+            //           onPressed: () async {
+            //             Get.back();
+            //             dayNotes(context, notes);
+            //           },
+            //           child: Text(
+            //               "${notes != null ? 'Edit day notes' : 'Add day notes'}        "),
+            //         );
+            //       }),
+            // ),
             PopupMenuItem(
               child: TextButton(
                 onPressed: () async {
@@ -323,7 +326,56 @@ class MenuItemsPC extends StatelessWidget {
   }
 
   void dayNotes(BuildContext context, String? notes) {
-    Get.back();
+    var tc = TextEditingController();
+    tc.text = notes ?? "";
+    alertDialogW(context,
+        body: Column(
+          children: [
+            Container(
+                constraints: const BoxConstraints(
+                  maxHeight: 150,
+                ),
+                child: TextField(
+                  controller: tc,
+                  maxLines: null,
+                  minLines: 1,
+                  autofocus: true,
+                  decoration: const InputDecoration(
+                    hintText: "Day notes",
+                    labelText: "Day notes",
+                  ),
+                )),
+            const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    FocusScope.of(context).unfocus();
+                    tc.clear();
+
+                    Get.back();
+                  },
+                  child: const Text("Cancle"),
+                 
+                ),
+                TextButton(
+                  onPressed: () async {
+                    FocusScope.of(context).unfocus();
+                    if (tc.text.isNotEmpty) {
+                      await pcc.currentDayDR.value.update({
+                        "$unIndexed.$notes0": tc.text,
+                      });
+                      Get.back();
+                    }
+                  },
+                  child: const Text("Update"),
+                
+                )
+              ],
+            ),
+          ],
+        ));
     textFieldAlertW(context, text: notes, onPressedConfirm: (value) async {
       if (value != null && value.isNotEmpty) {
         await pcc.currentDayDR.value.update({

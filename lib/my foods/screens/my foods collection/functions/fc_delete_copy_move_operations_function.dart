@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/controllers/fc_controller.dart';
 import 'package:dietapp_a/my%20foods/screens/my%20foods%20collection/objects/foods_collection_strings.dart';
-import 'package:dietapp_a/userData/models/user_strings.dart';
 import 'package:dietapp_a/userData/models/user_welcome_model.dart';
 
 Future<void> fcDeleteCopyMoveOperations({
@@ -15,7 +14,7 @@ Future<void> fcDeleteCopyMoveOperations({
 
   Future<void> nestedGetFunction(List<DocumentReference> listSourceDR) async {
     for (DocumentReference sourceDR in listSourceDR) {
-      sourceDR.get().then((DocumentSnapshot ds) {
+      await sourceDR.get().then((DocumentSnapshot ds) {
         mapsInfoOfNestedDRs.addAll({
           sourceDR.path: ds.data(),
         });

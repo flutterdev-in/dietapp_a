@@ -66,7 +66,7 @@ class InAppWebViewWidget extends StatelessWidget {
               foodName: title,
               foodAddedTime: DateTime.now(),
               foodTakenTime: null,
-              isCamFood: null,
+              isCamFood: false,
               isFolder: false,
               notes: null,
               rumm: rumm0,

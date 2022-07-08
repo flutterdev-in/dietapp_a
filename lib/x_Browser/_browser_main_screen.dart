@@ -2,7 +2,6 @@ import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation
 import 'package:dietapp_a/app%20Constants/colors.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
-import 'package:dietapp_a/my%20foods/screens/Add%20food/constants/adf_const_variables.dart';
 import 'package:dietapp_a/x_Browser/a_textfield_adfd.dart';
 import 'package:dietapp_a/x_Browser/ab_count_button_adfd.dart';
 import 'package:dietapp_a/x_Browser/b_web_view_adfd.dart';
@@ -14,7 +13,6 @@ import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
-import 'package:lottie/lottie.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:metadata_fetch/metadata_fetch.dart';
 
@@ -119,9 +117,7 @@ class AddFoodScreen extends StatelessWidget {
         return SizedBox(
           width: 44,
           height: 40,
-          child:
-              // loot.plus(),
-              Lottie.asset(adfcv.heartAnimation, repeat: false),
+          child: loot.plus(),
         );
       } else if (countbvs.isItemDuplicate.value) {
         return SizedBox(
@@ -133,13 +129,13 @@ class AddFoodScreen extends StatelessWidget {
         return SizedBox(
           width: 44,
           height: 40,
-          child: Lottie.asset(adfcv.sendAnimation, repeat: false),
+          child: loot.send(),
         );
       } else if (countbvs.isClearAll.value) {
         return SizedBox(
           width: 44,
           height: 40,
-          child: Lottie.asset(adfcv.deleteAnimation, repeat: false),
+          child: loot.delete(),
         );
       } else {
         return CountButtonAdfdW();

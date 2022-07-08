@@ -67,7 +67,8 @@ class FcmObjects {
       fcmHeadline = "\u{1F4DD}  " + (fileName ?? 'Custom food');
     } else if (chatType == chatTS.multiFoodCollection) {
       fcmHeadline = "\u{1F352}  Food list";
-    } else if (chatType == chatTS.dietPlansBeta) {
+    } else if (chatType == chatTS.dietPlansBeta ||
+        chatType == chatTS.multiPlan) {
       fcmHeadline = "\u{1F4CB}  " + (fileName ?? 'Diet plan');
     } else if (chatType == chatTS.multiWeek) {
       fcmHeadline = "\u{1F5D3}  " + (fileName ?? 'Weekly plan');

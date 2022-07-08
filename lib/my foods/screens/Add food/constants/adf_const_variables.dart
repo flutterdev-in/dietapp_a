@@ -20,9 +20,6 @@ class AddFoodsConstVariables {
   String matchedname = "matchedname";
 
   //
-  String duplicateAnimation = "assets/10360-done.json";
-  String sendAnimation = "assets/10360-done.json";
-  String deleteAnimation = "assets/79053-delete-message.json";
-  String heartAnimation = "assets/85819-kadokado-heart.json"; 
+
 
 }

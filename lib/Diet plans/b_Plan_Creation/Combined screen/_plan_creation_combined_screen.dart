@@ -3,6 +3,7 @@ import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/diet_plan_model.dart';
 import 'package:dietapp_a/Diet%20plans/c_diet_view/diet_view_widget.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_timing_model.dart';
+import 'package:dietapp_a/y_Models/timing_model.dart';
 import 'package:dietapp_a/z_Ad%20manager/nativead_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -96,7 +97,7 @@ class PlanCreationCombinedScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                const FoodAddButtons(),
+                 foodAddButtons(),
               ],
             );
           } else {
@@ -145,8 +146,22 @@ class PlanCreationCombinedScreen extends StatelessWidget {
             ],
           ),
         ),
-        const FoodAddButtons(),
+         foodAddButtons(),
       ],
     );
+  }
+
+  Widget foodAddButtons() {
+    return Obx(() => StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+        stream: pcc.currentDayDR.value
+            .collection(tmos.timings)
+            .limit(1)
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
+            return const FoodAddButtons();
+          }
+          return const SizedBox();
+        }));
   }
 }

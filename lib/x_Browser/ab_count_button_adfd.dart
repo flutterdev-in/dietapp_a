@@ -7,8 +7,6 @@ import 'package:dietapp_a/x_Browser/controllers/add_food_controller.dart';
 import 'package:dietapp_a/x_Browser/controllers/browser_controllers.dart';
 import 'package:dietapp_a/x_Browser/controllers/rxvariables_for_count_button.dart';
 import 'package:dietapp_a/x_customWidgets/alert_dialogue.dart';
-import 'package:dietapp_a/y_Active%20diet/controllers/active_plan_controller.dart';
-import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
 import 'package:dietapp_a/y_Models/food_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -79,10 +77,9 @@ class CountButtonAdfdW extends StatelessWidget {
                               shape: GFAvatarShape.standard,
                               size: GFSize.MEDIUM,
                               maxRadius: 20,
-                              backgroundImage:
-                                fdcm.rumm?.img != null
-                          ? NetworkImage(fdcm.rumm!.img!)
-                          : null,
+                              backgroundImage: fdcm.rumm?.img != null
+                                  ? NetworkImage(fdcm.rumm!.img!)
+                                  : null,
                             ),
                             onTap: () {
                               Get.back();
@@ -165,33 +162,12 @@ class CountButtonAdfdW extends StatelessWidget {
                   child: const Text("Add all"),
                   onPressed: () async {
                     for (FoodModel fcm in adfc.addedFoodList.value) {
-                      if (bottomBarindex.value == 2) {
+                      if (bottomBarindex.value == 3) {
+                        fcc.currentCR.value.add(fcm.toMap());
+                      } else if (pcc.currentTimingDR.value != userDR) {
                         pcc.currentTimingDR.value
                             .collection(fmos.foods)
                             .add(fcm.toMap());
-                      } else if (bottomBarindex.value == 3) {
-                        fcc.currentCR.value.add(fcm.toMap());
-                      } else if (bottomBarindex.value == 0) {
-                        var afm = FoodModel(
-                            isCamFood: false,
-                            foodAddedTime: DateTime.now(),
-                            foodTakenTime: null,
-                            isFolder: null,
-                            foodName: fcm.foodName,
-                            notes: fcm.notes,
-                            rumm: null,
-                            docRef: null);
-                        if (apc.currentActiveTimingDR.value != userDR) {
-                          apc.currentActiveTimingDR.value
-                              .collection(fmos.foods)
-                              .add(afm.toMap());
-                        }
-                        if (pcc.currentDayDR.value.parent.id ==
-                            admos.activeDaysPlan) {
-                          pcc.currentTimingDR.value
-                              .collection(fmos.foods)
-                              .add(afm.toMap());
-                        }
                       }
                     }
                     await Future.delayed(const Duration(milliseconds: 900));

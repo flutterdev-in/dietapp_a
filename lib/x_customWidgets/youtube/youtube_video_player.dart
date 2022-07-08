@@ -43,6 +43,13 @@ class _YoutubeVideoPlayerScreenState extends State<YoutubeVideoPlayerScreen>
   }
 
   @override
+  void dispose() {
+    animC.dispose();
+    
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     var isFullScreen = false.obs;
     var isPlaying = true.obs;

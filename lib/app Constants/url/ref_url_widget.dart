@@ -2,6 +2,7 @@ import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
 import 'package:dietapp_a/app%20Constants/url/url_avatar.dart';
 import 'package:dietapp_a/x_Browser/_browser_main_screen.dart';
 import 'package:dietapp_a/x_Browser/controllers/browser_controllers.dart';
+import 'package:dietapp_a/y_Models/food_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
@@ -40,24 +41,32 @@ class RefURLWidget extends StatelessWidget {
       return Column(
         children: [
           GFListTile(
-            padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
-            margin: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
-            avatar: UrlAvatar(refUrlMetadataModel
-                ),
-            title: Text(
-              refUrlMetadataModel.title ?? refUrlMetadataModel.url,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-            icon: editingIconRequired
-                ? IconButton(
-                    onPressed: () {
-                      bc.isBrowserForRefURL.value = true;
-                      Get.to(const AddFoodScreen());
-                    },
-                    icon: const Icon(MdiIcons.webSync))
-                : null,
-          ),
+              padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
+              margin: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
+              avatar: UrlAvatar(refUrlMetadataModel),
+              title: Text(
+                refUrlMetadataModel.title ?? refUrlMetadataModel.url,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+              icon: editingIconRequired
+                  ? IconButton(
+                      onPressed: () {
+                        bc.isBrowserForRefURL.value = true;
+                        Get.to(const AddFoodScreen());
+                      },
+                      icon: const Icon(MdiIcons.webSync))
+                  : null,
+              onTap: () {
+                fmos.onTapFoodTile(FoodModel(
+                    foodAddedTime: DateTime.now(),
+                    foodTakenTime: null,
+                    foodName: refUrlMetadataModel.title ?? "",
+                    isCamFood: null,
+                    isFolder: null,
+                    notes: null,
+                    rumm: refUrlMetadataModel));
+              }),
           Divider(thickness: 2, color: Colors.deepPurple.shade100)
         ],
       );

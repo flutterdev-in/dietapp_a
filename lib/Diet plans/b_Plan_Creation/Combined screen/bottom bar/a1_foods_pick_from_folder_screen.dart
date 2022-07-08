@@ -15,20 +15,19 @@ class FoodsPickFromFolderScren extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var selectedUnselectedAllIndex = 0.obs;
+    var listSelectedFdcm = RxList<FoodModel>([]).obs;
+    var listFdcm = RxList<FoodModel>([]).obs;
 
     return Scaffold(
       appBar: AppBar(
         actions: [
           ElevatedButton(
               onPressed: () async {
-                fcc.currentPathMapFoodModels.value
-                    .forEach((fdm, isSelected) async {
-                  if (isSelected && fdm.isFolder != true) {
-                    pcc.currentTimingDR.value
-                        .collection(fmos.foods)
-                        .add(fdm.toMap());
-                  }
-                });
+                for (var i in listSelectedFdcm.value) {
+                  await pcc.currentTimingDR.value
+                      .collection(fmos.foods)
+                      .add(i.toMap());
+                }
 
                 Get.back();
               },
@@ -40,10 +39,16 @@ class FoodsPickFromFolderScren extends StatelessWidget {
                   selectedUnselectedAllIndex.value = 0;
                   fcufs.selecAllUnselectAll(
                       trueSelectAllfalseUnselectAll: false);
+                  listSelectedFdcm.value.clear();
                 } else {
                   selectedUnselectedAllIndex.value = 1;
                   fcufs.selecAllUnselectAll(
                       trueSelectAllfalseUnselectAll: true);
+                  for (var i in listFdcm.value) {
+                    if (!listSelectedFdcm.value.contains(i)) {
+                      listSelectedFdcm.value.add(i);
+                    }
+                  }
                 }
               },
               icon: const Icon(MdiIcons.selectAll)),
@@ -64,9 +69,14 @@ class FoodsPickFromFolderScren extends StatelessWidget {
                 Rx<bool> isItemSelected = false.obs;
 
                 FoodModel fdcm = FoodModel.fromMap(snapshot.data());
+                fdcm.isCamFood = false;
                 fdcm.docRef = snapshot.reference;
                 Rx<bool> isFolder = true.obs;
-                fcc.currentPathMapFoodModels.value.addAll({fdcm: false});
+                if (!listFdcm.value.contains(fdcm) && fdcm.isFolder != true) {
+                  listFdcm.value.add(fdcm);
+                }
+
+                // fcc.currentPathMapFoodModels.value.addAll({fdcm: false});
 
                 Widget avatarW() {
                   if (fdcm.isFolder == true) {
@@ -126,16 +136,11 @@ class FoodsPickFromFolderScren extends StatelessWidget {
                         } else if (selectedUnselectedAllIndex.value == 0) {
                           return const Icon(
                               MdiIcons.checkboxBlankCircleOutline);
+                        } else if (listSelectedFdcm.value.contains(fdcm)) {
+                          return const Icon(MdiIcons.checkboxMarkedCircle);
                         } else {
-                          isItemSelected.value =
-                              fcc.currentPathMapFoodModels.value[fdcm] ?? false;
-
-                          if (isItemSelected.value) {
-                            return const Icon(MdiIcons.checkboxMarkedCircle);
-                          } else {
-                            return const Icon(
-                                MdiIcons.checkboxBlankCircleOutline);
-                          }
+                          return const Icon(
+                              MdiIcons.checkboxBlankCircleOutline);
                         }
                       } else {
                         return const SizedBox();
@@ -148,14 +153,20 @@ class FoodsPickFromFolderScren extends StatelessWidget {
                           snapshot.reference.collection(fmos.subCollections);
 
                       fcc.listFoodModelsForPath.value.add(fdcm);
+                      listFdcm.value.clear();
+                      listSelectedFdcm.value.clear();
                     } else {
                       selectedUnselectedAllIndex.value = 9;
 
-                      bool isSlected =
-                          fcc.currentPathMapFoodModels.value[fdcm] ?? false;
+                      bool isSlected = listSelectedFdcm.value.contains(fdcm);
+                      if (isSlected) {
+                        listSelectedFdcm.value.remove(fdcm);
+                      } else {
+                        listSelectedFdcm.value.add(fdcm);
+                      }
 
                       isItemSelected.value = !isItemSelected.value;
-                      fcc.currentPathMapFoodModels.value[fdcm] = !isSlected;
+
                       isItemSelected.value = !isSlected;
                     }
                   },

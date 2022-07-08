@@ -36,7 +36,7 @@ class DietPlansMiddle extends StatelessWidget {
                   const Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Icon(MdiIcons.clipboardTextOutline,
-                        color: Colors.white),
+                        size: 30, color: Colors.white),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),

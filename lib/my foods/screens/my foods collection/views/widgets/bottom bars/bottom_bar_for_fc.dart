@@ -40,7 +40,6 @@ class OnSelectedBottomBarForFoodCollection extends StatelessWidget {
                 onPressed: () {
                   fcc.isCopyOrMoveStarted.value = true;
                   addItemsToListForOperation();
-
                   fcc.operationValue.value = 1;
                 },
               ),
@@ -76,10 +75,12 @@ class OnSelectedBottomBarForFoodCollection extends StatelessWidget {
                     listSourceDR: fcc.listSelectedItemsDRsForOperation.value,
                     targetCRpath: fcc.currentCR.value.path,
                   );
+
                   fcc.operationValue.value = 9;
                   fcc.isSelectAll.value = false;
                   fcc.isUnselectAll.value = false;
                   fcc.isSelectionStarted.value = false;
+                  fcc.listSelectedItemsDRsForOperation.value.clear();
                 },
               ),
               fcItemEditButton(),

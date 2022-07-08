@@ -108,13 +108,13 @@ class ChatRoomTile extends StatelessWidget {
           .format(crm.lastChatModel!.senderSentTime)
           .toLowerCase();
       String chatDayTime =
-          DateFormat("dd MMM").format(crm.lastChatModel!.senderSentTime) + ampm;
+          DateFormat("dd MMM").format(crm.lastChatModel!.senderSentTime);
       //
       String today = DateFormat("dd MMM").format(DateTime.now());
-      String chatDay =
-          DateFormat("dd MMM").format(crm.lastChatModel!.senderSentTime);
+      // String chatDay =
+      //     DateFormat("dd MMM").format(crm.lastChatModel!.senderSentTime);
 
-      if (today == chatDay) {
+      if (today == chatDayTime) {
         chatDayTime =
             DateFormat("h:mm").format(crm.lastChatModel!.senderSentTime) + ampm;
       }

@@ -22,7 +22,9 @@ class UrlAvatar extends StatelessWidget {
             child: Container(
                 decoration: const BoxDecoration(
                   color: Colors.black,
-                  borderRadius: BorderRadius.only(topLeft: Radius.circular(5)),
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(5),
+                      bottomRight: Radius.circular(5)),
                 ),
                 child: Text(
                   rumm!.youtubeVideoLength ?? "",

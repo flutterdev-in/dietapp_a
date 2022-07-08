@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/app%20Constants/url/ref_url_metadata_model.dart';
+import 'package:dietapp_a/x_customWidgets/web%20view/web_view_page.dart';
+import 'package:dietapp_a/x_customWidgets/youtube/youtube_video_player.dart';
+import 'package:get/get.dart';
 
 class FoodModel {
   DateTime foodAddedTime;
@@ -76,13 +79,21 @@ class FoodModel {
 final FoodsModelObjects fmos = FoodsModelObjects();
 
 class FoodsModelObjects {
-  final String foodAddedTime = "foodAddedTime";
-  final String foodTakenTime = "foodTakenTime";
-  final String foodName = "foodName";
-  final String isCamFood = "isCamFood";
-  final String isFolder = "isFolder";
+  final foodAddedTime = "foodAddedTime";
+  final foodTakenTime = "foodTakenTime";
+  final foodName = "foodName";
+  final isCamFood = "isCamFood";
+  final isFolder = "isFolder";
   //
-  final String foods = "foods";
-  final String foodsCollection = "foodsCollection";
-  final String subCollections = "subCollections";
+  final foods = "foods";
+  final foodsCollection = "foodsCollection";
+  final subCollections = "subCollections";
+
+  void onTapFoodTile(FoodModel fm) {
+    if (fm.rumm?.isYoutubeVideo ?? false) {
+      Get.to(() => YoutubeVideoPlayerScreen(fm.rumm!, fm.foodName));
+    } else if (fm.rumm?.url != null && fm.isCamFood !=true && fm.isFolder !=true) {
+      Get.to(WebViewPage(fm.rumm!.url, fm.foodName));
+    }
+  }
 }

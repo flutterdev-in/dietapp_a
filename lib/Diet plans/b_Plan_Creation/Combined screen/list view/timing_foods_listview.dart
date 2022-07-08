@@ -63,8 +63,8 @@ class FoodsListViewforPC extends StatelessWidget {
                       ),
                 onTap: () {
                   FocusScope.of(context).unfocus();
-
-                  Get.to(URLviewerPC(rumm: fm.rumm));
+                  fmos.onTapFoodTile(fm);
+                  // Get.to(URLviewerPC(rumm: fm.rumm));
                 },
                 icon: editIconRequired
                     ? InkWell(

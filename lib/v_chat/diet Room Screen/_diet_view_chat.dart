@@ -44,9 +44,9 @@ class DietViewChat extends StatelessWidget {
 
               if (crmNew.userModel.dietRequestSendTime != null) {
                 sendDate = DateFormat("dd MMM yyyy, hh:mm a")
-                    .format(crm.userModel.dietRequestSendTime!);
+                    .format(crmNew.userModel.dietRequestSendTime!);
                 int days = DateTime.now()
-                    .difference(crm.userModel.dietRequestSendTime!)
+                    .difference(crmNew.userModel.dietRequestSendTime!)
                     .inDays;
                 if (days < 1) {
                   isSameDay = true;
