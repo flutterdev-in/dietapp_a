@@ -50,9 +50,15 @@ class ChatPersonProfileViewScreen extends StatelessWidget {
             const SizedBox(height: 50),
             if (uwm.photoURL != null)
               Center(
-                child: ClipRRect(
-                    borderRadius: const BorderRadius.all(Radius.circular(100)),
-                    child: CachedNetworkImage(imageUrl: uwm.photoURL!)),
+                child: CircleAvatar(
+                    radius: 70,
+                    child: ClipOval(
+                        child: CachedNetworkImage(
+                      imageUrl: uwm.photoURL!,
+                      fit: BoxFit.cover,
+                      width: 140,
+                      height: 140,
+                    ))),
               ),
             const SizedBox(height: 25),
             Padding(

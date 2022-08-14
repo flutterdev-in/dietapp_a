@@ -16,7 +16,7 @@ class ProfileIdEdit extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String originalID0 = currentUser!.email!.replaceAll("@gmail.com", "");
+    String originalID0 = userGoogleEmail.replaceAll("@gmail.com", "");
     String currentID0 = userID;
     String originalID = "@$originalID0";
     Rx<String> rxID = "@$currentID0".obs;
@@ -151,7 +151,7 @@ class ProfileIdEdit extends StatelessWidget {
         child: RichText(
             text: TextSpan(children: [
           const TextSpan(
-              text: "*    Your original Profile ID ",
+              text: "*    Your original User ID ",
               style: TextStyle(color: Colors.black)),
           TextSpan(
               text: originalID,
@@ -171,7 +171,7 @@ class ProfileIdEdit extends StatelessWidget {
       return const Padding(
         padding: EdgeInsets.all(8.0),
         child: Text(
-            "*    New Profile ID should be in alphanumeric and must contain atleast one special character   _  -  !  *  ~   and atmost two special characters."),
+            "*    New User ID should be in alphanumeric and must contain atleast one special character   _  -  !  *  ~   and atmost two special characters."),
       );
     }
 
@@ -228,11 +228,14 @@ class ProfileIdEdit extends StatelessWidget {
             stopwatch3.stop();
             if (stopwatch3.elapsed < const Duration(seconds: 2) &&
                 qs.docs.isEmpty) {
-              await userDR.update({uwmos.userID: rxID.value});
+              await userDR.update({
+                uwmos.userID: rxID.value,
+                uwmos.userIdSearchStrings: uwmos.getSearchStrings(rxID.value)
+              });
               rxB.value = "success";
 
               Get.snackbar(
-                "Profile ID changed successfully",
+                "User ID changed successfully",
                 "Your new Profile ID : @${rxID.value}",
                 snackPosition: SnackPosition.BOTTOM,
               );
@@ -276,7 +279,7 @@ class ProfileIdEdit extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Profile ID'),
+          title: const Text('User ID'),
           actions: [appBarSaveIcon()],
         ),
         body: Padding(

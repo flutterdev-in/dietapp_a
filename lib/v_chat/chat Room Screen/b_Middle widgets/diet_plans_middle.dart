@@ -1,9 +1,11 @@
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/Combined%20screen/Menu%20buttons/activate_plan_menu_items.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/Combined%20screen/top%20rows/days_row_for_week.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/Combined%20screen/top%20rows/days_row_non_week.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/Combined%20screen/top%20rows/weeks_row.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/diet_plan_model.dart';
 import 'package:dietapp_a/Diet%20plans/c_diet_view/a_timings_view_pc.dart';
+import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/_common_top_widget_middle.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -72,6 +74,9 @@ class DietPlanViewFromChat extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(model.planName),
+        actions: [
+          menuItems(),
+        ],
       ),
       body: Column(
         children: [
@@ -83,6 +88,67 @@ class DietPlanViewFromChat extends StatelessWidget {
             child: TimingsViewPC(editingIconRequired: false),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget menuItems() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: PopupMenuButton(
+        padding: const EdgeInsets.all(10.0),
+        color: Colors.white,
+        child: const Center(
+          child: Text(
+            "Activate",
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+        // const Icon(MdiIcons.dotsVertical, color: Colors.white),
+        itemBuilder: (context) {
+          return [
+            PopupMenuItem(
+              child: TextButton(
+                onPressed: () async {
+                  Get.back();
+                  isLoading.value = true;
+
+                  if (model.isWeekWisePlan) {
+                    activatePlanMenuItems.activateWeekPlan(context);
+                  } else {
+                    activatePlanMenuItems.activateDayPlan(context);
+                  }
+                  isLoading.value = false;
+                },
+                child: const Text("Activate This Plan"),
+              ),
+            ),
+            if (model.isWeekWisePlan)
+              PopupMenuItem(
+                child: TextButton(
+                  onPressed: () async {
+                    Get.back();
+                    isLoading.value = true;
+
+                    activatePlanMenuItems.activateThisWeek(context);
+                    isLoading.value = false;
+                  },
+                  child: const Text("Activate This Week"),
+                ),
+              ),
+            PopupMenuItem(
+              child: TextButton(
+                onPressed: () async {
+                  Get.back();
+                  isLoading.value = true;
+                  await activatePlanMenuItems.activateThisDay(context);
+                  isLoading.value = false;
+                },
+                child: const Text("Activate This Day"),
+              ),
+            ),
+          ];
+        },
       ),
     );
   }

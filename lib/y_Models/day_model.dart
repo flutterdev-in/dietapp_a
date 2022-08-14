@@ -15,10 +15,10 @@ class DayModel {
     required this.dayDate,
     required this.dayCreatedTime,
     required this.dayIndex,
-     this.dayName,
-     this.notes,
-     this.rumm,
-     this.docRef,
+    this.dayName,
+    this.notes,
+    this.rumm,
+    this.docRef,
   });
   Map<String, dynamic> toMap() {
     Map<String, dynamic> returnMap;

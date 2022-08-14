@@ -11,7 +11,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       themeMode: ThemeMode.light,
-     
+      debugShowCheckedModeBanner: false,
+
       navigatorKey: Get.key,
       theme: ThemeData(
         colorScheme: const ColorScheme.light(primary: primaryColor),

@@ -15,6 +15,7 @@ class InAppWebViewWidget extends StatelessWidget {
       initialUrlRequest: URLRequest(url: Uri.parse(bc.homeURL.value)),
       onWebViewCreated: (controller) {
         bc.wvc = controller;
+        
       },
       onProgressChanged: (controller, progress) {
         bc.loadingProgress.value = progress;

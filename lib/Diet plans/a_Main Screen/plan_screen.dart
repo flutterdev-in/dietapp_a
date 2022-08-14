@@ -27,8 +27,18 @@ class PlanScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: const [
-              Text("Create", textScaleFactor: 0.9),
-              Text("Plan", textScaleFactor: 0.9),
+              Text(
+                "Create",
+                textScaleFactor: 0.9,
+                style:
+                    TextStyle(color: primaryColor, fontWeight: FontWeight.bold),
+              ),
+              Text(
+                "Plan",
+                textScaleFactor: 0.9,
+                style:
+                    TextStyle(color: primaryColor, fontWeight: FontWeight.bold),
+              ),
             ],
           )),
     );

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/app%20Constants/fire_ref.dart';
@@ -10,11 +11,13 @@ import 'package:dietapp_a/y_Razor%20pay/razor.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
-import 'package:getwidget/components/list_tile/gf_list_tile.dart';
+import 'package:getwidget/getwidget.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'b_default timings/default_timings_settings.dart';
 
@@ -55,6 +58,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
             // basic(),
             defaultFoodTimings(),
             razorPayW(),
+            shareApp(),
+            calculator(),
             logout(),
           ],
         ));
@@ -79,7 +84,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
         MdiIcons.wrenchClock,
       ),
       titleText: "Default Food Timings",
-      onTap: () {
+      onTap: () async {
+        await Future.delayed(const Duration(milliseconds: 150));
         Get.to(() => const DefaultTimingsSettingsScreen());
       },
     );
@@ -92,7 +98,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ),
         titleText: "Logout",
         onTap: () async {
-          await Future.delayed(const Duration(milliseconds: 500));
+          await Future.delayed(const Duration(milliseconds: 300));
           await removeFcmToken();
           await GoogleSignIn().disconnect();
           await FirebaseAuth.instance.signOut();
@@ -152,5 +158,35 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
           return const SizedBox();
         });
+  }
+
+  Widget shareApp() {
+    return GFListTile(
+      avatar: const Icon(MdiIcons.shareVariant),
+      titleText: "Share DietApp",
+      subTitleText: "Keep supporting, Thank you",
+      onTap: () {
+        Share.share(
+            "Hi, i found an innovative DietApp.\n\n\u{1F449}Very useful for Patients, Diabetes and Pregnant women.\n\u{1F449}Diet chat with anyone like WhatsApp.\n\u{1F449}View and Manage others diet in realtime.\n\u{1F449}Detect cheat diet with proof pictures.\n\u{1F449}Manage foods collection like FileManager.\n\u{1F449}Import your favorite foods from Websites or Youtube with inbuilt Web browser.\n\u{25B6}Install it from Playstore https://play.google.com/store/apps/details?id=in.dietapp");
+      },
+    );
+  }
+
+  Widget calculator() {
+    return GFListTile(
+      avatar: const GFAvatar(
+        shape: GFAvatarShape.standard,
+        size: GFSize.SMALL,
+        backgroundImage: CachedNetworkImageProvider(
+            "https://firebasestorage.googleapis.com/v0/b/dietapp-in.appspot.com/o/AI%20icon%20512.png?alt=media&token=a5c5b582-7f84-441c-8222-470de4bdf3e1"),
+      ),
+      titleText: "AI Calculator",
+      subTitleText: "World first multiline calculator",
+      onTap: () async {
+        launchUrl(Uri.parse(
+                "https://play.google.com/store/apps/details?id=com.aicalculator"))
+            .catchError((e) {});
+      },
+    );
   }
 }

@@ -6,17 +6,14 @@ import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/day_basic_info.dar
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/default_timing_model.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/diet_plan_model.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/week_model.dart';
-import 'package:dietapp_a/app%20Constants/colors.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/app%20Constants/fire_ref.dart';
 import 'package:dietapp_a/x_customWidgets/alert_dialogue.dart';
-import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
 import 'package:dietapp_a/y_Models/day_model.dart';
 import 'package:dietapp_a/y_Models/food_model.dart';
 import 'package:dietapp_a/y_Models/timing_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:getwidget/getwidget.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class MenuItemsPC extends StatelessWidget {
@@ -40,6 +37,7 @@ class MenuItemsPC extends StatelessWidget {
               child: TextButton(
                 onPressed: () async {
                   Get.back();
+
                   await addTimingPCalertW(context, isForActivePlan);
                 },
                 child: const Text("Add timing               "),
@@ -50,7 +48,9 @@ class MenuItemsPC extends StatelessWidget {
                 child: TextButton(
                   onPressed: () async {
                     Get.back();
+                    isLoading.value = true;
                     await deleteThisTiming();
+                    isLoading.value = false;
                   },
                   child: const Text("Delete this timing"),
                 ),
@@ -59,7 +59,10 @@ class MenuItemsPC extends StatelessWidget {
               PopupMenuItem(
                 child: TextButton(
                   onPressed: () async {
+                    Get.back();
+                    isLoading.value = true;
                     await addWeek();
+                    isLoading.value = false;
                   },
                   child: const Text("Add Week               "),
                 ),
@@ -68,7 +71,10 @@ class MenuItemsPC extends StatelessWidget {
               PopupMenuItem(
                 child: TextButton(
                   onPressed: () async {
+                    Get.back();
+                    isLoading.value = true;
                     await deleteWeek();
+                    isLoading.value = false;
                   },
                   child: const Text("Delete this Week           "),
                 ),
@@ -77,7 +83,10 @@ class MenuItemsPC extends StatelessWidget {
               PopupMenuItem(
                 child: TextButton(
                   onPressed: () async {
+                    Get.back();
+                    isLoading.value = true;
                     await addDay();
+                    isLoading.value = false;
                   },
                   child: const Text("Add Day           "),
                 ),
@@ -110,7 +119,10 @@ class MenuItemsPC extends StatelessWidget {
             PopupMenuItem(
               child: TextButton(
                 onPressed: () async {
+                  Get.back();
+                  isLoading.value = true;
                   await clearDay();
+                  isLoading.value = false;
                 },
                 child: const Text("Clear this Day           "),
               ),
@@ -119,7 +131,10 @@ class MenuItemsPC extends StatelessWidget {
               PopupMenuItem(
                 child: TextButton(
                   onPressed: () async {
+                    Get.back();
+                    isLoading.value = true;
                     await deleteDay();
+                    isLoading.value = false;
                   },
                   child: const Text("Delete this Day           "),
                 ),
@@ -128,7 +143,10 @@ class MenuItemsPC extends StatelessWidget {
               PopupMenuItem(
                 child: TextButton(
                   onPressed: () async {
+                    Get.back();
+                    isLoading.value = true;
                     await deletePlan();
+                    isLoading.value = false;
                   },
                   child: const Text("Delete this diet plan      "),
                 ),
@@ -208,7 +226,7 @@ class MenuItemsPC extends StatelessWidget {
       pcc.currentWeekDR.value = weekDR;
       pcc.currentTimingDR.value = userDR;
       pcc.currentDayDR.value = userDR;
-      Get.back();
+
       pcc.currentPlanDR.value.get().then((pDS) async {
         if (pDS.data() != null) {
           DietPlanBasicInfoModel dpbim =
@@ -302,8 +320,6 @@ class MenuItemsPC extends StatelessWidget {
                 docRef: null)
             .toMap())
         .then((dayDR) async {
-      Get.back();
-
       pcc.currentDayDR.value = dayDR;
       pcc.currentPlanDR.value.get().then((planDS) async {
         if (planDS.data() != null) {
@@ -357,7 +373,6 @@ class MenuItemsPC extends StatelessWidget {
                     Get.back();
                   },
                   child: const Text("Cancle"),
-                 
                 ),
                 TextButton(
                   onPressed: () async {
@@ -370,7 +385,6 @@ class MenuItemsPC extends StatelessWidget {
                     }
                   },
                   child: const Text("Update"),
-                
                 )
               ],
             ),
@@ -406,13 +420,10 @@ class MenuItemsPC extends StatelessWidget {
     var dr = pcc.currentDayDR.value;
     await dr.delete().then((value) => pcc.listDaysDR.value.remove(dr));
 
-    Get.back();
-
     await pcc.getPlanRxValues(pcc.currentPlanDR.value, isWeekWisePlan);
   }
 
   Future<void> clearDay() async {
-    Get.back();
     await pcc.currentDayDR.value
         .collection(dtmos.timings)
         .get()
@@ -463,7 +474,6 @@ class MenuItemsPC extends StatelessWidget {
             dayQds.reference.delete();
           }
         }
-        Get.back();
       });
     }
 

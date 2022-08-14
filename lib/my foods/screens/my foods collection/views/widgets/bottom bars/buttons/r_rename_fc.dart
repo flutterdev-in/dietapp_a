@@ -52,6 +52,8 @@ class FCitemEditButton extends StatelessWidget {
         });
         TextEditingController tcName = TextEditingController();
         tcName.text = fdcm?.foodName ?? "";
+        tcName.selection = TextSelection.fromPosition(
+            TextPosition(offset: tcName.text.length));
         TextEditingController tcNotes = TextEditingController();
         tcNotes.text = fdcm?.notes ?? "";
         if (fdcm != null) {

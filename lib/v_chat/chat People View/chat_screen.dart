@@ -1,10 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dietapp_a/app%20Constants/colors.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/v_chat/chat%20People%20View/chat_person_tile.dart';
-import 'package:dietapp_a/v_chat/chat%20Search/chat_search_button.dart';
+import 'package:dietapp_a/v_chat/chat%20Search/chat_seach_screen.dart';
 import 'package:dietapp_a/v_chat/models/chat_room_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/firestore.dart';
+import 'package:get/get.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class ChatScreen extends StatelessWidget {
   const ChatScreen({Key? key}) : super(key: key);
@@ -14,10 +17,18 @@ class ChatScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Diet Chat"),
-        actions: [
-          chatSearchButton,
-        ],
       ),
+      floatingActionButton: FloatingActionButton.small(
+          child: const Icon(MdiIcons.magnify, color: Colors.white),
+          heroTag: "chatSearch",
+          backgroundColor: primaryColor,
+          onPressed: () {
+            Get.to(
+              () => const ChatSearchScreen(),
+              opaque: false,
+              transition: Transition.leftToRightWithFade,
+            );
+          }),
       body: Column(
         children: [
           userTileW(),

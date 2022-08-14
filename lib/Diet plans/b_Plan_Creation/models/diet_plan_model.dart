@@ -49,9 +49,10 @@ class DietPlanBasicInfoModel {
 
   factory DietPlanBasicInfoModel.fromMap(Map mainPlanBasicMap) {
     return DietPlanBasicInfoModel(
-      planName: mainPlanBasicMap[dietpbims.planName],
-      isWeekWisePlan: mainPlanBasicMap[dietpbims.isWeekWisePlan],
-      planCreationTime: mainPlanBasicMap[dietpbims.planCreationTime],
+      planName: mainPlanBasicMap[dietpbims.planName] ?? "",
+      isWeekWisePlan: mainPlanBasicMap[dietpbims.isWeekWisePlan] ?? false,
+      planCreationTime: mainPlanBasicMap[dietpbims.planCreationTime] ??
+          Timestamp.fromDate(DateTime.now()),
       notes: mainPlanBasicMap[unIndexed][dietpbims.notes],
       rumm: rummfos.rummFromRummMap(mainPlanBasicMap[unIndexed][rummfos.rumm]),
       planDefaulTimings: dietpbims
@@ -66,7 +67,7 @@ DietPlanBasicInfoModelStrings dietpbims = DietPlanBasicInfoModelStrings();
 class DietPlanBasicInfoModelStrings {
   final String dietPlansBeta = "dietPlansBeta";
   final String planName = "planName";
-  final String isWeekWisePlan = "isDayWisePlan";
+  final String isWeekWisePlan = "isWeekWisePlan";
   final String planCreationTime = "planCreationTime";
   final String notes = "notes";
   final String refURL = "refURL";

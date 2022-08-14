@@ -46,8 +46,6 @@ class _HomeScreenState extends State<ManinScreenManager>
       onWillPop: () async {
         if (bottomBarindex.value == 3) {
           fcBackButtonFunction();
-        } else if (bottomBarindex.value != 0) {
-          bottomNavController.jumpToTab(0);
         }
         return false;
       },

@@ -1,7 +1,10 @@
+import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/Combined%20screen/Menu%20buttons/activate_plan_menu_items.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/Combined%20screen/info%20view/timing_info_view_pc.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/Combined%20screen/list%20view/timing_foods_listview.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
+import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/v_chat/chat%20Room%20Screen/b_Middle%20widgets/_common_top_widget_middle.dart';
+import 'package:dietapp_a/x_customWidgets/lootie_animations.dart';
 import 'package:dietapp_a/y_Models/timing_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -67,15 +70,33 @@ class TimingViewFromChat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(dtm.timingName)),
-      body: ListView(
-        shrinkWrap: true,
-        children: [
-          if (dtm.rumm != null || dtm.notes != null)
-            const TimingInfoViewPC(editingIconRequired: false),
-          const FoodsListViewforPC(editIconRequired: false),
+      appBar: AppBar(
+        title: Text(dtm.timingName),
+        actions: [
+          TextButton(
+            onPressed: () async {
+              Get.back();
+              isLoading.value = true;
+              activatePlanMenuItems.activateThisTiming(context);
+              isLoading.value = false;
+            },
+            child: const Text("Activate"),
+          ),
         ],
       ),
+      body: Obx(() => Stack(
+            children: [
+              ListView(
+                shrinkWrap: true,
+                children: [
+                  if (dtm.rumm != null || dtm.notes != null)
+                    const TimingInfoViewPC(editingIconRequired: false),
+                  const FoodsListViewforPC(editIconRequired: false),
+                ],
+              ),
+              if (isLoading.value) loot.linerDotsLoading(),
+            ],
+          )),
     );
   }
 }

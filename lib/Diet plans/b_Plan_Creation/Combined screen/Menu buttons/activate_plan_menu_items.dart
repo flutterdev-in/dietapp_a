@@ -1,9 +1,11 @@
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
+import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/dartUtilities/day_time_managers.dart';
 import 'package:dietapp_a/x_customWidgets/alert_dialogue.dart';
 import 'package:dietapp_a/y_Active%20diet/functions/activate_planned_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 ActivatePlanMenuItems activatePlanMenuItems = ActivatePlanMenuItems();
@@ -48,9 +50,13 @@ class ActivatePlanMenuItems {
               child: ElevatedButton(
                   child: const Text("Activate"),
                   onPressed: () async {
+                    Get.back();
+                    isLoading.value = true;
+
                     await activatePlannedData.singlePlan(
                         startDate: selectedDate,
                         plannedPlanDR: pcc.currentPlanDR.value);
+                    isLoading.value = false;
                   }),
             )
           ],
@@ -96,16 +102,20 @@ class ActivatePlanMenuItems {
               child: ElevatedButton(
                   child: const Text("Activate"),
                   onPressed: () async {
+                    Get.back();
+                    isLoading.value = true;
+
                     await activatePlannedData.singleWeek(
                         startDate: selectedDate,
                         plannedWeekDR: pcc.currentWeekDR.value);
+                    isLoading.value = false;
                   }),
             )
           ],
         ));
   }
 
-  void activateDayPlan(BuildContext context) async {
+  Future<void> activateDayPlan(BuildContext context) async {
     var today = DateTime.now();
 
     var selectedDate = await showDatePicker(
@@ -122,7 +132,7 @@ class ActivatePlanMenuItems {
     }
   }
 
-  void activateThisDay(BuildContext context) async {
+  Future<void> activateThisDay(BuildContext context) async {
     var today = DateTime.now();
 
     var selectedDate = await showDatePicker(
@@ -141,7 +151,7 @@ class ActivatePlanMenuItems {
     }
   }
 
-  void activateThisTiming(BuildContext context) async {
+  Future<void> activateThisTiming(BuildContext context) async {
     var today = DateTime.now();
 
     var selectedDate = await showDatePicker(

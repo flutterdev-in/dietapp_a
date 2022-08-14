@@ -6,8 +6,10 @@ import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/diet_plan_model.da
 import 'package:dietapp_a/app%20Constants/colors.dart';
 import 'package:dietapp_a/app%20Constants/constant_objects.dart';
 import 'package:dietapp_a/app%20Constants/fire_ref.dart';
-import 'package:dietapp_a/userData/models/user_strings.dart';
 import 'package:dietapp_a/userData/models/user_welcome_model.dart';
+import 'package:dietapp_a/x_customWidgets/expandable_text.dart';
+import 'package:dietapp_a/x_customWidgets/web%20view/web_view_page.dart';
+import 'package:dietapp_a/x_customWidgets/youtube/youtube_video_player.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_day_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/firestore.dart';
@@ -77,7 +79,9 @@ class ListDietPlansW extends StatelessWidget {
 
           return GFListTile(
             title: Text(dpbim.planName),
-            subTitle: const Text(""),
+            subTitle: (dpbim.notes != null && dpbim.notes!.isNotEmpty)
+                ? expText(dpbim.notes)
+                : null,
             avatar: GFAvatar(
               backgroundColor: primaryColor,
               shape: GFAvatarShape.standard,
@@ -87,6 +91,21 @@ class ListDietPlansW extends StatelessWidget {
                 style: const TextStyle(color: Colors.white),
               ),
             ),
+            icon: dpbim.rumm != null
+                ? IconButton(
+                    onPressed: () {
+                      if (dpbim.rumm!.isYoutubeVideo) {
+                        Get.to(() => YoutubeVideoPlayerScreen(
+                            dpbim.rumm!, dpbim.planName));
+                      } else if (dpbim.rumm!.url.isURL) {
+                        Get.to(
+                            () => WebViewPage(dpbim.rumm!.url, dpbim.planName));
+                      }
+                    },
+                    icon: dpbim.rumm!.isYoutubeVideo
+                        ? const Icon(MdiIcons.youtube, color: Colors.red)
+                        : const Icon(MdiIcons.web))
+                : null,
             onTap: () async {
               pcc.currentPlanDR.value = snapshot.reference;
               await pcc

@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/controllers/plan_creation_controller.dart';
 import 'package:dietapp_a/Diet%20plans/b_Plan_Creation/models/diet_plan_model.dart';
 import 'package:dietapp_a/Diet%20plans/c_diet_view/diet_view_widget.dart';
+import 'package:dietapp_a/app%20Constants/constant_objects.dart';
+import 'package:dietapp_a/x_customWidgets/lootie_animations.dart';
 import 'package:dietapp_a/y_Active%20diet/models/active_timing_model.dart';
 import 'package:dietapp_a/y_Models/timing_model.dart';
 import 'package:dietapp_a/z_Ad%20manager/nativead_controller.dart';
@@ -66,16 +68,21 @@ class PlanCreationCombinedScreen extends StatelessWidget {
                 isWeekWisePlan: isWeekWisePlan),
           ],
         ),
-        body: Obx(
-          () => pcc.isPlanView.value
-              ? DietPlanViewW(
-                  isForActivePlan: isForActivePlan,
-                  isForSingleDayActive: isForSingleDayActive,
-                  isWeekWisePlan: isWeekWisePlan)
-              : isForActivePlan
-                  ? forActive()
-                  : forNonActive(),
-        ));
+        body: Obx(() => Stack(
+              children: [
+                Obx(
+                  () => pcc.isPlanView.value
+                      ? DietPlanViewW(
+                          isForActivePlan: isForActivePlan,
+                          isForSingleDayActive: isForSingleDayActive,
+                          isWeekWisePlan: isWeekWisePlan)
+                      : isForActivePlan
+                          ? forActive()
+                          : forNonActive(),
+                ),
+                if (isLoading.value) loot.linerDotsLoading(),
+              ],
+            )));
   }
 
   Widget forActive() {
@@ -97,7 +104,7 @@ class PlanCreationCombinedScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                 foodAddButtons(),
+                foodAddButtons(),
               ],
             );
           } else {
@@ -146,7 +153,7 @@ class PlanCreationCombinedScreen extends StatelessWidget {
             ],
           ),
         ),
-         foodAddButtons(),
+        foodAddButtons(),
       ],
     );
   }
