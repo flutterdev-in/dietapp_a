@@ -1,4 +1,4 @@
-package com.dietapp
+package `in`.dietapp
 
 import io.flutter.embedding.android.FlutterActivity
 

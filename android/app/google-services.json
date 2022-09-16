@@ -8,55 +8,26 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:237115759240:android:6395659ae301c147fc9d3d",
+        "mobilesdk_app_id": "1:237115759240:android:57b787e3a03aca69fc9d3d",
         "android_client_info": {
-          "package_name": "com.dietapp"
+          "package_name": "in.dietapp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "237115759240-ibrn01vn4bprdsh9erk6ln7tnl49mq9n.apps.googleusercontent.com",
+          "client_id": "237115759240-4rom331hl9i9ulb891s1osmgj997484b.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.dietapp",
+            "package_name": "in.dietapp",
             "certificate_hash": "f15663d0988ce1914eb4aa465d140407ee2ba95f"
           }
         },
         {
-          "client_id": "237115759240-hl7idkucv13gfh0uuejd6e831295snve.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCJHIlfiEKl_mtlQf0rkmVgA_sJwKJjawg"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "237115759240-hl7idkucv13gfh0uuejd6e831295snve.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:237115759240:android:ce50e5e93be0a7e2fc9d3d",
-        "android_client_info": {
-          "package_name": "com.example.dietapp_v002"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "237115759240-r33v1g0mvtn28359j2soi3o617ahfkcf.apps.googleusercontent.com",
+          "client_id": "237115759240-a239ehg1cmqo06dplbi8gc3j4edse5gg.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.dietapp_v002",
-            "certificate_hash": "f15663d0988ce1914eb4aa465d140407ee2ba95f"
+            "package_name": "in.dietapp",
+            "certificate_hash": "afc5d9503d7450c4684d0e76cdb4f132dad41a64"
           }
         },
         {
